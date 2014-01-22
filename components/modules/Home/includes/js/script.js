@@ -6,13 +6,68 @@
       height: $(window).height(),
       width: $(window).width()
     });
-    return ymaps.ready(function() {
-      return window.map = new ymaps.Map('map', {
+    ymaps.ready(function() {
+      var add_event, sign_in, sign_out;
+      window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
         controls: ['typeSelector', 'zoomControl']
       });
+      if (cs.is_guest) {
+        sign_in = new ymaps.control.Button({
+          data: {
+            content: 'Увійти'
+          },
+          options: {
+            maxWidth: 200,
+            selectOnClick: false
+          }
+        });
+        sign_in.events.add('click', function() {
+          return $("<div>\n	<div class=\"uk-form\" style=\"width: 600px;margin-left: -300px;\">\n		<a class=\"uk-modal-close uk-close\"></a>\n		<p>\n			<input type=\"text\" id=\"login\" placeholder=\"" + cs.Language.login + "\" autofocus>\n		</p>\n		<p>\n			<input type=\"password\" id=\"password\" placeholder=\"" + cs.Language.password + "\">\n		</p>\n		<p class=\"cs-right\">\n			<button class=\"uk-button\" onclick=\"cs.sign_in($('#login').val(), $('#password').val());\" class=\"uk-button\">" + cs.Language.sign_in + "</button>\n		</p>\n	</div>\n</div>").appendTo('body').cs().modal('show').on('uk.modal.hide', function() {
+            return $(this).remove();
+          });
+        });
+        map.controls.add(sign_in);
+        return $(document).on('keyup', '#login, #password', function(event) {
+          if (event.which === 13) {
+            return $(this).parent().parent().find('button').click();
+          }
+        });
+      } else {
+        add_event = new ymaps.control.Button({
+          data: {
+            content: 'Додати подію'
+          },
+          options: {
+            maxWidth: 200,
+            selectOnClick: false
+          }
+        });
+        add_event.events.add('click', function() {
+          return $("<div>\n	<div class=\"uk-form\" style=\"width: 600px;margin-left: -300px;\">\n		<a class=\"uk-modal-close uk-close\"></a>\n		<p>\n			<input type=\"text\" id=\"login\" placeholder=\"" + cs.Language.login + "\" autofocus>\n		</p>\n		<p>\n			<input type=\"password\" id=\"password\" placeholder=\"" + cs.Language.password + "\">\n		</p>\n		<p class=\"cs-right\">\n			<button class=\"uk-button\" onclick=\"cs.sign_in($('#login').val(), $('#password').val());\" class=\"uk-button\">" + cs.Language.sign_in + "</button>\n		</p>\n	</div>\n</div>").appendTo('body').cs().modal('show').on('uk.modal.hide', function() {
+            return $(this).remove();
+          });
+        });
+        map.controls.add(add_event);
+        sign_out = new ymaps.control.Button({
+          data: {
+            content: 'Вийти'
+          },
+          options: {
+            maxWidth: 200,
+            selectOnClick: false
+          }
+        });
+        sign_out.events.add('click', function() {
+          return cs.sign_out();
+        });
+        return map.controls.add(sign_out);
+      }
     });
+    return window.cs.home = {
+      add_event: function(coords) {}
+    };
   });
 
 }).call(this);
