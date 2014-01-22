@@ -377,7 +377,11 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  position: relative;
   width: 100%; }
   body > header,
   body > footer {
     display: none; }
+  body > section {
+    height: 100%;
+    width: 100%; }
