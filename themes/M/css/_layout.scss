@@ -22,7 +22,20 @@ body {
 	position : relative;
 	width    : 100%;
 
-	> header,
+	> header {
+		background  : #0072c7;
+		font-family : "Open Sans Light", "Open Sans Light Embedded", Tahoma, Verdana, sans-serif;
+		font-size   : 20px;
+		height      : 62px;
+		position    : absolute;
+		top         : 0;
+		width       : 100%;
+
+		* {
+			color : #fff;
+		}
+	}
+
 	> footer {
 		display : none;
 	}
@@ -31,4 +44,10 @@ body {
 		height : 100%;
 		width  : 100%;
 	}
+}
+
+#map {
+	bottom   : 0;
+	position : absolute;
+	top      : 62px;
 }

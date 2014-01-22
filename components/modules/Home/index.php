@@ -8,5 +8,16 @@
  */
 namespace	cs;
 use			h;
-$Page	= Page::instance();
-$Page->content('');
+$Page			= Page::instance();
+$User			= User::instance();
+$Page->Header	=
+	h::{'button.cs-home-chat'}().
+	h::{'button.cs-home-add'}('Додати').
+	(
+		$User->user() ? h::{'button.cs-home-sign-out'}('Вийти') : h::{'button.cs-home-sign-in'}('Увійти')
+	).
+	h::{'button.cs-home-settings'}();
+$Page->content(
+	h::{'div.cs-home-left-side'}().
+	h::{'div.cs-home-right-side'}()
+);

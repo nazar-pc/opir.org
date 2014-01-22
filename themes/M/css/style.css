@@ -114,7 +114,7 @@ code {
 
 h1, h2, h3, h4, h5, h6 {
   color: inherit;
-  font-family: Tahoma, Verdana, sans-serif; }
+  font-family: "Open Sans Light", "Open Sans Light Embedded", Tahoma, Verdana, sans-serif; }
 
 a {
   color: inherit;
@@ -372,16 +372,30 @@ html {
   height: 100%; }
 
 body {
-  font-family: Tahoma, Verdana, sans-serif;
+  font-family: "Open Sans", "Open Sans Embedded", Tahoma, Verdana, sans-serif;
   font-size: 12px;
   height: 100%;
   margin: 0;
   padding: 0;
   position: relative;
   width: 100%; }
-  body > header,
+  body > header {
+    background: #0072c7;
+    font-family: "Open Sans Light", "Open Sans Light Embedded", Tahoma, Verdana, sans-serif;
+    font-size: 20px;
+    height: 62px;
+    position: absolute;
+    top: 0;
+    width: 100%; }
+    body > header * {
+      color: #fff; }
   body > footer {
     display: none; }
   body > section {
     height: 100%;
     width: 100%; }
+
+#map {
+  bottom: 0;
+  position: absolute;
+  top: 62px; }
