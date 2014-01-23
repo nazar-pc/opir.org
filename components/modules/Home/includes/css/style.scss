@@ -7,7 +7,8 @@ body > header {
 	}
 
 	button[class*=cs-home-],
-	button[class*=cs-home-]:hover {
+	button[class*=cs-home-]:hover,
+	button[class*=cs-home-]:focus {
 		background    : #0067b6;
 		color         : #fff;
 		border-radius : 0;

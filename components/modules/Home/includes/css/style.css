@@ -4,7 +4,8 @@ body > header .cs-home-logo {
   top: 14px;
   width: 100%; }
 body > header button[class*=cs-home-],
-body > header button[class*=cs-home-]:hover {
+body > header button[class*=cs-home-]:hover,
+body > header button[class*=cs-home-]:focus {
   background: #0067b6;
   color: #fff;
   border-radius: 0;
