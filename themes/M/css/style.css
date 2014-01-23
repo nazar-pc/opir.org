@@ -381,8 +381,7 @@ body {
   width: 100%; }
   body > header {
     background: #0072c7;
-    font-family: "Open Sans Light", "Open Sans Light Embedded", Tahoma, Verdana, sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     height: 62px;
     position: absolute;
     top: 0;
@@ -398,4 +397,5 @@ body {
 #map {
   bottom: 0;
   position: absolute;
-  top: 62px; }
+  top: 62px;
+  width: 100%; }

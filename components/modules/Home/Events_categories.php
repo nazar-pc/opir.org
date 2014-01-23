@@ -37,11 +37,11 @@ class Events_categories {
 		return $this->read_simple($id);
 	}
 	/**
-	 * Get list of all events categories
+	 * Get all events categories
 	 *
 	 * @return array|bool
 	 */
-	function get_list () {
+	function get_all () {
 		return $this->db()->qfa(
 			"SELECT *
 			FROM `$this->table`"

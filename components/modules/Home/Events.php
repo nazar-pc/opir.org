@@ -92,11 +92,11 @@ class Events {
 		]);
 	}
 	/**
-	 * Get list of all events
+	 * Get all events
 	 *
 	 * @return array|bool
 	 */
-	function get_list () {
+	function get_all () {
 		$User	= User::instance();
 		if ($User->admin()) {
 			return $this->db()->qfa([

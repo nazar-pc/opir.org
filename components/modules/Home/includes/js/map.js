@@ -2,10 +2,6 @@
 (function() {
 
   $(function() {
-    $('#map').css({
-      height: $(window).height() - 62,
-      width: $(window).width()
-    });
     ymaps.ready(function() {
       var add_event;
       window.map = new ymaps.Map('map', {

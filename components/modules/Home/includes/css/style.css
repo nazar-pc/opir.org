@@ -4,13 +4,22 @@ body > header button[class*=cs-home-]:hover {
   color: #fff;
   border-radius: 0;
   height: 62px;
+  overflow-y: auto;
   padding: 0 25px;
   position: absolute;
-  text-shadow: none; }
+  text-align: center;
+  text-shadow: none;
+  width: 249px; }
+body > header button[class*=cs-home-]:hover {
+  background: #005ea6; }
 body > header .cs-home-chat,
 body > header .cs-home-settings {
   background: #00579d !important;
-  padding: 0 5px !important; }
+  padding: 0 5px !important;
+  width: auto !important; }
+body > header .cs-home-chat:hover,
+body > header .cs-home-settings:hover {
+  background: #004f8c !important; }
 body > header .cs-home-chat:before,
 body > header .cs-home-settings:before {
   background: url(../img/chat.png) no-repeat;
@@ -42,19 +51,3 @@ body > header .cs-home-sign-in:before {
   background-image: url(../img/sign-in.png); }
 body > header .cs-home-sign-out:before {
   background-image: url(../img/sign-out.png); }
-
-.cs-home-left-side,
-.cs-home-right-side {
-  background: #293137;
-  bottom: 0;
-  display: none;
-  opacity: .95;
-  position: absolute;
-  top: 62px;
-  width: 310px; }
-
-.cs-home-left-side {
-  left: 0; }
-
-.cs-home-right-side {
-  right: 0; }
