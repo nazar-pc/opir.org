@@ -4,6 +4,7 @@ $ ->
 			center		: [50.45, 30.523611]
 			zoom		: 13
 			controls	: ['typeSelector', 'zoomControl']
+			type		: 'yandex#hybrid'
 		}
 		categories	= []
 		do ->
