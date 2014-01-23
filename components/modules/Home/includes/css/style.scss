@@ -1,4 +1,11 @@
 body > header {
+	.cs-home-logo {
+		position   : absolute;
+		text-align : center;
+		top        : 14px;
+		width      : 100%;
+	}
+
 	button[class*=cs-home-],
 	button[class*=cs-home-]:hover {
 		background    : #0067b6;

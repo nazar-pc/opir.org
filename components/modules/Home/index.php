@@ -13,6 +13,9 @@ use			h,
 $Page			= Page::instance();
 $User			= User::instance();
 $Page->Header	=
+	h::{'div.cs-home-logo a[href=/] img'}([
+		'src'	=> "components/modules/Home/includes/img/logo.png"
+	]).
 	(
 		$User->user() ?
 			h::{'button.cs-home-chat'}().

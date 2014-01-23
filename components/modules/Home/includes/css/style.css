@@ -1,3 +1,8 @@
+body > header .cs-home-logo {
+  position: absolute;
+  text-align: center;
+  top: 14px;
+  width: 100%; }
 body > header button[class*=cs-home-],
 body > header button[class*=cs-home-]:hover {
   background: #0067b6;
