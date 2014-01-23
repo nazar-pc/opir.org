@@ -32,8 +32,9 @@ trait Singleton {
 		if (isset($instance)) {
 			return $instance;
 		}
-		if (substr(__CLASS__, 0, 2) == 'cs' && class_exists('cs\\custom\\'.substr(__CLASS__, 2), false)) {
-			$instance	= 'cs\\custom\\'.substr(__CLASS__, 2);
+		$class	= ltrim(get_called_class(), '\\');
+		if (substr($class, 0, 2) == 'cs' && class_exists('cs\\custom'.substr($class, 2), false)) {
+			$instance	= 'cs\\custom'.substr($class, 2);
 			$instance	= $instance::instance();
 		} else {
 			$instance	= new static;
