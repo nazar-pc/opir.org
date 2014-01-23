@@ -2,7 +2,7 @@ $ ->
 	panel				= $('.cs-home-add-panel')
 	category			= 0
 	visible				= 0
-	urgency				= 'unknown'
+	urgency				= 'urgent'
 	timeout_interval	= 60		# minutes
 	timeout				= 15 * timeout_interval	#15 minutes by default
 	coords				= [0, 0]
@@ -65,7 +65,7 @@ $ ->
 					</div>
 					<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
 						<button type="button" class="uk-button">
-							<span class="uk-icon-caret-down"></span> <span>Терміновість не вказано</span>
+							<span class="uk-icon-caret-down"></span> <span>Терміново</span>
 						</button>
 						<div class="uk-dropdown">
 							<ul class="cs-home-add-urgency uk-nav uk-nav-dropdown">
