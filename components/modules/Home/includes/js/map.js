@@ -53,7 +53,7 @@
             }
           })();
           placemarks.push(new ymaps.Placemark([event.lat, event.lng], {
-            hintContent: event.category_name
+            hintContent: category_name
           }, {
             iconLayout: 'default#image',
             iconImageHref: '/components/modules/Home/includes/img/events.png',
