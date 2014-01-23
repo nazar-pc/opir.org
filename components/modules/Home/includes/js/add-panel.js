@@ -93,6 +93,7 @@
             panel.hide('fast');
             map.geoObjects.remove(event_coords);
             event_coords = null;
+            map.update_events();
             return alert('Успішно додано, дякуємо вам!');
           }
         });

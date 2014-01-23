@@ -186,6 +186,7 @@ $ ->
 							panel.hide('fast')
 							map.geoObjects.remove(event_coords)
 							event_coords	= null
+							map.update_events()
 							alert 'Успішно додано, дякуємо вам!'
 					)
 				else
