@@ -1,4 +1,6 @@
 $ ->
+	add_zero	= (input) ->
+		if input < 10 then '0' + input else input
 	ymaps.ready ->
 		window.map	= new ymaps.Map 'map', {
 			center		: [50.45, 30.523611]
@@ -23,9 +25,10 @@ $ ->
 			placemarks	= []
 			for event, event of events
 				category_name	= categories[event.category]
-				time			= event.time
-				do (t = new Date(event.time * 1000), event = event) ->
-					time		= t.getMinutes() + ':' + t.getHours() + ' ' + t.getDate() + '.' + t.getMonth() + '.' + t.getYear()
+				t				= new Date(event.timeout * 1000)
+				time			=
+					add_zero(t.getHours()) + ':' + add_zero(t.getMinutes()) + ' ' +
+					add_zero(t.getDate()) + '.' + add_zero(t.getMonth() + 1) + '.' + t.getFullYear()
 				urgency			= switch event.urgency
 					when 'unknown' then 0
 					when 'can-wait' then 1
@@ -35,6 +38,11 @@ $ ->
 						[event.lat, event.lng]
 						{
 							hintContent	: category_name
+							balloonContentHeader	: category_name
+							balloonContentBody		: """
+								<time>Актуально до #{time}</time>
+								<p>#{event.text}</p>
+							"""
 						}
 						{
 							iconLayout			: 'default#image'
@@ -42,13 +50,6 @@ $ ->
 							iconImageSize		: [59, 56]
 							iconImageOffset		: [-24, -56]
 							iconImageClipRect	: [[59 * urgency, 56 * (event.category - 1)], [59 * (urgency + 1), 56 * event.category]]
-							balloonLayout		: ymaps.templateLayoutFactory.createClass(
-								"""<section class="cs-home-balloon-container">
-									<header><h1>#{category_name}</h1> <a class="uk-close" onclick="map.balloon.close()"></a></header>
-									<time>До #{time}</time>
-									<p>#{event.text}</p>
-								</section>"""
-							)
 						}
 					)
 				)

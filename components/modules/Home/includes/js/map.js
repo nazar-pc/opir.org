@@ -2,6 +2,14 @@
 (function() {
 
   $(function() {
+    var add_zero;
+    add_zero = function(input) {
+      if (input < 10) {
+        return '0' + input;
+      } else {
+        return input;
+      }
+    };
     return ymaps.ready(function() {
       var add_events_on_map, categories, clusterer, filter_events;
       window.map = new ymaps.Map('map', {
@@ -30,18 +38,14 @@
         });
       };
       add_events_on_map = function(events) {
-        var category_name, event, placemarks, time, urgency, _fn;
+        var category_name, event, placemarks, t, time, urgency;
         events = filter_events(events);
         placemarks = [];
-        _fn = function(t, event) {
-          var time;
-          return time = t.getMinutes() + ':' + t.getHours() + ' ' + t.getDate() + '.' + t.getMonth() + '.' + t.getYear();
-        };
         for (event in events) {
           event = events[event];
           category_name = categories[event.category];
-          time = event.time;
-          _fn(new Date(event.time * 1000), event);
+          t = new Date(event.timeout * 1000);
+          time = add_zero(t.getHours()) + ':' + add_zero(t.getMinutes()) + ' ' + add_zero(t.getDate()) + '.' + add_zero(t.getMonth() + 1) + '.' + t.getFullYear();
           urgency = (function() {
             switch (event.urgency) {
               case 'unknown':
@@ -53,14 +57,15 @@
             }
           })();
           placemarks.push(new ymaps.Placemark([event.lat, event.lng], {
-            hintContent: category_name
+            hintContent: category_name,
+            balloonContentHeader: category_name,
+            balloonContentBody: "<time>Актуально до " + time + "</time>\n<p>" + event.text + "</p>"
           }, {
             iconLayout: 'default#image',
             iconImageHref: '/components/modules/Home/includes/img/events.png',
             iconImageSize: [59, 56],
             iconImageOffset: [-24, -56],
-            iconImageClipRect: [[59 * urgency, 56 * (event.category - 1)], [59 * (urgency + 1), 56 * event.category]],
-            balloonLayout: ymaps.templateLayoutFactory.createClass("<section class=\"cs-home-balloon-container\">\n	<header><h1>" + category_name + "</h1> <a class=\"uk-close\" onclick=\"map.balloon.close()\"></a></header>\n	<time>До " + time + "</time>\n	<p>" + event.text + "</p>\n</section>")
+            iconImageClipRect: [[59 * urgency, 56 * (event.category - 1)], [59 * (urgency + 1), 56 * event.category]]
           }));
         }
         clusterer.removeAll();
