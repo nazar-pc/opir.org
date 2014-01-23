@@ -229,14 +229,15 @@ class Page {
 		 * Core JS
 		 */
 		if ($Config) {
+			$Index	= Index::instance();
 			$User	= User::instance();
 			$this->js_internal(
 				'window.cs	= '._json_encode([
 					'base_url'			=> $Config->base_url(),
-					'current_base_url'	=> $Config->base_url().'/'.($this->admin ? 'admin/' : '').MODULE,
+					'current_base_url'	=> $Config->base_url().'/'.(defined('IN_ADMIN') && IN_ADMIN ? 'admin/' : '').MODULE,
 					'public_key'		=> Core::instance()->public_key,
 					'module'			=> MODULE,
-					'in_admin'			=> (int)$this->admin,
+					'in_admin'			=> (int)(defined('IN_ADMIN') && IN_ADMIN),
 					'is_admin'			=> (int)$User->admin(),
 					'is_user'			=> (int)$User->user(),
 					'is_guest'			=> (int)$User->guest(),
@@ -246,8 +247,8 @@ class Page {
 					'cookie_path'		=> $Config->core['cookie_path'],
 					'protocol'			=> $Config->server['protocol'],
 					'route'				=> $Config->route,
-					'route_path'		=> $this->route_path,
-					'route_ids'			=> $this->route_ids
+					'route_path'		=> $Index->route_path,
+					'route_ids'			=> $Index->route_ids
 				]).';',
 				'code',
 				true
