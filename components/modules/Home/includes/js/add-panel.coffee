@@ -6,6 +6,7 @@ $ ->
 	timeout_interval	= 60		# minutes
 	timeout				= 15 * timeout_interval	#15 minutes by default
 	coords				= [0, 0]
+	event_coords		= null
 	$(document).on(
 		'click'
 		'.cs-home-add, .cs-home-add-close'
@@ -17,6 +18,8 @@ $ ->
 			timeout_interval	= 60
 			timeout				= 15 * timeout_interval
 			coords				= [0, 0]
+			event_coords && map.geoObjects.remove(event_coords)
+			event_coords		= null
 			panel
 				.html('')
 				.toggle('fast', ->
@@ -181,6 +184,8 @@ $ ->
 							urgency		: urgency
 						success	: ->
 							panel.hide('fast')
+							map.geoObjects.remove(event_coords)
+							event_coords	= null
 							alert 'Успішно додано, дякуємо вам!'
 					)
 				else

@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var category, coords, panel, timeout, timeout_interval, urgency, visible;
+    var category, coords, event_coords, panel, timeout, timeout_interval, urgency, visible;
     panel = $('.cs-home-add-panel');
     category = 0;
     visible = 0;
@@ -10,6 +10,7 @@
     timeout_interval = 60;
     timeout = 15 * timeout_interval;
     coords = [0, 0];
+    event_coords = null;
     $(document).on('click', '.cs-home-add, .cs-home-add-close', function() {
       category = 0;
       visible = 0;
@@ -17,6 +18,8 @@
       timeout_interval = 60;
       timeout = 15 * timeout_interval;
       coords = [0, 0];
+      event_coords && map.geoObjects.remove(event_coords);
+      event_coords = null;
       return panel.html('').toggle('fast', function() {
         var content, _ref;
         if (panel.css('display') !== 'none') {
@@ -58,7 +61,6 @@
       timeout = timeout_interval * $this.val();
       return $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
     }).on('click', '.cs-home-add-location', function() {
-      var event_coords;
       coords = [50.45, 30.523611];
       event_coords = new ymaps.Placemark([50.45, 30.523611], {}, {
         draggable: true,
@@ -89,6 +91,8 @@
           },
           success: function() {
             panel.hide('fast');
+            map.geoObjects.remove(event_coords);
+            event_coords = null;
             return alert('Успішно додано, дякуємо вам!');
           }
         });

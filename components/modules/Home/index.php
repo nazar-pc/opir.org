@@ -18,7 +18,9 @@ $Page->Header	=
 	]).
 	(
 		$User->user() ?
-			h::{'button.cs-home-chat'}().
+			h::{'button.cs-home-chat'}([
+				'data-title'	=> 'Ще не реалізовано'
+			]).
 			h::{'button.cs-home-add'}('Додати').
 			h::{'button.cs-home-sign-out'}('Вийти')
 		:
@@ -46,7 +48,7 @@ $Page->content(
 				h::icon('caret-down').
 				h::span($categories[0]['name'])
 			).
-			h::{'div.uk-dropdown ul.cs-home-filter-category.uk-nav.uk-nav-dropdown li'}(array_map(
+		h::{'div.uk-dropdown ul.cs-home-filter-category.uk-nav.uk-nav-dropdown[data-id=0] li'}(array_map(
 				function ($category) {
 					return [
 						h::a($category['name']),
@@ -63,7 +65,7 @@ $Page->content(
 				h::icon('caret-down').
 				h::span('Будь-яка терміновість')
 			).
-			h::{'div.uk-dropdown ul.cs-home-filter-urgency.uk-nav.uk-nav-dropdown li'}(array_map(
+			h::{'div.uk-dropdown ul.cs-home-filter-urgency.uk-nav.uk-nav-dropdown[data-id=any] li'}(array_map(
 				function ($category) {
 					return [
 						h::a($category['name']),
