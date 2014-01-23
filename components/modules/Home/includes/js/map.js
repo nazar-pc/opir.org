@@ -2,34 +2,13 @@
 (function() {
 
   $(function() {
-    ymaps.ready(function() {
-      var add_event;
-      window.map = new ymaps.Map('map', {
+    return ymaps.ready(function() {
+      return window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
         controls: ['typeSelector', 'zoomControl']
       });
-      if (cs.is_user) {
-        add_event = new ymaps.control.Button({
-          data: {
-            content: 'Додати подію'
-          },
-          options: {
-            maxWidth: 200,
-            selectOnClick: false
-          }
-        });
-        add_event.events.add('click', function() {
-          return $("<div>\n	<div class=\"uk-form\" style=\"width: 600px;margin-left: -300px;\">\n		<a class=\"uk-modal-close uk-close\"></a>\n		<p>\n			<input type=\"text\" id=\"login\" placeholder=\"" + cs.Language.login + "\" autofocus>\n		</p>\n		<p>\n			<input type=\"password\" id=\"password\" placeholder=\"" + cs.Language.password + "\">\n		</p>\n		<p class=\"cs-right\">\n			<button class=\"uk-button\" onclick=\"cs.sign_in($('#login').val(), $('#password').val());\" class=\"uk-button\">" + cs.Language.sign_in + "</button>\n		</p>\n	</div>\n</div>").appendTo('body').cs().modal('show').on('uk.modal.hide', function() {
-            return $(this).remove();
-          });
-        });
-        return map.controls.add(add_event);
-      }
     });
-    return window.cs.home = {
-      add_event: function(coords) {}
-    };
   });
 
 }).call(this);

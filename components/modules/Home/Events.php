@@ -27,9 +27,21 @@ class Events {
 		'lat'		=> 'float',
 		'lng'		=> 'float',
 		'visible'	=> 'id',
-		'text'		=> 'text'
+		'text'		=> 'text',
+		'urgency'	=> null
 	];
 
+	protected function constructor () {
+		$this->data_model['urgency']	= function ($in) {
+			switch ($in) {
+				default:
+					$in	= 'unknown';
+				case 'can-wait':
+				case 'urgent':
+			}
+			return $in;
+		};
+	}
 	protected function cdb () {
 		return '0';
 	}
@@ -42,10 +54,11 @@ class Events {
 	 * @param $lng
 	 * @param $visible
 	 * @param $text
+	 * @param $urgency
 	 *
 	 * @return bool|int
 	 */
-	function add ($category, $timeout, $lat, $lng, $visible, $text) {
+	function add ($category, $timeout, $lat, $lng, $visible, $text, $urgency) {
 		$User	= User::instance();
 		if ($visible == 2) {
 			$visible	= array_filter(
@@ -63,7 +76,8 @@ class Events {
 			$lat,
 			$lng,
 			$visible,
-			$text
+			$text,
+			$urgency
 		]);
 	}
 	/**
@@ -84,7 +98,8 @@ class Events {
 				`timeout`,
 				`lat`,
 				`lng`,
-				`text`
+				`text`,
+				`urgency`
 			FROM `$this->table`
 			WHERE
 				`id` = '%s'",
@@ -123,7 +138,8 @@ class Events {
 				`timeout`,
 				`lat`,
 				`lng`,
-				`text`
+				`text`,
+				`urgency`
 			FROM `$this->table`
 			WHERE
 				`visible` IN($groups) AND

@@ -506,52 +506,6 @@ class Index {
 		}
 	}
 	/**
-	 * Adds JavaScript variables with some system configuration information
-	 *
-	 * @return Index
-	 */
-	protected function js_vars () {
-		if (!$this->api) {
-			$Config	= Config::instance();
-			$Page	= Page::instance();
-			$User	= User::instance();
-			$Page->js(
-				'window.cs	= '._json_encode([
-					'base_url'			=> $Config->base_url(),
-					'current_base_url'	=> $Config->base_url().'/'.($this->admin ? 'admin/' : '').MODULE,
-					'public_key'		=> Core::instance()->public_key,
-					'module'			=> MODULE,
-					'in_admin'			=> (int)$this->admin,
-					'is_admin'			=> (int)$User->admin(),
-					'is_user'			=> (int)$User->user(),
-					'is_guest'			=> (int)$User->guest(),
-					'debug'				=> (int)$User->guest(),
-					'cookie_prefix'		=> $Config->core['cookie_prefix'],
-					'cookie_domain'		=> $Config->core['cookie_domain'],
-					'cookie_path'		=> $Config->core['cookie_path'],
-					'protocol'			=> $Config->server['protocol'],
-					'route'				=> $Config->route,
-					'route_path'		=> $this->route_path,
-					'route_ids'			=> $this->route_ids
-				]).';',
-				'code'
-			);
-			if ($User->guest()) {
-				$Page->js(
-					'cs.rules_text = '._json_encode(get_core_ml_text('rules')).';',
-					'code'
-				);
-			}
-			if (!$Config->core['cache_compress_js_css']) {
-				$Page->js(
-					'cs.Language = '._json_encode(Language::instance()).';',
-					'code'
-				);
-			}
-		}
-		return $this;
-	}
-	/**
 	 * Blocks processing
 	 */
 	protected function blocks_processing () {
@@ -704,7 +658,6 @@ class Index {
 			return;
 		}
 		if (defined('ERROR_CODE')) {
-			$this->js_vars();
 			$Page->error();
 		}
 		Trigger::instance()->run('System/Index/preload');
@@ -719,9 +672,7 @@ class Index {
 			$this->init_auto	&& $this->init();
 		}
 		if ($this->generate_auto) {
-			$this
-				->js_vars()
-				->generate();
+			$this->generate();
 		}
 		if ($this->stop) {
 			if (

@@ -26,6 +26,10 @@ $Page->Header	=
 	).
 	h::{'button.cs-home-settings'}();
 $categories		= Events_categories::instance()->get_all();
+$Page->js(
+	'cs.home = {categories:'._json_encode($categories).'};',
+	'code'
+);
 array_unshift(
 	$categories,
 	[
@@ -34,7 +38,7 @@ array_unshift(
 	]
 );
 $Page->content(
-	h::{'aside.cs-home-left-side'}().
+	h::{'aside.cs-home-add-panel'}().
 	h::{'aside.cs-home-settings-panel'}(
 		h::h2('Фільтр подій').
 		h::{"div.uk-button-dropdown[data-uk-dropdown={mode:'click'}]"}(
@@ -42,10 +46,10 @@ $Page->content(
 				h::icon('caret-down').
 				h::span($categories[0]['name'])
 			).
-			h::{'div.uk-dropdown ul.cs-home-filter-category.uk-nav.uk-nav-dropdown li| a'}(array_map(
+			h::{'div.uk-dropdown ul.cs-home-filter-category.uk-nav.uk-nav-dropdown li'}(array_map(
 				function ($category) {
 					return [
-						$category['name'],
+						h::a($category['name']),
 						[
 							'data-id'	=> $category['id']
 						]
@@ -59,10 +63,10 @@ $Page->content(
 				h::icon('caret-down').
 				h::span('Будь-яка терміновість')
 			).
-			h::{'div.uk-dropdown ul.cs-home-filter-category.uk-nav.uk-nav-dropdown li| a'}(array_map(
+			h::{'div.uk-dropdown ul.cs-home-filter-urgency.uk-nav.uk-nav-dropdown li'}(array_map(
 				function ($category) {
 					return [
-						$category['name'],
+						h::a($category['name']),
 						[
 							'data-id'	=> $category['id']
 						]
