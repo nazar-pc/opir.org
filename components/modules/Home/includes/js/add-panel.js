@@ -14,7 +14,7 @@
     $(document).on('click', '.cs-home-add, .cs-home-add-close', function() {
       category = 0;
       visible = 0;
-      urgency = 'unknown';
+      urgency = 'urgent';
       timeout_interval = 60;
       timeout = 15 * timeout_interval;
       coords = [0, 0];
@@ -62,7 +62,7 @@
       return $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
     }).on('click', '.cs-home-add-location', function() {
       coords = [50.45, 30.523611];
-      event_coords = new ymaps.Placemark([50.45, 30.523611], {}, {
+      event_coords = new ymaps.Placemark(map.getCenter(), {}, {
         draggable: true,
         iconLayout: 'default#image',
         iconImageHref: '/components/modules/Home/includes/img/new-event.png',
