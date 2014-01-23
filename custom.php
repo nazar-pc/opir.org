@@ -5,3 +5,4 @@
  * For example, you can add here including of class, which has the same name as core system class,
  * in this case your class will be used (may be useful in certain cases when modification of system files is needed)
  */
+$_SERVER['REMOTE_ADDR']	= '127.0.0.1';
