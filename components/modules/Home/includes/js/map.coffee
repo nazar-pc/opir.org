@@ -34,7 +34,7 @@ $ ->
 					new ymaps.Placemark(
 						[event.lat, event.lng]
 						{
-							hintContent	: event.category_name
+							hintContent	: category_name
 						}
 						{
 							iconLayout			: 'default#image'
