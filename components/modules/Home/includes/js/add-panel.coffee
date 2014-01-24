@@ -55,7 +55,7 @@ $ ->
 					iconLayout			: 'default#image'
 					iconImageHref		: '/components/modules/Home/includes/img/new-event.png'
 					iconImageSize		: [91, 86]
-					iconImageOffset		: [-35, -86]
+					iconImageOffset		: [-36, -86]
 				}
 				map.geoObjects.add(event_coords)
 				event_coords.events.add(
