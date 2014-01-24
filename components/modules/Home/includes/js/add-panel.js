@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var category, coords, event_coords, panel, timeout, timeout_interval, urgency, visible;
+    var category, coords, event_coords, panel, put_events_coords, timeout, timeout_interval, urgency, visible;
     panel = $('.cs-home-add-panel');
     category = 0;
     visible = 0;
@@ -11,6 +11,7 @@
     timeout = 15 * timeout_interval;
     coords = [0, 0];
     event_coords = null;
+    put_events_coords = false;
     $(document).on('click', '.cs-home-add, .cs-home-add-close', function() {
       category = 0;
       visible = 0;
@@ -20,6 +21,7 @@
       coords = [0, 0];
       event_coords && map.geoObjects.remove(event_coords);
       event_coords = null;
+      put_events_coords = false;
       return panel.html('').toggle('fast', function() {
         var content, _ref;
         if (panel.css('display') !== 'none') {
@@ -33,6 +35,33 @@
         }
       });
     });
+    (function() {
+      var map_init;
+      map_init = setInterval((function() {
+        if (!window.map || !map.events) {
+          return;
+        }
+        clearInterval(map_init);
+        map.events.add('click', function(e) {
+          if (!put_events_coords) {
+            return;
+          }
+          put_events_coords = false;
+          coords = e.get('coords');
+          event_coords = new ymaps.Placemark(coords, {}, {
+            draggable: true,
+            iconLayout: 'default#image',
+            iconImageHref: '/components/modules/Home/includes/img/new-event.png',
+            iconImageSize: [91, 86],
+            iconImageOffset: [-35, -86]
+          });
+          map.geoObjects.add(event_coords);
+          return event_coords.events.add('geometrychange', function(e) {
+            return coords = e.get('originalEvent').originalEvent.newCoordinates;
+          });
+        });
+      }), 100);
+    })();
     return panel.on('click', '> ul > li', function() {
       var content, name;
       category = $(this).data('id');
@@ -64,18 +93,8 @@
       if (event_coords) {
         return;
       }
-      coords = [50.45, 30.523611];
-      event_coords = new ymaps.Placemark(map.getCenter(), {}, {
-        draggable: true,
-        iconLayout: 'default#image',
-        iconImageHref: '/components/modules/Home/includes/img/new-event.png',
-        iconImageSize: [91, 86],
-        iconImageOffset: [-35, -86]
-      });
-      map.geoObjects.add(event_coords);
-      return event_coords.events.add('geometrychange', function(e) {
-        return coords = e.get('originalEvent').originalEvent.newCoordinates;
-      });
+      put_events_coords = true;
+      return alert('Клікніть місце з подією на карті');
     }).on('click', '.cs-home-add-process', function() {
       var comment;
       comment = panel.find('textarea').val();
@@ -96,6 +115,7 @@
             panel.hide('fast');
             map.geoObjects.remove(event_coords);
             event_coords = null;
+            put_events_coords = false;
             map.update_events();
             return alert('Успішно додано, дякуємо вам!');
           }

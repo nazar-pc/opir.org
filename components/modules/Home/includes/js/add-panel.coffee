@@ -7,6 +7,7 @@ $ ->
 	timeout				= 15 * timeout_interval	#15 minutes by default
 	coords				= [0, 0]
 	event_coords		= null
+	put_events_coords	= false
 	$(document).on(
 		'click'
 		'.cs-home-add, .cs-home-add-close'
@@ -20,6 +21,7 @@ $ ->
 			coords				= [0, 0]
 			event_coords && map.geoObjects.remove(event_coords)
 			event_coords		= null
+			put_events_coords	= false
 			panel
 				.html('')
 				.toggle('fast', ->
@@ -35,6 +37,33 @@ $ ->
 						panel.html("<ul>#{content}</ul>")
 				)
 	)
+	do ->
+		map_init = setInterval (->
+			if !window.map || !map.events
+				return
+			clearInterval(map_init)
+			map.events.add('click', (e) ->
+				if !put_events_coords
+					return
+				put_events_coords		= false
+				coords					= e.get('coords')
+				event_coords			= new ymaps.Placemark coords, {}, {
+					draggable			: true
+					iconLayout			: 'default#image'
+					iconImageHref		: '/components/modules/Home/includes/img/new-event.png'
+					iconImageSize		: [91, 86]
+					iconImageOffset		: [-35, -86]
+				}
+				map.geoObjects.add(event_coords)
+				event_coords.events.add(
+					'geometrychange',
+					(e) ->
+						coords	= e.get('originalEvent').originalEvent.newCoordinates
+				)
+			)
+			return
+		), 100
+		return
 	panel
 		.on(
 			'click'
@@ -152,20 +181,8 @@ $ ->
 			->
 				if event_coords
 					return
-				coords					= [50.45, 30.523611]
-				event_coords			= new ymaps.Placemark map.getCenter(), {}, {
-					draggable			: true
-					iconLayout			: 'default#image'
-					iconImageHref		: '/components/modules/Home/includes/img/new-event.png'
-					iconImageSize		: [91, 86]
-					iconImageOffset		: [-35, -86]
-				}
-				map.geoObjects.add(event_coords)
-				event_coords.events.add(
-					'geometrychange',
-					(e) ->
-						coords	= e.get('originalEvent').originalEvent.newCoordinates
-				)
+				put_events_coords	= true
+				alert 'Клікніть місце з подією на карті'
 		)
 		.on(
 			'click'
@@ -187,7 +204,8 @@ $ ->
 						success	: ->
 							panel.hide('fast')
 							map.geoObjects.remove(event_coords)
-							event_coords	= null
+							event_coords		= null
+							put_events_coords	= false
 							map.update_events()
 							alert 'Успішно додано, дякуємо вам!'
 					)
