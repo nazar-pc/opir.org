@@ -42,7 +42,7 @@ $ ->
 								<time>Актуально до #{time}</time>
 								<p>#{event.text}</p>
 							"""
-							balloonContentFooter	: if event.id then """<button onclick="cs.home.delete_event(#{event.id})">Видалити</button>""" else false
+							balloonContentFooter	: if event.id then """<button onclick="cs.home.delete_event(#{event.id})">Видалити</button>""" else ''
 						}
 						{
 							iconLayout			: 'default#image'
