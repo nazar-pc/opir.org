@@ -8,6 +8,7 @@ $ ->
 	coords				= [0, 0]
 	event_coords		= null
 	put_events_coords	= false
+	map_cursor			= null
 	$(document).on(
 		'click'
 		'.cs-home-add, .cs-home-add-close'
@@ -21,6 +22,8 @@ $ ->
 			coords				= [0, 0]
 			event_coords && map.geoObjects.remove(event_coords)
 			event_coords		= null
+			map_cursor	&& map_cursor.remove()
+			map_cursor			= null
 			put_events_coords	= false
 			panel
 				.html('')
@@ -55,6 +58,7 @@ $ ->
 					iconImageOffset		: [-35, -86]
 				}
 				map.geoObjects.add(event_coords)
+				map_cursor.remove()
 				event_coords.events.add(
 					'geometrychange',
 					(e) ->
@@ -182,6 +186,7 @@ $ ->
 				if event_coords
 					return
 				put_events_coords	= true
+				map_cursor			= map.cursors.push('pointer');
 				alert 'Клікніть місце з подією на карті'
 		)
 		.on(
@@ -205,7 +210,6 @@ $ ->
 							panel.hide('fast')
 							map.geoObjects.remove(event_coords)
 							event_coords		= null
-							put_events_coords	= false
 							map.update_events()
 							alert 'Успішно додано, дякуємо вам!'
 					)

@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var category, coords, event_coords, panel, put_events_coords, timeout, timeout_interval, urgency, visible;
+    var category, coords, event_coords, map_cursor, panel, put_events_coords, timeout, timeout_interval, urgency, visible;
     panel = $('.cs-home-add-panel');
     category = 0;
     visible = 0;
@@ -12,6 +12,7 @@
     coords = [0, 0];
     event_coords = null;
     put_events_coords = false;
+    map_cursor = null;
     $(document).on('click', '.cs-home-add, .cs-home-add-close', function() {
       category = 0;
       visible = 0;
@@ -21,6 +22,8 @@
       coords = [0, 0];
       event_coords && map.geoObjects.remove(event_coords);
       event_coords = null;
+      map_cursor && map_cursor.remove();
+      map_cursor = null;
       put_events_coords = false;
       return panel.html('').toggle('fast', function() {
         var content, _ref;
@@ -56,6 +59,7 @@
             iconImageOffset: [-35, -86]
           });
           map.geoObjects.add(event_coords);
+          map_cursor.remove();
           return event_coords.events.add('geometrychange', function(e) {
             return coords = e.get('originalEvent').originalEvent.newCoordinates;
           });
@@ -94,6 +98,7 @@
         return;
       }
       put_events_coords = true;
+      map_cursor = map.cursors.push('pointer');
       return alert('Клікніть місце з подією на карті');
     }).on('click', '.cs-home-add-process', function() {
       var comment;
@@ -115,7 +120,6 @@
             panel.hide('fast');
             map.geoObjects.remove(event_coords);
             event_coords = null;
-            put_events_coords = false;
             map.update_events();
             return alert('Успішно додано, дякуємо вам!');
           }
