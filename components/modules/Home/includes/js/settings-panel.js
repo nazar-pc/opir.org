@@ -2,11 +2,11 @@
 (function() {
 
   $(function() {
-    var map, panel;
-    map = $('#map');
+    var map_container, panel;
+    map_container = $('#map');
     panel = $('.cs-home-settings-panel');
     $('.cs-home-settings').click(function() {
-      map.animate({
+      map_container.animate({
         right: (panel.css('display') !== 'none' ? 0 : 310) + 'px'
       }, 'fast');
       return $('.cs-home-settings-panel').toggle('fast');

@@ -1,8 +1,8 @@
 $ ->
-	map		= $('#map')
-	panel	= $('.cs-home-settings-panel')
+	map_container	= $('#map')
+	panel			= $('.cs-home-settings-panel')
 	$('.cs-home-settings').click ->
-		map.animate(
+		map_container.animate(
 			right	: (if panel.css('display') != 'none' then 0 else 310) + 'px'
 			'fast'
 		)
