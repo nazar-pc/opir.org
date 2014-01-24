@@ -47,7 +47,12 @@ body {
 
 #map {
 	bottom   : 0;
+	left     : 0;
 	position : absolute;
+	right    : 310px;
 	top      : 62px;
-	width    : 100%;
+
+	.ymaps-map {
+		width : inherit !important;
+	}
 }

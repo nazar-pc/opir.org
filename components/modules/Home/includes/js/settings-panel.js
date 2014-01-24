@@ -2,7 +2,13 @@
 (function() {
 
   $(function() {
+    var map, panel;
+    map = $('#map');
+    panel = $('.cs-home-settings-panel');
     $('.cs-home-settings').click(function() {
+      map.animate({
+        right: (panel.css('display') !== 'none' ? 0 : 310) + 'px'
+      }, 'fast');
       return $('.cs-home-settings-panel').toggle('fast');
     });
     $('.cs-home-filter-category [data-id]').click(function() {

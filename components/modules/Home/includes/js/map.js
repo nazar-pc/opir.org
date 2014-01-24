@@ -15,17 +15,8 @@
       window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
-        controls: ['zoomControl']
+        controls: ['typeSelector', 'zoomControl']
       });
-      map.controls.add(new ymaps.control.TypeSelector({
-        options: {
-          float: 'none',
-          position: {
-            right: 320,
-            top: 10
-          }
-        }
-      }));
       categories = [];
       (function() {
         var category, _ref;
