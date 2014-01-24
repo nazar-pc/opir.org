@@ -49,8 +49,8 @@
           if (!put_events_coords) {
             return;
           }
-          put_events_coords = false;
           coords = e.get('coords');
+          event_coords && map.geoObjects.remove(event_coords);
           event_coords = new ymaps.Placemark(coords, {}, {
             draggable: true,
             iconLayout: 'default#image',
@@ -59,7 +59,6 @@
             iconImageOffset: [-35, -86]
           });
           map.geoObjects.add(event_coords);
-          map_cursor.remove();
           return event_coords.events.add('geometrychange', function(e) {
             return coords = e.get('originalEvent').originalEvent.newCoordinates;
           });
@@ -120,6 +119,8 @@
             panel.hide('fast');
             map.geoObjects.remove(event_coords);
             event_coords = null;
+            put_events_coords = false;
+            map_cursor.remove();
             map.update_events();
             return alert('Успішно додано, дякуємо вам!');
           }
