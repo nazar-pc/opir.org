@@ -17,7 +17,7 @@ if (isset($_POST['group'], $_POST['count'])) {
 	while ($count--) {
 		for (
 			$i = 100;
-			$User->get_id(hash('sha224', $login	= $group['title'].'_'.$i));
+			$User->get_id(hash('sha224', $login	= mb_strtolower($group['title']).'_'.$i));
 			++$i
 		) {}
 		$new_user = $User->registration("$login@".DOMAIN, false, false);
