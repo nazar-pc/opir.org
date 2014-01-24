@@ -36,12 +36,13 @@ $ ->
 					new ymaps.Placemark(
 						[event.lat, event.lng]
 						{
-							hintContent	: category_name
+							hintContent				: category_name
 							balloonContentHeader	: category_name
 							balloonContentBody		: """
 								<time>Актуально до #{time}</time>
 								<p>#{event.text}</p>
 							"""
+							balloonContentFooter	: if event.id then """<button onclick="cs.home.delete_event(#{event.id})">Видалити</button>""" else false
 						}
 						{
 							iconLayout			: 'default#image'
@@ -73,3 +74,13 @@ $ ->
 				)
 			return
 		map.update_events()
+		cs.home.delete_event	= (id) ->
+			$.ajax(
+				url			: "api/Home/events/#{id}"
+				type		: 'delete'
+				success		: ->
+					alert 'Видалено'
+					map.update_events()
+					return
+			)
+			return

@@ -88,9 +88,13 @@ class Events {
 	 * @return array|bool
 	 */
 	function get ($id) {
-		return $this->db()->qfa([
+		$User		= User::instance();
+		$admin		= $User->admin();
+		$user_id	= $User->id;
+		$return	= $this->db()->qf([
 			"SELECT
 				`id`,
+				`user`,
 				`category`,
 				`added`,
 				`timeout`,
@@ -105,6 +109,26 @@ class Events {
 				`id` = '%s'",
 			$id
 		]);
+		if (!$admin && $return['user'] != $user_id) {
+			unset($return['id']);
+		}
+		unset($return['user']);
+		return $return;
+	}
+	/**
+	 * Delete event
+	 *
+	 * @param int	$id
+	 *
+	 * @return array|bool
+	 */
+	function del ($id) {
+		return $this->db()->q(
+			"DELETE FROM `$this->table`
+			WHERE `id` = '%s'
+			LIMIT 1",
+			$id
+		);
 	}
 	/**
 	 * Get all events
@@ -112,8 +136,10 @@ class Events {
 	 * @return array|bool
 	 */
 	function get_all () {
-		$User	= User::instance();
-		if ($User->admin()) {
+		$User		= User::instance();
+		$admin		= $User->admin();
+		$user_id	= $User->id;
+		if ($admin) {
 			return $this->db()->qfa([
 				"SELECT *
 				FROM `$this->table`
@@ -128,9 +154,10 @@ class Events {
 			$groups[]	= 1;
 		}
 		$groups		= implode(',', $groups);
-		return $this->db()->qfa([
+		$return 	= $this->db()->qfa([
 			"SELECT
 				`id`,
+				`user`,
 				`category`,
 				`added`,
 				`timeout`,
@@ -146,5 +173,12 @@ class Events {
 				`timeout`	> '%s'",
 			TIME
 		]);
+		foreach ($return as &$r) {
+			if (!$admin && $r['user'] != $user_id) {
+				unset($r['id']);
+			}
+			unset($r['user']);
+		}
+		return $return;
 	}
 }

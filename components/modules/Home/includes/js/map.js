@@ -58,7 +58,8 @@
           placemarks.push(new ymaps.Placemark([event.lat, event.lng], {
             hintContent: category_name,
             balloonContentHeader: category_name,
-            balloonContentBody: "<time>Актуально до " + time + "</time>\n<p>" + event.text + "</p>"
+            balloonContentBody: "<time>Актуально до " + time + "</time>\n<p>" + event.text + "</p>",
+            balloonContentFooter: event.id ? "<button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : false
           }, {
             iconLayout: 'default#image',
             iconImageHref: '/components/modules/Home/includes/img/events.png',
@@ -93,7 +94,17 @@
           });
         }
       };
-      return map.update_events();
+      map.update_events();
+      return cs.home.delete_event = function(id) {
+        $.ajax({
+          url: "api/Home/events/" + id,
+          type: 'delete',
+          success: function() {
+            alert('Видалено');
+            map.update_events();
+          }
+        });
+      };
     });
   });
 
