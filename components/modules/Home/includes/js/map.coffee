@@ -61,14 +61,19 @@ $ ->
 				)
 			clusterer.removeAll()
 			clusterer.add(placemarks)
-		map.update_events	=	(from_cache = false) ->
+		update_events_interval	= 0
+		map.update_events		= (from_cache = false) ->
+			clearInterval(update_events_interval)
 			if from_cache && map.update_events.cache
 				add_events_on_map(map.update_events.cache)
+				update_events_interval	= setInterval(map.update_events, 60 * 1000)
 			else
 				$.ajax(
-					url		: 'api/Home/events'
-					type	: 'get'
-					success	: (events) ->
+					url			: 'api/Home/events'
+					type		: 'get'
+					complete	: ->
+						update_events_interval	= setInterval(map.update_events, 60 * 1000)
+					success		: (events) ->
 						map.update_events.cache	= events
 						add_events_on_map(events)
 						return

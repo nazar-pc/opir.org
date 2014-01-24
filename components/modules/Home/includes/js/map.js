@@ -11,7 +11,7 @@
       }
     };
     return ymaps.ready(function() {
-      var add_events_on_map, categories, clusterer, filter_events;
+      var add_events_on_map, categories, clusterer, filter_events, update_events_interval;
       window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
@@ -79,16 +79,22 @@
         clusterer.removeAll();
         return clusterer.add(placemarks);
       };
+      update_events_interval = 0;
       map.update_events = function(from_cache) {
         if (from_cache == null) {
           from_cache = false;
         }
+        clearInterval(update_events_interval);
         if (from_cache && map.update_events.cache) {
           add_events_on_map(map.update_events.cache);
+          update_events_interval = setInterval(map.update_events, 60 * 1000);
         } else {
           $.ajax({
             url: 'api/Home/events',
             type: 'get',
+            complete: function() {
+              return update_events_interval = setInterval(map.update_events, 60 * 1000);
+            },
             success: function(events) {
               map.update_events.cache = events;
               add_events_on_map(events);
