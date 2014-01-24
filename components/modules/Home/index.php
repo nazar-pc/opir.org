@@ -8,6 +8,7 @@
  */
 namespace	cs\modules\Home;
 use			h,
+			cs\Group,
 			cs\Page,
 			cs\User;
 $Page			= Page::instance();
@@ -28,8 +29,15 @@ $Page->Header	=
 	).
 	h::{'button.cs-home-settings'}();
 $categories		= Events_categories::instance()->get_all();
+$groups		= array_filter(
+	Group::instance()->get_all(),
+	function ($group) {
+		return $group['id'] > 3;
+	}
+);
+$groups	= array_column($groups, 'description', 'id');
 $Page->js(
-	'cs.home = {categories:'._json_encode($categories).'};',
+	'cs.home = {categories:'._json_encode($categories).',groups:'._json_encode($groups).'};',
 	'code'
 );
 array_unshift(

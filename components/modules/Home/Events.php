@@ -91,6 +91,21 @@ class Events {
 		$User		= User::instance();
 		$admin		= $User->admin();
 		$user_id	= $User->id;
+		if ($admin) {
+			return $this->db()->qf(
+				"SELECT *
+				FROM `$this->table`
+				WHERE
+					`id` = '%s'",
+				$id
+			);
+		}
+		$groups		= $User->get_groups();
+		$groups[]	= 0;
+		if ($User->user()) {
+			$groups[]	= 1;
+		}
+		$groups		= implode(',', $groups);
 		$return	= $this->db()->qf([
 			"SELECT
 				`id`,
@@ -106,6 +121,10 @@ class Events {
 				`urgency`
 			FROM `$this->table`
 			WHERE
+				(
+					`visible` IN($groups) OR
+					`user`	= $user_id
+				) AND
 				`id` = '%s'",
 			$id
 		]);
@@ -169,7 +188,10 @@ class Events {
 				`urgency`
 			FROM `$this->table`
 			WHERE
-				`visible` IN($groups) AND
+				(
+					`visible` IN($groups) OR
+					`user`	= $user_id
+				) AND
 				`timeout`	> '%s'",
 			TIME
 		]);

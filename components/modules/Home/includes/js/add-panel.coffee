@@ -72,6 +72,15 @@ $ ->
 			'click'
 			'> ul > li'
 			->
+				groups		= do ->
+					content	= ''
+					for id, name of cs.home.groups
+						content	+= """
+							<li data-id="#{id}">
+								<a>#{name}</a>
+							</li>
+						"""
+					content
 				category	= $(@).data('id')
 				name		= $(@).find('span').text()
 				content		= """
@@ -92,6 +101,7 @@ $ ->
 								<li data-id="2">
 									<a>Моїй групі активістів</a>
 								</li>
+								#{groups}
 							</ul>
 						</div>
 					</div>
