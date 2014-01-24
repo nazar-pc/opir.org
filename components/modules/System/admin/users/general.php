@@ -16,7 +16,7 @@ $Config	= Config::instance();
 $L		= Language::instance();
 Index::instance()->content(
 	h::{'table.cs-table-borderless.cs-left-even.cs-right-odd tr| td'}(
-		core_input('session_expire', 'number', null, false, 1, false, $L->seconds),
+		core_input('session_expire', 'number', null, false, 0, false, $L->seconds),
 		core_input('online_time', 'number', null, false, 1, false, $L->seconds),
 		[
 			h::info('sign_in_attempts_block_count'),

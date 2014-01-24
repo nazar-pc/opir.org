@@ -59,7 +59,7 @@
             hintContent: category_name,
             balloonContentHeader: category_name,
             balloonContentBody: "<time>Актуально до " + time + "</time>\n<p>" + event.text + "</p>",
-            balloonContentFooter: event.id ? "<button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : false
+            balloonContentFooter: event.id ? "<button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : ''
           }, {
             iconLayout: 'default#image',
             iconImageHref: '/components/modules/Home/includes/img/events.png',
