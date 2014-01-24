@@ -1,7 +1,7 @@
 $ ->
 	panel				= $('.cs-home-add-panel')
 	category			= 0
-	visible				= 0
+	visible				= 2
 	urgency				= 'urgent'
 	timeout_interval	= 60		# minutes
 	timeout				= 15 * timeout_interval	#15 minutes by default
@@ -15,7 +15,7 @@ $ ->
 		->
 			# Reset
 			category			= 0
-			visible				= 0
+			visible				= 2
 			urgency				= 'urgent'
 			timeout_interval	= 60
 			timeout				= 15 * timeout_interval
@@ -79,7 +79,7 @@ $ ->
 					<textarea placeholder="Коментар"></textarea>
 					<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
 						<button type="button" class="uk-button">
-							<span class="uk-icon-caret-down"></span> <span>Відображати всім</span>
+							<span class="uk-icon-caret-down"></span> <span>Моїй групі активістів</span>
 						</button>
 						<div class="uk-dropdown">
 							<ul class="cs-home-add-visible uk-nav uk-nav-dropdown">

@@ -5,7 +5,7 @@
     var category, coords, event_coords, map_cursor, panel, put_events_coords, timeout, timeout_interval, urgency, visible;
     panel = $('.cs-home-add-panel');
     category = 0;
-    visible = 0;
+    visible = 2;
     urgency = 'urgent';
     timeout_interval = 60;
     timeout = 15 * timeout_interval;
@@ -15,7 +15,7 @@
     map_cursor = null;
     $(document).on('click', '.cs-home-add, .cs-home-add-close', function() {
       category = 0;
-      visible = 0;
+      visible = 2;
       urgency = 'urgent';
       timeout_interval = 60;
       timeout = 15 * timeout_interval;
@@ -69,7 +69,7 @@
       var content, name;
       category = $(this).data('id');
       name = $(this).find('span').text();
-      content = "<h2>" + name + "</h2>\n<textarea placeholder=\"Коментар\"></textarea>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Відображати всім</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-visible uk-nav uk-nav-dropdown\">\n			<li data-id=\"0\">\n				<a>Відображати всім</a>\n			</li>\n			<li data-id=\"1\">\n				<a>Активістам</a>\n			</li>\n			<li data-id=\"2\">\n				<a>Моїй групі активістів</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Терміново</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-urgency uk-nav uk-nav-dropdown\">\n			<li data-id=\"unknown\">\n				<a>Терміновість не вказано</a>\n			</li>\n			<li data-id=\"can-wait\">\n				<a>Може почекати</a>\n			</li>\n			<li data-id=\"urgent\">\n				<a>Терміново</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<h3>Актуальність</h3>\n<div>\n	<input class=\"cs-home-add-time\" type=\"number\" min=\"1\" value=\"15\"/>\n	<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n		<button type=\"button\" class=\"uk-button\">\n			<span class=\"uk-icon-caret-down\"></span> <span>Хвилин</span>\n		</button>\n		<div class=\"uk-dropdown\">\n			<ul class=\"cs-home-add-time-interval uk-nav uk-nav-dropdown\">\n				<li data-id=\"60\">\n					<a>Хвилин</a>\n				</li>\n				<li data-id=\"3600\">\n					<a>Годин</a>\n				</li>\n				<li data-id=\"86400\">\n					<a>Днів</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>\n<div class=\"cs-home-add-location\">\n	<span>Вказати на карті</span>\n</div>\n<div>\n	<button class=\"cs-home-add-close\"></button>\n	<button class=\"cs-home-add-process\">Додати</button>\n</div>";
+      content = "<h2>" + name + "</h2>\n<textarea placeholder=\"Коментар\"></textarea>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Моїй групі активістів</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-visible uk-nav uk-nav-dropdown\">\n			<li data-id=\"0\">\n				<a>Відображати всім</a>\n			</li>\n			<li data-id=\"1\">\n				<a>Активістам</a>\n			</li>\n			<li data-id=\"2\">\n				<a>Моїй групі активістів</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Терміново</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-urgency uk-nav uk-nav-dropdown\">\n			<li data-id=\"unknown\">\n				<a>Терміновість не вказано</a>\n			</li>\n			<li data-id=\"can-wait\">\n				<a>Може почекати</a>\n			</li>\n			<li data-id=\"urgent\">\n				<a>Терміново</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<h3>Актуальність</h3>\n<div>\n	<input class=\"cs-home-add-time\" type=\"number\" min=\"1\" value=\"15\"/>\n	<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n		<button type=\"button\" class=\"uk-button\">\n			<span class=\"uk-icon-caret-down\"></span> <span>Хвилин</span>\n		</button>\n		<div class=\"uk-dropdown\">\n			<ul class=\"cs-home-add-time-interval uk-nav uk-nav-dropdown\">\n				<li data-id=\"60\">\n					<a>Хвилин</a>\n				</li>\n				<li data-id=\"3600\">\n					<a>Годин</a>\n				</li>\n				<li data-id=\"86400\">\n					<a>Днів</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>\n<div class=\"cs-home-add-location\">\n	<span>Вказати на карті</span>\n</div>\n<div>\n	<button class=\"cs-home-add-close\"></button>\n	<button class=\"cs-home-add-process\">Додати</button>\n</div>";
       return panel.html(content);
     }).on('click', '.cs-home-add-visible [data-id]', function() {
       var $this;
