@@ -150,6 +150,8 @@ $ ->
 			'click'
 			'.cs-home-add-location'
 			->
+				if event_coords
+					return
 				coords					= [50.45, 30.523611]
 				event_coords			= new ymaps.Placemark map.getCenter(), {}, {
 					draggable			: true

@@ -61,6 +61,9 @@
       timeout = timeout_interval * $this.val();
       return $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
     }).on('click', '.cs-home-add-location', function() {
+      if (event_coords) {
+        return;
+      }
       coords = [50.45, 30.523611];
       event_coords = new ymaps.Placemark(map.getCenter(), {}, {
         draggable: true,
