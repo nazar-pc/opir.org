@@ -12,15 +12,19 @@ $Group	= Group::instance();
 $Index	= Index::instance();
 $User	= User::instance();
 if (isset($_POST['group'], $_POST['count'])) {
-	$group	= $Group->get($_POST['group'], 'title');
+	$group	= $Group->get($_POST['group']);
 	$count	= (int)$_POST['count'];
 	while ($count--) {
 		for (
 			$i = 100;
-			$User->get_id(hash('sha224', $login	= $group.'_'.$i));
+			$User->get_id(hash('sha224', $login	= $group['title'].'_'.$i));
 			++$i
 		) {}
 		$new_user = $User->registration("$login@".DOMAIN, false, false);
+		$User->set_groups([
+			2,
+			$group['id']
+		], $new_user['id']);
 		$Index->content(
 			 h::p("Логін: $login Пароль: $new_user[password]")
 		);
