@@ -76,6 +76,8 @@ $ ->
 			return
 		map.update_events()
 		cs.home.delete_event	= (id) ->
+			if !confirm('Точно видалити?')
+				return
 			$.ajax(
 				url			: "api/Home/events/#{id}"
 				type		: 'delete'
