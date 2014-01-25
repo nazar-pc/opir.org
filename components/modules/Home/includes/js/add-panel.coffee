@@ -68,15 +68,6 @@ $ ->
 		), 100
 		return
 	addition_editing_panel	= ->
-		groups		= do ->
-			content	= ''
-			for id, name of cs.home.groups
-				content	+= """
-					<li data-id="#{id}">
-						<a>#{name}</a>
-					</li>
-				"""
-			content
 		category	= $(@).data('id')
 		name		= $(@).find('span').text()
 		content		= """
@@ -91,15 +82,13 @@ $ ->
 						<li class="uk-nav-header">Кому відображати</li>
 						<li data-id="2">
 							<a>Моїй групі активістів</a>
-						</li>
-						<li data-id="1">
-							<a>Активістам</a>
-						</li>
-						<li data-id="0">
+						</li>""" +
+#						<li data-id="1">
+#							<a>Активістам</a>
+#						</li>
+						"""<li data-id="0">
 							<a>Всім</a>
 						</li>
-						<li class="uk-nav-header">Лише групі</li>
-						#{groups}
 					</ul>
 				</div>
 			</div>
