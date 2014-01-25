@@ -92,13 +92,13 @@ class Events {
 		$admin		= $User->admin();
 		$user_id	= $User->id;
 		if ($admin) {
-			return $this->db()->qf(
+			return $this->db()->qf([
 				"SELECT *
 				FROM `$this->table`
 				WHERE
 					`id` = '%s'",
 				$id
-			);
+			]);
 		}
 		$groups		= $User->get_groups();
 		$groups[]	= 0;
