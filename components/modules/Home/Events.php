@@ -163,7 +163,8 @@ class Events {
 				"SELECT *
 				FROM `$this->table`
 				WHERE
-					`timeout`	> '%s'",
+					`timeout`	> '%s' OR
+					`urgency`	= 'unknown'",
 				TIME
 			]);
 		}
@@ -192,7 +193,10 @@ class Events {
 					`visible` IN($groups) OR
 					`user`	= $user_id
 				) AND
-				`timeout`	> '%s'",
+				(
+					`timeout`	> '%s' OR
+					`urgency`	= 'unknown'
+				)",
 			TIME
 		]);
 		foreach ($return as &$r) {

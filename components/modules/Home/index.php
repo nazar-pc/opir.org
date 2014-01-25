@@ -50,7 +50,7 @@ array_unshift(
 $Page->content(
 	h::{'aside.cs-home-add-panel'}().
 	h::{'aside.cs-home-settings-panel'}(
-		h::h2('Фільтр подій').
+		h::h2('Фільтр').
 		h::{"div.uk-button-dropdown[data-uk-dropdown={mode:'click'}]"}(
 			h::{'button.uk-button'}(
 				h::icon('caret-down').

@@ -92,15 +92,17 @@ $ ->
 						</button>
 						<div class="uk-dropdown">
 							<ul class="cs-home-add-visible uk-nav uk-nav-dropdown">
-								<li data-id="0">
-									<a>Відображати всім</a>
+								<li class="uk-nav-header">Кому відображати</li>
+								<li data-id="2">
+									<a>Моїй групі активістів</a>
 								</li>
 								<li data-id="1">
 									<a>Активістам</a>
 								</li>
-								<li data-id="2">
-									<a>Моїй групі активістів</a>
+								<li data-id="0">
+									<a>Всім</a>
 								</li>
+								<li class="uk-nav-header">Лише групі</li>
 								#{groups}
 							</ul>
 						</div>
@@ -111,20 +113,21 @@ $ ->
 						</button>
 						<div class="uk-dropdown">
 							<ul class="cs-home-add-urgency uk-nav uk-nav-dropdown">
-								<li data-id="unknown">
-									<a>Терміновість не вказано</a>
+								<li class="uk-nav-header">Терміновість</li>
+								<li data-id="urgent">
+									<a>Терміново</a>
 								</li>
 								<li data-id="can-wait">
 									<a>Може почекати</a>
 								</li>
-								<li data-id="urgent">
-									<a>Терміново</a>
+								<li data-id="unknown">
+									<a>Не вказано</a>
 								</li>
 							</ul>
 						</div>
 					</div>
-					<h3>Актуальність</h3>
-					<div>
+					<h3 class="cs-home-actuality-control">Актуально протягом</h3>
+					<div class="cs-home-actuality-control">
 						<input class="cs-home-add-time" type="number" min="1" value="15"/>
 						<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
 							<button type="button" class="uk-button">
@@ -132,6 +135,7 @@ $ ->
 							</button>
 							<div class="uk-dropdown">
 								<ul class="cs-home-add-time-interval uk-nav uk-nav-dropdown">
+									<li class="uk-nav-header">Одиниці часу</li>
 									<li data-id="60">
 										<a>Хвилин</a>
 									</li>
@@ -169,6 +173,10 @@ $ ->
 			->
 				$this	= $(@)
 				urgency	= $this.data('id')
+				if urgency == 'unknown'
+					$('.cs-home-actuality-control').hide('fast')
+				else
+					$('.cs-home-actuality-control').show('fast')
 				$this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text())
 		)
 		.on(
