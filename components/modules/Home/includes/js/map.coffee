@@ -32,6 +32,7 @@ $ ->
 					when 'unknown' then 0
 					when 'can-wait' then 1
 					when 'urgent' then 2
+				time			= if urgency == 0 then '' else "<time>Актуально до #{time}</time>"
 				placemarks.push(
 					new ymaps.Placemark(
 						[event.lat, event.lng]
@@ -39,7 +40,7 @@ $ ->
 							hintContent				: category_name
 							balloonContentHeader	: category_name
 							balloonContentBody		: """
-								<time>Актуально до #{time}</time>
+								#{time}
 								<p>#{event.text}</p>
 							"""
 							balloonContentFooter	: if event.id then """<button onclick="cs.home.delete_event(#{event.id})">Видалити</button>""" else ''

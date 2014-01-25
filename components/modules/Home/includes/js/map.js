@@ -55,10 +55,11 @@
                 return 2;
             }
           })();
+          time = urgency === 0 ? '' : "<time>Актуально до " + time + "</time>";
           placemarks.push(new ymaps.Placemark([event.lat, event.lng], {
             hintContent: category_name,
             balloonContentHeader: category_name,
-            balloonContentBody: "<time>Актуально до " + time + "</time>\n<p>" + event.text + "</p>",
+            balloonContentBody: "" + time + "\n<p>" + event.text + "</p>",
             balloonContentFooter: event.id ? "<button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : ''
           }, {
             iconLayout: 'default#image',
