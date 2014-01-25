@@ -67,97 +67,98 @@ $ ->
 			return
 		), 100
 		return
+	addition_editing_panel	= ->
+		groups		= do ->
+			content	= ''
+			for id, name of cs.home.groups
+				content	+= """
+					<li data-id="#{id}">
+						<a>#{name}</a>
+					</li>
+				"""
+			content
+		category	= $(@).data('id')
+		name		= $(@).find('span').text()
+		content		= """
+			<h2>#{name}</h2>
+			<textarea placeholder="Коментар"></textarea>
+			<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
+				<button type="button" class="uk-button">
+					<span class="uk-icon-caret-down"></span> <span>Моїй групі активістів</span>
+				</button>
+				<div class="uk-dropdown">
+					<ul class="cs-home-add-visible uk-nav uk-nav-dropdown">
+						<li class="uk-nav-header">Кому відображати</li>
+						<li data-id="2">
+							<a>Моїй групі активістів</a>
+						</li>
+						<li data-id="1">
+							<a>Активістам</a>
+						</li>
+						<li data-id="0">
+							<a>Всім</a>
+						</li>
+						<li class="uk-nav-header">Лише групі</li>
+						#{groups}
+					</ul>
+				</div>
+			</div>
+			<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
+				<button type="button" class="uk-button">
+					<span class="uk-icon-caret-down"></span> <span>Терміново</span>
+				</button>
+				<div class="uk-dropdown">
+					<ul class="cs-home-add-urgency uk-nav uk-nav-dropdown">
+						<li class="uk-nav-header">Терміновість</li>
+						<li data-id="urgent">
+							<a>Терміново</a>
+						</li>
+						<li data-id="can-wait">
+							<a>Може почекати</a>
+						</li>
+						<li data-id="unknown">
+							<a>Не вказано</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<h3 class="cs-home-actuality-control">Актуально протягом</h3>
+			<div class="cs-home-actuality-control">
+				<input class="cs-home-add-time" type="number" min="1" value="15"/>
+				<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
+					<button type="button" class="uk-button">
+						<span class="uk-icon-caret-down"></span> <span>Хвилин</span>
+					</button>
+					<div class="uk-dropdown">
+						<ul class="cs-home-add-time-interval uk-nav uk-nav-dropdown">
+							<li class="uk-nav-header">Одиниці часу</li>
+							<li data-id="60">
+								<a>Хвилин</a>
+							</li>
+							<li data-id="3600">
+								<a>Годин</a>
+							</li>
+							<li data-id="86400">
+								<a>Днів</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="cs-home-add-location">
+				<span>Вказати на карті</span>
+			</div>
+			<div>
+				<button class="cs-home-add-close"></button>
+				<button class="cs-home-add-process">Додати</button>
+			</div>
+		"""
+		panel.html(content)
 	panel
 		.on(
 			'click'
 			'> ul > li'
-			->
-				groups		= do ->
-					content	= ''
-					for id, name of cs.home.groups
-						content	+= """
-							<li data-id="#{id}">
-								<a>#{name}</a>
-							</li>
-						"""
-					content
-				category	= $(@).data('id')
-				name		= $(@).find('span').text()
-				content		= """
-					<h2>#{name}</h2>
-					<textarea placeholder="Коментар"></textarea>
-					<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
-						<button type="button" class="uk-button">
-							<span class="uk-icon-caret-down"></span> <span>Моїй групі активістів</span>
-						</button>
-						<div class="uk-dropdown">
-							<ul class="cs-home-add-visible uk-nav uk-nav-dropdown">
-								<li class="uk-nav-header">Кому відображати</li>
-								<li data-id="2">
-									<a>Моїй групі активістів</a>
-								</li>
-								<li data-id="1">
-									<a>Активістам</a>
-								</li>
-								<li data-id="0">
-									<a>Всім</a>
-								</li>
-								<li class="uk-nav-header">Лише групі</li>
-								#{groups}
-							</ul>
-						</div>
-					</div>
-					<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
-						<button type="button" class="uk-button">
-							<span class="uk-icon-caret-down"></span> <span>Терміново</span>
-						</button>
-						<div class="uk-dropdown">
-							<ul class="cs-home-add-urgency uk-nav uk-nav-dropdown">
-								<li class="uk-nav-header">Терміновість</li>
-								<li data-id="urgent">
-									<a>Терміново</a>
-								</li>
-								<li data-id="can-wait">
-									<a>Може почекати</a>
-								</li>
-								<li data-id="unknown">
-									<a>Не вказано</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<h3 class="cs-home-actuality-control">Актуально протягом</h3>
-					<div class="cs-home-actuality-control">
-						<input class="cs-home-add-time" type="number" min="1" value="15"/>
-						<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
-							<button type="button" class="uk-button">
-								<span class="uk-icon-caret-down"></span> <span>Хвилин</span>
-							</button>
-							<div class="uk-dropdown">
-								<ul class="cs-home-add-time-interval uk-nav uk-nav-dropdown">
-									<li class="uk-nav-header">Одиниці часу</li>
-									<li data-id="60">
-										<a>Хвилин</a>
-									</li>
-									<li data-id="3600">
-										<a>Годин</a>
-									</li>
-									<li data-id="86400">
-										<a>Днів</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="cs-home-add-location">
-						<span>Вказати на карті</span>
-					</div>
-					<div>
-						<button class="cs-home-add-close"></button>
-						<button class="cs-home-add-process">Додати</button>
-					</div>
-				"""
-				panel.html(content)
+			addition_editing_panel
 		)
 		.on(
 			'click'
@@ -234,4 +235,10 @@ $ ->
 					)
 				else
 					alert 'Вкажіть точку на карті'
+		)
+	$('#map')
+		.on(
+			'click'
+			'.cs-home-edit'
+			addition_editing_panel
 		)
