@@ -43,7 +43,7 @@ $ ->
 								#{time}
 								<p>#{event.text}</p>
 							"""
-							balloonContentFooter	: if event.id then """<button onclick="cs.home.delete_event(#{event.id})">Видалити</button>""" else ''
+							balloonContentFooter	: if event.id then """<button class="cs-home-edit" data-id="#{event.id}">Редагувати</button> <button onclick="cs.home.delete_event(#{event.id})">Видалити</button>""" else ''
 						}
 						{
 							iconLayout			: 'default#image'
@@ -82,7 +82,6 @@ $ ->
 				url			: "api/Home/events/#{id}"
 				type		: 'delete'
 				success		: ->
-					alert 'Видалено'
 					map.update_events()
 					return
 			)

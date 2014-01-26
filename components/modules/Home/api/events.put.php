@@ -7,12 +7,10 @@
  * @license		MIT License, see license.txt
  */
 namespace	cs\modules\Home;
-use			cs\Index,
-			cs\Page;
+use			cs\Index;
 $Index	= Index::instance();
-$Page	= Page::instance();
 $Events	= Events::instance();
-if (isset($Index->route_ids[0])) {
+if (isset($Index->route_ids[0], $_POST['timeout'], $_POST['lat'], $_POST['lng'], $_POST['visible'], $_POST['text'], $_POST['urgency'], $_POST['time'], $_POST['time_interval'])) {
 	$event	= $Events->get($Index->route_ids[0]);
 	if (!$event) {
 		error_code(404);
@@ -22,9 +20,9 @@ if (isset($Index->route_ids[0])) {
 		error_code(403);
 		return;
 	}
-	$Page->json($event);
+	if (!$Events->set($event['id'], $_POST['timeout'], $_POST['lat'], $_POST['lng'], $_POST['visible'], $_POST['text'], $_POST['urgency'], $_POST['time'], $_POST['time_interval'])) {
+		error_code(500);
+	}
 } else {
-	$Page->json(
-		$Events->get_all() ?: []
-	);
+	error_code(400);
 }

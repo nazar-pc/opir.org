@@ -60,7 +60,7 @@
             hintContent: category_name,
             balloonContentHeader: category_name,
             balloonContentBody: "" + time + "\n<p>" + event.text + "</p>",
-            balloonContentFooter: event.id ? "<button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : ''
+            balloonContentFooter: event.id ? "<button class=\"cs-home-edit\" data-id=\"" + event.id + "\">Редагувати</button> <button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : ''
           }, {
             iconLayout: 'default#image',
             iconImageHref: '/components/modules/Home/includes/img/events.png',
@@ -104,7 +104,6 @@
           url: "api/Home/events/" + id,
           type: 'delete',
           success: function() {
-            alert('Видалено');
             map.update_events();
           }
         });

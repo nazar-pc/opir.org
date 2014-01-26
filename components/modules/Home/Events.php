@@ -19,16 +19,18 @@ class Events {
 
 	protected $table		= '[prefix]events';
 	protected $data_model	= [
-		'id'		=> 'int',
-		'user'		=> 'id',
-		'category'	=> 'id',
-		'added'		=> 'id',
-		'timeout'	=> 'id',
-		'lat'		=> 'float',
-		'lng'		=> 'float',
-		'visible'	=> 'id',
-		'text'		=> 'text',
-		'urgency'	=> null
+		'id'			=> 'int',
+		'user'			=> 'id',
+		'category'		=> 'id',
+		'added'			=> 'id',
+		'timeout'		=> 'id',
+		'lat'			=> 'float',
+		'lng'			=> 'float',
+		'visible'		=> 'id',
+		'text'			=> 'text',
+		'urgency'		=> null,
+		'time'			=> 'int',
+		'time_interval'	=> 'int'
 	];
 
 	protected function constructor () {
@@ -55,10 +57,12 @@ class Events {
 	 * @param $visible
 	 * @param $text
 	 * @param $urgency
+	 * @param $time
+	 * @param $time_interval
 	 *
 	 * @return bool|int
 	 */
-	function add ($category, $timeout, $lat, $lng, $visible, $text, $urgency) {
+	function add ($category, $timeout, $lat, $lng, $visible, $text, $urgency, $time, $time_interval) {
 		$User	= User::instance();
 		if ($visible == 2) {
 			$visible	= array_filter(
@@ -77,7 +81,9 @@ class Events {
 			$lng,
 			$visible,
 			$text,
-			$urgency
+			$urgency,
+			$time,
+			$time_interval
 		]);
 	}
 	/**
@@ -118,7 +124,9 @@ class Events {
 				`lat`,
 				`lng`,
 				`text`,
-				`urgency`
+				`urgency`,
+				`time`,
+				`time_interval`
 			FROM `$this->table`
 			WHERE
 				(
@@ -133,6 +141,47 @@ class Events {
 		}
 		unset($return['user']);
 		return $return;
+	}
+	/**
+	 * Set event
+	 *
+	 * @param $id
+	 * @param $timeout
+	 * @param $lat
+	 * @param $lng
+	 * @param $visible
+	 * @param $text
+	 * @param $urgency
+	 * @param $time
+	 * @param $time_interval
+	 *
+	 * @return bool|int
+	 */
+	function set ($id, $timeout, $lat, $lng, $visible, $text, $urgency, $time, $time_interval) {
+		$data	= $this->get($id);
+		$User	= User::instance();
+		if ($visible == 2) {
+			$visible	= array_filter(
+				$User->get_groups(),
+				function ($group) {
+					return $group > 3;
+				}
+			)[0];
+		}
+		return $this->update_simple([
+			$data['id'],
+			$data['user'],
+			$data['category'],
+			TIME,
+			TIME + max(0, (int)$timeout),
+			$lat,
+			$lng,
+			$visible,
+			$text,
+			$urgency,
+			$time,
+			$time_interval
+		]);
 	}
 	/**
 	 * Delete event
@@ -186,7 +235,9 @@ class Events {
 				`lat`,
 				`lng`,
 				`text`,
-				`urgency`
+				`urgency`,
+				`time`,
+				`time_interval`
 			FROM `$this->table`
 			WHERE
 				(

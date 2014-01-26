@@ -2,37 +2,42 @@
 (function() {
 
   $(function() {
-    var addition_editing_panel, category, coords, event_coords, map_cursor, panel, put_events_coords, timeout, timeout_interval, urgency, visible;
+    var addition_editing_panel, category, coords, edit_data, event_coords, map_cursor, panel, put_events_coords, reset_options, time, time_interval, timeout, urgency, visible;
     panel = $('.cs-home-add-panel');
     category = 0;
     visible = 2;
     urgency = 'urgent';
-    timeout_interval = 60;
-    timeout = 15 * timeout_interval;
+    time = 15;
+    time_interval = 60;
+    timeout = time * time_interval;
     coords = [0, 0];
     event_coords = null;
     put_events_coords = false;
     map_cursor = null;
-    $(document).on('click', '.cs-home-add, .cs-home-add-close', function() {
-      category = 0;
+    edit_data = 0;
+    reset_options = function() {
       visible = 2;
       urgency = 'urgent';
-      timeout_interval = 60;
-      timeout = 15 * timeout_interval;
+      time = 15;
+      time_interval = 60;
+      timeout = time * time_interval;
       coords = [0, 0];
       event_coords && map.geoObjects.remove(event_coords);
       event_coords = null;
       map_cursor && map_cursor.remove();
       map_cursor = null;
-      put_events_coords = false;
+      return put_events_coords = false;
+    };
+    $(document).on('click', '.cs-home-add, .cs-home-add-close', function() {
+      reset_options();
       return panel.html('').toggle('fast', function() {
-        var content, _ref;
+        var content, id, _ref;
         if (panel.css('display') !== 'none') {
           content = '';
           _ref = cs.home.categories;
-          for (category in _ref) {
-            category = _ref[category];
-            content += "<li data-id=\"" + category.id + "\">\n	<img src=\"/components/modules/Home/includes/img/" + category.id + ".png\" alt=\"\">\n	<span>" + category.name + "</span>\n</li>";
+          for (id in _ref) {
+            category = _ref[id];
+            content += "<li data-id=\"" + id + "\">\n	<img src=\"/components/modules/Home/includes/img/" + id + ".png\" alt=\"\">\n	<span>" + category + "</span>\n</li>";
           }
           return panel.html("<ul>" + content + "</ul>");
         }
@@ -66,11 +71,42 @@
       }), 100);
     })();
     addition_editing_panel = function() {
-      var content, name;
-      category = $(this).data('id');
-      name = $(this).find('span').text();
-      content = ("<h2>" + name + "</h2>\n<textarea placeholder=\"Коментар\"></textarea>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Моїй групі активістів</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-visible uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Кому відображати</li>\n			<li data-id=\"2\">\n				<a>Моїй групі активістів</a>\n			</li>") + "<li data-id=\"0\">\n				<a>Всім</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Терміново</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-urgency uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Терміновість</li>\n			<li data-id=\"urgent\">\n				<a>Терміново</a>\n			</li>\n			<li data-id=\"can-wait\">\n				<a>Може почекати</a>\n			</li>\n			<li data-id=\"unknown\">\n				<a>Не вказано</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<h3 class=\"cs-home-actuality-control\">Актуально протягом</h3>\n<div class=\"cs-home-actuality-control\">\n	<input class=\"cs-home-add-time\" type=\"number\" min=\"1\" value=\"15\"/>\n	<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n		<button type=\"button\" class=\"uk-button\">\n			<span class=\"uk-icon-caret-down\"></span> <span>Хвилин</span>\n		</button>\n		<div class=\"uk-dropdown\">\n			<ul class=\"cs-home-add-time-interval uk-nav uk-nav-dropdown\">\n				<li class=\"uk-nav-header\">Одиниці часу</li>\n				<li data-id=\"60\">\n					<a>Хвилин</a>\n				</li>\n				<li data-id=\"3600\">\n					<a>Годин</a>\n				</li>\n				<li data-id=\"86400\">\n					<a>Днів</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>\n<div class=\"cs-home-add-location\">\n	<span>Вказати на карті</span>\n</div>\n<div>\n	<button class=\"cs-home-add-close\"></button>\n	<button class=\"cs-home-add-process\">Додати</button>\n</div>";
-      return panel.html(content);
+      var $this, content, edit, name, submit;
+      $this = $(this);
+      edit = $this.hasClass('cs-home-edit');
+      if (edit) {
+        submit = "<button class=\"cs-home-edit-process\">Зберегти</button>";
+        name = cs.home.categories[edit_data.category];
+      } else {
+        category = $this.data('id');
+        submit = "<button class=\"cs-home-add-process\">Додати</button>";
+        name = $this.find('span').text();
+      }
+      content = ("<h2>" + name + "</h2>\n<textarea placeholder=\"Коментар\"></textarea>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Моїй групі активістів</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-visible uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Кому відображати</li>\n			<li data-id=\"2\">\n				<a>Моїй групі активістів</a>\n			</li>") + ("<li data-id=\"0\">\n				<a>Всім</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Терміново</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-urgency uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Терміновість</li>\n			<li data-id=\"urgent\">\n				<a>Терміново</a>\n			</li>\n			<li data-id=\"can-wait\">\n				<a>Може почекати</a>\n			</li>\n			<li data-id=\"unknown\">\n				<a>Не вказано</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<h3 class=\"cs-home-actuality-control\">Актуально протягом</h3>\n<div class=\"cs-home-actuality-control\">\n	<input class=\"cs-home-add-time\" type=\"number\" min=\"1\" value=\"15\"/>\n	<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n		<button type=\"button\" class=\"uk-button\">\n			<span class=\"uk-icon-caret-down\"></span> <span>Хвилин</span>\n		</button>\n		<div class=\"uk-dropdown\">\n			<ul class=\"cs-home-add-time-interval uk-nav uk-nav-dropdown\">\n				<li class=\"uk-nav-header\">Одиниці часу</li>\n				<li data-id=\"60\">\n					<a>Хвилин</a>\n				</li>\n				<li data-id=\"3600\">\n					<a>Годин</a>\n				</li>\n				<li data-id=\"86400\">\n					<a>Днів</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>\n<div class=\"cs-home-add-location\">\n	<span>Вказати на карті</span>\n</div>\n<div>\n	<button class=\"cs-home-add-close\"></button>\n	" + submit + "\n</div>");
+      panel.html(content);
+      if (edit) {
+        $(".cs-home-add-visible [data-id=" + edit_data.visible + "]").click();
+        $(".cs-home-add-urgency [data-id=" + edit_data.urgency + "]").click();
+        $(".cs-home-add-time").val(edit_data.time).change();
+        $(".cs-home-add-time-interval [data-id=" + edit_data.time_interval + "]").click();
+        panel.find('textarea').val(edit_data.text);
+        put_events_coords = true;
+        map_cursor = map.cursors.push('pointer');
+        coords = [edit_data.lat, edit_data.lng];
+        event_coords && map.geoObjects.remove(event_coords);
+        event_coords = new ymaps.Placemark(coords, {}, {
+          draggable: true,
+          iconLayout: 'default#image',
+          iconImageHref: '/components/modules/Home/includes/img/new-event.png',
+          iconImageSize: [91, 86],
+          iconImageOffset: [-36, -86],
+          zIndex: 1000
+        });
+        map.geoObjects.add(event_coords);
+        return event_coords.events.add('geometrychange', function(e) {
+          return coords = e.get('originalEvent').originalEvent.newCoordinates;
+        });
+      }
     };
     panel.on('click', '> ul > li', addition_editing_panel).on('click', '.cs-home-add-visible [data-id]', function() {
       var $this;
@@ -90,13 +126,13 @@
     }).on('click', '.cs-home-add-time-interval [data-id]', function() {
       var $this;
       $this = $(this);
-      timeout_interval = $this.data('id');
-      timeout = $('.cs-home-add-time').val() * timeout_interval;
+      time_interval = $this.data('id');
+      timeout = $('.cs-home-add-time').val() * time_interval;
       return $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
     }).on('change', '.cs-home-add-time', function() {
       var $this;
       $this = $(this);
-      timeout = timeout_interval * $this.val();
+      timeout = time_interval * $this.val();
       return $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
     }).on('click', '.cs-home-add-location', function() {
       if (event_coords) {
@@ -114,6 +150,8 @@
           type: 'post',
           data: {
             category: category,
+            time: time,
+            time_interval: time_interval,
             timeout: timeout,
             lat: coords[0],
             lng: coords[1],
@@ -134,8 +172,52 @@
       } else {
         return alert('Вкажіть точку на карті');
       }
+    }).on('click', '.cs-home-edit-process', function() {
+      var comment;
+      comment = panel.find('textarea').val();
+      if (timeout && coords[0] && coords[1] && urgency) {
+        return $.ajax({
+          url: "api/Home/events/" + edit_data.id,
+          type: 'put',
+          data: {
+            time: time,
+            time_interval: time_interval,
+            timeout: timeout,
+            lat: coords[0],
+            lng: coords[1],
+            visible: visible,
+            text: comment,
+            urgency: urgency
+          },
+          success: function() {
+            panel.hide('fast');
+            map.geoObjects.remove(event_coords);
+            event_coords = null;
+            put_events_coords = false;
+            map_cursor.remove();
+            map.update_events();
+            return alert('Успішно відредаговано!');
+          }
+        });
+      } else {
+        return alert('Вкажіть точку на карті');
+      }
     });
-    return $('#map').on('click', '.cs-home-edit', addition_editing_panel);
+    return $('#map').on('click', '.cs-home-edit', function() {
+      var item;
+      item = this;
+      return $.ajax({
+        url: 'api/Home/events/' + $(this).data('id'),
+        type: 'get',
+        success: function(data) {
+          window.map.balloon.close();
+          edit_data = data;
+          reset_options();
+          panel.show('fast');
+          return addition_editing_panel.call(item);
+        }
+      });
+    });
   });
 
 }).call(this);

@@ -95,7 +95,8 @@
     width: 18px; }
   .cs-home-add-panel .cs-home-add-close:hover {
     background: #1d2226; }
-  .cs-home-add-panel .cs-home-add-process {
+  .cs-home-add-panel .cs-home-add-process,
+  .cs-home-add-panel .cs-home-edit-process {
     background: #0067b6;
     border: none;
     border-radius: 7px;
@@ -103,5 +104,6 @@
     margin-left: 5px;
     text-align: center;
     width: 223px; }
-  .cs-home-add-panel .cs-home-add-process:hover {
+  .cs-home-add-panel .cs-home-add-process:hover,
+  .cs-home-add-panel .cs-home-edit-process:hover {
     background: #005ea6; }

@@ -3,38 +3,42 @@ $ ->
 	category			= 0
 	visible				= 2
 	urgency				= 'urgent'
-	timeout_interval	= 60		# minutes
-	timeout				= 15 * timeout_interval	#15 minutes by default
+	time				= 15					#15 minutes by default
+	time_interval		= 60					# minutes
+	timeout				= time * time_interval
 	coords				= [0, 0]
 	event_coords		= null
 	put_events_coords	= false
 	map_cursor			= null
+	edit_data			= 0
+	reset_options		= ->
+		# Reset
+		visible				= 2
+		urgency				= 'urgent'
+		time				= 15
+		time_interval		= 60
+		timeout				= time * time_interval
+		coords				= [0, 0]
+		event_coords && map.geoObjects.remove(event_coords)
+		event_coords		= null
+		map_cursor && map_cursor.remove()
+		map_cursor			= null
+		put_events_coords	= false
 	$(document).on(
 		'click'
 		'.cs-home-add, .cs-home-add-close'
 		->
-			# Reset
-			category			= 0
-			visible				= 2
-			urgency				= 'urgent'
-			timeout_interval	= 60
-			timeout				= 15 * timeout_interval
-			coords				= [0, 0]
-			event_coords && map.geoObjects.remove(event_coords)
-			event_coords		= null
-			map_cursor && map_cursor.remove()
-			map_cursor			= null
-			put_events_coords	= false
+			reset_options()
 			panel
 				.html('')
 				.toggle('fast', ->
 					if panel.css('display') != 'none'
 						content	= ''
-						for category, category of cs.home.categories
+						for id, category of cs.home.categories
 							content	+= """
-								<li data-id="#{category.id}">
-									<img src="/components/modules/Home/includes/img/#{category.id}.png" alt="">
-									<span>#{category.name}</span>
+								<li data-id="#{id}">
+									<img src="/components/modules/Home/includes/img/#{id}.png" alt="">
+									<span>#{category}</span>
 								</li>
 							"""
 						panel.html("<ul>#{content}</ul>")
@@ -68,8 +72,15 @@ $ ->
 		), 100
 		return
 	addition_editing_panel	= ->
-		category	= $(@).data('id')
-		name		= $(@).find('span').text()
+		$this	= $(@)
+		edit		= $this.hasClass('cs-home-edit')
+		if edit
+			submit		= """<button class="cs-home-edit-process">Зберегти</button>"""
+			name		= cs.home.categories[edit_data.category]
+		else
+			category	= $this.data('id')
+			submit		= """<button class="cs-home-add-process">Додати</button>"""
+			name		= $this.find('span').text()
 		content		= """
 			<h2>#{name}</h2>
 			<textarea placeholder="Коментар"></textarea>
@@ -139,10 +150,34 @@ $ ->
 			</div>
 			<div>
 				<button class="cs-home-add-close"></button>
-				<button class="cs-home-add-process">Додати</button>
+				#{submit}
 			</div>
 		"""
 		panel.html(content)
+		if edit
+			$(".cs-home-add-visible [data-id=#{edit_data.visible}]").click()
+			$(".cs-home-add-urgency [data-id=#{edit_data.urgency}]").click()
+			$(".cs-home-add-time").val(edit_data.time).change()
+			$(".cs-home-add-time-interval [data-id=#{edit_data.time_interval}]").click()
+			panel.find('textarea').val(edit_data.text)
+			put_events_coords	= true
+			map_cursor			= map.cursors.push('pointer');
+			coords				= [edit_data.lat, edit_data.lng]
+			event_coords && map.geoObjects.remove(event_coords)
+			event_coords			= new ymaps.Placemark coords, {}, {
+				draggable			: true
+				iconLayout			: 'default#image'
+				iconImageHref		: '/components/modules/Home/includes/img/new-event.png'
+				iconImageSize		: [91, 86]
+				iconImageOffset		: [-36, -86]
+				zIndex				: 1000
+			}
+			map.geoObjects.add(event_coords)
+			event_coords.events.add(
+				'geometrychange',
+				(e) ->
+					coords	= e.get('originalEvent').originalEvent.newCoordinates
+			)
 	panel
 		.on(
 			'click'
@@ -174,8 +209,8 @@ $ ->
 			'.cs-home-add-time-interval [data-id]'
 			->
 				$this				= $(@)
-				timeout_interval	= $this.data('id')
-				timeout				= $('.cs-home-add-time').val() * timeout_interval
+				time_interval	= $this.data('id')
+				timeout				= $('.cs-home-add-time').val() * time_interval
 				$this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text())
 		)
 		.on(
@@ -183,7 +218,7 @@ $ ->
 			'.cs-home-add-time'
 			->
 				$this	= $(@)
-				timeout	= timeout_interval * $this.val()
+				timeout	= time_interval * $this.val()
 				$this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text())
 		)
 		.on(
@@ -206,21 +241,53 @@ $ ->
 						url		: 'api/Home/events'
 						type	: 'post'
 						data	:
-							category	: category
-							timeout		: timeout
-							lat			: coords[0]
-							lng			: coords[1]
-							visible		: visible
-							text		: comment
-							urgency		: urgency
+							category		: category
+							time			: time
+							time_interval	: time_interval
+							timeout			: timeout
+							lat				: coords[0]
+							lng				: coords[1]
+							visible			: visible
+							text			: comment
+							urgency			: urgency
 						success	: ->
 							panel.hide('fast')
 							map.geoObjects.remove(event_coords)
 							event_coords		= null
-							put_events_coords		= false
+							put_events_coords	= false
 							map_cursor.remove()
 							map.update_events()
 							alert 'Успішно додано, дякуємо вам!'
+					)
+				else
+					alert 'Вкажіть точку на карті'
+		)
+		.on(
+			'click'
+			'.cs-home-edit-process'
+			->
+				comment	= panel.find('textarea').val()
+				if timeout && coords[0] && coords[1] && urgency
+					$.ajax(
+						url		: "api/Home/events/#{edit_data.id}"
+						type	: 'put'
+						data	:
+							time			: time
+							time_interval	: time_interval
+							timeout			: timeout
+							lat				: coords[0]
+							lng				: coords[1]
+							visible			: visible
+							text			: comment
+							urgency			: urgency
+						success	: ->
+							panel.hide('fast')
+							map.geoObjects.remove(event_coords)
+							event_coords		= null
+							put_events_coords	= false
+							map_cursor.remove()
+							map.update_events()
+							alert 'Успішно відредаговано!'
 					)
 				else
 					alert 'Вкажіть точку на карті'
@@ -229,5 +296,16 @@ $ ->
 		.on(
 			'click'
 			'.cs-home-edit'
-			addition_editing_panel
+			->
+				item	= @
+				$.ajax(
+					url		: 'api/Home/events/' + $(@).data('id')
+					type	: 'get'
+					success	: (data) ->
+						window.map.balloon.close()
+						edit_data	= data
+						reset_options()
+						panel.show('fast')
+						addition_editing_panel.call(item)
+				)
 		)
