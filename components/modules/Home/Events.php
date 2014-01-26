@@ -139,7 +139,6 @@ class Events {
 		if (!$admin && $return['user'] != $user_id) {
 			unset($return['id']);
 		}
-		unset($return['user']);
 		return $return;
 	}
 	/**
