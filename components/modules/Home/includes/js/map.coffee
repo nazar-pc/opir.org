@@ -7,11 +7,6 @@ $ ->
 			zoom				: 13
 			controls			: ['typeSelector', 'zoomControl']
 		}
-		categories	= []
-		do ->
-			for category, category of cs.home.categories
-				categories[category.id]	= category.name
-			return
 		clusterer	= new ymaps.Clusterer
 		map.geoObjects.add(clusterer)
 		filter_events		= (events) ->
@@ -23,7 +18,7 @@ $ ->
 			events		= filter_events(events)
 			placemarks	= []
 			for event, event of events
-				category_name	= categories[event.category]
+				category_name	= cs.home.categories[event.category]
 				t				= new Date(event.timeout * 1000)
 				time			=
 					add_zero(t.getHours()) + ':' + add_zero(t.getMinutes()) + ' ' +

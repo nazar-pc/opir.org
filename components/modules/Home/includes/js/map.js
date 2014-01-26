@@ -11,21 +11,12 @@
       }
     };
     return ymaps.ready(function() {
-      var add_events_on_map, categories, clusterer, filter_events, update_events_interval;
+      var add_events_on_map, clusterer, filter_events, update_events_interval;
       window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
         controls: ['typeSelector', 'zoomControl']
       });
-      categories = [];
-      (function() {
-        var category, _ref;
-        _ref = cs.home.categories;
-        for (category in _ref) {
-          category = _ref[category];
-          categories[category.id] = category.name;
-        }
-      })();
       clusterer = new ymaps.Clusterer;
       map.geoObjects.add(clusterer);
       filter_events = function(events) {
@@ -42,7 +33,7 @@
         placemarks = [];
         for (event in events) {
           event = events[event];
-          category_name = categories[event.category];
+          category_name = cs.home.categories[event.category];
           t = new Date(event.timeout * 1000);
           time = add_zero(t.getHours()) + ':' + add_zero(t.getMinutes()) + ' ' + add_zero(t.getDate()) + '.' + add_zero(t.getMonth() + 1) + '.' + t.getFullYear();
           urgency = (function() {
