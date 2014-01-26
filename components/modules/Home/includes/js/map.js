@@ -37,7 +37,7 @@
         });
       };
       add_events_on_map = function(events) {
-        var category_name, event, placemarks, t, time, urgency;
+        var category_name, event, placemarks, t, text, time, urgency;
         events = filter_events(events);
         placemarks = [];
         for (event in events) {
@@ -56,10 +56,11 @@
             }
           })();
           time = urgency === 0 ? '' : "<time>Актуально до " + time + "</time>";
+          text = event.text.replace(/\n/g, '<br>');
           placemarks.push(new ymaps.Placemark([event.lat, event.lng], {
             hintContent: category_name,
             balloonContentHeader: category_name,
-            balloonContentBody: "" + time + "\n<p>" + event.text + "</p>",
+            balloonContentBody: "" + time + "\n<p>" + text + "</p>",
             balloonContentFooter: event.id ? "<button class=\"cs-home-edit\" data-id=\"" + event.id + "\">Редагувати</button> <button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : ''
           }, {
             iconLayout: 'default#image',
