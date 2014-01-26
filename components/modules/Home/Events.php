@@ -70,7 +70,7 @@ class Events {
 				function ($group) {
 					return $group > 3;
 				}
-			)[0];
+			)[0] ?: 0;
 		}
 		return $this->create_simple([
 			$User->id,
