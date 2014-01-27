@@ -84,14 +84,14 @@
       }
       content = ("<h2>" + name + "</h2>\n<textarea placeholder=\"Коментар\"></textarea>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Моїй групі активістів</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-visible uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Кому відображати</li>\n			<li data-id=\"2\">\n				<a>Моїй групі активістів</a>\n			</li>") + ("<li data-id=\"0\">\n				<a>Всім</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Терміново</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-urgency uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Терміновість</li>\n			<li data-id=\"urgent\">\n				<a>Терміново</a>\n			</li>\n			<li data-id=\"can-wait\">\n				<a>Може почекати</a>\n			</li>\n			<li data-id=\"unknown\">\n				<a>Не вказано</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<h3 class=\"cs-home-actuality-control\">Актуально протягом</h3>\n<div class=\"cs-home-actuality-control\">\n	<input class=\"cs-home-add-time\" type=\"number\" min=\"1\" value=\"15\"/>\n	<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n		<button type=\"button\" class=\"uk-button\">\n			<span class=\"uk-icon-caret-down\"></span> <span>Хвилин</span>\n		</button>\n		<div class=\"uk-dropdown\">\n			<ul class=\"cs-home-add-time-interval uk-nav uk-nav-dropdown\">\n				<li class=\"uk-nav-header\">Одиниці часу</li>\n				<li data-id=\"60\">\n					<a>Хвилин</a>\n				</li>\n				<li data-id=\"3600\">\n					<a>Годин</a>\n				</li>\n				<li data-id=\"86400\">\n					<a>Днів</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>\n<div class=\"cs-home-add-location\">\n	<span>Вказати на карті</span>\n</div>\n<div>\n	<button class=\"cs-home-add-close\"></button>\n	" + submit + "\n</div>");
       panel.html(content);
+      put_events_coords = true;
+      map_cursor = map.cursors.push('pointer');
       if (edit) {
         $(".cs-home-add-visible [data-id=" + edit_data.visible + "]").click();
         $(".cs-home-add-urgency [data-id=" + edit_data.urgency + "]").click();
         $(".cs-home-add-time").val(edit_data.time).change();
         $(".cs-home-add-time-interval [data-id=" + edit_data.time_interval + "]").click();
         panel.find('textarea').val(edit_data.text);
-        put_events_coords = true;
-        map_cursor = map.cursors.push('pointer');
         coords = [edit_data.lat, edit_data.lng];
         event_coords && map.geoObjects.remove(event_coords);
         event_coords = new ymaps.Placemark(coords, {}, {
@@ -135,11 +135,6 @@
       timeout = time_interval * $this.val();
       return $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
     }).on('click', '.cs-home-add-location', function() {
-      if (event_coords) {
-        return;
-      }
-      put_events_coords = true;
-      map_cursor = map.cursors.push('pointer');
       return alert('Клікніть місце з подією на карті');
     }).on('click', '.cs-home-add-process', function() {
       var comment;

@@ -154,14 +154,14 @@ $ ->
 			</div>
 		"""
 		panel.html(content)
+		put_events_coords	= true
+		map_cursor			= map.cursors.push('pointer');
 		if edit
 			$(".cs-home-add-visible [data-id=#{edit_data.visible}]").click()
 			$(".cs-home-add-urgency [data-id=#{edit_data.urgency}]").click()
 			$(".cs-home-add-time").val(edit_data.time).change()
 			$(".cs-home-add-time-interval [data-id=#{edit_data.time_interval}]").click()
 			panel.find('textarea').val(edit_data.text)
-			put_events_coords	= true
-			map_cursor			= map.cursors.push('pointer');
 			coords				= [edit_data.lat, edit_data.lng]
 			event_coords && map.geoObjects.remove(event_coords)
 			event_coords			= new ymaps.Placemark coords, {}, {
@@ -225,10 +225,6 @@ $ ->
 			'click'
 			'.cs-home-add-location'
 			->
-				if event_coords
-					return
-				put_events_coords	= true
-				map_cursor			= map.cursors.push('pointer');
 				alert 'Клікніть місце з подією на карті'
 		)
 		.on(
