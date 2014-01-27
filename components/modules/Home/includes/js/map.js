@@ -26,11 +26,11 @@
             {
               href: '/components/modules/Home/includes/img/cluster-46.png',
               size: [46, 46],
-              offset: [0, 0]
+              offset: [-23, -23]
             }, {
               href: '/components/modules/Home/includes/img/cluster-58.png',
               size: [58, 58],
-              offset: [0, 0]
+              offset: [-27, -27]
             }
           ]
         });
