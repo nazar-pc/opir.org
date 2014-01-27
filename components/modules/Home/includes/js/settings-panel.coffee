@@ -9,13 +9,16 @@ $ ->
 				map.container.fitToViewport()
 		)
 		$('.cs-home-settings-panel').toggle('fast')
-	$('.cs-home-filter-category [data-id]').click ->
+	$('.cs-home-filter-category [data-id], .cs-home-filter-urgency [data-id]').click ->
 		$this	= $(@)
-		$('.cs-home-filter-category').data('id', $this.data('id'))
-		$this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text())
-		map.update_events(true)
-	$('.cs-home-filter-urgency [data-id]').click ->
-		$this	= $(@)
-		$('.cs-home-filter-urgency').data('id', $this.data('id'))
-		$this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text())
+		if $this.hasClass('active')
+			$this.removeClass('active')
+		else
+			$(@)
+				.parent()
+					.find('.active')
+						.removeClass('active')
+						.end()
+					.end()
+				.addClass('active')
 		map.update_events(true)

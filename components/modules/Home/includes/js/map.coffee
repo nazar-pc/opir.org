@@ -27,10 +27,10 @@ $ ->
 			cluster
 		map.geoObjects.add(clusterer)
 		filter_events		= (events) ->
-			category	= $('.cs-home-filter-category').data('id')
-			urgency	= $('.cs-home-filter-urgency').data('id')
+			category	= $('.cs-home-filter-category .active').data('id')
+			urgency	= $('.cs-home-filter-urgency .active').data('id')
 			events.filter (event) ->
-				(!category || category == parseInt(event.category)) && (urgency == 'any' || urgency == event.urgency)
+				(!category || category == parseInt(event.category)) && (!urgency || urgency == event.urgency)
 		add_events_on_map	= (events) ->
 			events		= filter_events(events)
 			placemarks	= []

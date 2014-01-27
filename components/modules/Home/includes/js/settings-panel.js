@@ -13,18 +13,14 @@
       });
       return $('.cs-home-settings-panel').toggle('fast');
     });
-    $('.cs-home-filter-category [data-id]').click(function() {
+    return $('.cs-home-filter-category [data-id], .cs-home-filter-urgency [data-id]').click(function() {
       var $this;
       $this = $(this);
-      $('.cs-home-filter-category').data('id', $this.data('id'));
-      $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
-      return map.update_events(true);
-    });
-    return $('.cs-home-filter-urgency [data-id]').click(function() {
-      var $this;
-      $this = $(this);
-      $('.cs-home-filter-urgency').data('id', $this.data('id'));
-      $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
+      if ($this.hasClass('active')) {
+        $this.removeClass('active');
+      } else {
+        $(this).parent().find('.active').removeClass('active').end().end().addClass('active');
+      }
       return map.update_events(true);
     });
   });

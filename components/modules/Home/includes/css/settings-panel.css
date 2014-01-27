@@ -1,5 +1,5 @@
 .cs-home-settings-panel {
-  background: #293137;
+  background: #363e45;
   color: #fff;
   bottom: 0;
   font-size: 16px;
@@ -13,25 +13,18 @@
     font-weight: bold;
     padding: 10px 20px;
     text-align: center; }
-  .cs-home-settings-panel .uk-button-dropdown {
-    padding: 0 20px 10px; }
-    .cs-home-settings-panel .uk-button-dropdown button {
-      height: 36px;
-      text-align: left;
-      width: 270px; }
-      .cs-home-settings-panel .uk-button-dropdown button .uk-icon-caret-down {
-        float: right;
-        margin-top: 5px; }
-    .cs-home-settings-panel .uk-button-dropdown .uk-dropdown {
-      left: 20px;
-      top: -19px;
-      width: 270px; }
   .cs-home-settings-panel hr {
     border-color: #21292f; }
   .cs-home-settings-panel > ul {
     list-style: none;
-    padding-left: 20px; }
+    padding: 0; }
     .cs-home-settings-panel > ul li {
-      padding: 5px 0; }
+      cursor: pointer;
+      padding: 5px 20px; }
       .cs-home-settings-panel > ul li span {
         padding-left: 5px; }
+    .cs-home-settings-panel > ul li:hover,
+    .cs-home-settings-panel > ul .active {
+      background: #2a3036; }
+    .cs-home-settings-panel > ul .active:hover {
+      background: #1d2226; }
