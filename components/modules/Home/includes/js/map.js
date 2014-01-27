@@ -17,7 +17,25 @@
         zoom: 13,
         controls: ['typeSelector', 'zoomControl']
       });
-      clusterer = new ymaps.Clusterer;
+      clusterer = new ymaps.Clusterer();
+      clusterer.createCluster = function(center, geoObjects) {
+        var cluster;
+        cluster = ymaps.Clusterer.prototype.createCluster.call(this, center, geoObjects);
+        cluster.options.set({
+          icons: [
+            {
+              href: '/components/modules/Home/includes/img/cluster-46.png',
+              size: [46, 46],
+              offset: [0, 0]
+            }, {
+              href: '/components/modules/Home/includes/img/cluster-58.png',
+              size: [58, 58],
+              offset: [0, 0]
+            }
+          ]
+        });
+        return cluster;
+      };
       map.geoObjects.add(clusterer);
       filter_events = function(events) {
         var category, urgency;
