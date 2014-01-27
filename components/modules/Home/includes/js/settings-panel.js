@@ -8,7 +8,9 @@
     $('.cs-home-settings').click(function() {
       map_container.animate({
         right: (panel.css('display') !== 'none' ? 0 : 310) + 'px'
-      }, 'fast');
+      }, 'fast', function() {
+        return map.container.fitToViewport();
+      });
       return $('.cs-home-settings-panel').toggle('fast');
     });
     $('.cs-home-filter-category [data-id]').click(function() {
