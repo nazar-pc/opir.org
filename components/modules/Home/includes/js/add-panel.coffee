@@ -11,6 +11,7 @@ $ ->
 	put_events_coords	= false
 	map_cursor			= null
 	edit_data			= 0
+	address_timeout		= 0
 	reset_options		= ->
 		# Reset
 		visible				= 2
@@ -44,6 +45,21 @@ $ ->
 						panel.html("<ul>#{content}</ul>")
 				)
 	)
+	add_event_coords	= (point) ->
+		event_coords && map.geoObjects.remove(event_coords)
+		event_coords			= new ymaps.Placemark coords, {}, {
+			draggable			: true
+			iconLayout			: 'default#image'
+			iconImageHref		: '/components/modules/Home/includes/img/new-event.png'
+			iconImageSize		: [91, 86]
+			iconImageOffset		: [-36, -86]
+		}
+		map.geoObjects.add(event_coords)
+		event_coords.events.add(
+			'geometrychange',
+			(e) ->
+				coords	= e.get('originalEvent').originalEvent.newCoordinates
+		)
 	do ->
 		map_init = setInterval (->
 			if !window.map || !map.events
@@ -52,21 +68,8 @@ $ ->
 			map.events.add('click', (e) ->
 				if !put_events_coords
 					return
-				coords					= e.get('coords')
-				event_coords && map.geoObjects.remove(event_coords)
-				event_coords			= new ymaps.Placemark coords, {}, {
-					draggable			: true
-					iconLayout			: 'default#image'
-					iconImageHref		: '/components/modules/Home/includes/img/new-event.png'
-					iconImageSize		: [91, 86]
-					iconImageOffset		: [-36, -86]
-				}
-				map.geoObjects.add(event_coords)
-				event_coords.events.add(
-					'geometrychange',
-					(e) ->
-						coords	= e.get('originalEvent').originalEvent.newCoordinates
-				)
+				coords	= e.get('coords')
+				add_event_coords(coords)
 			)
 			return
 		), 100
@@ -145,11 +148,10 @@ $ ->
 					</div>
 				</div>
 			</div>
-			<div class="cs-home-add-location">
-				<span>Вказати на карті</span>
-			</div>
+			<input type="text" class="cs-home-add-location-address" placeholder="Адреса або точка на карті">
+			<button class="cs-home-add-location uk-icon-location-arrow"></button>
 			<div>
-				<button class="cs-home-add-close"></button>
+				<button class="cs-home-add-close uk-icon-times"></button>
 				#{submit}
 			</div>
 		"""
@@ -162,22 +164,8 @@ $ ->
 			$(".cs-home-add-time").val(edit_data.time).change()
 			$(".cs-home-add-time-interval [data-id=#{edit_data.time_interval}]").click()
 			panel.find('textarea').val(edit_data.text)
-			coords				= [edit_data.lat, edit_data.lng]
-			event_coords && map.geoObjects.remove(event_coords)
-			event_coords			= new ymaps.Placemark coords, {}, {
-				draggable			: true
-				iconLayout			: 'default#image'
-				iconImageHref		: '/components/modules/Home/includes/img/new-event.png'
-				iconImageSize		: [91, 86]
-				iconImageOffset		: [-36, -86]
-				zIndex				: 1000
-			}
-			map.geoObjects.add(event_coords)
-			event_coords.events.add(
-				'geometrychange',
-				(e) ->
-					coords	= e.get('originalEvent').originalEvent.newCoordinates
-			)
+			coords	= [edit_data.lat, edit_data.lng]
+			add_event_coords(coords)
 	panel
 		.on(
 			'click'
@@ -287,6 +275,27 @@ $ ->
 					)
 				else
 					alert 'Вкажіть точку на карті'
+		)
+		.on(
+			'keyup change'
+			'.cs-home-add-location-address'
+			->
+				$this	= $(@)
+				if $this.val().length < 4
+					return
+				clearTimeout(address_timeout)
+				address_timeout	= setTimeout (->
+					ymaps.geocode($this.val()).then(
+						(res) ->
+							coords	= res.geoObjects.get(0).geometry.getCoordinates()
+							map.panTo(
+								coords
+								fly				: true
+								checkZoomRange	: true
+							)
+							add_event_coords(coords)
+					)
+				), 300
 		)
 	$('#map')
 		.on(

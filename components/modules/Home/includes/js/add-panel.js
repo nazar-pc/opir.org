@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var addition_editing_panel, category, coords, edit_data, event_coords, map_cursor, panel, put_events_coords, reset_options, time, time_interval, timeout, urgency, visible;
+    var add_event_coords, addition_editing_panel, address_timeout, category, coords, edit_data, event_coords, map_cursor, panel, put_events_coords, reset_options, time, time_interval, timeout, urgency, visible;
     panel = $('.cs-home-add-panel');
     category = 0;
     visible = 2;
@@ -15,6 +15,7 @@
     put_events_coords = false;
     map_cursor = null;
     edit_data = 0;
+    address_timeout = 0;
     reset_options = function() {
       visible = 2;
       urgency = 'urgent';
@@ -43,6 +44,20 @@
         }
       });
     });
+    add_event_coords = function(point) {
+      event_coords && map.geoObjects.remove(event_coords);
+      event_coords = new ymaps.Placemark(coords, {}, {
+        draggable: true,
+        iconLayout: 'default#image',
+        iconImageHref: '/components/modules/Home/includes/img/new-event.png',
+        iconImageSize: [91, 86],
+        iconImageOffset: [-36, -86]
+      });
+      map.geoObjects.add(event_coords);
+      return event_coords.events.add('geometrychange', function(e) {
+        return coords = e.get('originalEvent').originalEvent.newCoordinates;
+      });
+    };
     (function() {
       var map_init;
       map_init = setInterval((function() {
@@ -55,18 +70,7 @@
             return;
           }
           coords = e.get('coords');
-          event_coords && map.geoObjects.remove(event_coords);
-          event_coords = new ymaps.Placemark(coords, {}, {
-            draggable: true,
-            iconLayout: 'default#image',
-            iconImageHref: '/components/modules/Home/includes/img/new-event.png',
-            iconImageSize: [91, 86],
-            iconImageOffset: [-36, -86]
-          });
-          map.geoObjects.add(event_coords);
-          return event_coords.events.add('geometrychange', function(e) {
-            return coords = e.get('originalEvent').originalEvent.newCoordinates;
-          });
+          return add_event_coords(coords);
         });
       }), 100);
     })();
@@ -82,7 +86,7 @@
         submit = "<button class=\"cs-home-add-process\">Додати</button>";
         name = $this.find('span').text();
       }
-      content = ("<h2>" + name + "</h2>\n<textarea placeholder=\"Коментар\"></textarea>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Моїй групі активістів</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-visible uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Кому відображати</li>\n			<li data-id=\"2\">\n				<a>Моїй групі активістів</a>\n			</li>") + ("<li data-id=\"0\">\n				<a>Всім</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Терміново</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-urgency uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Терміновість</li>\n			<li data-id=\"urgent\">\n				<a>Терміново</a>\n			</li>\n			<li data-id=\"can-wait\">\n				<a>Може почекати</a>\n			</li>\n			<li data-id=\"unknown\">\n				<a>Не вказано</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<h3 class=\"cs-home-actuality-control\">Актуально протягом</h3>\n<div class=\"cs-home-actuality-control\">\n	<input class=\"cs-home-add-time\" type=\"number\" min=\"1\" value=\"15\"/>\n	<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n		<button type=\"button\" class=\"uk-button\">\n			<span class=\"uk-icon-caret-down\"></span> <span>Хвилин</span>\n		</button>\n		<div class=\"uk-dropdown\">\n			<ul class=\"cs-home-add-time-interval uk-nav uk-nav-dropdown\">\n				<li class=\"uk-nav-header\">Одиниці часу</li>\n				<li data-id=\"60\">\n					<a>Хвилин</a>\n				</li>\n				<li data-id=\"3600\">\n					<a>Годин</a>\n				</li>\n				<li data-id=\"86400\">\n					<a>Днів</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>\n<div class=\"cs-home-add-location\">\n	<span>Вказати на карті</span>\n</div>\n<div>\n	<button class=\"cs-home-add-close\"></button>\n	" + submit + "\n</div>");
+      content = ("<h2>" + name + "</h2>\n<textarea placeholder=\"Коментар\"></textarea>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Моїй групі активістів</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-visible uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Кому відображати</li>\n			<li data-id=\"2\">\n				<a>Моїй групі активістів</a>\n			</li>") + ("<li data-id=\"0\">\n				<a>Всім</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Терміново</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-urgency uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Терміновість</li>\n			<li data-id=\"urgent\">\n				<a>Терміново</a>\n			</li>\n			<li data-id=\"can-wait\">\n				<a>Може почекати</a>\n			</li>\n			<li data-id=\"unknown\">\n				<a>Не вказано</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<h3 class=\"cs-home-actuality-control\">Актуально протягом</h3>\n<div class=\"cs-home-actuality-control\">\n	<input class=\"cs-home-add-time\" type=\"number\" min=\"1\" value=\"15\"/>\n	<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n		<button type=\"button\" class=\"uk-button\">\n			<span class=\"uk-icon-caret-down\"></span> <span>Хвилин</span>\n		</button>\n		<div class=\"uk-dropdown\">\n			<ul class=\"cs-home-add-time-interval uk-nav uk-nav-dropdown\">\n				<li class=\"uk-nav-header\">Одиниці часу</li>\n				<li data-id=\"60\">\n					<a>Хвилин</a>\n				</li>\n				<li data-id=\"3600\">\n					<a>Годин</a>\n				</li>\n				<li data-id=\"86400\">\n					<a>Днів</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>\n<input type=\"text\" class=\"cs-home-add-location-address\" placeholder=\"Адреса або точка на карті\">\n<button class=\"cs-home-add-location uk-icon-location-arrow\"></button>\n<div>\n	<button class=\"cs-home-add-close uk-icon-times\"></button>\n	" + submit + "\n</div>");
       panel.html(content);
       put_events_coords = true;
       map_cursor = map.cursors.push('pointer');
@@ -93,19 +97,7 @@
         $(".cs-home-add-time-interval [data-id=" + edit_data.time_interval + "]").click();
         panel.find('textarea').val(edit_data.text);
         coords = [edit_data.lat, edit_data.lng];
-        event_coords && map.geoObjects.remove(event_coords);
-        event_coords = new ymaps.Placemark(coords, {}, {
-          draggable: true,
-          iconLayout: 'default#image',
-          iconImageHref: '/components/modules/Home/includes/img/new-event.png',
-          iconImageSize: [91, 86],
-          iconImageOffset: [-36, -86],
-          zIndex: 1000
-        });
-        map.geoObjects.add(event_coords);
-        return event_coords.events.add('geometrychange', function(e) {
-          return coords = e.get('originalEvent').originalEvent.newCoordinates;
-        });
+        return add_event_coords(coords);
       }
     };
     panel.on('click', '> ul > li', addition_editing_panel).on('click', '.cs-home-add-visible [data-id]', function() {
@@ -197,6 +189,23 @@
       } else {
         return alert('Вкажіть точку на карті');
       }
+    }).on('keyup change', '.cs-home-add-location-address', function() {
+      var $this;
+      $this = $(this);
+      if ($this.val().length < 4) {
+        return;
+      }
+      clearTimeout(address_timeout);
+      return address_timeout = setTimeout((function() {
+        return ymaps.geocode($this.val()).then(function(res) {
+          coords = res.geoObjects.get(0).geometry.getCoordinates();
+          map.panTo(coords, {
+            fly: true,
+            checkZoomRange: true
+          });
+          return add_event_coords(coords);
+        });
+      }), 300);
     });
     return $('#map').on('click', '.cs-home-edit', function() {
       var item;

@@ -99,43 +99,35 @@
 		}
 	}
 
-	.cs-home-add-location {
-		cursor        : pointer;
-		height        : 46px;
-		margin-bottom : 10px;
-		padding       : 5px;
-		text-align    : center;
-		width         : 100%;
+	.cs-home-add-location-address {
+		width : 222px;
 	}
 
-	.cs-home-add-location:before {
-		background    : url(../img/location.png) no-repeat;
-		content       : '';
+	.cs-home-add-location {
+		background    : #0067b6;
+		border        : none;
+		border-radius : 7px;
+		cursor        : pointer;
 		display       : inline-block;
-		height        : 36px;
-		margin-bottom : -11px;
-		width         : 27px;
+		height        : 38px;
+		margin        : 0 0 15px 5px;
+		padding       : 10px;
+		width         : 38px;
 	}
 
 	.cs-home-add-location:hover {
-		background-color : #2a3036;
+		background : #005ea6;
 	}
 
 	.cs-home-add-close {
 		background    : #262e35;
 		border        : none;
 		border-radius : 7px;
+		font-style    : 20px;
 		height        : 38px;
 		margin-left   : 20px;
 		padding       : 10px;
-	}
-
-	.cs-home-add-close:before {
-		background : url(../img/close.png) no-repeat;
-		content    : '';
-		display    : inline-block;
-		height     : 17px;
-		width      : 18px;
+		width         : 38px;
 	}
 
 	.cs-home-add-close:hover {
@@ -149,8 +141,7 @@
 		border-radius : 7px;
 		height        : 38px;
 		margin-left   : 5px;
-		text-align    : center;
-		width         : 223px
+		width         : 222px
 	}
 
 	.cs-home-add-process:hover,
