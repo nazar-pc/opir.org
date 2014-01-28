@@ -214,6 +214,10 @@ class Events {
 	 * @return array|bool
 	 */
 	function del ($id) {
+		$data	= $this->get($id);
+		if ($data['img']) {
+			unlink(source_by_url($data['img']));
+		}
 		return $this->db()->q(
 			"DELETE FROM `$this->table`
 			WHERE `id` = '%s'
