@@ -64,39 +64,41 @@
       width: 161px; }
     .cs-home-add-panel div > .uk-button-dropdown .uk-dropdown {
       left: 5px; }
-  .cs-home-add-panel .cs-home-add-location-address {
-    width: 222px; }
-  .cs-home-add-panel .cs-home-add-location {
-    background: #0067b6;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    display: inline-block;
-    height: 38px;
-    margin: 0 0 15px 5px;
-    padding: 10px;
-    width: 38px; }
-  .cs-home-add-panel .cs-home-add-location:hover {
-    background: #005ea6; }
-  .cs-home-add-panel .cs-home-add-close {
-    background: #262e35;
-    border: none;
-    border-radius: 7px;
-    font-style: 20px;
-    height: 38px;
-    margin-left: 20px;
-    padding: 10px;
-    width: 38px; }
-  .cs-home-add-panel .cs-home-add-close:hover {
-    background: #1d2226; }
+  .cs-home-add-panel .cs-home-add-image-button,
+  .cs-home-add-panel .cs-home-add-location,
+  .cs-home-add-panel .cs-home-add-close,
   .cs-home-add-panel .cs-home-add-process,
   .cs-home-add-panel .cs-home-edit-process {
     background: #0067b6;
     border: none;
     border-radius: 7px;
     height: 38px;
-    margin-left: 5px;
-    width: 222px; }
+    margin: 0 0 15px 20px;
+    text-align: center;
+    width: 270px; }
+  .cs-home-add-panel .cs-home-add-image-button:hover,
+  .cs-home-add-panel .cs-home-add-location:hover,
+  .cs-home-add-panel .cs-home-add-close:hover,
   .cs-home-add-panel .cs-home-add-process:hover,
   .cs-home-add-panel .cs-home-edit-process:hover {
     background: #005ea6; }
+  .cs-home-add-panel .cs-home-add-image {
+    margin: 0 0 15px 25px;
+    width: 260px; }
+  .cs-home-add-panel .cs-home-add-location-address {
+    width: 222px; }
+  .cs-home-add-panel .cs-home-add-location {
+    font-size: 20px;
+    margin-left: 5px;
+    width: 38px; }
+  .cs-home-add-panel .cs-home-add-close {
+    background: #262e35;
+    font-size: 20px;
+    margin-left: 20px;
+    width: 38px; }
+  .cs-home-add-panel .cs-home-add-close:hover {
+    background: #1d2226; }
+  .cs-home-add-panel .cs-home-add-process,
+  .cs-home-add-panel .cs-home-edit-process {
+    margin-left: 5px;
+    width: 222px; }

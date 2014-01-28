@@ -46,6 +46,8 @@ $ ->
 					when 'urgent' then 2
 				time			= if urgency == 0 then '' else "<time>Актуально до #{time}</time>"
 				text			= event.text.replace(/\n/g, '<br>')
+				text			= if text then """<p>#{text}</p>""" else ''
+				img				= if event.img then """<p><img height="240" width="260" src="#{event.img}" alt=""></p>""" else ''
 				placemarks.push(
 					new ymaps.Placemark(
 						[event.lat, event.lng]
@@ -54,7 +56,8 @@ $ ->
 							balloonContentHeader	: category_name
 							balloonContentBody		: """
 								#{time}
-								<p>#{text}</p>
+								#{img}
+								#{text}
 							"""
 							balloonContentFooter	: if event.id then """<button class="cs-home-edit" data-id="#{event.id}">Редагувати</button> <button onclick="cs.home.delete_event(#{event.id})">Видалити</button>""" else ''
 						}

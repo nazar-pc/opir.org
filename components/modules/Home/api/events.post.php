@@ -14,10 +14,10 @@ if (!$User->user()) {
 	error_code(403);
 	return;
 }
-if (!isset($_POST['category'], $_POST['timeout'], $_POST['lat'], $_POST['lng'], $_POST['visible'], $_POST['text'], $_POST['urgency'], $_POST['time'], $_POST['time_interval'])) {
+if (!isset($_POST['category'], $_POST['timeout'], $_POST['lat'], $_POST['lng'], $_POST['visible'], $_POST['text'], $_POST['urgency'], $_POST['time'], $_POST['time_interval'], $_POST['img'])) {
 	error_code(400);
 	return;
 }
-if (!$Events->add($_POST['category'], $_POST['timeout'], $_POST['lat'], $_POST['lng'], $_POST['visible'], $_POST['text'], $_POST['urgency'], $_POST['time'], $_POST['time_interval'])) {
+if (!$Events->add($_POST['category'], $_POST['timeout'], $_POST['lat'], $_POST['lng'], $_POST['visible'], $_POST['text'], $_POST['urgency'], $_POST['time'], $_POST['time_interval'], $_POST['img'])) {
 	error_code(500);
 }

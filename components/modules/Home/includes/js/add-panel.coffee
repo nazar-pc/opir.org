@@ -12,6 +12,7 @@ $ ->
 	map_cursor			= null
 	edit_data			= 0
 	address_timeout		= 0
+	uploader			= null
 	reset_options		= ->
 		# Reset
 		visible				= 2
@@ -25,6 +26,8 @@ $ ->
 		map_cursor && map_cursor.remove()
 		map_cursor			= null
 		put_events_coords	= false
+		uploader && uploader.destroy()
+		uploader			= null
 	$(document).on(
 		'click'
 		'.cs-home-add, .cs-home-add-close'
@@ -46,8 +49,9 @@ $ ->
 				)
 	)
 	add_event_coords	= (point) ->
+		coords			= point
 		event_coords && map.geoObjects.remove(event_coords)
-		event_coords			= new ymaps.Placemark coords, {}, {
+		event_coords	= new ymaps.Placemark coords, {}, {
 			draggable			: true
 			iconLayout			: 'default#image'
 			iconImageHref		: '/components/modules/Home/includes/img/new-event.png'
@@ -68,8 +72,7 @@ $ ->
 			map.events.add('click', (e) ->
 				if !put_events_coords
 					return
-				coords	= e.get('coords')
-				add_event_coords(coords)
+				add_event_coords(e.get('coords'))
 			)
 			return
 		), 100
@@ -87,6 +90,7 @@ $ ->
 		content		= """
 			<h2>#{name}</h2>
 			<textarea placeholder="Коментар"></textarea>
+			<button class="cs-home-add-image-button uk-icon-picture-o"> Додати фото</button>
 			<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
 				<button type="button" class="uk-button">
 					<span class="uk-icon-caret-down"></span> <span>Моїй групі активістів</span>
@@ -157,15 +161,29 @@ $ ->
 		"""
 		panel.html(content)
 		put_events_coords	= true
-		map_cursor			= map.cursors.push('pointer');
+		map_cursor			= map.cursors.push('pointer')
+		do ->
+			uploader_button	= $('.cs-home-add-image-button')
+			uploader		= cs.file_upload(
+				uploader_button
+				(files) ->
+					if files.length
+						uploader_button.next('img').remove()
+						uploader_button.after(
+							"""<img src="#{files[0]}" alt="" class="cs-home-add-image">"""
+						)
+			)
 		if edit
 			$(".cs-home-add-visible [data-id=#{edit_data.visible}]").click()
 			$(".cs-home-add-urgency [data-id=#{edit_data.urgency}]").click()
 			$(".cs-home-add-time").val(edit_data.time).change()
 			$(".cs-home-add-time-interval [data-id=#{edit_data.time_interval}]").click()
 			panel.find('textarea').val(edit_data.text)
-			coords	= [edit_data.lat, edit_data.lng]
-			add_event_coords(coords)
+			add_event_coords([edit_data.lat, edit_data.lng])
+			if edit_data.img
+				$('.cs-home-add-image-button').after(
+					"""<img src="#{edit_data.img}" alt="" class="cs-home-add-image">"""
+				)
 	panel
 		.on(
 			'click'
@@ -219,8 +237,9 @@ $ ->
 			'click'
 			'.cs-home-add-process'
 			->
-				comment	= panel.find('textarea').val()
 				if category && timeout && coords[0] && coords[1] && urgency
+					comment	= panel.find('textarea').val()
+					img		= panel.find('.cs-home-add-image')
 					$.ajax(
 						url		: 'api/Home/events'
 						type	: 'post'
@@ -234,6 +253,7 @@ $ ->
 							visible			: visible
 							text			: comment
 							urgency			: urgency
+							img				: if img then img.attr('src') else ''
 						success	: ->
 							panel.hide('fast')
 							map.geoObjects.remove(event_coords)
@@ -250,8 +270,9 @@ $ ->
 			'click'
 			'.cs-home-edit-process'
 			->
-				comment	= panel.find('textarea').val()
 				if timeout && coords[0] && coords[1] && urgency
+					comment	= panel.find('textarea').val()
+					img		= panel.find('.cs-home-add-image')
 					$.ajax(
 						url		: "api/Home/events/#{edit_data.id}"
 						type	: 'put'
@@ -264,6 +285,7 @@ $ ->
 							visible			: visible
 							text			: comment
 							urgency			: urgency
+							img				: if img then img.attr('src') else ''
 						success	: ->
 							panel.hide('fast')
 							map.geoObjects.remove(event_coords)

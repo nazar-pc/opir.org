@@ -9,7 +9,8 @@
 namespace	cs\modules\Home;
 use			cs\User,
 			cs\CRUD,
-			cs\Singleton;
+			cs\Singleton,
+			cs\plugins\SimpleImage\SimpleImage;
 /**
  * @method static \cs\modules\Home\Events instance($check = false)
  */
@@ -30,10 +31,14 @@ class Events {
 		'text'			=> 'text',
 		'urgency'		=> null,
 		'time'			=> 'int',
-		'time_interval'	=> 'int'
+		'time_interval'	=> 'int',
+		'img'			=> 'text'
 	];
 
-	protected function constructor () {
+	protected function construct () {
+		if (!file_exists(STORAGE.'/events')) {
+			mkdir(STORAGE.'/events');
+		}
 		$this->data_model['urgency']	= function ($in) {
 			switch ($in) {
 				default:
@@ -59,10 +64,11 @@ class Events {
 	 * @param $urgency
 	 * @param $time
 	 * @param $time_interval
+	 * @param $img
 	 *
 	 * @return bool|int
 	 */
-	function add ($category, $timeout, $lat, $lng, $visible, $text, $urgency, $time, $time_interval) {
+	function add ($category, $timeout, $lat, $lng, $visible, $text, $urgency, $time, $time_interval, $img) {
 		$User	= User::instance();
 		if ($visible == 2) {
 			$visible	= array_filter(
@@ -70,7 +76,13 @@ class Events {
 				function ($group) {
 					return $group > 3;
 				}
-			)[0] ?: 0;
+			) ?: [0];
+			$visible	= $visible[0];
+		}
+		$img	= source_by_url($img);
+		if ($img) {
+			(new SimpleImage($img))->thumbnail(260, 240)->save($img = STORAGE.'/events/'.md5(MICROTIME.'_'.$User->id).'.png', 100);
+			$img	= url_by_source($img);
 		}
 		return $this->create_simple([
 			$User->id,
@@ -83,7 +95,8 @@ class Events {
 			$text,
 			$urgency,
 			$time,
-			$time_interval
+			$time_interval,
+			$img
 		]);
 	}
 	/**
@@ -98,13 +111,15 @@ class Events {
 		$admin		= $User->admin();
 		$user_id	= $User->id;
 		if ($admin) {
-			return $this->db()->qf([
+			$return	= $this->db()->qf([
 				"SELECT *
 				FROM `$this->table`
 				WHERE
 					`id` = '%s'",
 				$id
 			]);
+			$return['text']	= str_replace('&apos;', "'", $return['text']);
+			return $return;
 		}
 		$groups		= $User->get_groups();
 		$groups[]	= 0;
@@ -126,7 +141,8 @@ class Events {
 				`text`,
 				`urgency`,
 				`time`,
-				`time_interval`
+				`time_interval`,
+				`img`
 			FROM `$this->table`
 			WHERE
 				(
@@ -139,6 +155,7 @@ class Events {
 		if (!$admin && $return['user'] != $user_id) {
 			unset($return['id']);
 		}
+		$return['text']	= str_replace('&apos;', "'", $return['text']);
 		return $return;
 	}
 	/**
@@ -153,10 +170,11 @@ class Events {
 	 * @param $urgency
 	 * @param $time
 	 * @param $time_interval
+	 * @param $img
 	 *
 	 * @return bool|int
 	 */
-	function set ($id, $timeout, $lat, $lng, $visible, $text, $urgency, $time, $time_interval) {
+	function set ($id, $timeout, $lat, $lng, $visible, $text, $urgency, $time, $time_interval, $img) {
 		$data	= $this->get($id);
 		$User	= User::instance();
 		if ($visible == 2) {
@@ -166,6 +184,11 @@ class Events {
 					return $group > 3;
 				}
 			)[0];
+		}
+		if ($img != $data['img'] && $img) {
+			(new SimpleImage($img))->thumbnail(260, 240)->save($img = STORAGE.'/events/'.md5(MICROTIME.'_'.$User->id).'.png', 100);
+			$img	= url_by_source($img);
+			unlink(source_by_url($data['img']));
 		}
 		return $this->update_simple([
 			$data['id'],
@@ -179,7 +202,8 @@ class Events {
 			$text,
 			$urgency,
 			$time,
-			$time_interval
+			$time_interval,
+			$img
 		]);
 	}
 	/**
@@ -207,7 +231,7 @@ class Events {
 		$admin		= $User->admin();
 		$user_id	= $User->id;
 		if ($admin) {
-			return $this->db()->qfa([
+			$return	= $this->db()->qfa([
 				"SELECT *
 				FROM `$this->table`
 				WHERE
@@ -215,6 +239,10 @@ class Events {
 					`urgency`	= 'unknown'",
 				TIME
 			]);
+			foreach ($return as &$r) {
+				$r['text']	= str_replace('&apos;', "'", $r['text']);
+			}
+			return $return;
 		}
 		$groups		= $User->get_groups();
 		$groups[]	= 0;
@@ -236,7 +264,8 @@ class Events {
 				`text`,
 				`urgency`,
 				`time`,
-				`time_interval`
+				`time_interval`,
+				`img`
 			FROM `$this->table`
 			WHERE
 				(
@@ -254,6 +283,7 @@ class Events {
 				unset($r['id']);
 			}
 			unset($r['user']);
+			$r['text']	= str_replace('&apos;', "'", $r['text']);
 		}
 		return $return;
 	}
