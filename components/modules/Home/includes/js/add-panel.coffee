@@ -253,7 +253,7 @@ $ ->
 							visible			: visible
 							text			: comment
 							urgency			: urgency
-							img				: if img then img.attr('src') else ''
+							img				: if img.length then img.attr('src') else ''
 						success	: ->
 							panel.hide('fast')
 							map.geoObjects.remove(event_coords)
@@ -285,7 +285,7 @@ $ ->
 							visible			: visible
 							text			: comment
 							urgency			: urgency
-							img				: if img then img.attr('src') else ''
+							img				: if img.length then img.attr('src') else ''
 						success	: ->
 							panel.hide('fast')
 							map.geoObjects.remove(event_coords)

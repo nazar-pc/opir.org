@@ -161,7 +161,7 @@
             visible: visible,
             text: comment,
             urgency: urgency,
-            img: img ? img.attr('src') : ''
+            img: img.length ? img.attr('src') : ''
           },
           success: function() {
             panel.hide('fast');
@@ -193,7 +193,7 @@
             visible: visible,
             text: comment,
             urgency: urgency,
-            img: img ? img.attr('src') : ''
+            img: img.length ? img.attr('src') : ''
           },
           success: function() {
             panel.hide('fast');
