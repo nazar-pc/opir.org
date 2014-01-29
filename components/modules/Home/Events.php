@@ -7,7 +7,8 @@
  * @license		MIT License, see license.txt
  */
 namespace	cs\modules\Home;
-use			cs\User,
+use			cs\Cache\Prefix,
+			cs\User,
 			cs\CRUD,
 			cs\Singleton,
 			cs\plugins\SimpleImage\SimpleImage;
@@ -18,6 +19,10 @@ class Events {
 	use	CRUD,
 		Singleton;
 
+	/**
+	 * @var Prefix
+	 */
+	protected $cache;
 	protected $table		= '[prefix]events';
 	protected $data_model	= [
 		'id'			=> 'int',
@@ -48,6 +53,7 @@ class Events {
 			}
 			return $in;
 		};
+		$this->cache	= new Prefix('events');
 	}
 	protected function cdb () {
 		return '0';
@@ -102,14 +108,42 @@ class Events {
 	/**
 	 * Get event
 	 *
-	 * @param int	$id
+	 * @param int|int[]	$id
 	 *
-	 * @return array|bool
+	 * @return array|array[]|bool
 	 */
 	function get ($id) {
 		$User		= User::instance();
 		$admin		= $User->admin();
 		$user_id	= $User->id;
+		$groups		= $User->get_groups();
+		$Cache		= $this->cache;
+		if (is_array($id)) {
+			foreach ($id as &$i) {
+				$i	= (int)$i;
+				$i	= $Cache->get("$i/$user_id", function () use ($i, $User, $admin, $user_id, $groups) {
+					return $this->get_internal($i, $User, $admin, $user_id, $groups);
+				});
+			}
+			return $id;
+		}
+		$id			= (int)$id;
+		return $this->cache->get("$id/$user_id", function () use ($id, $User, $admin, $user_id, $groups) {
+			return $this->get_internal($id, $User, $admin, $user_id, $groups);
+		});
+	}
+	/**
+	 * Get event
+	 *
+	 * @param     $id
+	 * @param     $User
+	 * @param     $admin
+	 * @param     $user_id
+	 * @param     $groups
+	 *
+	 * @return array|bool
+	 */
+	protected function get_internal ($id, $User, $admin, $user_id, $groups) {
 		if ($admin) {
 			$return	= $this->db()->qf([
 				"SELECT *
@@ -121,7 +155,6 @@ class Events {
 			$return['text']	= str_replace('&apos;', "'", $return['text']);
 			return $return;
 		}
-		$groups		= $User->get_groups();
 		$groups[]	= 0;
 		if ($User->user()) {
 			$groups[]	= 1;
@@ -177,6 +210,7 @@ class Events {
 	function set ($id, $timeout, $lat, $lng, $visible, $text, $urgency, $time, $time_interval, $img) {
 		$data	= $this->get($id);
 		$User	= User::instance();
+		$id		= (int)$id;
 		if ($visible == 2) {
 			$visible	= array_filter(
 				$User->get_groups(),
@@ -190,7 +224,7 @@ class Events {
 			$img	= url_by_source($img);
 			unlink(source_by_url($data['img']));
 		}
-		return $this->update_simple([
+		if ($this->update_simple([
 			$data['id'],
 			$data['user'],
 			$data['category'],
@@ -204,7 +238,11 @@ class Events {
 			$time,
 			$time_interval,
 			$img
-		]);
+		])) {
+			unset($this->cache->$id);
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Delete event
@@ -214,16 +252,21 @@ class Events {
 	 * @return array|bool
 	 */
 	function del ($id) {
+		$id		= (int)$id;
 		$data	= $this->get($id);
 		if ($data['img']) {
 			unlink(source_by_url($data['img']));
 		}
-		return $this->db()->q(
+		if ($this->db()->q(
 			"DELETE FROM `$this->table`
 			WHERE `id` = '%s'
 			LIMIT 1",
 			$id
-		);
+		)) {
+			unset($this->cache->$id);
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Get all events
@@ -231,22 +274,34 @@ class Events {
 	 * @return array|bool
 	 */
 	function get_all () {
+		$user_id	= User::instance()->id;
+		$data		= $this->cache->{"all/$user_id"};
+		if (!is_array($data) || $data['timeout'] < TIME) {
+			$data	= $this->get_data_internal();
+			$this->cache->{"all/$user_id"}	= [
+				'timeout'	=> TIME + 10,
+				'data'		=> $data
+			];
+			return $this->get($data);
+		}
+		return $this->get($data['data']);
+	}
+
+	protected function get_data_internal () {
 		$User		= User::instance();
 		$admin		= $User->admin();
 		$user_id	= $User->id;
 		if ($admin) {
-			$return	= $this->db()->qfa([
-				"SELECT *
+			return $this->db()->qfas([
+				"SELECT `id`
 				FROM `$this->table`
 				WHERE
 					`timeout`	> '%s' OR
-					`urgency`	= 'unknown'",
+					`urgency`	= 'unknown' AND
+					`lat`		!= 0 AND
+					`lng`		!= 0",
 				TIME
 			]);
-			foreach ($return as &$r) {
-				$r['text']	= str_replace('&apos;', "'", $r['text']);
-			}
-			return $return;
 		}
 		$groups		= $User->get_groups();
 		$groups[]	= 0;
@@ -254,22 +309,8 @@ class Events {
 			$groups[]	= 1;
 		}
 		$groups		= implode(',', $groups);
-		$return 	= $this->db()->qfa([
-			"SELECT
-				`id`,
-				`user`,
-				`category`,
-				`added`,
-				`timeout`,
-				`added`,
-				`timeout`,
-				`lat`,
-				`lng`,
-				`text`,
-				`urgency`,
-				`time`,
-				`time_interval`,
-				`img`
+		return $this->db()->qfas([
+			"SELECT `id`
 			FROM `$this->table`
 			WHERE
 				(
@@ -284,12 +325,5 @@ class Events {
 				`lng`	!= 0",
 			TIME
 		]);
-		foreach ($return as &$r) {
-			if (!$admin && $r['user'] != $user_id) {
-				unset($r['user']);
-			}
-			$r['text']	= str_replace('&apos;', "'", $r['text']);
-		}
-		return $return;
 	}
 }
