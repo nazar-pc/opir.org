@@ -25,6 +25,7 @@
 		padding    : 0;
 
 		li {
+			cursor     : pointer;
 			padding : 5px 20px;
 
 			span {
@@ -37,9 +38,8 @@
 			text-align    : center;
 		}
 
-		[data-id]:hover,
+		li:hover,
 		.active {
-			cursor     : pointer;
 			background : #2a3036;
 		}
 

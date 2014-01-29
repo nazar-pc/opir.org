@@ -84,9 +84,12 @@ $Page->content(
 		)).
 		h::{'ul.cs-home-filter-category li'}(array_map(
 			function ($g) use ($categories) {
-				$return = [
-					h::h2($g['name'])
-				];
+				$return = [[
+					h::h2($g['name']),
+					[
+						'data-group'	=> $g['id']
+					]
+				]];
 				foreach ($g['categories'] as $c) {
 					$c			= $categories[$c];
 					$return[]	= [
@@ -95,7 +98,8 @@ $Page->content(
 						]).
 						h::span($c['name']),
 						[
-							'data-id'	=> $c['id']
+							'data-id'		=> $c['id'],
+							'data-group'	=> $g['id']
 						]
 					];
 				}

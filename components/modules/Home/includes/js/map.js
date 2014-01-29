@@ -40,11 +40,11 @@
       };
       map.geoObjects.add(clusterer);
       filter_events = function(events) {
-        var category, urgency;
-        category = $('.cs-home-filter-category .active').data('id');
+        var categories, urgency;
+        categories = $('.cs-home-filter-category .active');
         urgency = $('.cs-home-filter-urgency .active').data('id');
         return events.filter(function(event) {
-          return (!category || category === parseInt(event.category)) && (!urgency || urgency === event.urgency);
+          return (!categories.length || categories.filter("[data-id=" + event.category + "]").length) && (!urgency || urgency === event.urgency);
         });
       };
       add_events_on_map = function(events) {

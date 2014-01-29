@@ -22,3 +22,7 @@ $ ->
 					.end()
 				.addClass('active')
 		map.update_events(true)
+	$('.cs-home-filter-category [data-group]').not('[data-id]').click ->
+		group	= $(@).data('group')
+		$(".cs-home-filter-category [data-id][data-group=#{group}]").toggleClass('active')
+		map.update_events(true)

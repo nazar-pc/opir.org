@@ -13,7 +13,7 @@
       });
       return $('.cs-home-settings-panel').toggle('fast');
     });
-    return $('.cs-home-filter-category [data-id], .cs-home-filter-urgency [data-id]').click(function() {
+    $('.cs-home-filter-category [data-id], .cs-home-filter-urgency [data-id]').click(function() {
       var $this;
       $this = $(this);
       if ($this.hasClass('active')) {
@@ -21,6 +21,12 @@
       } else {
         $(this).parent().find('.active').removeClass('active').end().end().addClass('active');
       }
+      return map.update_events(true);
+    });
+    return $('.cs-home-filter-category [data-group]').not('[data-id]').click(function() {
+      var group;
+      group = $(this).data('group');
+      $(".cs-home-filter-category [data-id][data-group=" + group + "]").toggleClass('active');
       return map.update_events(true);
     });
   });
