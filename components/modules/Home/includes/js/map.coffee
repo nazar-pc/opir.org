@@ -52,7 +52,8 @@ $ ->
 							top		: '+=' + (new_pixel_coords[1] - old_pixel_coords[1])
 						)
 						streaming_opened.geometry.setCoordinates([event.lat, event.lng])
-						map.panTo([parseFloat(event.lat), parseFloat(event.lng)])
+						bounds	= map.getBounds()
+						map.panTo([parseFloat(event.lat) - (bounds[0][0] - bounds[1][0]) / 4, parseFloat(event.lng)])
 						return
 					continue
 				category_name	= cs.home.categories[event.category]
