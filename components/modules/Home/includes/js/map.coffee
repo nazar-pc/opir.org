@@ -87,7 +87,7 @@ $ ->
 								#{img}
 								#{text}
 							"""
-							balloonContentFooter	: if event.user then """<button class="cs-home-edit" data-id="#{event.id}">Редагувати</button> <button onclick="cs.home.delete_event(#{event.id})">Видалити</button>""" else ''
+							balloonContentFooter	: if event.user && !is_streaming then """<button class="cs-home-edit" data-id="#{event.id}">Редагувати</button> <button onclick="cs.home.delete_event(#{event.id})">Видалити</button>""" else ''
 						}
 						{
 							iconLayout			: 'default#image'

@@ -96,7 +96,7 @@
             hintContent: category_name,
             balloonContentHeader: category_name,
             balloonContentBody: "" + time + "\n" + img + "\n" + text,
-            balloonContentFooter: event.user ? "<button class=\"cs-home-edit\" data-id=\"" + event.id + "\">Редагувати</button> <button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : ''
+            balloonContentFooter: event.user && !is_streaming ? "<button class=\"cs-home-edit\" data-id=\"" + event.id + "\">Редагувати</button> <button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : ''
           }, {
             iconLayout: 'default#image',
             iconImageHref: '/components/modules/Home/includes/img/events.png',
