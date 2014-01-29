@@ -68,6 +68,7 @@ $ ->
 				text			= event.text.replace(/\n/g, '<br>')
 				is_streaming	= false
 				if text && text.substr(0, 7) == 'stream:'
+					time			= ''
 					is_streaming	= true
 					text			= text.substr(7)
 					text			= """<p><iframe width="260" height="240" src="#{text}" frameborder="0" scrolling="no"></iframe></p>"""
