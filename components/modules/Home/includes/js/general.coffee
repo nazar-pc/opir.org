@@ -13,7 +13,7 @@ $ ->
 							<input type="password" id="password" placeholder="#{cs.Language.password}">
 						</p>
 						<p class="cs-right">
-							<button class="uk-button" onclick="cs.sign_in($('#login').val(), $('#password').val());" class="uk-button">#{cs.Language.sign_in}</button>
+							<button class="uk-button" onclick="cs.sign_in($('#login').val(), $('#password').val());">#{cs.Language.sign_in}</button>
 						</p>
 					</div>
 				</div>

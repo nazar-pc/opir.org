@@ -18,3 +18,6 @@ define('XHTML_TAGS_STYLE',	false);
  * Special error handler of CleverStyle CMS
  */
 define('CS_ERROR_HANDLER', false);
+
+define('STREAMER_GROUP', 14);//TODO change back
+define('STREAM_CATEGORY', 28);

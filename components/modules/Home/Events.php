@@ -153,7 +153,7 @@ class Events {
 			$id
 		]);
 		if (!$admin && $return['user'] != $user_id) {
-			unset($return['id']);
+			unset($return['user']);
 		}
 		$return['text']	= str_replace('&apos;', "'", $return['text']);
 		return $return;
@@ -194,7 +194,7 @@ class Events {
 			$data['id'],
 			$data['user'],
 			$data['category'],
-			TIME,
+			$data['added'],
 			TIME + max(0, (int)$timeout),
 			$lat,
 			$lng,
@@ -279,14 +279,15 @@ class Events {
 				(
 					`timeout`	> '%s' OR
 					`urgency`	= 'unknown'
-				)",
+				) AND
+				`lat`	!= 0 AND
+				`lng`	!= 0",
 			TIME
 		]);
 		foreach ($return as &$r) {
 			if (!$admin && $r['user'] != $user_id) {
-				unset($r['id']);
+				unset($r['user']);
 			}
-			unset($r['user']);
 			$r['text']	= str_replace('&apos;', "'", $r['text']);
 		}
 		return $return;

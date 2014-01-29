@@ -29,7 +29,7 @@ $Page->Header	=
 	h::{'button.cs-home-settings'}();
 $categories		= Events_categories::instance()->get_all();
 $Page->js(
-	'cs.home = {categories:'._json_encode(array_column($categories, 'name', 'id')).'};',
+	'cs.home = {categories:'._json_encode(array_column($categories, 'name', 'id')).',reporter:'.(in_array(STREAMER_GROUP, $User->get_groups()) ? _json_encode($User->get_data('stream_url') ?: 1) : 0).'};',
 	'code'
 );
 $Page->content(

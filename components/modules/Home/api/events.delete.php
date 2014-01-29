@@ -7,15 +7,14 @@
  * @license		MIT License, see license.txt
  */
 namespace	cs\modules\Home;
-use			cs\Index,
-			cs\Page;
+use			cs\Index;
 $Events	= Events::instance();
 $event	= $Events->get(Index::instance()->route_ids[0]);
 if (!$event) {
 	error_code(404);
 	return;
 }
-if (!isset($event['id'])) {
+if (!isset($event['user'])) {
 	error_code(403);
 	return;
 }

@@ -1,7 +1,9 @@
 $ ->
-	add_zero	= (input) ->
-		if input < 10 then '0' + input else input
 	ymaps.ready ->
+		streaming_opened	= false
+		add_zero		= (input) ->
+			if input < 10 then '0' + input else input
+		placemarks	= []
 		window.map				= new ymaps.Map 'map', {
 			center				: [50.45, 30.523611]
 			zoom				: 13
@@ -35,6 +37,24 @@ $ ->
 			events		= filter_events(events)
 			placemarks	= []
 			for event, event of events
+				if streaming_opened
+					if streaming_opened.unique_id == event.id
+						old_pixel_coords	= map.options.get('projection').fromGlobalPixels(
+							streaming_opened.geometry.getCoordinates()
+							map.getZoom()
+						)
+						new_pixel_coords	= map.options.get('projection').fromGlobalPixels(
+							[event.lat, event.lng]
+							map.getZoom()
+						)
+						$('.ymaps-balloon').animate(
+							left	: '+=' + (new_pixel_coords[0] - old_pixel_coords[0])
+							top		: '+=' + (new_pixel_coords[1] - old_pixel_coords[1])
+						)
+						streaming_opened.geometry.setCoordinates([event.lat, event.lng])
+						map.panTo([parseFloat(event.lat), parseFloat(event.lng)])
+						return
+					continue
 				category_name	= cs.home.categories[event.category]
 				t				= new Date(event.timeout * 1000)
 				time			=
@@ -46,7 +66,13 @@ $ ->
 					when 'urgent' then 2
 				time			= if urgency == 0 then '' else "<time>Актуально до #{time}</time>"
 				text			= event.text.replace(/\n/g, '<br>')
-				text			= if text then """<p>#{text}</p>""" else ''
+				is_streaming	= false
+				if text && text.substr(0, 7) == 'stream:'
+					is_streaming	= true
+					text			= text.substr(7)
+					text			= """<p><iframe width="260" height="240" src="#{text}" frameborder="0" scrolling="no"></iframe></p>"""
+				else
+					text			= if text then """<p>#{text}</p>""" else ''
 				img				= if event.img then """<p><img height="240" width="260" src="#{event.img}" alt=""></p>""" else ''
 				placemarks.push(
 					new ymaps.Placemark(
@@ -59,7 +85,7 @@ $ ->
 								#{img}
 								#{text}
 							"""
-							balloonContentFooter	: if event.id then """<button class="cs-home-edit" data-id="#{event.id}">Редагувати</button> <button onclick="cs.home.delete_event(#{event.id})">Видалити</button>""" else ''
+							balloonContentFooter	: if event.user then """<button class="cs-home-edit" data-id="#{event.id}">Редагувати</button> <button onclick="cs.home.delete_event(#{event.id})">Видалити</button>""" else ''
 						}
 						{
 							iconLayout			: 'default#image'
@@ -70,6 +96,18 @@ $ ->
 						}
 					)
 				)
+				if is_streaming
+					do (event = event) ->
+						placemark				= placemarks[placemarks.length - 1]
+						placemark.unique_id	= event.id
+						placemark.balloon.events
+							.add('open', ->
+								streaming_opened	= placemark
+							)
+							.add('close', ->
+								streaming_opened	= false
+							)
+						return
 			clusterer.removeAll()
 			clusterer.add(placemarks)
 		update_events_interval	= 0

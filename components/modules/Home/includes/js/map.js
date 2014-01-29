@@ -2,16 +2,17 @@
 (function() {
 
   $(function() {
-    var add_zero;
-    add_zero = function(input) {
-      if (input < 10) {
-        return '0' + input;
-      } else {
-        return input;
-      }
-    };
     return ymaps.ready(function() {
-      var add_events_on_map, clusterer, filter_events, update_events_interval;
+      var add_events_on_map, add_zero, clusterer, filter_events, placemarks, streaming_opened, update_events_interval;
+      streaming_opened = false;
+      add_zero = function(input) {
+        if (input < 10) {
+          return '0' + input;
+        } else {
+          return input;
+        }
+      };
+      placemarks = [];
       window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
@@ -46,11 +47,25 @@
         });
       };
       add_events_on_map = function(events) {
-        var category_name, event, img, placemarks, t, text, time, urgency;
+        var category_name, event, img, is_streaming, new_pixel_coords, old_pixel_coords, t, text, time, urgency;
         events = filter_events(events);
         placemarks = [];
         for (event in events) {
           event = events[event];
+          if (streaming_opened) {
+            if (streaming_opened.unique_id === event.id) {
+              old_pixel_coords = map.options.get('projection').fromGlobalPixels(streaming_opened.geometry.getCoordinates(), map.getZoom());
+              new_pixel_coords = map.options.get('projection').fromGlobalPixels([event.lat, event.lng], map.getZoom());
+              $('.ymaps-balloon').animate({
+                left: '+=' + (new_pixel_coords[0] - old_pixel_coords[0]),
+                top: '+=' + (new_pixel_coords[1] - old_pixel_coords[1])
+              });
+              streaming_opened.geometry.setCoordinates([event.lat, event.lng]);
+              map.panTo([parseFloat(event.lat), parseFloat(event.lng)]);
+              return;
+            }
+            continue;
+          }
           category_name = cs.home.categories[event.category];
           t = new Date(event.timeout * 1000);
           time = add_zero(t.getHours()) + ':' + add_zero(t.getMinutes()) + ' ' + add_zero(t.getDate()) + '.' + add_zero(t.getMonth() + 1) + '.' + t.getFullYear();
@@ -66,13 +81,20 @@
           })();
           time = urgency === 0 ? '' : "<time>Актуально до " + time + "</time>";
           text = event.text.replace(/\n/g, '<br>');
-          text = text ? "<p>" + text + "</p>" : '';
+          is_streaming = false;
+          if (text && text.substr(0, 7) === 'stream:') {
+            is_streaming = true;
+            text = text.substr(7);
+            text = "<p><iframe width=\"260\" height=\"240\" src=\"" + text + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>";
+          } else {
+            text = text ? "<p>" + text + "</p>" : '';
+          }
           img = event.img ? "<p><img height=\"240\" width=\"260\" src=\"" + event.img + "\" alt=\"\"></p>" : '';
           placemarks.push(new ymaps.Placemark([event.lat, event.lng], {
             hintContent: category_name,
             balloonContentHeader: category_name,
             balloonContentBody: "" + time + "\n" + img + "\n" + text,
-            balloonContentFooter: event.id ? "<button class=\"cs-home-edit\" data-id=\"" + event.id + "\">Редагувати</button> <button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : ''
+            balloonContentFooter: event.user ? "<button class=\"cs-home-edit\" data-id=\"" + event.id + "\">Редагувати</button> <button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : ''
           }, {
             iconLayout: 'default#image',
             iconImageHref: '/components/modules/Home/includes/img/events.png',
@@ -80,6 +102,18 @@
             iconImageOffset: [-24, -56],
             iconImageClipRect: [[59 * urgency, 56 * (event.category - 1)], [59 * (urgency + 1), 56 * event.category]]
           }));
+          if (is_streaming) {
+            (function(event) {
+              var placemark;
+              placemark = placemarks[placemarks.length - 1];
+              placemark.unique_id = event.id;
+              placemark.balloon.events.add('open', function() {
+                return streaming_opened = placemark;
+              }).add('close', function() {
+                return streaming_opened = false;
+              });
+            })(event);
+          }
         }
         clusterer.removeAll();
         return clusterer.add(placemarks);

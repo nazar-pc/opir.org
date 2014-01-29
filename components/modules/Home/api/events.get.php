@@ -18,7 +18,7 @@ if (isset($Index->route_ids[0])) {
 		error_code(404);
 		return;
 	}
-	if (!isset($event['id'])) {
+	if (!isset($event['user'])) {
 		error_code(403);
 		return;
 	}
