@@ -27,7 +27,7 @@
             },
             success: function() {
               map.panTo([position.coords.latitude, position.coords.longitude]);
-              setTimeout(location_updating, 30 * 1000);
+              setTimeout(location_updating, 10 * 1000);
               modal.cs().modal('hide');
               return map.update_events();
             }
@@ -52,7 +52,7 @@
             lng: position.coords.longitude
           },
           success: function() {
-            setTimeout(location_updating, 30 * 1000);
+            setTimeout(location_updating, 10 * 1000);
             return map.update_events();
           }
         });

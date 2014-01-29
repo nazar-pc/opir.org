@@ -1,5 +1,6 @@
 $ ->
 	ymaps.ready ->
+		refresh_delay		= 60
 		streaming_opened	= false
 		add_zero		= (input) ->
 			if input < 10 then '0' + input else input
@@ -105,25 +106,28 @@ $ ->
 						placemark.balloon.events
 							.add('open', ->
 								streaming_opened	= placemark
+								refresh_delay		= 10
+								map.update_events()
 							)
 							.add('close', ->
 								streaming_opened	= false
+								refresh_delay		= 60
 							)
 						return
 			clusterer.removeAll()
 			clusterer.add(placemarks)
-		update_events_interval	= 0
+		update_events_timeout	= 0
 		map.update_events		= (from_cache = false) ->
-			clearInterval(update_events_interval)
+			clearTimeout(update_events_timeout)
 			if from_cache && map.update_events.cache
 				add_events_on_map(map.update_events.cache)
-				update_events_interval	= setInterval(map.update_events, 60 * 1000)
+				update_events_timeout	= setTimeout(map.update_events, refresh_delay * 1000)
 			else
 				$.ajax(
 					url			: 'api/Home/events'
 					type		: 'get'
 					complete	: ->
-						update_events_interval	= setInterval(map.update_events, 60 * 1000)
+						update_events_timeout	= setTimeout(map.update_events, refresh_delay * 1000)
 					success		: (events) ->
 						map.update_events.cache	= events
 						add_events_on_map(events)

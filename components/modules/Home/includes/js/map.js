@@ -3,7 +3,8 @@
 
   $(function() {
     return ymaps.ready(function() {
-      var add_events_on_map, add_zero, clusterer, filter_events, placemarks, streaming_opened, update_events_interval;
+      var add_events_on_map, add_zero, clusterer, filter_events, placemarks, refresh_delay, streaming_opened, update_events_timeout;
+      refresh_delay = 60;
       streaming_opened = false;
       add_zero = function(input) {
         if (input < 10) {
@@ -110,9 +111,12 @@
               placemark = placemarks[placemarks.length - 1];
               placemark.unique_id = event.id;
               placemark.balloon.events.add('open', function() {
-                return streaming_opened = placemark;
+                streaming_opened = placemark;
+                refresh_delay = 10;
+                return map.update_events();
               }).add('close', function() {
-                return streaming_opened = false;
+                streaming_opened = false;
+                return refresh_delay = 60;
               });
             })(event);
           }
@@ -120,21 +124,21 @@
         clusterer.removeAll();
         return clusterer.add(placemarks);
       };
-      update_events_interval = 0;
+      update_events_timeout = 0;
       map.update_events = function(from_cache) {
         if (from_cache == null) {
           from_cache = false;
         }
-        clearInterval(update_events_interval);
+        clearTimeout(update_events_timeout);
         if (from_cache && map.update_events.cache) {
           add_events_on_map(map.update_events.cache);
-          update_events_interval = setInterval(map.update_events, 60 * 1000);
+          update_events_timeout = setTimeout(map.update_events, refresh_delay * 1000);
         } else {
           $.ajax({
             url: 'api/Home/events',
             type: 'get',
             complete: function() {
-              return update_events_interval = setInterval(map.update_events, 60 * 1000);
+              return update_events_timeout = setTimeout(map.update_events, refresh_delay * 1000);
             },
             success: function(events) {
               map.update_events.cache = events;

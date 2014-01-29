@@ -36,7 +36,7 @@ $ ->
 							lng			: position.coords.longitude
 						success	: ->
 							map.panTo([position.coords.latitude, position.coords.longitude])
-							setTimeout(location_updating, 30 * 1000)
+							setTimeout(location_updating, 10 * 1000)
 							modal.cs().modal('hide')
 							map.update_events()
 					)
@@ -59,7 +59,7 @@ $ ->
 						lat			: position.coords.latitude
 						lng			: position.coords.longitude
 					success	: ->
-						setTimeout(location_updating, 30 * 1000)
+						setTimeout(location_updating, 10 * 1000)
 						map.update_events()
 				)
 			->
