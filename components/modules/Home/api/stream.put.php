@@ -18,8 +18,8 @@ if (!in_array(STREAMER_GROUP, $User->get_groups())) {
 	return;
 }
 $stream_code	= trim($_POST['stream_code']);
-if (preg_match('/https:\/\/www.ustream.tv\/embed\/[0-9]+/', $stream_code, $m)) {
-	$stream_code	= $m[0];
+if (preg_match('/ustream.tv\/embed\/[0-9]+/', $stream_code, $m)) {
+	$stream_code	= "https://www.$m[0]";
 } elseif (preg_match('/(youtube.com\/embed\/|youtube.com\/watch\?v=)([0-9a-z]+)/i', $stream_code, $m)) {
 	$stream_code	= "https://www.youtube.com/embed/$m[2]";
 } elseif ($stream_code != '') {
