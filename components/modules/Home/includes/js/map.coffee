@@ -57,7 +57,7 @@ $ ->
 						map.panTo([parseFloat(event.lat) - (bounds[0][0] - bounds[1][0]) / 4, parseFloat(event.lng)])
 						return
 					continue
-				category_name	= cs.home.categories[event.category]
+				category_name	= cs.home.categories[event.category].name
 				t				= new Date(event.timeout * 1000)
 				time			=
 					add_zero(t.getHours()) + ':' + add_zero(t.getMinutes()) + ' ' +

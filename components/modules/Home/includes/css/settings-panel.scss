@@ -16,7 +16,6 @@
 		text-align  : center;
 	}
 
-
 	hr {
 		border-color : #21292f;
 	}
@@ -26,7 +25,6 @@
 		padding    : 0;
 
 		li {
-			cursor  : pointer;
 			padding : 5px 20px;
 
 			span {
@@ -34,8 +32,14 @@
 			}
 		}
 
-		li:hover,
+		h2 {
+			margin-bottom : 0;
+			text-align    : center;
+		}
+
+		[data-id]:hover,
 		.active {
+			cursor     : pointer;
 			background : #2a3036;
 		}
 

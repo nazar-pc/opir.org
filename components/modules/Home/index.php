@@ -27,9 +27,28 @@ $Page->Header	=
 			h::{'button.cs-home-sign-in'}('Увійти')
 	).
 	h::{'button.cs-home-settings'}();
-$categories		= Events_categories::instance()->get_all();
+$categories	= Events_categories::instance()->get_all();
+$groups		= Events_categories_groups::instance()->get_all();
+$groups		= array_combine(array_column($groups, 'id'), $groups);
+$groups		= array_map(
+	function ($g) {
+		$g['categories']	= [];
+		return $g;
+	},
+	$groups
+);
+$categories_			= [];
+foreach ($categories as $c) {
+	$categories_[$c['id']]	= $c;
+	$groups[$c['group']]['categories'][]	= $c['id'];
+}
+$categories	= $categories_;
+unset($categories_, $c);;
 $Page->js(
-	'cs.home = {categories:'._json_encode(array_column($categories, 'name', 'id')).',reporter:'.(in_array(STREAMER_GROUP, $User->get_groups()) ? _json_encode($User->get_data('stream_url') ?: 1) : 0).'};',
+	'cs.home = '._json_encode([
+		'categories'				=> $categories,
+		'reporter'					=> in_array(STREAMER_GROUP, $User->get_groups()) ? _json_encode($User->get_data('stream_url') ?: 1) : 0
+	]).';',
 	'code'
 );
 $Page->content(
@@ -64,18 +83,25 @@ $Page->content(
 			]
 		)).
 		h::{'ul.cs-home-filter-category li'}(array_map(
-			function ($category) {
-				return [
-					h::img([
-						'src'	=> "components/modules/Home/includes/img/$category[id].png"
-					]).
-					h::span($category['name']),
-					[
-						'data-id'	=> $category['id']
-					]
+			function ($g) use ($categories) {
+				$return = [
+					h::h2($g['name'])
 				];
+				foreach ($g['categories'] as $c) {
+					$c			= $categories[$c];
+					$return[]	= [
+						h::img([
+							'src'	=> "components/modules/Home/includes/img/$c[id].png"
+						]).
+						h::span($c['name']),
+						[
+							'data-id'	=> $c['id']
+						]
+					];
+				}
+				return $return;
 			},
-			$categories
+			array_values($groups)
 		))
 	)
 );

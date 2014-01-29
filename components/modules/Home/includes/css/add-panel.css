@@ -36,11 +36,14 @@
     list-style: none;
     padding: 20px 0; }
     .cs-home-add-panel > ul li {
-      cursor: pointer;
       padding: 5px 20px; }
       .cs-home-add-panel > ul li span {
         padding-left: 5px; }
-    .cs-home-add-panel > ul li:hover {
+    .cs-home-add-panel > ul h2 {
+      margin-bottom: 0;
+      text-align: center; }
+    .cs-home-add-panel > ul [data-id]:hover {
+      cursor: pointer;
       background: #2a3036; }
   .cs-home-add-panel textarea,
   .cs-home-add-panel input {

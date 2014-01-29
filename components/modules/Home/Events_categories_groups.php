@@ -12,9 +12,9 @@ use			cs\Cache\Prefix,
 			cs\CRUD,
 			cs\Singleton;
 /**
- * @method static \cs\modules\Home\Events_categories instance($check = false)
+ * @method static \cs\modules\Home\Events_categories_groups instance($check = false)
  */
-class Events_categories {
+class Events_categories_groups {
 	use	CRUD,
 		Singleton;
 
@@ -22,15 +22,14 @@ class Events_categories {
 	 * @var Prefix
 	 */
 	protected $cache;
-	protected $table		= '[prefix]events_categories';
+	protected $table		= '[prefix]events_categories_groups';
 	protected $data_model	= [
 		'id'	=> 'int',
-		'name'	=> 'text',
-		'group'	=> 'int'
+		'name'	=> 'text'
 	];
 
 	protected function construct () {
-		$this->cache	= new Prefix('events_categories');
+		$this->cache	= new Prefix('events_categories_groups');
 	}
 	protected function cdb () {
 		return '0';
@@ -46,7 +45,7 @@ class Events_categories {
 		return $this->read_simple($id);
 	}*/
 	/**
-	 * Get all events categories
+	 * Get all events categories groups
 	 *
 	 * @return array|bool
 	 */

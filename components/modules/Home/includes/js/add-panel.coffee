@@ -37,14 +37,7 @@ $ ->
 				.html('')
 				.toggle('fast', ->
 					if panel.css('display') != 'none'
-						content	= ''
-						for id, category of cs.home.categories
-							content	+= """
-								<li data-id="#{id}">
-									<img src="/components/modules/Home/includes/img/#{id}.png" alt="">
-									<span>#{category}</span>
-								</li>
-							"""
+						content	= $('.cs-home-filter-category').html()
 						panel.html("<ul>#{content}</ul>")
 				)
 	)
@@ -82,7 +75,7 @@ $ ->
 		edit		= $this.hasClass('cs-home-edit')
 		if edit
 			submit		= """<button class="cs-home-edit-process">Зберегти</button>"""
-			name		= cs.home.categories[edit_data.category]
+			name		= cs.home.categories[edit_data.category].name
 		else
 			category	= $this.data('id')
 			submit		= """<button class="cs-home-add-process">Додати</button>"""

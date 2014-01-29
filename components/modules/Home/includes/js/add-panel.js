@@ -35,14 +35,9 @@
     $(document).on('click', '.cs-home-add, .cs-home-add-close', function() {
       reset_options();
       return panel.html('').toggle('fast', function() {
-        var content, id, _ref;
+        var content;
         if (panel.css('display') !== 'none') {
-          content = '';
-          _ref = cs.home.categories;
-          for (id in _ref) {
-            category = _ref[id];
-            content += "<li data-id=\"" + id + "\">\n	<img src=\"/components/modules/Home/includes/img/" + id + ".png\" alt=\"\">\n	<span>" + category + "</span>\n</li>";
-          }
+          content = $('.cs-home-filter-category').html();
           return panel.html("<ul>" + content + "</ul>");
         }
       });
@@ -83,7 +78,7 @@
       edit = $this.hasClass('cs-home-edit');
       if (edit) {
         submit = "<button class=\"cs-home-edit-process\">Зберегти</button>";
-        name = cs.home.categories[edit_data.category];
+        name = cs.home.categories[edit_data.category].name;
       } else {
         category = $this.data('id');
         submit = "<button class=\"cs-home-add-process\">Додати</button>";
