@@ -1,5 +1,6 @@
 [
 	"events",
 	"stream",
-	"stream_location"
+	"stream_location",
+	"driver_location"
 ]

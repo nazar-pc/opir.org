@@ -37,7 +37,8 @@ class Events {
 		'urgency'		=> null,
 		'time'			=> 'int',
 		'time_interval'	=> 'int',
-		'img'			=> 'text'
+		'img'			=> 'text',
+		'confirmed'		=> 'int'
 	];
 
 	protected function construct () {
@@ -102,7 +103,8 @@ class Events {
 			$urgency,
 			$time,
 			$time_interval,
-			$img
+			$img,
+			$visible == AUTOMAIDAN_GROUP ? 0 : 1
 		]);
 	}
 	/**
@@ -167,19 +169,21 @@ class Events {
 				`category`,
 				`added`,
 				`timeout`,
-				`added`,
-				`timeout`,
 				`lat`,
 				`lng`,
 				`text`,
 				`urgency`,
 				`time`,
 				`time_interval`,
-				`img`
+				`img`,
+				`confirmed`
 			FROM `$this->table`
 			WHERE
 				(
-					`visible` IN($groups) OR
+					(
+						`visible` IN($groups) AND
+						`confirmed`	> 0
+					) OR
 					`user`	= $user_id
 				) AND
 				`id` = '%s'",
@@ -188,7 +192,8 @@ class Events {
 		if (!$admin && $return['user'] != $user_id) {
 			unset($return['user']);
 		}
-		$return['text']	= str_replace('&apos;', "'", $return['text']);
+		$return['confirmed']	= (int)(bool)$return['confirmed'];
+		$return['text']			= str_replace('&apos;', "'", $return['text']);
 		return $return;
 	}
 	/**
@@ -237,7 +242,8 @@ class Events {
 			$urgency,
 			$time,
 			$time_interval,
-			$img
+			$img,
+			$data['confirmed']
 		])) {
 			unset($this->cache->$id);
 			return true;
@@ -314,7 +320,10 @@ class Events {
 			FROM `$this->table`
 			WHERE
 				(
-					`visible` IN($groups) OR
+					(
+						`visible` IN($groups) AND
+						`confirmed`	> 0
+					) OR
 					`user`	= $user_id
 				) AND
 				(

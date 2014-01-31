@@ -47,7 +47,8 @@ unset($categories_, $c);;
 $Page->js(
 	'cs.home = '._json_encode([
 		'categories'				=> $categories,
-		'reporter'					=> in_array(STREAMER_GROUP, $User->get_groups()) ? _json_encode($User->get_data('stream_url') ?: 1) : 0
+		'reporter'					=> in_array(STREAMER_GROUP, $User->get_groups()) ? _json_encode($User->get_data('stream_url') ?: 1) : 0,
+		'automaidan'				=> (int)in_array(AUTOMAIDAN_GROUP, $User->get_groups())
 	]).';',
 	'code'
 );

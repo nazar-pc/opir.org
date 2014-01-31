@@ -53,13 +53,14 @@ $ ->
 		navigator.geolocation.getCurrentPosition(
 			(position) ->
 				$.ajax(
-					url		: 'api/Home/stream_location'
-					type	: 'put'
-					data	:
+					url			: 'api/Home/stream_location'
+					type		: 'put'
+					data		:
 						lat			: position.coords.latitude
 						lng			: position.coords.longitude
-					success	: ->
+					complete	: ->
 						setTimeout(location_updating, 10 * 1000)
+					success		: ->
 						map.update_events()
 				)
 			->

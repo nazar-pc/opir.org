@@ -51,8 +51,10 @@
             lat: position.coords.latitude,
             lng: position.coords.longitude
           },
+          complete: function() {
+            return setTimeout(location_updating, 10 * 1000);
+          },
           success: function() {
-            setTimeout(location_updating, 10 * 1000);
             return map.update_events();
           }
         });

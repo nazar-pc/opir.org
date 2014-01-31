@@ -19,5 +19,7 @@ define('XHTML_TAGS_STYLE',	false);
  */
 define('CS_ERROR_HANDLER', false);
 
-define('STREAMER_GROUP', 14);//TODO change back
+define('STREAMER_GROUP', 14);
 define('STREAM_CATEGORY', 28);
+
+define('AUTOMAIDAN_GROUP', 4);
