@@ -2,14 +2,14 @@
 (function() {
 
   $(function() {
-    var add_event_coords, addition_editing_panel, address_timeout, category, coords, edit_data, event_coords, map_cursor, panel, put_events_coords, reset_options, time, time_interval, timeout, uploader, urgency, visible;
+    var add_event_coords, addition_editing_panel, address_timeout, category, coords, edit_data, event_coords, map_cursor, panel, put_events_coords, reset_options, time, time_interval, time_limit, timeout, uploader, visible;
     panel = $('.cs-home-add-panel');
     category = 0;
     visible = 2;
-    urgency = 'urgent';
     time = 15;
     time_interval = 60;
-    timeout = time * time_interval;
+    time_limit = 1;
+    timeout = time * time_interval * time_limit;
     coords = [0, 0];
     event_coords = null;
     put_events_coords = false;
@@ -19,10 +19,10 @@
     uploader = null;
     reset_options = function() {
       visible = 2;
-      urgency = 'urgent';
       time = 15;
       time_interval = 60;
-      timeout = time * time_interval;
+      time_limit = 1;
+      timeout = time * time_interval * time_limit;
       coords = [0, 0];
       event_coords && map.geoObjects.remove(event_coords);
       event_coords = null;
@@ -38,7 +38,14 @@
         var content;
         if (panel.css('display') !== 'none') {
           content = $('.cs-home-filter-category').html();
-          return panel.html("<ul>" + content + "</ul>");
+          panel.html("<ul>" + content + "</ul>");
+          if (cs.home.automaidan) {
+            return panel.find('li').each(function() {
+              if ($.inArray($(this).data('id'), [1, 3, 6, 7, 8, 17, 21, 22]) === -1) {
+                return $(this).hide();
+              }
+            });
+          }
         }
       });
     });
@@ -84,7 +91,7 @@
         submit = "<button class=\"cs-home-add-process\">Додати</button>";
         name = $this.find('span').text();
       }
-      content = ("<h2>" + name + "</h2>\n<textarea placeholder=\"Коментар\"></textarea>\n<button class=\"cs-home-add-image-button uk-icon-picture-o\"> Додати фото</button>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Моїй групі активістів</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-visible uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Кому відображати</li>\n			<li data-id=\"2\">\n				<a>Моїй групі активістів</a>\n			</li>") + ("<li data-id=\"0\">\n				<a>Всім</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Терміново</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-urgency uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Терміновість</li>\n			<li data-id=\"urgent\">\n				<a>Терміново</a>\n			</li>\n			<li data-id=\"can-wait\">\n				<a>Може почекати</a>\n			</li>\n			<li data-id=\"unknown\">\n				<a>Не вказано</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<h3 class=\"cs-home-actuality-control\">Актуально протягом</h3>\n<div class=\"cs-home-actuality-control\">\n	<input class=\"cs-home-add-time\" type=\"number\" min=\"1\" value=\"15\"/>\n	<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n		<button type=\"button\" class=\"uk-button\">\n			<span class=\"uk-icon-caret-down\"></span> <span>Хвилин</span>\n		</button>\n		<div class=\"uk-dropdown\">\n			<ul class=\"cs-home-add-time-interval uk-nav uk-nav-dropdown\">\n				<li class=\"uk-nav-header\">Одиниці часу</li>\n				<li data-id=\"60\">\n					<a>Хвилин</a>\n				</li>\n				<li data-id=\"3600\">\n					<a>Годин</a>\n				</li>\n				<li data-id=\"86400\">\n					<a>Днів</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>\n<input type=\"text\" class=\"cs-home-add-location-address\" placeholder=\"Адреса або точка на карті\">\n<button class=\"cs-home-add-location uk-icon-location-arrow\"></button>\n<div>\n	<button class=\"cs-home-add-close uk-icon-times\"></button>\n	" + submit + "\n</div>");
+      content = ("<h2>" + name + "</h2>\n<textarea placeholder=\"Коментар\"></textarea>\n<button class=\"cs-home-add-image-button uk-icon-picture-o\"> Додати фото</button>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Моїй групі активістів</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-visible uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Кому відображати</li>\n			<li data-id=\"2\">\n				<a>Моїй групі активістів</a>\n			</li>") + ("<li data-id=\"0\">\n				<a>Всім</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<h3>Актуально протягом</h3>\n<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Вказаного часу</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-add-time-limit uk-nav uk-nav-dropdown\">\n			<li data-id=\"1\">\n				<a>Вказаного часу</a>\n			</li>\n			<li data-id=\"0\">\n				<a>Без обмежень</a>\n			</li>\n		</ul>\n	</div>\n</div>\n<div class=\"cs-home-actuality-control\">\n	<input class=\"cs-home-add-time\" type=\"number\" min=\"1\" value=\"15\"/>\n	<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n		<button type=\"button\" class=\"uk-button\">\n			<span class=\"uk-icon-caret-down\"></span> <span>Хвилин</span>\n		</button>\n		<div class=\"uk-dropdown\">\n			<ul class=\"cs-home-add-time-interval uk-nav uk-nav-dropdown\">\n				<li class=\"uk-nav-header\">Одиниці часу</li>\n				<li data-id=\"60\">\n					<a>Хвилин</a>\n				</li>\n				<li data-id=\"3600\">\n					<a>Годин</a>\n				</li>\n				<li data-id=\"86400\">\n					<a>Днів</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>\n<input type=\"text\" class=\"cs-home-add-location-address\" placeholder=\"Адреса або точка на карті\">\n<button class=\"cs-home-add-location uk-icon-location-arrow\"></button>\n<div>\n	<button class=\"cs-home-add-close uk-icon-times\"></button>\n	" + submit + "\n</div>");
       panel.html(content);
       put_events_coords = true;
       map_cursor = map.cursors.push('pointer');
@@ -100,7 +107,7 @@
       })();
       if (edit) {
         $(".cs-home-add-visible [data-id=" + edit_data.visible + "]").click();
-        $(".cs-home-add-urgency [data-id=" + edit_data.urgency + "]").click();
+        $('.cs-home-add-time-limit [data-id=' + (edit_data.timeout > 0 ? 1 : 0) + ']').click();
         $(".cs-home-add-time").val(edit_data.time).change();
         $(".cs-home-add-time-interval [data-id=" + edit_data.time_interval + "]").click();
         panel.find('textarea').val(edit_data.text);
@@ -115,32 +122,28 @@
       $this = $(this);
       visible = $this.data('id');
       return $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
-    }).on('click', '.cs-home-add-urgency [data-id]', function() {
+    }).on('click', '.cs-home-add-time-limit [data-id]', function() {
       var $this;
       $this = $(this);
-      urgency = $this.data('id');
-      if (urgency === 'unknown') {
-        $('.cs-home-actuality-control').hide('fast');
-      } else {
-        $('.cs-home-actuality-control').show('fast');
-      }
+      time_limit = $this.data('id');
+      timeout = time * time_interval * time_limit;
+      $('.cs-home-actuality-control')[time_limit ? 'show' : 'hide']();
       return $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
     }).on('click', '.cs-home-add-time-interval [data-id]', function() {
       var $this;
       $this = $(this);
       time_interval = $this.data('id');
-      timeout = $('.cs-home-add-time').val() * time_interval;
+      timeout = $('.cs-home-add-time').val() * time_interval * time_limit;
       return $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
     }).on('change', '.cs-home-add-time', function() {
       var $this;
       $this = $(this);
-      timeout = time_interval * $this.val();
-      return $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
+      return timeout = time_interval * $this.val() * time_limit;
     }).on('click', '.cs-home-add-location', function() {
       return alert('Клікніть місце з подією на карті');
     }).on('click', '.cs-home-add-process', function() {
       var comment, img;
-      if (category && timeout && coords[0] && coords[1] && urgency) {
+      if (category && coords[0] && coords[1]) {
         comment = panel.find('textarea').val();
         img = panel.find('.cs-home-add-image');
         return $.ajax({
@@ -155,7 +158,6 @@
             lng: coords[1],
             visible: visible,
             text: comment,
-            urgency: urgency,
             img: img.length ? img.attr('src') : ''
           },
           success: function() {
@@ -164,7 +166,7 @@
             event_coords = null;
             put_events_coords = false;
             map_cursor.remove();
-            map.update_events();
+            setTimeout(map.update_events, 5000);
             return alert('Успішно додано, дякуємо вам!');
           }
         });
@@ -173,7 +175,7 @@
       }
     }).on('click', '.cs-home-edit-process', function() {
       var comment, img;
-      if (timeout && coords[0] && coords[1] && urgency) {
+      if (coords[0] && coords[1]) {
         comment = panel.find('textarea').val();
         img = panel.find('.cs-home-add-image');
         return $.ajax({
@@ -187,7 +189,6 @@
             lng: coords[1],
             visible: visible,
             text: comment,
-            urgency: urgency,
             img: img.length ? img.attr('src') : ''
           },
           success: function() {
@@ -196,7 +197,7 @@
             event_coords = null;
             put_events_coords = false;
             map_cursor.remove();
-            map.update_events();
+            setTimeout(map.update_events, 5000);
             return alert('Успішно відредаговано!');
           }
         });

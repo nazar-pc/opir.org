@@ -23,3 +23,4 @@ define('STREAMER_GROUP', 14);
 define('STREAM_CATEGORY', 28);
 
 define('AUTOMAIDAN_GROUP', 4);
+define('AUTOMAIDAN_COORD_GROUP', 15);

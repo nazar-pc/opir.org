@@ -34,7 +34,6 @@ class Events {
 		'lng'			=> 'float',
 		'visible'		=> 'id',
 		'text'			=> 'text',
-		'urgency'		=> null,
 		'time'			=> 'int',
 		'time_interval'	=> 'int',
 		'img'			=> 'text',
@@ -45,15 +44,6 @@ class Events {
 		if (!file_exists(STORAGE.'/events')) {
 			mkdir(STORAGE.'/events');
 		}
-		$this->data_model['urgency']	= function ($in) {
-			switch ($in) {
-				default:
-					$in	= 'unknown';
-				case 'can-wait':
-				case 'urgent':
-			}
-			return $in;
-		};
 		$this->cache	= new Prefix('events');
 	}
 	protected function cdb () {
@@ -68,14 +58,13 @@ class Events {
 	 * @param $lng
 	 * @param $visible
 	 * @param $text
-	 * @param $urgency
 	 * @param $time
 	 * @param $time_interval
 	 * @param $img
 	 *
 	 * @return bool|int
 	 */
-	function add ($category, $timeout, $lat, $lng, $visible, $text, $urgency, $time, $time_interval, $img) {
+	function add ($category, $timeout, $lat, $lng, $visible, $text, $time, $time_interval, $img) {
 		$User	= User::instance();
 		if ($visible == 2) {
 			$visible	= array_filter(
@@ -95,12 +84,11 @@ class Events {
 			$User->id,
 			(int)$category,
 			TIME,
-			TIME + max(0, (int)$timeout),
+			$timeout ? TIME + max(0, (int)$timeout) : 0,
 			$lat,
 			$lng,
 			$visible,
 			$text,
-			$urgency,
 			$time,
 			$time_interval,
 			$img,
@@ -157,6 +145,34 @@ class Events {
 			$return['text']	= str_replace('&apos;', "'", $return['text']);
 			return $return;
 		}
+		if (in_array(AUTOMAIDAN_COORD_GROUP, $groups)) {
+			$return	= $this->db()->qf([
+				"SELECT
+					`id`,
+					`user`,
+					`category`,
+					`added`,
+					`timeout`,
+					`lat`,
+					`lng`,
+					`text`,
+					`time`,
+					`time_interval`,
+					`img`,
+					`confirmed`
+				FROM `$this->table`
+				WHERE
+					`confirmed`	= 0  AND
+					`id`		= '%s'",
+				$id
+			]);
+			if ($return['user'] != $user_id) {
+				unset($return['user']);
+			}
+			$return['confirmed']	= (int)(bool)$return['confirmed'];
+			$return['text']			= str_replace('&apos;', "'", $return['text']);
+			return $return;
+		}
 		$groups[]	= 0;
 		if ($User->user()) {
 			$groups[]	= 1;
@@ -172,7 +188,6 @@ class Events {
 				`lat`,
 				`lng`,
 				`text`,
-				`urgency`,
 				`time`,
 				`time_interval`,
 				`img`,
@@ -189,7 +204,7 @@ class Events {
 				`id` = '%s'",
 			$id
 		]);
-		if (!$admin && $return['user'] != $user_id) {
+		if ($return['user'] != $user_id) {
 			unset($return['user']);
 		}
 		$return['confirmed']	= (int)(bool)$return['confirmed'];
@@ -205,14 +220,13 @@ class Events {
 	 * @param $lng
 	 * @param $visible
 	 * @param $text
-	 * @param $urgency
 	 * @param $time
 	 * @param $time_interval
 	 * @param $img
 	 *
 	 * @return bool|int
 	 */
-	function set ($id, $timeout, $lat, $lng, $visible, $text, $urgency, $time, $time_interval, $img) {
+	function set ($id, $timeout, $lat, $lng, $visible, $text, $time, $time_interval, $img) {
 		$data	= $this->get($id);
 		$User	= User::instance();
 		$id		= (int)$id;
@@ -234,12 +248,11 @@ class Events {
 			$data['user'],
 			$data['category'],
 			$data['added'],
-			TIME + max(0, (int)$timeout),
+			$timeout ? TIME + max(0, (int)$timeout) : 0,
 			$lat,
 			$lng,
 			$visible,
 			$text,
-			$urgency,
 			$time,
 			$time_interval,
 			$img,
@@ -285,7 +298,7 @@ class Events {
 		if (!is_array($data) || $data['timeout'] < TIME) {
 			$data	= $this->get_data_internal();
 			$this->cache->{"all/$user_id"}	= [
-				'timeout'	=> TIME + 10,
+				'timeout'	=> TIME + 5,
 				'data'		=> $data
 			];
 			return $this->get($data);
@@ -302,14 +315,31 @@ class Events {
 				"SELECT `id`
 				FROM `$this->table`
 				WHERE
-					`timeout`	> '%s' OR
-					`urgency`	= 'unknown' AND
+					(
+						`timeout`	> '%s' OR
+						`timeout`	= 0
+					) AND
 					`lat`		!= 0 AND
 					`lng`		!= 0",
 				TIME
 			]);
 		}
 		$groups		= $User->get_groups();
+		if (in_array(AUTOMAIDAN_COORD_GROUP, $groups)) {
+			return $this->db()->qfas([
+				"SELECT `id`
+				FROM `$this->table`
+				WHERE
+					(
+						`timeout`	> '%s' OR
+						`timeout`	= 0
+					) AND
+					`confirmed`	= 0 AND
+					`lat`		!= 0 AND
+					`lng`		!= 0",
+				TIME
+			]);
+		}
 		$groups[]	= 0;
 		if ($User->user()) {
 			$groups[]	= 1;
@@ -328,7 +358,7 @@ class Events {
 				) AND
 				(
 					`timeout`	> '%s' OR
-					`urgency`	= 'unknown'
+					`timeout`	= 0
 				) AND
 				`lat`	!= 0 AND
 				`lng`	!= 0",

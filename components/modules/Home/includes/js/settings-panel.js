@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var map_container, panel;
+    var filter_category, map_container, panel;
     map_container = $('#map');
     panel = $('.cs-home-settings-panel');
     $('.cs-home-settings').click(function() {
@@ -13,7 +13,8 @@
       });
       return $('.cs-home-settings-panel').toggle('fast');
     });
-    $('.cs-home-filter-category [data-id], .cs-home-filter-urgency [data-id]').click(function() {
+    filter_category = $('.cs-home-filter-category');
+    return filter_category.find('[data-id]').click(function() {
       var $this;
       $this = $(this);
       if ($this.hasClass('active')) {
@@ -22,8 +23,7 @@
         $(this).parent().find('.active').removeClass('active').end().end().addClass('active');
       }
       return map.update_events(true);
-    });
-    return $('.cs-home-filter-category [data-group]').not('[data-id]').click(function() {
+    }).end().find('[data-group]').not('[data-id]').click(function() {
       var group;
       group = $(this).data('group');
       $(".cs-home-filter-category [data-id][data-group=" + group + "]").toggleClass('active');

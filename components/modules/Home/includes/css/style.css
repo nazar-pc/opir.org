@@ -57,3 +57,6 @@ body > header .cs-home-sign-in:before {
   background-image: url(../img/sign-in.png); }
 body > header .cs-home-sign-out:before {
   background-image: url(../img/sign-out.png); }
+
+.ymaps-image {
+  background-size: auto !important; }

@@ -43,12 +43,13 @@ foreach ($categories as $c) {
 	$groups[$c['group']]['categories'][]	= $c['id'];
 }
 $categories	= $categories_;
-unset($categories_, $c);;
+unset($categories_, $c);
 $Page->js(
 	'cs.home = '._json_encode([
-		'categories'				=> $categories,
-		'reporter'					=> in_array(STREAMER_GROUP, $User->get_groups()) ? _json_encode($User->get_data('stream_url') ?: 1) : 0,
-		'automaidan'				=> (int)in_array(AUTOMAIDAN_GROUP, $User->get_groups())
+		'categories'		=> $categories,
+		'reporter'			=> in_array(STREAMER_GROUP, $User->get_groups()) ? _json_encode($User->get_data('stream_url') ?: 1) : 0,
+		'automaidan'		=> (int)in_array(AUTOMAIDAN_GROUP, $User->get_groups()),
+		'automaidan_coord'	=> (int)in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups())
 	]).';',
 	'code'
 );
@@ -56,33 +57,6 @@ $Page->content(
 	h::{'aside.cs-home-add-panel'}().
 	h::{'aside.cs-home-settings-panel'}(
 		h::h2('Фільтр').
-		h::{'ul.cs-home-filter-urgency li'}(array_map(
-			function ($category) {
-				return [
-					h::img([
-						'src'	=> "components/modules/Home/includes/img/$category[id].png"
-					]).
-					h::span($category['name']),
-					[
-						'data-id'	=> $category['id']
-					]
-				];
-			},
-			[
-				[
-					'id'	=> 'unknown',
-					'name'	=> 'Терміновість не вказано'
-				],
-				[
-					'id'	=> 'can-wait',
-					'name'	=> 'Може почекати'
-				],
-				[
-					'id'	=> 'urgent',
-					'name'	=> 'Терміново'
-				]
-			]
-		)).
 		h::{'ul.cs-home-filter-category li'}(array_map(
 			function ($g) use ($categories) {
 				$return = [[

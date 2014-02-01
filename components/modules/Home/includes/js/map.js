@@ -3,9 +3,10 @@
 
   $(function() {
     return ymaps.ready(function() {
-      var add_events_on_map, add_zero, clusterer, filter_events, placemarks, refresh_delay, streaming_opened, update_events_timeout;
-      refresh_delay = 60;
+      var add_events_on_map, add_zero, balloon_footer, clusterer, filter_events, placemarks, refresh_delay, stop_updating, streaming_opened;
+      refresh_delay = cs.home.automaidan_coord ? 5 : 60;
       streaming_opened = false;
+      stop_updating = false;
       add_zero = function(input) {
         if (input < 10) {
           return '0' + input;
@@ -40,15 +41,17 @@
       };
       map.geoObjects.add(clusterer);
       filter_events = function(events) {
-        var categories, urgency;
+        var categories;
         categories = $('.cs-home-filter-category .active');
-        urgency = $('.cs-home-filter-urgency .active').data('id');
         return events.filter(function(event) {
-          return (!categories.length || categories.filter("[data-id=" + event.category + "]").length) && (!urgency || urgency === event.urgency);
+          return !categories.length || categories.filter("[data-id=" + event.category + "]").length;
         });
       };
       add_events_on_map = function(events) {
-        var bounds, category_name, event, img, is_streaming, new_pixel_coords, old_pixel_coords, t, text, time, urgency;
+        var bounds, category_name, event, img, is_streaming, new_pixel_coords, old_pixel_coords, t, text, time;
+        if (stop_updating) {
+          return;
+        }
         events = filter_events(events);
         placemarks = [];
         for (event in events) {
@@ -71,17 +74,7 @@
           category_name = cs.home.categories[event.category].name;
           t = new Date(event.timeout * 1000);
           time = add_zero(t.getHours()) + ':' + add_zero(t.getMinutes()) + ' ' + add_zero(t.getDate()) + '.' + add_zero(t.getMonth() + 1) + '.' + t.getFullYear();
-          urgency = (function() {
-            switch (event.urgency) {
-              case 'unknown':
-                return 0;
-              case 'can-wait':
-                return 1;
-              case 'urgent':
-                return 2;
-            }
-          })();
-          time = urgency === 0 ? '' : "<time>Актуально до " + time + "</time>";
+          time = event.timeout > 0 ? "<time>Актуально до " + time + "</time>" : '';
           text = event.text.replace(/\n/g, '<br>');
           is_streaming = false;
           if (text && text.substr(0, 7) === 'stream:') {
@@ -93,17 +86,18 @@
             text = text ? "<p>" + text + "</p>" : '';
           }
           img = event.img ? "<p><img height=\"240\" width=\"260\" src=\"" + event.img + "\" alt=\"\"></p>" : '';
+          event.confirmed = parseInt(event.confirmed);
           placemarks.push(new ymaps.Placemark([event.lat, event.lng], {
             hintContent: category_name,
             balloonContentHeader: category_name,
             balloonContentBody: "" + time + "\n" + img + "\n" + text,
-            balloonContentFooter: event.user && !is_streaming ? "<button class=\"cs-home-edit\" data-id=\"" + event.id + "\">Редагувати</button> <button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>" : ''
+            balloonContentFooter: balloon_footer(event, is_streaming)
           }, {
             iconLayout: 'default#image',
             iconImageHref: '/components/modules/Home/includes/img/events.png',
             iconImageSize: [59, 56],
             iconImageOffset: [-24, -56],
-            iconImageClipRect: [[59 * urgency, 56 * (event.category - 1)], [59 * (urgency + 1), 56 * event.category]]
+            iconImageClipRect: [[59 * (1 - event.confirmed), 56 * (event.category - 1)], [59 * event.confirmed, 56 * event.category]]
           }));
           if (is_streaming) {
             (function(event) {
@@ -116,7 +110,19 @@
                 return map.update_events();
               }).add('close', function() {
                 streaming_opened = false;
-                return refresh_delay = 60;
+                refresh_delay = 60;
+                return map.update_events(true);
+              });
+            })(event);
+          } else {
+            (function(event) {
+              var placemark;
+              placemark = placemarks[placemarks.length - 1];
+              placemark.balloon.events.add('open', function() {
+                return stop_updating = true;
+              }).add('close', function() {
+                stop_updating = false;
+                return map.update_events(true);
               });
             })(event);
           }
@@ -124,21 +130,28 @@
         clusterer.removeAll();
         return clusterer.add(placemarks);
       };
-      update_events_timeout = 0;
+      balloon_footer = function(event, is_streaming) {
+        if (cs.home.automaidan_coord) {
+          return "<button class=\"cs-home-confirm\" data-id=\"" + event.id + "\">Відправити іншого водія для перевірки</button>";
+        } else if (event.user && !is_streaming) {
+          return "<button class=\"cs-home-edit\" data-id=\"" + event.id + "\">Редагувати</button> <button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>";
+        } else {
+          return '';
+        }
+      };
       map.update_events = function(from_cache) {
         if (from_cache == null) {
           from_cache = false;
         }
-        clearTimeout(update_events_timeout);
         if (from_cache && map.update_events.cache) {
           add_events_on_map(map.update_events.cache);
-          update_events_timeout = setTimeout(map.update_events, refresh_delay * 1000);
+          setTimeout(map.update_events, refresh_delay * 1000);
         } else {
           $.ajax({
             url: 'api/Home/events',
             type: 'get',
             complete: function() {
-              return update_events_timeout = setTimeout(map.update_events, refresh_delay * 1000);
+              return setTimeout(map.update_events, refresh_delay * 1000);
             },
             success: function(events) {
               map.update_events.cache = events;

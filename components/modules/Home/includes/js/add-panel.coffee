@@ -2,10 +2,10 @@ $ ->
 	panel				= $('.cs-home-add-panel')
 	category			= 0
 	visible				= 2
-	urgency				= 'urgent'
 	time				= 15					#15 minutes by default
 	time_interval		= 60					# minutes
-	timeout				= time * time_interval
+	time_limit			= 1						#time limit enabled
+	timeout				= time * time_interval * time_limit
 	coords				= [0, 0]
 	event_coords		= null
 	put_events_coords	= false
@@ -16,10 +16,10 @@ $ ->
 	reset_options		= ->
 		# Reset
 		visible				= 2
-		urgency				= 'urgent'
 		time				= 15
 		time_interval		= 60
-		timeout				= time * time_interval
+		time_limit			= 1
+		timeout				= time * time_interval * time_limit
 		coords				= [0, 0]
 		event_coords && map.geoObjects.remove(event_coords)
 		event_coords		= null
@@ -39,6 +39,10 @@ $ ->
 					if panel.css('display') != 'none'
 						content	= $('.cs-home-filter-category').html()
 						panel.html("<ul>#{content}</ul>")
+						if cs.home.automaidan
+							panel.find('li').each ->
+								if $.inArray($(@).data('id'), [1, 3, 6, 7, 8, 17, 21, 22]) == -1 # Magic numbers - if of categories, where driver can add evens
+									$(@).hide()
 				)
 	)
 	add_event_coords	= (point) ->
@@ -103,26 +107,22 @@ $ ->
 					</ul>
 				</div>
 			</div>
+			<h3>Актуально протягом</h3>
 			<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
 				<button type="button" class="uk-button">
-					<span class="uk-icon-caret-down"></span> <span>Терміново</span>
+					<span class="uk-icon-caret-down"></span> <span>Вказаного часу</span>
 				</button>
 				<div class="uk-dropdown">
-					<ul class="cs-home-add-urgency uk-nav uk-nav-dropdown">
-						<li class="uk-nav-header">Терміновість</li>
-						<li data-id="urgent">
-							<a>Терміново</a>
+					<ul class="cs-home-add-time-limit uk-nav uk-nav-dropdown">
+						<li data-id="1">
+							<a>Вказаного часу</a>
 						</li>
-						<li data-id="can-wait">
-							<a>Може почекати</a>
-						</li>
-						<li data-id="unknown">
-							<a>Не вказано</a>
+						<li data-id="0">
+							<a>Без обмежень</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-			<h3 class="cs-home-actuality-control">Актуально протягом</h3>
 			<div class="cs-home-actuality-control">
 				<input class="cs-home-add-time" type="number" min="1" value="15"/>
 				<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
@@ -168,7 +168,7 @@ $ ->
 			)
 		if edit
 			$(".cs-home-add-visible [data-id=#{edit_data.visible}]").click()
-			$(".cs-home-add-urgency [data-id=#{edit_data.urgency}]").click()
+			$('.cs-home-add-time-limit [data-id=' + (if edit_data.timeout > 0 then 1 else 0) + ']').click()
 			$(".cs-home-add-time").val(edit_data.time).change()
 			$(".cs-home-add-time-interval [data-id=#{edit_data.time_interval}]").click()
 			panel.find('textarea').val(edit_data.text)
@@ -193,23 +193,21 @@ $ ->
 		)
 		.on(
 			'click'
-			'.cs-home-add-urgency [data-id]'
+			'.cs-home-add-time-limit [data-id]'
 			->
-				$this	= $(@)
-				urgency	= $this.data('id')
-				if urgency == 'unknown'
-					$('.cs-home-actuality-control').hide('fast')
-				else
-					$('.cs-home-actuality-control').show('fast')
+				$this		= $(@)
+				time_limit	= $this.data('id')
+				timeout		= time * time_interval * time_limit
+				$('.cs-home-actuality-control')[if time_limit then 'show' else 'hide']()
 				$this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text())
 		)
 		.on(
 			'click'
 			'.cs-home-add-time-interval [data-id]'
 			->
-				$this				= $(@)
+				$this			= $(@)
 				time_interval	= $this.data('id')
-				timeout				= $('.cs-home-add-time').val() * time_interval
+				timeout			= $('.cs-home-add-time').val() * time_interval * time_limit
 				$this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text())
 		)
 		.on(
@@ -217,8 +215,7 @@ $ ->
 			'.cs-home-add-time'
 			->
 				$this	= $(@)
-				timeout	= time_interval * $this.val()
-				$this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text())
+				timeout	= time_interval * $this.val() * time_limit
 		)
 		.on(
 			'click'
@@ -230,7 +227,7 @@ $ ->
 			'click'
 			'.cs-home-add-process'
 			->
-				if category && timeout && coords[0] && coords[1] && urgency
+				if category && coords[0] && coords[1]
 					comment	= panel.find('textarea').val()
 					img		= panel.find('.cs-home-add-image')
 					$.ajax(
@@ -245,7 +242,6 @@ $ ->
 							lng				: coords[1]
 							visible			: visible
 							text			: comment
-							urgency			: urgency
 							img				: if img.length then img.attr('src') else ''
 						success	: ->
 							panel.hide('fast')
@@ -253,7 +249,7 @@ $ ->
 							event_coords		= null
 							put_events_coords	= false
 							map_cursor.remove()
-							map.update_events()
+							setTimeout(map.update_events, 5000)
 							alert 'Успішно додано, дякуємо вам!'
 					)
 				else
@@ -263,7 +259,7 @@ $ ->
 			'click'
 			'.cs-home-edit-process'
 			->
-				if timeout && coords[0] && coords[1] && urgency
+				if coords[0] && coords[1]
 					comment	= panel.find('textarea').val()
 					img		= panel.find('.cs-home-add-image')
 					$.ajax(
@@ -277,7 +273,6 @@ $ ->
 							lng				: coords[1]
 							visible			: visible
 							text			: comment
-							urgency			: urgency
 							img				: if img.length then img.attr('src') else ''
 						success	: ->
 							panel.hide('fast')
@@ -285,7 +280,7 @@ $ ->
 							event_coords		= null
 							put_events_coords	= false
 							map_cursor.remove()
-							map.update_events()
+							setTimeout(map.update_events, 5000)
 							alert 'Успішно відредаговано!'
 					)
 				else

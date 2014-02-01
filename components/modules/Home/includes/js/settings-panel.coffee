@@ -9,20 +9,24 @@ $ ->
 				map.container.fitToViewport()
 		)
 		$('.cs-home-settings-panel').toggle('fast')
-	$('.cs-home-filter-category [data-id], .cs-home-filter-urgency [data-id]').click ->
-		$this	= $(@)
-		if $this.hasClass('active')
-			$this.removeClass('active')
-		else
-			$(@)
-				.parent()
-					.find('.active')
-						.removeClass('active')
-						.end()
-					.end()
-				.addClass('active')
-		map.update_events(true)
-	$('.cs-home-filter-category [data-group]').not('[data-id]').click ->
-		group	= $(@).data('group')
-		$(".cs-home-filter-category [data-id][data-group=#{group}]").toggleClass('active')
-		map.update_events(true)
+	filter_category	= $('.cs-home-filter-category')
+	filter_category
+		.find('[data-id]')
+			.click ->
+				$this	= $(@)
+				if $this.hasClass('active')
+					$this.removeClass('active')
+				else
+					$(@)
+						.parent()
+							.find('.active')
+								.removeClass('active')
+								.end()
+							.end()
+						.addClass('active')
+				map.update_events(true)
+			.end()
+		.find('[data-group]').not('[data-id]').click ->
+			group	= $(@).data('group')
+			$(".cs-home-filter-category [data-id][data-group=#{group}]").toggleClass('active')
+			map.update_events(true)
