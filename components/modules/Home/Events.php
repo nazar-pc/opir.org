@@ -145,7 +145,7 @@ class Events {
 			$return['text']	= str_replace('&apos;', "'", $return['text']);
 			return $return;
 		}
-		if (in_array(AUTOMAIDAN_COORD_GROUP, $groups)) {
+		if (in_array(AUTOMAIDAN_COORD_GROUP, $groups ?: [])) {
 			$return	= $this->db()->qf([
 				"SELECT
 					`id`,
@@ -356,7 +356,7 @@ class Events {
 			]);
 		}
 		$groups		= $User->get_groups();
-		if (in_array(AUTOMAIDAN_COORD_GROUP, $groups)) {
+		if (in_array(AUTOMAIDAN_COORD_GROUP, $groups ?: [])) {
 			return $this->db()->qfas([
 				"SELECT `id`
 				FROM `$this->table`
