@@ -1,7 +1,7 @@
 $ ->
 	if !cs.home.automaidan
 		return
-	do ->
+	ymaps.ready ->
 		init = setInterval (->
 			if !window.map
 				return

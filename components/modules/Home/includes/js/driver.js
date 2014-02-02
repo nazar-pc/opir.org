@@ -5,7 +5,7 @@
     if (!cs.home.automaidan) {
       return;
     }
-    return (function() {
+    return ymaps.ready(function() {
       var init;
       return init = setInterval((function() {
         var location_updating, my_location;
@@ -49,7 +49,7 @@
           alert('Потрібен доступ до вашого місцеположення, це потрібно диспетчеру');
         }
       }), 100);
-    })();
+    });
   });
 
 }).call(this);
