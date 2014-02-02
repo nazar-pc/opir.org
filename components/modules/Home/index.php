@@ -55,7 +55,7 @@ $Page->js(
 );
 $Page->content(
 	h::{'aside.cs-home-add-panel'}().
-	h::{'aside.cs-home-settings-panel'}(
+	h::{'aside.cs-home-settings-panel'}(!in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups()) ?
 		h::h2('Фільтр').
 		h::{'ul.cs-home-filter-category li'}(array_map(
 			function ($g) use ($categories) {
@@ -82,5 +82,5 @@ $Page->content(
 			},
 			array_values($groups)
 		))
-	)
+	: '')
 );

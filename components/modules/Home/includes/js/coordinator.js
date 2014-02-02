@@ -6,11 +6,11 @@
       return;
     }
     return ymaps.ready(function() {
-      var clusterer, confirm_event, event_confirm, refresh_delay, stop_updating;
+      var check_event, check_event_id, clusterer, refresh_delay, stop_updating;
       refresh_delay = 5;
       stop_updating = false;
       clusterer = new ymaps.Clusterer();
-      confirm_event = 0;
+      check_event_id = 0;
       (function() {
         var init;
         return init = setInterval((function() {
@@ -38,7 +38,7 @@
                     return;
                   }
                   return placemarks[placemarks.length - 1].events.add('click', function() {
-                    return event_confirm(id);
+                    return check_event(id);
                   });
                 };
                 for (driver in drivers) {
@@ -74,12 +74,12 @@
         }), 100);
       })();
       $('#map').on('click', '.cs-home-confirm', function() {
-        confirm_event = $(this).data('id');
+        check_event_id = $(this).data('id');
         return alert('Тепер оберіть вільного водія поблизу (синього кольору)');
       });
-      return event_confirm = function(driver) {
+      return check_event = function(driver) {
         return $.ajax({
-          url: 'api/Home/event_confirm/' + confirm_event,
+          url: 'api/Home/event_check/' + check_event_id,
           data: {
             driver: driver
           },

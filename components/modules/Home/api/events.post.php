@@ -18,7 +18,7 @@ if (!isset($_POST['category'], $_POST['timeout'], $_POST['lat'], $_POST['lng'], 
 	error_code(400);
 	return;
 }
-if (in_array(AUTOMAIDAN_GROUP, $User->get_groups()) && !in_array($_POST['category'], [1, 3, 6, 7, 8, 17, 21, 22])) {
+if (in_array(AUTOMAIDAN_GROUP, $User->get_groups()) && !in_array($_POST['category'], [1, 3, 6, 7, 8, 17, 21, 22])) {	// Magic numbers - if of categories, where driver can add events
 	error_code(403);
 	return;
 }

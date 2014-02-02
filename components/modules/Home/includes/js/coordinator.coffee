@@ -5,7 +5,7 @@ $ ->
 		refresh_delay	= 5
 		stop_updating	= false
 		clusterer		= new ymaps.Clusterer()
-		confirm_event	= 0
+		check_event_id	= 0
 		do ->
 			init = setInterval (->
 				if !window.map
@@ -41,7 +41,7 @@ $ ->
 									if driver.busy
 										return
 									placemarks[placemarks.length - 1].events.add('click', ->
-										event_confirm(id)
+										check_event(id)
 									)
 							clusterer.removeAll()
 							clusterer.add(placemarks)
@@ -65,12 +65,12 @@ $ ->
 			'click'
 			'.cs-home-confirm'
 			->
-				confirm_event	= $(@).data('id')
+				check_event_id	= $(@).data('id')
 				alert 'Тепер оберіть вільного водія поблизу (синього кольору)'
 		)
-		event_confirm	= (driver) ->
+		check_event	= (driver) ->
 			$.ajax(
-				url		: 'api/Home/event_confirm/' + confirm_event
+				url		: 'api/Home/event_check/' + check_event_id
 				data	:
 					driver	: driver
 				type	: 'post'

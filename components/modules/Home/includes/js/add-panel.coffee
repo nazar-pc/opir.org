@@ -41,7 +41,7 @@ $ ->
 						panel.html("<ul>#{content}</ul>")
 						if cs.home.automaidan
 							panel.find('li').each ->
-								if $.inArray($(@).data('id'), [1, 3, 6, 7, 8, 17, 21, 22]) == -1 # Magic numbers - if of categories, where driver can add evens
+								if $.inArray($(@).data('id'), [1, 3, 6, 7, 8, 17, 21, 22]) == -1 # Magic numbers - if of categories, where driver can add events
 									$(@).hide()
 				)
 	)

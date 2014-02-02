@@ -162,8 +162,11 @@ class Events {
 					`confirmed`
 				FROM `$this->table`
 				WHERE
-					`confirmed`	= 0  AND
-					`id`		= '%s'",
+					(
+						`confirmed`	= 0 OR
+						`category` IN (1, 3, 6, 7, 8, 17, 21, 22)
+					) AND
+					`id`		= '%s'",	// Magic numbers - if of categories, where driver can add events
 				$id
 			]);
 			if ($return['user'] != $user_id) {
@@ -264,6 +267,33 @@ class Events {
 		return false;
 	}
 	/**
+	 * Confirm event
+	 *
+	 * @param $id
+	 *
+	 * @return bool
+	 */
+	function confirm ($id) {
+		$data	= $this->db()->qf([
+			"SELECT `user`, `confirm`
+			FROM `$this->table`
+			WHERE `id` = '%s'",
+			$id
+		]);
+		$User	= User::instance();
+		if ($data['user'] == $User->id || $data['confirmed']) {
+			return false;
+		}
+		return $this->db_prime()->q(
+			"UPDATE `$this->table`
+			SET `confirmed` = '%s'
+			WHERE `id` = '%s'
+			LIMIT 1",
+			$User->id,
+			$id
+		);
+	}
+	/**
 	 * Delete event
 	 *
 	 * @param int	$id
@@ -334,9 +364,12 @@ class Events {
 						`timeout`	> '%s' OR
 						`timeout`	= 0
 					) AND
-					`confirmed`	= 0 AND
+					(
+						`confirmed`	= 0 OR
+						`category` IN (1, 3, 6, 7, 8, 17, 21, 22)
+					) AND
 					`lat`		!= 0 AND
-					`lng`		!= 0",
+					`lng`		!= 0",	// Magic numbers - if of categories, where driver can add events
 				TIME
 			]);
 		}
@@ -360,6 +393,7 @@ class Events {
 					`timeout`	> '%s' OR
 					`timeout`	= 0
 				) AND
+				`category` NOT IN (1, 3, 6, 7, 8, 17, 21, 22) AND
 				`lat`	!= 0 AND
 				`lng`	!= 0",
 			TIME

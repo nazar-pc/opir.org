@@ -7,15 +7,18 @@
  * @license		MIT License, see license.txt
  */
 namespace	cs\modules\Home;
-use			cs\Page,
+use			cs\Index,
 			cs\User;
+$Index	= Index::instance();
+if (!isset($Index->route_ids[0])) {
+	error_code(400);;
+	return;
+}
 $User	= User::instance();
-if (!in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups())) {
+if (!in_array(AUTOMAIDAN_GROUP, $User->get_groups())) {
 	error_code(403);
 	return;
 }
-$Page		= Page::instance();
-$Drivers	= Drivers::instance();
-$Page->json(
-	$Drivers->get_all() ?: []
-);
+if (!Events::instance()->confirm($Index->route_ids[0])) {
+	error_code(500);
+}
