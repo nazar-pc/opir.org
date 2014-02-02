@@ -200,7 +200,8 @@ class Events {
 				(
 					(
 						`visible` IN($groups) AND
-						`confirmed`	> 0
+						`confirmed`	> 0 AND
+						`category` NOT IN (1, 3, 6, 7, 8, 17, 21, 22)
 					) OR
 					`user`	= $user_id
 				) AND
@@ -385,7 +386,8 @@ class Events {
 				(
 					(
 						`visible` IN($groups) AND
-						`confirmed`	> 0
+						`confirmed`	> 0 AND
+						`category` NOT IN (1, 3, 6, 7, 8, 17, 21, 22)
 					) OR
 					`user`	= $user_id
 				) AND
@@ -393,7 +395,6 @@ class Events {
 					`timeout`	> '%s' OR
 					`timeout`	= 0
 				) AND
-				`category` NOT IN (1, 3, 6, 7, 8, 17, 21, 22) AND
 				`lat`	!= 0 AND
 				`lng`	!= 0",
 			TIME

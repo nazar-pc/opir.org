@@ -1,6 +1,14 @@
 $ ->
 	map_container	= $('#map')
 	panel			= $('.cs-home-settings-panel')
+	if !cs.home.automaidan && !cs.home.automaidan_coord
+		panel.find('[data-id]').each ->
+			if $.inArray($(@).data('id'), [1, 3, 6, 7, 8, 17, 21, 22]) != -1
+				$(@).remove()
+		panel.find('[data-group]:not([data-id])').each ->
+			prev	= $(@).prev()
+			if prev.is('[data-group]:not([data-id])')
+				prev.remove()
 	$('.cs-home-settings').click ->
 		map_container.animate(
 			right	: (if panel.css('display') != 'none' then 0 else 310) + 'px'
