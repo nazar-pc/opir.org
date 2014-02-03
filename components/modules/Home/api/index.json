@@ -1,8 +1,11 @@
-[
-	"drivers",
-	"events",
-	"stream",
-	"stream_location",
-	"driver_location",
-	"event_confirm"
-]
+{
+	"drivers"			: [],
+	"events"			: [
+		"index",
+		"check"
+	],
+	"stream"			: [],
+	"stream_location"	: [],
+	"driver_location"	: [],
+	"event_confirm"		: []
+}

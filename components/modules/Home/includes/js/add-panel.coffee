@@ -114,6 +114,7 @@ $ ->
 				</button>
 				<div class="uk-dropdown">
 					<ul class="cs-home-add-time-limit uk-nav uk-nav-dropdown">
+						<li class="uk-nav-header">Актуально протягом</li>
 						<li data-id="1">
 							<a>Вказаного часу</a>
 						</li>

@@ -7,18 +7,16 @@
  * @license		MIT License, see license.txt
  */
 namespace	cs\modules\Home;
-use			cs\Index,
+use			cs\Page,
 			cs\User;
-$Index	= Index::instance();
-if (!isset($Index->route_ids[0])) {
-	error_code(400);;
-	return;
-}
 $User	= User::instance();
 if (!in_array(AUTOMAIDAN_GROUP, $User->get_groups())) {
 	error_code(403);
 	return;
 }
-if (!Events::instance()->confirm($Index->route_ids[0])) {
-	error_code(500);
+$event	= Events::instance()->check_is_assigned();
+if (!$event) {
+	error_code(404);
+} else {
+	Page::instance()->json($event);
 }

@@ -6,9 +6,8 @@
       return;
     }
     return ymaps.ready(function() {
-      var check_event, check_event_id, clusterer, refresh_delay, stop_updating;
+      var check_event, check_event_id, clusterer, refresh_delay;
       refresh_delay = 5;
-      stop_updating = false;
       clusterer = new ymaps.Clusterer();
       check_event_id = 0;
       (function() {
@@ -21,9 +20,6 @@
           clearInterval(init);
           map.geoObjects.add(clusterer);
           update_drivers = function() {
-            if (stop_updating) {
-              return;
-            }
             $.ajax({
               url: 'api/Home/drivers',
               type: 'get',
@@ -73,18 +69,20 @@
           };
         }), 100);
       })();
-      $('#map').on('click', '.cs-home-confirm', function() {
+      $('#map').on('click', '.cs-home-check-assign', function() {
         check_event_id = $(this).data('id');
         return alert('Тепер оберіть вільного водія поблизу (синього кольору)');
       });
       return check_event = function(driver) {
         return $.ajax({
-          url: 'api/Home/event_check/' + check_event_id,
+          url: "api/Home/events/" + check_event_id + "/check",
           data: {
             driver: driver
           },
           type: 'post',
           success: function() {
+            map.balloon.close();
+            check_event_id = 0;
             return alert('Водій отримав повідомлення про перевірку');
           }
         });

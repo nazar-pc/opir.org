@@ -134,6 +134,9 @@ class Events {
 	 * @return array|bool
 	 */
 	protected function get_internal ($id, $User, $admin, $user_id, $groups) {
+		if (!$id) {
+			return false;
+		}
 		if ($admin) {
 			$return	= $this->db()->qf([
 				"SELECT *
@@ -159,7 +162,8 @@ class Events {
 					`time`,
 					`time_interval`,
 					`img`,
-					`confirmed`
+					`confirmed`,
+					`assigned_to`
 				FROM `$this->table`
 				WHERE
 					(
@@ -203,16 +207,19 @@ class Events {
 						`confirmed`	> 0 AND
 						`category` NOT IN (1, 3, 6, 7, 8, 17, 21, 22)
 					) OR
-					`user`	= $user_id
+					`user`			= $user_id OR
+					`assigned_to`	= $user_id
 				) AND
 				`id` = '%s'",
 			$id
 		]);
-		if ($return['user'] != $user_id) {
-			unset($return['user']);
+		if ($return) {
+			if ($return['user'] != $user_id) {
+				unset($return['user']);
+			}
+			$return['confirmed']	= (int)(bool)$return['confirmed'];
+			$return['text']			= str_replace('&apos;', "'", $return['text']);
 		}
-		$return['confirmed']	= (int)(bool)$return['confirmed'];
-		$return['text']			= str_replace('&apos;', "'", $return['text']);
 		return $return;
 	}
 	/**
@@ -268,15 +275,66 @@ class Events {
 		return false;
 	}
 	/**
+	 * Get event, to which driver is assigned
+	 *
+	 * @return array|bool
+	 */
+	function check_is_assigned () {
+		$User	= User::instance();
+		return $this->get(
+			$this->db_prime()->qfs([
+				"SELECT `id`
+				FROM `$this->table`
+				WHERE `assigned_to` = '%s'
+				LIMIT 1",
+				$User->id
+			])
+		);
+	}
+	/**
+	 * Assign driver for event checking
+	 *
+	 * @param $id
+	 * @param $driver
+	 *
+	 * @return bool
+	 */
+	function check_assign ($id, $driver) {
+		$id			= (int)$id;
+		$driver		= (int)$driver;
+		$data	= $this->db()->qf([
+			"SELECT `user`, `confirmed`, `assigned_to`
+			FROM `$this->table`
+			WHERE `id` = '%s'",
+			$id
+		]);
+		if ($data['user'] == $driver || $data['confirmed'] || $data['assigned_to']) {
+			return false;
+		}
+		if ($this->db_prime()->q(
+			"UPDATE `$this->table`
+			SET `assigned_to` = '%s'
+			WHERE `id` = '%s'
+			LIMIT 1",
+			$driver,
+			$id
+		)) {
+			unset($this->cache->$id);
+			return true;
+		}
+		return false;
+	}
+	/**
 	 * Confirm event
 	 *
 	 * @param $id
 	 *
 	 * @return bool
 	 */
-	function confirm ($id) {
+	function check_confirm ($id) {
+		$id		= (int)$id;
 		$data	= $this->db()->qf([
-			"SELECT `user`, `confirm`
+			"SELECT `user`, `confirmed`
 			FROM `$this->table`
 			WHERE `id` = '%s'",
 			$id
@@ -285,14 +343,51 @@ class Events {
 		if ($data['user'] == $User->id || $data['confirmed']) {
 			return false;
 		}
-		return $this->db_prime()->q(
+		if ($this->db_prime()->q(
 			"UPDATE `$this->table`
-			SET `confirmed` = '%s'
+			SET
+				`confirmed`		= '%s',
+				`assigned_to`	= 0
 			WHERE `id` = '%s'
 			LIMIT 1",
 			$User->id,
 			$id
-		);
+		)) {
+			unset($this->cache->$id);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * Refuse event checking
+	 *
+	 * @param $id
+	 *
+	 * @return bool
+	 */
+	function check_refuse ($id) {
+		$id		= (int)$id;
+		$data	= $this->db()->qf([
+			"SELECT `user`, `confirmed`, `assigned_to`
+			FROM `$this->table`
+			WHERE `id` = '%s'",
+			$id
+		]);
+		$User	= User::instance();
+		if ($data['user'] == $User->id || $data['confirmed'] || $data['assigned_to'] != $User->id) {
+			return false;
+		}
+		if ($this->db_prime()->q(
+			"UPDATE `$this->table`
+			SET `assigned_to` = 0
+			WHERE `id` = '%s'
+			LIMIT 1",
+			$id
+		)) {
+			unset($this->cache->$id);
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Delete event

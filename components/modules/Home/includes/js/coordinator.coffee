@@ -3,7 +3,6 @@ $ ->
 		return
 	ymaps.ready ->
 		refresh_delay	= 5
-		stop_updating	= false
 		clusterer		= new ymaps.Clusterer()
 		check_event_id	= 0
 		do ->
@@ -13,8 +12,6 @@ $ ->
 				clearInterval(init)
 				map.geoObjects.add(clusterer)
 				update_drivers			= ->
-					if stop_updating
-						return
 					$.ajax(
 						url			: 'api/Home/drivers'
 						type		: 'get'
@@ -63,17 +60,19 @@ $ ->
 			), 100
 		$('#map').on(
 			'click'
-			'.cs-home-confirm'
+			'.cs-home-check-assign'
 			->
 				check_event_id	= $(@).data('id')
 				alert 'Тепер оберіть вільного водія поблизу (синього кольору)'
 		)
 		check_event	= (driver) ->
 			$.ajax(
-				url		: 'api/Home/event_check/' + check_event_id
+				url		: "api/Home/events/#{check_event_id}/check"
 				data	:
 					driver	: driver
 				type	: 'post'
 				success	: ->
+					map.balloon.close()
+					check_event_id	= 0
 					alert 'Водій отримав повідомлення про перевірку'
 			)

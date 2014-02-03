@@ -94,7 +94,7 @@ $ ->
 							iconImageHref		: '/components/modules/Home/includes/img/events.png'
 							iconImageSize		: [59, 56]
 							iconImageOffset		: [-24, -56]
-							iconImageClipRect	: [[59 * (1 - event.confirmed), 56 * (event.category - 1)], [59 * event.confirmed, 56 * event.category]]
+							iconImageClipRect	: [[59 * (1 - event.confirmed), 56 * (event.category - 1)], [59 * (2 - event.confirmed), 56 * event.category]]
 						}
 					)
 				)
@@ -130,7 +130,7 @@ $ ->
 			clusterer.add(placemarks)
 		balloon_footer	= (event, is_streaming) ->
 			if cs.home.automaidan_coord
-				"""<button class="cs-home-confirm" data-id="#{event.id}">Відправити водія для перевірки</button>"""
+				if !parseInt(event.assigned_to) then """<button class="cs-home-check-assign" data-id="#{event.id}">Відправити водія для перевірки</button>""" else ''
 			else if event.user && !is_streaming
 				"""<button class="cs-home-edit" data-id="#{event.id}">Редагувати</button> <button onclick="cs.home.delete_event(#{event.id})">Видалити</button>"""
 			else
