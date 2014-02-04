@@ -49,6 +49,7 @@
                 }
               });
             }, function() {
+              setTimeout(location_updating, 2 * 1000);
               return alert('Не вдалось отримати доступ до вашого місцеположення');
             }, {
               enableHighAccuracy: true,
@@ -57,7 +58,8 @@
           };
           setTimeout(location_updating, 0);
         } else {
-          alert('Потрібен доступ до вашого місцеположення, це потрібно диспетчеру');
+          setTimeout(location_updating, 2 * 1000);
+          alert('Дозвольте доступ до вашого місцеположення, це потрібно диспетчеру');
         }
         check_assignment = function() {
           if (driving_point || !my_location) {
@@ -98,11 +100,6 @@
               }).then(function(route) {
                 driving_route = route;
                 route.getWayPoints().removeAll();
-                route.getPaths().options.set({
-                  balloonContenBodyLayout: ymaps.templateLayoutFactory.createClass('$[properties.humanJamsTime]'),
-                  strokeColor: '0000ffff',
-                  opacity: 0.9
-                });
                 return map.geoObjects.add(route);
               });
               map.geoObjects.add(driving_point);

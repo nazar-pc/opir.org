@@ -45,11 +45,13 @@ class Drivers {
 	 * @param $lat
 	 * @param $lng
 	 * @param $busy
+	 * @param $user
 	 *
 	 * @return bool|int
 	 */
-	function set ($lat, $lng, $busy) {
+	function set ($lat, $lng, $busy, $user = false) {
 		$User	= User::instance();
+		$user	= $user ?: $User->id;
 		return $this->db_prime()->q(
 			"INSERT INTO `$this->table`
 				(`id`, `timeout`, `lat`, `lng`, `busy`)
@@ -60,7 +62,7 @@ class Drivers {
 				`lat`		= VALUES(`lat`),
 				`lng`		= VALUES(`lng`),
 				`busy`		= VALUES(`busy`)",
-			$User->id,
+			$user,
 			TIME + 30,
 			$lat,
 			$lng,

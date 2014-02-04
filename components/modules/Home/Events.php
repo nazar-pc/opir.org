@@ -241,9 +241,13 @@ class Events {
 		$data	= $this->get($id);
 		$User	= User::instance();
 		$id		= (int)$id;
+		$groups	= $User->get_groups();
+		if (in_array(AUTOMAIDAN_GROUP, $groups)) {
+			return false;
+		}
 		if ($visible == 2) {
 			$visible	= array_filter(
-				$User->get_groups(),
+				$groups,
 				function ($group) {
 					return $group > 3;
 				}
@@ -319,6 +323,9 @@ class Events {
 			$driver,
 			$id
 		)) {
+			$Drivers	= Drivers::instance();
+			$driver		= $Drivers->get($driver);
+			$Drivers->set($driver['lat'], $driver['lng'], 1, $driver['id']);
 			unset($this->cache->$id);
 			return true;
 		}
@@ -353,6 +360,9 @@ class Events {
 			$User->id,
 			$id
 		)) {
+			$Drivers	= Drivers::instance();
+			$driver		= $Drivers->get($User->id);
+			$Drivers->set($driver['lat'], $driver['lng'], 0, $driver['id']);
 			unset($this->cache->$id);
 			return true;
 		}
@@ -384,6 +394,9 @@ class Events {
 			LIMIT 1",
 			$id
 		)) {
+			$Drivers	= Drivers::instance();
+			$driver		= $Drivers->get($User->id);
+			$Drivers->set($driver['lat'], $driver['lng'], 0, $driver['id']);
 			unset($this->cache->$id);
 			return true;
 		}

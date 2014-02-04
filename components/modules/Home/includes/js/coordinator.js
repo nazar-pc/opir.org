@@ -6,9 +6,12 @@
       return;
     }
     return ymaps.ready(function() {
-      var check_event, check_event_id, clusterer, refresh_delay;
+      var check_event, check_event_id, clusterer, refresh_delay, routes;
       refresh_delay = 5;
-      clusterer = new ymaps.Clusterer();
+      clusterer = new ymaps.Clusterer({
+        minClusterSize: 1000
+      });
+      routes = [];
       check_event_id = 0;
       (function() {
         var init;
@@ -29,8 +32,24 @@
               success: function(drivers) {
                 var driver, placemarks, _fn;
                 placemarks = [];
+                routes.length && map.geoObjects.remove(routes);
+                routes = [];
                 _fn = function(id) {
+                  var event, _ref;
                   if (driver.busy) {
+                    _ref = map.update_events.cache;
+                    for (event in _ref) {
+                      event = _ref[event];
+                      if (event.assigned_to === id) {
+                        ymaps.route([[driver.lat, driver.lng], [event.lat, event.lng]], {
+                          avoidTrafficJams: true
+                        }).then(function(route) {
+                          routes.push(route);
+                          route.getWayPoints().removeAll();
+                          return map.geoObjects.add(route);
+                        });
+                      }
+                    }
                     return;
                   }
                   return placemarks[placemarks.length - 1].events.add('click', function() {
@@ -74,6 +93,9 @@
         return alert('Тепер оберіть вільного водія поблизу (синього кольору)');
       });
       return check_event = function(driver) {
+        if (!check_event_id) {
+          return;
+        }
         return $.ajax({
           url: "api/Home/events/" + check_event_id + "/check",
           data: {

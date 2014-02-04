@@ -40,6 +40,7 @@ $ ->
 									setTimeout(location_updating, 2 * 1000)
 							)
 						->
+							setTimeout(location_updating, 2 * 1000)
 							alert 'Не вдалось отримати доступ до вашого місцеположення'
 						{
 							enableHighAccuracy	: true
@@ -48,7 +49,8 @@ $ ->
 					)
 				setTimeout(location_updating, 0)
 			else
-				alert 'Потрібен доступ до вашого місцеположення, це потрібно диспетчеру'
+				setTimeout(location_updating, 2 * 1000)
+				alert 'Дозвольте доступ до вашого місцеположення, це потрібно диспетчеру'
 			check_assignment	= ->
 				if driving_point || !my_location
 					setTimeout(check_assignment, 100)
@@ -103,11 +105,6 @@ $ ->
 						).then (route) ->
 							driving_route	= route
 							route.getWayPoints().removeAll()
-							route.getPaths().options.set({
-								 balloonContenBodyLayout	: ymaps.templateLayoutFactory.createClass('$[properties.humanJamsTime]'),
-								 strokeColor				: '0000ffff',
-								 opacity					: 0.9
-							})
 							map.geoObjects.add(route);
 						map.geoObjects.add(driving_point)
 						driving_point.balloon.open()
