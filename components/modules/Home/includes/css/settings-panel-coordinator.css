@@ -1,0 +1,48 @@
+.cs-home-settings-coordinator {
+  background: #363e45;
+  color: #fff;
+  bottom: 0;
+  font-size: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  right: 0;
+  top: 62px;
+  width: 310px; }
+  .cs-home-settings-coordinator > h2 {
+    font-weight: bold;
+    padding: 10px 20px;
+    text-align: center; }
+  .cs-home-settings-coordinator .uk-button-dropdown {
+    padding: 0 20px 10px; }
+    .cs-home-settings-coordinator .uk-button-dropdown button {
+      height: 36px;
+      text-align: left;
+      width: 270px; }
+      .cs-home-settings-coordinator .uk-button-dropdown button .uk-icon-caret-down {
+        float: right;
+        margin-top: 5px; }
+    .cs-home-settings-coordinator .uk-button-dropdown .uk-dropdown {
+      left: 20px;
+      top: -49px;
+      width: 270px; }
+  .cs-home-settings-coordinator .uk-button-dropdown + div {
+    height: inherit;
+    overflow-x: auto;
+    width: inherit; }
+    .cs-home-settings-coordinator .uk-button-dropdown + div > ul {
+      list-style: none;
+      padding: 0; }
+      .cs-home-settings-coordinator .uk-button-dropdown + div > ul li {
+        cursor: pointer;
+        padding: 5px 20px; }
+        .cs-home-settings-coordinator .uk-button-dropdown + div > ul li span {
+          padding-left: 5px; }
+      .cs-home-settings-coordinator .uk-button-dropdown + div > ul h2 {
+        margin-bottom: 0;
+        text-align: center; }
+      .cs-home-settings-coordinator .uk-button-dropdown + div > ul li:hover,
+      .cs-home-settings-coordinator .uk-button-dropdown + div > ul .active {
+        background: #2a3036; }
+      .cs-home-settings-coordinator .uk-button-dropdown + div > ul .active:hover {
+        background: #1d2226; }

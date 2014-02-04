@@ -11,6 +11,7 @@ $ ->
 			my_location		= null
 			driving_point	= null
 			driving_route	= null
+			event_coords	= null
 			if navigator.geolocation
 				location_updating	= ->
 					navigator.geolocation.getCurrentPosition(
@@ -30,6 +31,18 @@ $ ->
 								}
 							)
 							map.geoObjects.add(my_location)
+							if driving_route
+								ymaps.route(
+									[
+										my_location.geometry.getCoordinates(), event_coords
+									],
+									{
+										avoidTrafficJams	: true
+									}
+								).then (route) ->
+									driving_route	= route
+									route.getWayPoints().removeAll()
+									map.geoObjects.add(route);
 							$.ajax(
 								url			: 'api/Home/driver_location'
 								type		: 'put'
@@ -94,9 +107,10 @@ $ ->
 								iconImageClipRect	: [[59, 56 * (event.category - 1)], [59 * 2, 56 * event.category]]
 							}
 						)
+						event_coords	= [event.lat, event.lng]
 						ymaps.route(
 							[
-								my_location.geometry.getCoordinates(), [event.lat, event.lng]
+								my_location.geometry.getCoordinates(), event_coords
 							],
 							{
 								avoidTrafficJams	: true

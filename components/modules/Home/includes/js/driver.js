@@ -15,7 +15,7 @@
         }
       };
       return init = setInterval((function() {
-        var check_assignment, driving_point, driving_route, location_updating, my_location;
+        var check_assignment, driving_point, driving_route, event_coords, location_updating, my_location;
         if (!window.map) {
           return;
         }
@@ -23,6 +23,7 @@
         my_location = null;
         driving_point = null;
         driving_route = null;
+        event_coords = null;
         if (navigator.geolocation) {
           location_updating = function() {
             return navigator.geolocation.getCurrentPosition(function(position) {
@@ -37,6 +38,15 @@
                 iconImageClipRect: [[0, 0], [40, 0]]
               });
               map.geoObjects.add(my_location);
+              if (driving_route) {
+                ymaps.route([my_location.geometry.getCoordinates(), event_coords], {
+                  avoidTrafficJams: true
+                }).then(function(route) {
+                  driving_route = route;
+                  route.getWayPoints().removeAll();
+                  return map.geoObjects.add(route);
+                });
+              }
               return $.ajax({
                 url: 'api/Home/driver_location',
                 type: 'put',
@@ -94,7 +104,8 @@
                 iconImageOffset: [-24, -56],
                 iconImageClipRect: [[59, 56 * (event.category - 1)], [59 * 2, 56 * event.category]]
               });
-              ymaps.route([my_location.geometry.getCoordinates(), [event.lat, event.lng]], {
+              event_coords = [event.lat, event.lng];
+              ymaps.route([my_location.geometry.getCoordinates(), event_coords], {
                 avoidTrafficJams: true,
                 mapStateAutoApply: true
               }).then(function(route) {

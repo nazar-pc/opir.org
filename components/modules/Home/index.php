@@ -55,32 +55,37 @@ $Page->js(
 );
 $Page->content(
 	h::{'aside.cs-home-add-panel'}().
-	h::{'aside.cs-home-settings-panel'}(!in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups()) ?
-		h::h2('Фільтр').
-		h::{'ul.cs-home-filter-category li'}(array_map(
-			function ($g) use ($categories) {
-				$return = [[
-					h::h2($g['name']),
-					[
-						'data-group'	=> $g['id']
-					]
-				]];
-				foreach ($g['categories'] as $c) {
-					$c			= $categories[$c];
-					$return[]	= [
-						h::img([
-							'src'	=> "components/modules/Home/includes/img/$c[id].png"
-						]).
-						h::span($c['name']),
+	(
+		!in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups()) ? h::{'aside.cs-home-settings-panel'}(!
+			h::h2('Фільтр').
+			h::{'ul.cs-home-filter-category li'}(array_map(
+				function ($g) use ($categories) {
+					$return = [[
+						h::h2($g['name']),
 						[
-							'data-id'		=> $c['id'],
 							'data-group'	=> $g['id']
 						]
-					];
-				}
-				return $return;
-			},
-			array_values($groups)
-		))
-	: '')
+					]];
+					foreach ($g['categories'] as $c) {
+						$c			= $categories[$c];
+						$return[]	= [
+							h::img([
+								'src'	=> "components/modules/Home/includes/img/$c[id].png"
+							]).
+							h::span($c['name']),
+							[
+								'data-id'		=> $c['id'],
+								'data-group'	=> $g['id']
+							]
+						];
+					}
+					return $return;
+				},
+				array_values($groups)
+			))
+		) : h::{'aside.cs-home-settings-coordinator'}(
+			h::h2('Фільтр').
+			h::div()
+		)
+	)
 );

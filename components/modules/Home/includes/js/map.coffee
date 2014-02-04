@@ -34,6 +34,7 @@ $ ->
 			categories	= $('.cs-home-filter-category .active')
 			events.filter (event) ->
 				!categories.length || categories.filter("[data-id=#{event.category}]").length
+
 		add_events_on_map	= (events) ->
 			if stop_updating
 				return
