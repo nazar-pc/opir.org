@@ -7,13 +7,18 @@
       return;
     }
     settings_inner = $('.cs-home-settings-coordinator').children('div');
-    settings_inner.before("<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Всі події</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-filter-events-type uk-nav uk-nav-dropdown\" data-type=\"-1\">\n			<li class=\"uk-nav-header\">Відображати події</li>\n			<li data-type=\"-1\">\n				<a>Всі події</a>\n			</li>\n			<li data-type=\"0\">\n				<a>Очікують підтвердження</a>\n			</li>\n			<li data-type=\"1\">\n				<a>Підтверджені</a>\n			</li>\n		</ul>\n	</div>\n</div>");
+    settings_inner.before("<div data-uk-dropdown=\"{mode:'click'}\" class=\"uk-button-dropdown\">\n	<button type=\"button\" class=\"uk-button\">\n		<span class=\"uk-icon-caret-down\"></span> <span>Всі події</span>\n	</button>\n	<div class=\"uk-dropdown\">\n		<ul class=\"cs-home-filter-events-type uk-nav uk-nav-dropdown\">\n			<li class=\"uk-nav-header\">Відображати події</li>\n			<li data-type=\"all\">\n				<a>Всі події</a>\n			</li>\n			<li data-type=\"unconfirmed\">\n				<a>Не перевірені</a>\n			</li>\n			<li data-type=\"assigned\">\n				<a>Перевіряться</a>\n			</li>\n			<li data-type=\"confirmed\">\n				<a>Підтверджені</a>\n			</li>\n		</ul>\n	</div>\n</div>");
     $('.cs-home-filter-events-type [data-type]').click(function() {
       var $this;
       $this = $(this);
-      settings_inner.attr('data-type', $this.data('type'));
+      settings_inner.attr('class', $this.data('type'));
       $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
       return map.update_events(true);
+    });
+    settings_inner.on('mouseenter', 'li', function() {
+      var location;
+      location = $(this).data('location').split(',');
+      return map.panTo([parseFloat(location[0]), parseFloat(location[1])]);
     });
     return ymaps.ready(function() {
       var check_event, check_event_id, clusterer, refresh_delay, routes;
@@ -82,13 +87,14 @@
                 clusterer.removeAll();
                 clusterer.add(placemarks);
                 (function() {
-                  var category_name, content, event, _ref;
+                  var category_name, confirmed, content, event, _ref;
                   content = '';
                   _ref = map.update_events.cache;
                   for (event in _ref) {
                     event = _ref[event];
                     category_name = cs.home.categories[event.category].name;
-                    content += "<li data-id=\"18\" data-group=\"1\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<span>" + category_name + "</span>\n</li>";
+                    confirmed = event.confirmed ? 'confirmed' : (event.assigned_to ? 'assigned' : 'unconfirmed');
+                    content += ("<li class=\"" + confirmed + "\" data-location=\"" + event.lat + "," + event.lng + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + " <span>(додав " + event.user_login + ")</span></h2>") + (event.confirmed_login ? "підтвердив " + event.confirmed_login : (event.assigned_login ? "їде перевіряти " + event.assigned_login : '')) + "</li>";
                   }
                   return settings_inner.html("<ul>" + content + "</ul>");
                 })();

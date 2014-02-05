@@ -8,15 +8,18 @@ $ ->
 				<span class="uk-icon-caret-down"></span> <span>Всі події</span>
 			</button>
 			<div class="uk-dropdown">
-				<ul class="cs-home-filter-events-type uk-nav uk-nav-dropdown" data-type="-1">
+				<ul class="cs-home-filter-events-type uk-nav uk-nav-dropdown">
 					<li class="uk-nav-header">Відображати події</li>
-					<li data-type="-1">
+					<li data-type="all">
 						<a>Всі події</a>
 					</li>
-					<li data-type="0">
-						<a>Очікують підтвердження</a>
+					<li data-type="unconfirmed">
+						<a>Не перевірені</a>
 					</li>
-					<li data-type="1">
+					<li data-type="assigned">
+						<a>Перевіряться</a>
+					</li>
+					<li data-type="confirmed">
 						<a>Підтверджені</a>
 					</li>
 				</ul>
@@ -24,13 +27,21 @@ $ ->
 		</div>
 	""")
 	$('.cs-home-filter-events-type [data-type]').click ->
-		$this	= $(@)
-		settings_inner.attr('data-type', $this.data('type'))
+		$this						= $(@)
+		settings_inner.attr('class', $this.data('type'))
 		$this.parentsUntil('[data-uk-dropdown]')
 			.prev()
 				.find('span:last')
 					.html($this.find('a').text())
 		map.update_events(true)
+	settings_inner
+		.on(
+			'mouseenter'
+			'li'
+			->
+				location	= $(@).data('location').split(',')
+				map.panTo([parseFloat(location[0]), parseFloat(location[1])])
+		)
 	ymaps.ready ->
 		refresh_delay	= 5
 		clusterer		= new ymaps.Clusterer(
@@ -95,10 +106,12 @@ $ ->
 								content		= ''
 								for event, event of map.update_events.cache
 									category_name	= cs.home.categories[event.category].name
-									content	+= """
-										<li data-id="18" data-group="1">
+									confirmed	= if event.confirmed then 'confirmed' else (if event.assigned_to then 'assigned' else 'unconfirmed')
+									content		+= """
+										<li class="#{confirmed}" data-location="#{event.lat},#{event.lng}">
 											<img src="/components/modules/Home/includes/img/#{event.category}.png" alt="">
-											<span>#{category_name}</span>
+											<h2>#{category_name} <span>(додав #{event.user_login})</span></h2>
+											""" + (if event.confirmed_login then "підтвердив #{event.confirmed_login}" else (if event.assigned_login then "їде перевіряти #{event.assigned_login}" else '')) + """
 										</li>
 									"""
 								settings_inner.html(

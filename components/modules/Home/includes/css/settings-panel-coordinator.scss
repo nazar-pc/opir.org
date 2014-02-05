@@ -17,7 +17,7 @@
 	}
 
 	.uk-button-dropdown {
-		padding  : 0 20px 10px;
+		padding : 0 20px 10px;
 
 		button {
 			height     : 36px;
@@ -38,26 +38,39 @@
 	}
 
 	.uk-button-dropdown + div {
-		height      : inherit;
-		overflow-x  : auto;
-		width       : inherit;
+		height     : inherit;
+		overflow-x : auto;
+		width      : inherit;
 
-		> ul {
+		ul {
 			list-style : none;
 			padding    : 0;
 
 			li {
 				cursor  : pointer;
+				display : none;
+				height  : 65px;
 				padding : 5px 20px;
 
-				span {
-					padding-left : 5px;
+				img {
+					float  : left;
+					margin : 6px 5px 0 0;
+				}
+
+				h2 {
+					font-size     : 20px;
+					margin-bottom : 0;
+
+					span {
+						font-size : 16px;
+					}
 				}
 			}
 
-			h2 {
-				margin-bottom : 0;
-				text-align    : center;
+			li:after {
+				clear   : both;
+				content : '';
+				display : block;
 			}
 
 			li:hover,
@@ -69,5 +82,20 @@
 				background : #1d2226;
 			}
 		}
+	}
+
+	.all li,
+	.confirmed .confirmed,
+	.assigned .assigned,
+	.unconfirmed .unconfirmed {
+		display : block !important;
+	}
+
+	.assigned {
+		color   : #ff8b00;
+	}
+
+	.confirmed {
+		color   : #f74138;
 	}
 }

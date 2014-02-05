@@ -85,7 +85,7 @@ $Page->content(
 			))
 		) : h::{'aside.cs-home-settings-coordinator'}(
 			h::h2('Фільтр').
-			h::div()
+			h::{'div.all'}()
 		)
 	)
 );

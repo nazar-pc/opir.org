@@ -173,11 +173,13 @@ class Events {
 					`id`		= '%s'",	// Magic numbers - if of categories, where driver can add events
 				$id
 			]);
-			if ($return['user'] != $user_id) {
-				unset($return['user']);
+			if ($return) {
+				$return['user_login']		= $User->get('login', $return['user']);
+				$return['confirmed_login']	= $return['confirmed'] && $return['confirmed'] != 1 ? $User->get('login', $return['confirmed']) : '';
+				$return['assigned_login']	= $return['assigned_to'] ? $User->get('login', $return['assigned_to']) : '';
+				$return['confirmed']		= (int)(bool)$return['confirmed'];
+				$return['text']				= str_replace('&apos;', "'", $return['text']);
 			}
-			$return['confirmed']	= (int)(bool)$return['confirmed'];
-			$return['text']			= str_replace('&apos;', "'", $return['text']);
 			return $return;
 		}
 		$groups[]	= 0;

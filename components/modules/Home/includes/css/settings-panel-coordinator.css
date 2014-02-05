@@ -30,19 +30,37 @@
     height: inherit;
     overflow-x: auto;
     width: inherit; }
-    .cs-home-settings-coordinator .uk-button-dropdown + div > ul {
+    .cs-home-settings-coordinator .uk-button-dropdown + div ul {
       list-style: none;
       padding: 0; }
-      .cs-home-settings-coordinator .uk-button-dropdown + div > ul li {
+      .cs-home-settings-coordinator .uk-button-dropdown + div ul li {
         cursor: pointer;
+        display: none;
+        height: 65px;
         padding: 5px 20px; }
-        .cs-home-settings-coordinator .uk-button-dropdown + div > ul li span {
-          padding-left: 5px; }
-      .cs-home-settings-coordinator .uk-button-dropdown + div > ul h2 {
-        margin-bottom: 0;
-        text-align: center; }
-      .cs-home-settings-coordinator .uk-button-dropdown + div > ul li:hover,
-      .cs-home-settings-coordinator .uk-button-dropdown + div > ul .active {
+        .cs-home-settings-coordinator .uk-button-dropdown + div ul li img {
+          float: left;
+          margin: 6px 5px 0 0; }
+        .cs-home-settings-coordinator .uk-button-dropdown + div ul li h2 {
+          font-size: 20px;
+          margin-bottom: 0; }
+          .cs-home-settings-coordinator .uk-button-dropdown + div ul li h2 span {
+            font-size: 16px; }
+      .cs-home-settings-coordinator .uk-button-dropdown + div ul li:after {
+        clear: both;
+        content: '';
+        display: block; }
+      .cs-home-settings-coordinator .uk-button-dropdown + div ul li:hover,
+      .cs-home-settings-coordinator .uk-button-dropdown + div ul .active {
         background: #2a3036; }
-      .cs-home-settings-coordinator .uk-button-dropdown + div > ul .active:hover {
+      .cs-home-settings-coordinator .uk-button-dropdown + div ul .active:hover {
         background: #1d2226; }
+  .cs-home-settings-coordinator .all li,
+  .cs-home-settings-coordinator .confirmed .confirmed,
+  .cs-home-settings-coordinator .assigned .assigned,
+  .cs-home-settings-coordinator .unconfirmed .unconfirmed {
+    display: block !important; }
+  .cs-home-settings-coordinator .assigned {
+    color: #ff8b00; }
+  .cs-home-settings-coordinator .confirmed {
+    color: #f74138; }
