@@ -2,8 +2,8 @@ $ ->
 	panel				= $('.cs-home-add-panel')
 	category			= 0
 	visible				= 2
-	time				= 1						#1 hour by default
-	time_interval		= 3600					# hours
+	time				= 1						#1 day by default
+	time_interval		= 86400					# day
 	time_limit			= 1						#time limit enabled
 	timeout				= time * time_interval * time_limit
 	coords				= [0, 0]
@@ -17,7 +17,7 @@ $ ->
 		# Reset
 		visible				= 2
 		time				= 1
-		time_interval		= 3600
+		time_interval		= 86400
 		time_limit			= 1
 		timeout				= time * time_interval * time_limit
 		coords				= [0, 0]
@@ -128,7 +128,7 @@ $ ->
 				<input class="cs-home-add-time" type="number" min="1" value="1"/>
 				<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
 					<button type="button" class="uk-button">
-						<span class="uk-icon-caret-down"></span> <span>Годин</span>
+						<span class="uk-icon-caret-down"></span> <span>Днів</span>
 					</button>
 					<div class="uk-dropdown">
 						<ul class="cs-home-add-time-interval uk-nav uk-nav-dropdown">
