@@ -9,7 +9,8 @@
 @import "layout";
 /* mobile devices fix */
 @media (width : 800px) {
-	body {
+	.cs-home-add-panel {
+		top  : 31px;
 		zoom : 2;
 	}
 
