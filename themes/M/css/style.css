@@ -402,3 +402,10 @@ body {
   top: 62px; }
   #map .ymaps-map {
     width: inherit !important; }
+
+/* mobile devices fix */
+@media (width: 800px) {
+  .uk-form.uk-modal-dialog input,
+  .uk-form.uk-modal-dialog button {
+    font-size: 36px;
+    height: 52px; } }

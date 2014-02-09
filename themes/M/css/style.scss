@@ -5,6 +5,15 @@
  * @copyright	Copyright (c) 2011-2014, Nazar Mokrynskyi
  * @license		MIT License, see license.txt
  */
-
 @import "common/style";
 @import "layout";
+/* mobile devices fix */
+@media (width : 800px) {
+	.uk-form.uk-modal-dialog {
+		input,
+		button {
+			font-size : 36px;
+			height    : 52px;
+		}
+	}
+}
