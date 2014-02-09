@@ -405,6 +405,9 @@ body {
 
 /* mobile devices fix */
 @media (width: 800px) {
+  body {
+    zoom: 2; }
+
   .uk-form.uk-modal-dialog input,
   .uk-form.uk-modal-dialog button {
     font-size: 36px;
