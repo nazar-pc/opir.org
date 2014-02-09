@@ -9,11 +9,6 @@
 @import "layout";
 /* mobile devices fix */
 @media (width : 800px) {
-	.cs-home-add-panel {
-		top  : 31px;
-		zoom : 2;
-	}
-
 	.uk-form.uk-modal-dialog {
 		input,
 		button {
