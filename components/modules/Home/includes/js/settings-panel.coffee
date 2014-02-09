@@ -23,7 +23,7 @@ $ ->
 				'fast'
 			)
 			$('.cs-home-settings').animate(
-				right	: '-=310'
+				right	: '0'
 				'fast'
 			).removeClass('uk-icon-chevron-right').addClass('uk-icon-chevron-left')
 		else
@@ -32,7 +32,7 @@ $ ->
 				'fast'
 			)
 			$('.cs-home-settings').animate(
-				right	: '+=310'
+				right	: '310'
 				'fast'
 			).removeClass('uk-icon-chevron-left').addClass('uk-icon-chevron-right')
 	filter_category	= $('.cs-home-filter-category')
