@@ -22,11 +22,10 @@ $Page->Header	=
 				'data-title'	=> 'Ще не реалізовано'
 			]).
 			h::{'button.cs-home-add'}('Додати').
-			h::{'button.cs-home-sign-out'}('Вийти')
+			h::{'button.cs-home-sign-out'}()
 		:
 			h::{'button.cs-home-sign-in'}('Увійти')
-	).
-	h::{'button.cs-home-settings'}();
+	);
 $categories	= Events_categories::instance()->get_all();
 $groups		= Events_categories_groups::instance()->get_all();
 $groups		= array_combine(array_column($groups, 'id'), $groups);
@@ -56,7 +55,8 @@ $Page->js(
 $Page->content(
 	h::{'aside.cs-home-add-panel'}().
 	(
-		!in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups()) ? h::{'aside.cs-home-settings-panel'}(!
+		!in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups()) ? h::{'aside.cs-home-settings-panel'}(
+			h::{'div.cs-home-settings.uk-icon-chevron-right'}().
 			h::h2('Фільтр').
 			h::{'ul.cs-home-filter-category li'}(array_map(
 				function ($g) use ($categories) {

@@ -20,12 +20,28 @@
       });
     }
     $('.cs-home-settings').click(function() {
+      var shown;
+      shown = panel.css('width') !== '0px';
       map_container.animate({
-        right: (panel.css('display') !== 'none' ? 0 : 310) + 'px'
+        right: (shown ? 0 : 310) + 'px'
       }, 'fast', function() {
         return map.container.fitToViewport();
       });
-      return $('.cs-home-settings-panel').toggle('fast');
+      if (shown) {
+        panel.animate({
+          width: '0'
+        }, 'fast');
+        return $('.cs-home-settings').animate({
+          right: '-=310'
+        }, 'fast').removeClass('uk-icon-chevron-right').addClass('uk-icon-chevron-left');
+      } else {
+        panel.animate({
+          width: '310'
+        }, 'fast');
+        return $('.cs-home-settings').animate({
+          right: '+=310'
+        }, 'fast').removeClass('uk-icon-chevron-left').addClass('uk-icon-chevron-right');
+      }
     });
     filter_category = $('.cs-home-filter-category');
     return filter_category.find('[data-id]').click(function() {

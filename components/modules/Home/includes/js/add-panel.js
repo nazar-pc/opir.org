@@ -37,6 +37,9 @@
       return panel.html('').toggle('fast', function() {
         var content;
         if (panel.css('display') !== 'none') {
+          if ($('.cs-home-settings-panel, .cs-home-settings-coordinator').css('width') !== '0px') {
+            $('.cs-home-settings').click();
+          }
           content = $('.cs-home-filter-category').html();
           panel.html("<ul>" + content + "</ul>");
           if (cs.home.automaidan) {

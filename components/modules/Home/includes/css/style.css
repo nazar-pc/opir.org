@@ -1,62 +1,64 @@
-body > header .cs-home-logo {
-  position: absolute;
-  text-align: center;
-  top: 14px;
-  width: 100%; }
-body > header button[class*=cs-home-],
-body > header button[class*=cs-home-]:hover,
-body > header button[class*=cs-home-]:focus {
-  background: #0067b6;
-  color: #fff;
-  border-radius: 0;
-  height: 62px;
-  overflow-y: auto;
-  padding: 0 25px;
-  position: absolute;
-  text-align: center;
-  text-shadow: none;
-  width: 249px; }
-body > header button[class*=cs-home-]:hover {
-  background: #005ea6; }
-body > header .cs-home-chat,
-body > header .cs-home-settings {
-  background: #00579d !important;
-  padding: 0 5px !important;
-  width: auto !important; }
-body > header .cs-home-chat:hover,
-body > header .cs-home-settings:hover {
-  background: #004f8c !important; }
-body > header .cs-home-chat:before,
-body > header .cs-home-settings:before {
-  background: url(../img/chat.png) no-repeat;
-  content: '';
-  display: inline-block;
-  height: 44px;
-  vertical-align: middle;
-  width: 44px; }
-body > header .cs-home-settings:before {
-  background-image: url(../img/setting.png); }
-body > header .cs-home-add {
-  left: 61px; }
-body > header .cs-home-sign-in,
-body > header .cs-home-sign-out {
-  right: 61px; }
-body > header .cs-home-settings {
-  right: 0; }
-body > header .cs-home-add:before,
-body > header .cs-home-sign-in:before,
-body > header .cs-home-sign-out:before {
-  background: url(../img/add.png) no-repeat;
-  content: '';
-  display: inline-block;
-  height: 44px;
-  margin-right: 15px;
-  vertical-align: middle;
-  width: 44px; }
-body > header .cs-home-sign-in:before {
-  background-image: url(../img/sign-in.png); }
-body > header .cs-home-sign-out:before {
-  background-image: url(../img/sign-out.png); }
+body > header {
+  /*.cs-home-settings:before {
+  	background-image : url(../img/setting.png);
+  }*/
+  /*.cs-home-settings {
+  	right : 0;
+  }*/ }
+  body > header .cs-home-logo {
+    position: absolute;
+    text-align: center;
+    top: 14px;
+    width: 100%; }
+  body > header button[class*=cs-home-],
+  body > header button[class*=cs-home-]:hover,
+  body > header button[class*=cs-home-]:focus {
+    background: #0067b6;
+    color: #fff;
+    border-radius: 0;
+    height: 62px;
+    overflow-y: auto;
+    padding: 0 25px;
+    position: absolute;
+    text-align: center;
+    text-shadow: none;
+    width: 249px; }
+  body > header button[class*=cs-home-]:hover {
+    background: #005ea6; }
+  body > header .cs-home-chat {
+    background: #00579d !important;
+    padding: 0 5px !important;
+    width: auto !important; }
+  body > header .cs-home-chat:hover {
+    background: #004f8c !important; }
+  body > header .cs-home-chat:before {
+    background: url(../img/chat.png) no-repeat;
+    content: '';
+    display: inline-block;
+    height: 44px;
+    vertical-align: middle;
+    width: 44px; }
+  body > header .cs-home-add {
+    left: 61px; }
+  body > header .cs-home-sign-in,
+  body > header .cs-home-sign-out {
+    right: 0; }
+  body > header .cs-home-sign-out {
+    padding: 10px !important;
+    width: auto !important; }
+  body > header .cs-home-add:before,
+  body > header .cs-home-sign-in:before,
+  body > header .cs-home-sign-out:before {
+    background: url(../img/add.png) no-repeat;
+    content: '';
+    display: inline-block;
+    height: 44px;
+    vertical-align: middle;
+    width: 44px; }
+  body > header .cs-home-sign-in:before {
+    background-image: url(../img/sign-in.png); }
+  body > header .cs-home-sign-out:before {
+    background-image: url(../img/sign-out.png); }
 
 .ymaps-image {
   background-size: auto !important; }

@@ -25,20 +25,20 @@ body > header {
 		background : #005ea6;
 	}
 
-	.cs-home-chat,
-	.cs-home-settings {
+	.cs-home-chat/*,
+	.cs-home-settings*/     {
 		background : #00579d !important;
 		padding    : 0 5px !important;
 		width      : auto !important;
 	}
 
-	.cs-home-chat:hover,
-	.cs-home-settings:hover {
+	.cs-home-chat:hover/*,
+	.cs-home-settings:hover*/     {
 		background : #004f8c !important;
 	}
 
-	.cs-home-chat:before,
-	.cs-home-settings:before {
+	.cs-home-chat:before/*,
+	.cs-home-settings:before*/     {
 		background     : url(../img/chat.png) no-repeat;
 		content        : '';
 		display        : inline-block;
@@ -47,9 +47,9 @@ body > header {
 		width          : 44px;
 	}
 
-	.cs-home-settings:before {
+	/*.cs-home-settings:before {
 		background-image : url(../img/setting.png);
-	}
+	}*/
 
 	.cs-home-add {
 		left : 61px;
@@ -57,12 +57,16 @@ body > header {
 
 	.cs-home-sign-in,
 	.cs-home-sign-out {
-		right : 61px;
-	}
-
-	.cs-home-settings {
 		right : 0;
 	}
+	.cs-home-sign-out {
+		padding : 10px !important;
+		width   : auto !important;
+	}
+
+	/*.cs-home-settings {
+		right : 0;
+	}*/
 
 	.cs-home-add:before,
 	.cs-home-sign-in:before,
@@ -71,7 +75,6 @@ body > header {
 		content        : '';
 		display        : inline-block;
 		height         : 44px;
-		margin-right   : 15px;
 		vertical-align : middle;
 		width          : 44px;
 	}
@@ -85,5 +88,5 @@ body > header {
 	}
 }
 .ymaps-image {
-	background-size: auto !important;
+	background-size : auto !important;
 }
