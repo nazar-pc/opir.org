@@ -121,10 +121,12 @@ $ ->
 						placemark.balloon.events
 							.add('open', ->
 								stop_updating	= true
+								return
 							)
 							.add('close', ->
 								stop_updating	= false
-								map.update_events(true)
+								#map.update_events(true)
+								return
 							)
 						return
 			clusterer.removeAll()

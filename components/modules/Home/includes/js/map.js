@@ -119,10 +119,9 @@
               var placemark;
               placemark = placemarks[placemarks.length - 1];
               placemark.balloon.events.add('open', function() {
-                return stop_updating = true;
+                stop_updating = true;
               }).add('close', function() {
                 stop_updating = false;
-                return map.update_events(true);
               });
             })(event);
           }
