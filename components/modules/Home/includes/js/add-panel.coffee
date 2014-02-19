@@ -1,7 +1,7 @@
 $ ->
 	panel				= $('.cs-home-add-panel')
 	category			= 0
-	visible				= 2
+	visible				= 0
 	time				= 1						#1 day by default
 	time_interval		= 86400					# day
 	time_limit			= 1						#time limit enabled
@@ -89,27 +89,27 @@ $ ->
 		content		= """
 			<h2>#{name}</h2>
 			<textarea placeholder="Коментар"></textarea>
-			<button class="cs-home-add-image-button uk-icon-picture-o"> Додати фото</button>
-			<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
-				<button type="button" class="uk-button">
-					<span class="uk-icon-caret-down"></span> <span>Моїй групі активістів</span>
-				</button>
-				<div class="uk-dropdown">
-					<ul class="cs-home-add-visible uk-nav uk-nav-dropdown">
-						<li class="uk-nav-header">Кому відображати</li>
-						<li data-id="2">
-							<a>Моїй групі активістів</a>
-						</li>""" +
-#						<li data-id="1">
-#							<a>Активістам</a>
+			<button class="cs-home-add-image-button uk-icon-picture-o"> Додати фото</button>"""+
+#			<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
+#				<button type="button" class="uk-button">
+#					<span class="uk-icon-caret-down"></span> <span>Моїй групі активістів</span>
+#				</button>
+#				<div class="uk-dropdown">
+#					<ul class="cs-home-add-visible uk-nav uk-nav-dropdown">
+#						<li class="uk-nav-header">Кому відображати</li>
+#						<li data-id="2">
+#							<a>Моїй групі активістів</a>
+#						</li>""" +
+##						<li data-id="1">
+##							<a>Активістам</a>
+##						</li>
+#						"""<li data-id="0">
+#							<a>Всім</a>
 #						</li>
-						"""<li data-id="0">
-							<a>Всім</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<h3>Актуально протягом</h3>
+#					</ul>
+#				</div>
+#			</div>
+			"""<h3>Актуально протягом</h3>
 			<div data-uk-dropdown="{mode:'click'}" class="uk-button-dropdown">
 				<button type="button" class="uk-button">
 					<span class="uk-icon-caret-down"></span> <span>Вказаного часу</span>
