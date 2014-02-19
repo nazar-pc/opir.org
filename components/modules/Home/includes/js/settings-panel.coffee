@@ -22,7 +22,7 @@ $ ->
 				width	: '0'
 				'fast'
 			)
-			$('.cs-home-settings').animate(
+			$(@).animate(
 				right	: '0'
 				'fast'
 			).removeClass('uk-icon-chevron-right').addClass('uk-icon-chevron-left')
@@ -31,7 +31,7 @@ $ ->
 				width	: '310'
 				'fast'
 			)
-			$('.cs-home-settings').animate(
+			$(@).animate(
 				right	: '310'
 				'fast'
 			).removeClass('uk-icon-chevron-left').addClass('uk-icon-chevron-right')

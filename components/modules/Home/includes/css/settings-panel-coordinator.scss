@@ -10,18 +10,6 @@
 	top        : 62px;
 	width      : 310px;
 
-	.cs-home-settings {
-		background    : #363E45;
-		border-radius : 10px 0 0 10px;
-		cursor        : pointer;
-		font-size     : 48px;
-		padding       : 15px 0 15px 15px;
-		position      : fixed;
-		right         : 310px;
-		top           : 110px;
-		z-index       : 1000;
-	}
-
 	> h2 {
 		font-weight : bold;
 		padding     : 10px 20px;
@@ -104,10 +92,23 @@
 	}
 
 	.assigned {
-		color   : #ff8b00;
+		color : #ff8b00;
 	}
 
 	.confirmed {
-		color   : #f74138;
+		color : #f74138;
 	}
+}
+
+.cs-home-settings {
+	background    : #363E45;
+	border-radius : 10px 0 0 10px;
+	color         : #fff;
+	cursor        : pointer;
+	font-size     : 48px;
+	padding       : 15px 0 15px 15px;
+	position      : absolute;
+	right         : 310px;
+	top           : 110px;
+	z-index       : 1000;
 }

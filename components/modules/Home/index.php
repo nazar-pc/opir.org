@@ -69,7 +69,6 @@ $Page->content(
 	h::{'aside.cs-home-events-stream-panel'}().
 	(
 		!in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups()) ? h::{'aside.cs-home-settings-panel'}(
-			h::{'div.cs-home-settings.uk-icon-chevron-right'}().
 			h::h2('Фільтр').
 			h::{'ul.cs-home-filter-category li'}(array_map(
 				function ($g) use ($categories) {
@@ -100,5 +99,7 @@ $Page->content(
 			h::h2('Фільтр').
 			h::{'div.all'}()
 		)
-	)
+	).
+	h::{'div.cs-home-events-stream.uk-icon-chevron-left'}().
+	h::{'div.cs-home-settings.uk-icon-chevron-right'}()
 );

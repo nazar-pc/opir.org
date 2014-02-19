@@ -27,14 +27,14 @@
         panel.animate({
           width: '0'
         }, 'fast');
-        return $('.cs-home-settings').animate({
+        return $(this).animate({
           right: '0'
         }, 'fast').removeClass('uk-icon-chevron-right').addClass('uk-icon-chevron-left');
       } else {
         panel.animate({
           width: '310'
         }, 'fast');
-        return $('.cs-home-settings').animate({
+        return $(this).animate({
           right: '310'
         }, 'fast').removeClass('uk-icon-chevron-left').addClass('uk-icon-chevron-right');
       }
