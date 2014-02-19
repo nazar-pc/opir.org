@@ -80,7 +80,7 @@ class Events {
 			(new SimpleImage($img))->thumbnail(260, 240)->save($img = STORAGE.'/events/'.md5(MICROTIME.'_'.$User->id).'.png', 100);
 			$img	= url_by_source($img);
 		}
-		return $this->create_simple([
+		if ($this->create_simple([
 			$User->id,
 			(int)$category,
 			TIME,
@@ -93,7 +93,11 @@ class Events {
 			$time_interval,
 			$img,
 			$visible == AUTOMAIDAN_GROUP ? 0 : 1
-		]);
+		])) {
+			unset($this->cache->all);
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Get event

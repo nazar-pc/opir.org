@@ -252,7 +252,7 @@ $ ->
 							event_coords		= null
 							put_events_coords	= false
 							map_cursor.remove()
-							setTimeout(map.update_events, 5000)
+							map.update_events()
 							alert 'Успішно додано, дякуємо вам!'
 					)
 				else
@@ -283,7 +283,7 @@ $ ->
 							event_coords		= null
 							put_events_coords	= false
 							map_cursor.remove()
-							setTimeout(map.update_events, 5000)
+							map.update_events()
 							alert 'Успішно відредаговано!'
 					)
 				else

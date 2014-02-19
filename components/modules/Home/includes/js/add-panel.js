@@ -169,7 +169,7 @@
             event_coords = null;
             put_events_coords = false;
             map_cursor.remove();
-            setTimeout(map.update_events, 5000);
+            map.update_events();
             return alert('Успішно додано, дякуємо вам!');
           }
         });
@@ -200,7 +200,7 @@
             event_coords = null;
             put_events_coords = false;
             map_cursor.remove();
-            setTimeout(map.update_events, 5000);
+            map.update_events();
             return alert('Успішно відредаговано!');
           }
         });
