@@ -1,0 +1,58 @@
+.cs-home-events-stream-panel {
+	background : #363e45;
+	color      : #fff;
+	bottom     : 0;
+	font-size  : 16px;
+	left       : 0;
+	overflow-x : hidden;
+	overflow-y : auto;
+	position   : absolute;
+	top        : 62px;
+	width      : 310px;
+
+	> h2 {
+		font-weight : bold;
+		padding     : 10px 20px;
+		text-align  : center;
+	}
+
+	ul {
+		list-style : none;
+		padding    : 0;
+
+		li {
+			cursor  : pointer;
+			display : block;
+			padding : 5px 20px;
+
+			img {
+				float  : left;
+				margin : 6px 5px 0 0;
+			}
+
+			h2 {
+				font-size     : 20px;
+				margin-bottom : 0;
+
+				span {
+					font-size : 16px;
+				}
+			}
+		}
+
+		li:after {
+			clear   : both;
+			content : '';
+			display : block;
+		}
+
+		li:hover,
+		.active {
+			background : #2a3036;
+		}
+
+		.active:hover {
+			background : #1d2226;
+		}
+	}
+}

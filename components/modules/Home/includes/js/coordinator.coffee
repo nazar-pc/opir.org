@@ -103,19 +103,27 @@ $ ->
 							clusterer.removeAll()
 							clusterer.add(placemarks)
 							do ->
-								content		= ''
+								settings_panel_content		= ''
+								events_stream_panel_content	= ''
 								for event, event of map.update_events.cache
-									category_name	= cs.home.categories[event.category].name
-									confirmed	= if event.confirmed then 'confirmed' else (if event.assigned_to then 'assigned' else 'unconfirmed')
-									content		+= """
+									category_name					= cs.home.categories[event.category].name
+									confirmed						= if event.confirmed then 'confirmed' else (if event.assigned_to then 'assigned' else 'unconfirmed')
+									settings_panel_content			+= """
 										<li class="#{confirmed}" data-location="#{event.lat},#{event.lng}">
 											<img src="/components/modules/Home/includes/img/#{event.category}.png" alt="">
 											<h2>#{category_name} <span>(додав #{event.user_login})</span></h2>
 											""" + (if event.confirmed_login then "підтвердив #{event.confirmed_login}" else (if event.assigned_login then "їде перевіряти #{event.assigned_login}" else '')) + """
 										</li>
 									"""
+									events_stream_panel_content		+= """
+										<li data-location="#{event.lat},#{event.lng}">
+											<img src="/components/modules/Home/includes/img/#{event.category}.png" alt="">
+											<h2>#{category_name}</span></h2>
+											""" + (if event.confirmed_login then "підтвердив #{event.confirmed_login}" else (if event.assigned_login then "їде перевіряти #{event.assigned_login}" else '')) + """
+										</li>
+									"""
 								settings_inner.html(
-									"<ul>#{content}</ul>"
+									"<ul>#{settings_panel_content}</ul>"
 								)
 							return
 					)

@@ -34,12 +34,13 @@ $ ->
 			categories	= $('.cs-home-filter-category .active')
 			events.filter (event) ->
 				!categories.length || categories.filter("[data-id=#{event.category}]").length
-
+		events_stream_panel	= $('.cs-home-events-stream-panel')
 		add_events_on_map	= (events) ->
 			if stop_updating
 				return
-			events		= filter_events(events)
-			placemarks	= []
+			events						= filter_events(events)
+			placemarks					= []
+			events_stream_panel_content	= ''
 			for event, event of events
 				if streaming_opened
 					if streaming_opened.unique_id == event.id
@@ -99,6 +100,16 @@ $ ->
 						}
 					)
 				)
+				events_stream_panel_content		+= """
+					<li data-location="#{event.lat},#{event.lng}">
+						<img src="/components/modules/Home/includes/img/#{event.category}.png" alt="">
+						<h2>#{category_name}</span></h2>
+						<br>
+						#{time}
+						#{img}
+						#{text}
+					</li>
+				"""
 				if is_streaming
 					do (event = event) ->
 						placemark			= placemarks[placemarks.length - 1]
@@ -129,6 +140,7 @@ $ ->
 								return
 							)
 						return
+			events_stream_panel.html("<h2>Ефір подій</h2><ul>#{events_stream_panel_content}</ul>")
 			clusterer.removeAll()
 			clusterer.add(placemarks)
 		balloon_footer	= (event, is_streaming) ->
@@ -166,3 +178,11 @@ $ ->
 					return
 			)
 			return
+		events_stream_panel
+			.on(
+				'mouseenter'
+				'li'
+				->
+					location	= $(@).data('location').split(',')
+					map.panTo([parseFloat(location[0]), parseFloat(location[1])])
+			)

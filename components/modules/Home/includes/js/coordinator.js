@@ -87,16 +87,18 @@
                 clusterer.removeAll();
                 clusterer.add(placemarks);
                 (function() {
-                  var category_name, confirmed, content, event, _ref;
-                  content = '';
+                  var category_name, confirmed, event, events_stream_panel_content, settings_panel_content, _ref;
+                  settings_panel_content = '';
+                  events_stream_panel_content = '';
                   _ref = map.update_events.cache;
                   for (event in _ref) {
                     event = _ref[event];
                     category_name = cs.home.categories[event.category].name;
                     confirmed = event.confirmed ? 'confirmed' : (event.assigned_to ? 'assigned' : 'unconfirmed');
-                    content += ("<li class=\"" + confirmed + "\" data-location=\"" + event.lat + "," + event.lng + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + " <span>(додав " + event.user_login + ")</span></h2>") + (event.confirmed_login ? "підтвердив " + event.confirmed_login : (event.assigned_login ? "їде перевіряти " + event.assigned_login : '')) + "</li>";
+                    settings_panel_content += ("<li class=\"" + confirmed + "\" data-location=\"" + event.lat + "," + event.lng + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + " <span>(додав " + event.user_login + ")</span></h2>") + (event.confirmed_login ? "підтвердив " + event.confirmed_login : (event.assigned_login ? "їде перевіряти " + event.assigned_login : '')) + "</li>";
+                    events_stream_panel_content += ("<li data-location=\"" + event.lat + "," + event.lng + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</span></h2>") + (event.confirmed_login ? "підтвердив " + event.confirmed_login : (event.assigned_login ? "їде перевіряти " + event.assigned_login : '')) + "</li>";
                   }
-                  return settings_inner.html("<ul>" + content + "</ul>");
+                  return settings_inner.html("<ul>" + settings_panel_content + "</ul>");
                 })();
               }
             });

@@ -3,7 +3,7 @@
 
   $(function() {
     return ymaps.ready(function() {
-      var add_events_on_map, add_zero, balloon_footer, clusterer, filter_events, placemarks, refresh_delay, stop_updating, streaming_opened;
+      var add_events_on_map, add_zero, balloon_footer, clusterer, events_stream_panel, filter_events, placemarks, refresh_delay, stop_updating, streaming_opened;
       refresh_delay = cs.home.automaidan_coord ? 5 : 60;
       streaming_opened = false;
       stop_updating = false;
@@ -47,13 +47,15 @@
           return !categories.length || categories.filter("[data-id=" + event.category + "]").length;
         });
       };
+      events_stream_panel = $('.cs-home-events-stream-panel');
       add_events_on_map = function(events) {
-        var bounds, category_name, event, img, is_streaming, new_pixel_coords, old_pixel_coords, t, text, time;
+        var bounds, category_name, event, events_stream_panel_content, img, is_streaming, new_pixel_coords, old_pixel_coords, t, text, time;
         if (stop_updating) {
           return;
         }
         events = filter_events(events);
         placemarks = [];
+        events_stream_panel_content = '';
         for (event in events) {
           event = events[event];
           if (streaming_opened) {
@@ -99,6 +101,7 @@
             iconImageOffset: [-24, -56],
             iconImageClipRect: [[59 * (1 - event.confirmed), 56 * (event.category - 1)], [59 * (2 - event.confirmed), 56 * event.category]]
           }));
+          events_stream_panel_content += "<li data-location=\"" + event.lat + "," + event.lng + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</span></h2>\n	<br>\n	" + time + "\n	" + img + "\n	" + text + "\n</li>";
           if (is_streaming) {
             (function(event) {
               var placemark;
@@ -126,6 +129,7 @@
             })(event);
           }
         }
+        events_stream_panel.html("<h2>Ефір подій</h2><ul>" + events_stream_panel_content + "</ul>");
         clusterer.removeAll();
         return clusterer.add(placemarks);
       };
@@ -164,7 +168,7 @@
         }
       };
       map.update_events();
-      return cs.home.delete_event = function(id) {
+      cs.home.delete_event = function(id) {
         if (!confirm('Точно видалити?')) {
           return;
         }
@@ -176,6 +180,11 @@
           }
         });
       };
+      return events_stream_panel.on('mouseenter', 'li', function() {
+        var location;
+        location = $(this).data('location').split(',');
+        return map.panTo([parseFloat(location[0]), parseFloat(location[1])]);
+      });
     });
   });
 
