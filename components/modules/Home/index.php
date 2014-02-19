@@ -26,7 +26,8 @@ $Page->Header	=
 		h::div(
 			'Гаряча лінія: +38 050 258 17 05<br>+38 093 711 42 53'
 		).
-		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="vkontakte,facebook,twitter" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'
+		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="facebook" data-yashareLink="https://www.facebook.com/opir.org" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'.
+		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="vkontakte,twitter" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'
 	).
 	(
 		$User->user() ?
