@@ -167,6 +167,7 @@ $ ->
 			</div>
 			<input type="text" class="cs-home-add-location-address" placeholder="Адреса або точка на карті">
 			<button class="cs-home-add-location uk-icon-location-arrow"></button>
+			<p class="help">не забувайте вказувати місто для точного пошуку, і перевіряйте де помістилась точка</p>
 			<div>
 				<button class="cs-home-add-close uk-icon-times"></button>
 				#{submit}
