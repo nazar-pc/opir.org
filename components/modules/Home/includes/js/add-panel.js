@@ -18,7 +18,7 @@
     address_timeout = 0;
     uploader = null;
     reset_options = function() {
-      visible = 2;
+      visible = 0;
       time = 1;
       time_interval = 86400;
       time_limit = 1;
