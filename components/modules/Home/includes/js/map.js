@@ -48,8 +48,9 @@
         });
       };
       events_stream_panel = $('.cs-home-events-stream-panel');
+      placemarks = [];
       add_events_on_map = function(events) {
-        var a, added, bounds, category_name, event, events_stream_panel_content, img, is_streaming, new_pixel_coords, old_pixel_coords, t, text, time;
+        var a, added, bounds, category_name, event, events_stream_panel_content, img, is_streaming, new_pixel_coords, old_pixel_coords, placemark_id, t, text, timeout;
         if (stop_updating) {
           return;
         }
@@ -75,12 +76,15 @@
           }
           category_name = cs.home.categories[event.category].name;
           t = new Date(event.timeout * 1000);
-          time = add_zero(t.getHours()) + ':' + add_zero(t.getMinutes()) + ' ' + add_zero(t.getDate()) + '.' + add_zero(t.getMonth() + 1) + '.' + t.getFullYear();
-          time = event.timeout > 0 ? "<time>Актуально до " + time + "</time>" : '';
+          timeout = add_zero(t.getHours()) + ':' + add_zero(t.getMinutes()) + ' ' + add_zero(t.getDate()) + '.' + add_zero(t.getMonth() + 1) + '.' + t.getFullYear();
+          timeout = event.timeout > 0 ? "<time>Актуально до " + timeout + "</time>" : '';
+          a = new Date(event.added * 1000);
+          added = add_zero(a.getHours()) + ':' + add_zero(a.getMinutes()) + ' ' + add_zero(a.getDate()) + '.' + add_zero(a.getMonth() + 1) + '.' + a.getFullYear();
+          added = "<time>Додано " + added + "</time>";
           text = event.text.replace(/\n/g, '<br>');
           is_streaming = false;
           if (text && text.substr(0, 7) === 'stream:') {
-            time = '';
+            timeout = '';
             is_streaming = true;
             text = text.substr(7);
             text = "<p><iframe width=\"260\" height=\"240\" src=\"" + text + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>";
@@ -92,7 +96,7 @@
           placemarks.push(new ymaps.Placemark([event.lat, event.lng], {
             hintContent: category_name,
             balloonContentHeader: category_name,
-            balloonContentBody: "" + time + "\n" + img + "\n" + text,
+            balloonContentBody: "" + added + "\n" + timeout + "\n" + img + "\n" + text,
             balloonContentFooter: balloon_footer(event, is_streaming)
           }, {
             iconLayout: 'default#image',
@@ -101,9 +105,8 @@
             iconImageOffset: [-24, -56],
             iconImageClipRect: [[59 * (1 - event.confirmed), 56 * (event.category - 1)], [59 * (2 - event.confirmed), 56 * event.category]]
           }));
-          a = new Date(event.added * 1000);
-          added = add_zero(a.getHours()) + ':' + add_zero(a.getMinutes()) + ' ' + add_zero(a.getDate()) + '.' + add_zero(a.getMonth() + 1) + '.' + a.getFullYear();
-          events_stream_panel_content += "<li data-location=\"" + event.lat + "," + event.lng + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</span></h2>\n	<br>\n	<time>Додано " + added + "</time>\n	" + time + "\n	" + img + "\n	" + text + "\n</li>";
+          placemark_id = placemarks.length - 1;
+          events_stream_panel_content += "<li data-location=\"" + event.lat + "," + event.lng + "\" data-placemark=\"" + placemark_id + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</span></h2>\n	<br>\n	" + added + "\n	" + timeout + "\n	" + img + "\n	" + text + "\n</li>";
           if (is_streaming) {
             (function(event) {
               var placemark;
@@ -185,7 +188,24 @@
       return events_stream_panel.on('mouseenter', 'li', function() {
         var location;
         location = $(this).data('location').split(',');
-        return map.panTo([parseFloat(location[0]), parseFloat(location[1])]);
+        location = [parseFloat(location[0]), parseFloat(location[1])];
+        return map.panTo(location).then(function() {
+          return map.zoomRange.get(location).then(function(zoomRange) {
+            return map.setZoom(zoomRange[1], {
+              duration: 500
+            });
+          });
+        });
+      }).on('click', 'li', function() {
+        var placemark, state;
+        placemark = placemarks[$(this).data('placemark')];
+        state = clusterer.getObjectState(placemark);
+        if (state.isClustered) {
+          state.cluster.state.set('activeObject', placemark);
+          return state.cluster.events.fire('click');
+        } else {
+          return placemark.balloon.open();
+        }
       });
     });
   });

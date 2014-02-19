@@ -35,6 +35,7 @@ $ ->
 			events.filter (event) ->
 				!categories.length || categories.filter("[data-id=#{event.category}]").length
 		events_stream_panel	= $('.cs-home-events-stream-panel')
+		placemarks			= []
 		add_events_on_map	= (events) ->
 			if stop_updating
 				return
@@ -63,14 +64,19 @@ $ ->
 					continue
 				category_name	= cs.home.categories[event.category].name
 				t				= new Date(event.timeout * 1000)
-				time			=
+				timeout			=
 					add_zero(t.getHours()) + ':' + add_zero(t.getMinutes()) + ' ' +
 					add_zero(t.getDate()) + '.' + add_zero(t.getMonth() + 1) + '.' + t.getFullYear()
-				time			= if event.timeout > 0 then "<time>Актуально до #{time}</time>" else ''
+				timeout			= if event.timeout > 0 then "<time>Актуально до #{timeout}</time>" else ''
+				a				= new Date(event.added * 1000)
+				added			=
+					add_zero(a.getHours()) + ':' + add_zero(a.getMinutes()) + ' ' +
+					add_zero(a.getDate()) + '.' + add_zero(a.getMonth() + 1) + '.' + a.getFullYear()
+				added			= "<time>Додано #{added}</time>"
 				text			= event.text.replace(/\n/g, '<br>')
 				is_streaming	= false
 				if text && text.substr(0, 7) == 'stream:'
-					time			= ''
+					timeout			= ''
 					is_streaming	= true
 					text			= text.substr(7)
 					text			= """<p><iframe width="260" height="240" src="#{text}" frameborder="0" scrolling="no"></iframe></p>"""
@@ -85,7 +91,8 @@ $ ->
 							hintContent				: category_name
 							balloonContentHeader	: category_name
 							balloonContentBody		: """
-								#{time}
+								#{added}
+								#{timeout}
 								#{img}
 								#{text}
 							"""
@@ -100,17 +107,14 @@ $ ->
 						}
 					)
 				)
-				a		= new Date(event.added * 1000)
-				added	=
-					add_zero(a.getHours()) + ':' + add_zero(a.getMinutes()) + ' ' +
-					add_zero(a.getDate()) + '.' + add_zero(a.getMonth() + 1) + '.' + a.getFullYear()
-				events_stream_panel_content		+= """
-					<li data-location="#{event.lat},#{event.lng}">
+				placemark_id				= placemarks.length - 1
+				events_stream_panel_content	+= """
+					<li data-location="#{event.lat},#{event.lng}" data-placemark="#{placemark_id}">
 						<img src="/components/modules/Home/includes/img/#{event.category}.png" alt="">
 						<h2>#{category_name}</span></h2>
 						<br>
-						<time>Додано #{added}</time>
-						#{time}
+						#{added}
+						#{timeout}
 						#{img}
 						#{text}
 					</li>
@@ -189,5 +193,23 @@ $ ->
 				'li'
 				->
 					location	= $(@).data('location').split(',')
-					map.panTo([parseFloat(location[0]), parseFloat(location[1])])
+					location	= [parseFloat(location[0]), parseFloat(location[1])]
+					map.panTo(location).then ->
+						map.zoomRange.get(location).then (zoomRange) ->
+							map.setZoom(
+								zoomRange[1],
+								duration	: 500
+							)
+			)
+			.on(
+				'click'
+				'li'
+				->
+					placemark	= placemarks[$(@).data('placemark')]
+					state		= clusterer.getObjectState(placemark)
+					if state.isClustered
+						state.cluster.state.set('activeObject', placemark)
+						state.cluster.events.fire('click')
+					else
+						placemark.balloon.open()
 			)
