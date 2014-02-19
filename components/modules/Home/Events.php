@@ -116,14 +116,24 @@ class Events {
 			foreach ($id as &$i) {
 				$i	= (int)$i;
 				$i	= $Cache->get("$i/$user_id", function () use ($i, $User, $admin, $user_id, $groups) {
-					return $this->get_internal($i, $User, $admin, $user_id, $groups);
+					$return	= $this->get_internal($i, $User, $admin, $user_id, $groups);
+					if (preg_match('/(http[s]?:\/\/[^\s]*)$/Uims', $return['text'], $m)) {
+						$m				= trim($m[1], '.,');
+						$return['text']	= str_replace($m, "<a href='$m' target='_blank'>$m</a>", $return['text']);
+					}
+					return $return;
 				});
 			}
 			return $id;
 		}
 		$id			= (int)$id;
 		return $this->cache->get("$id/$user_id", function () use ($id, $User, $admin, $user_id, $groups) {
-			return $this->get_internal($id, $User, $admin, $user_id, $groups);
+			$return			= $this->get_internal($id, $User, $admin, $user_id, $groups);
+			if (preg_match('/(http[s]?:\/\/[^\s]*)$/Uims', $return['text'], $m)) {
+				$m				= trim($m[1], '.,');
+				$return['text']	= str_replace($m, "<a href='$m' target='_blank'>$m</a>", $return['text']);
+			}
+			return $return;
 		});
 	}
 	/**
