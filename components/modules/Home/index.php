@@ -12,12 +12,6 @@ use			h,
 			cs\User;
 $Page			= Page::instance();
 $User			= User::instance();
-$Page->og('image', 'https://opir.org/components/modules/Home/includes/img/share.png');
-$Page->og('image:secure_url', 'https://opir.org/components/modules/Home/includes/img/share.png');
-$Page->link([
-	'rel'	=> 'image_src',
-	'href'	=> 'https://opir.org/components/modules/Home/includes/img/share.png'
-]);
 $Page->Header	=
 	h::{'div.cs-home-logo'}(
 		h::{'a[href=/] img'}([
@@ -26,7 +20,7 @@ $Page->Header	=
 		h::div(
 			'Гаряча лінія: +38 050 258 17 05<br>+38 093 711 42 53'
 		).
-		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="vkontakte,facebook,twitter" data-yashareTheme="counter"></div>'
+		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="vkontakte,facebook,twitter" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'
 	).
 	(
 		$User->user() ?
