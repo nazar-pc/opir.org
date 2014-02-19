@@ -12,6 +12,7 @@ use			h,
 			cs\User;
 $Page			= Page::instance();
 $User			= User::instance();
+$Page->og('image', '/components/modules/Home/includes/img/share.png');
 $Page->Header	=
 	h::{'div.cs-home-logo'}(
 		h::{'a[href=/] img'}([
