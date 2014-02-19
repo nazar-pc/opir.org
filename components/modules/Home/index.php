@@ -12,6 +12,12 @@ use			h,
 			cs\User;
 $Page			= Page::instance();
 $User			= User::instance();
+$Page->og('image', 'https://opir.org/components/modules/Home/includes/img/share.png');
+$Page->og('image:secure_url', 'https://opir.org/components/modules/Home/includes/img/share.png');
+$Page->link([
+	'rel'	=> 'image_src',
+	'href'	=> 'https://opir.org/components/modules/Home/includes/img/share.png'
+]);
 $Page->Header	=
 	h::{'div.cs-home-logo'}(
 		h::{'a[href=/] img'}([
