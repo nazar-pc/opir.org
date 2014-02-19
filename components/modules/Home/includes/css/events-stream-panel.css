@@ -28,6 +28,8 @@
         margin-bottom: 0; }
         .cs-home-events-stream-panel ul li h2 span {
           font-size: 16px; }
+      .cs-home-events-stream-panel ul li time {
+        color: #717477; }
     .cs-home-events-stream-panel ul li:after {
       clear: both;
       content: '';

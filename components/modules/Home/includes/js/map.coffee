@@ -100,11 +100,16 @@ $ ->
 						}
 					)
 				)
+				a		= new Date(event.added * 1000)
+				added	=
+					add_zero(a.getHours()) + ':' + add_zero(a.getMinutes()) + ' ' +
+					add_zero(a.getDate()) + '.' + add_zero(a.getMonth() + 1) + '.' + a.getFullYear()
 				events_stream_panel_content		+= """
 					<li data-location="#{event.lat},#{event.lng}">
 						<img src="/components/modules/Home/includes/img/#{event.category}.png" alt="">
 						<h2>#{category_name}</span></h2>
 						<br>
+						<time>Додано #{added}</time>
 						#{time}
 						#{img}
 						#{text}

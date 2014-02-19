@@ -49,7 +49,7 @@
       };
       events_stream_panel = $('.cs-home-events-stream-panel');
       add_events_on_map = function(events) {
-        var bounds, category_name, event, events_stream_panel_content, img, is_streaming, new_pixel_coords, old_pixel_coords, t, text, time;
+        var a, added, bounds, category_name, event, events_stream_panel_content, img, is_streaming, new_pixel_coords, old_pixel_coords, t, text, time;
         if (stop_updating) {
           return;
         }
@@ -101,7 +101,9 @@
             iconImageOffset: [-24, -56],
             iconImageClipRect: [[59 * (1 - event.confirmed), 56 * (event.category - 1)], [59 * (2 - event.confirmed), 56 * event.category]]
           }));
-          events_stream_panel_content += "<li data-location=\"" + event.lat + "," + event.lng + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</span></h2>\n	<br>\n	" + time + "\n	" + img + "\n	" + text + "\n</li>";
+          a = new Date(event.added * 1000);
+          added = add_zero(a.getHours()) + ':' + add_zero(a.getMinutes()) + ' ' + add_zero(a.getDate()) + '.' + add_zero(a.getMonth() + 1) + '.' + a.getFullYear();
+          events_stream_panel_content += "<li data-location=\"" + event.lat + "," + event.lng + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</span></h2>\n	<br>\n	<time>Додано " + added + "</time>\n	" + time + "\n	" + img + "\n	" + text + "\n</li>";
           if (is_streaming) {
             (function(event) {
               var placemark;
