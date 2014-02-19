@@ -13,7 +13,7 @@ body > header {
     body > header .cs-home-logo > div {
       display: inline-block;
       padding-left: 50px;
-      text-align: left;
+      text-align: right;
       vertical-align: middle; }
   body > header button[class*=cs-home-],
   body > header button[class*=cs-home-]:hover,

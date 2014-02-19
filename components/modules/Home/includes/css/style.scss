@@ -6,10 +6,10 @@ body > header {
 		width      : 100%;
 
 		> div {
-			display: inline-block;
-			padding-left: 50px;
-			text-align: left;
-			vertical-align: middle;
+			display        : inline-block;
+			padding-left   : 50px;
+			text-align     : right;
+			vertical-align : middle;
 		}
 	}
 
@@ -33,19 +33,19 @@ body > header {
 	}
 
 	.cs-home-chat/*,
-	.cs-home-settings*/     {
+	.cs-home-settings*/      {
 		background : #00579d !important;
 		padding    : 0 5px !important;
 		width      : auto !important;
 	}
 
 	.cs-home-chat:hover/*,
-	.cs-home-settings:hover*/     {
+	.cs-home-settings:hover*/      {
 		background : #004f8c !important;
 	}
 
 	.cs-home-chat:before/*,
-	.cs-home-settings:before*/     {
+	.cs-home-settings:before*/      {
 		background     : url(../img/chat.png) no-repeat;
 		content        : '';
 		display        : inline-block;
