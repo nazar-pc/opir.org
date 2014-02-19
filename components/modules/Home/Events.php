@@ -206,8 +206,7 @@ class Events {
 				(
 					(
 						`visible` IN($groups) AND
-						`confirmed`	> 0 AND
-						`category` NOT IN (1, 3, 6, 7, 8, 17, 21, 22)
+						`confirmed`	> 0
 					) OR
 					`user`			= $user_id OR
 					`assigned_to`	= $user_id
@@ -496,8 +495,7 @@ class Events {
 				(
 					(
 						`visible` IN($groups) AND
-						`confirmed`	> 0 AND
-						`category` NOT IN (1, 3, 6, 7, 8, 17, 21, 22)
+						`confirmed`	> 0
 					) OR
 					`user`	= $user_id
 				) AND

@@ -6,11 +6,7 @@
     map_container = $('#map');
     panel = $('.cs-home-settings-panel, .cs-home-settings-coordinator');
     if (!cs.home.automaidan && !cs.home.automaidan_coord && !cs.is_admin) {
-      panel.find('[data-id]').each(function() {
-        if ($.inArray($(this).data('id'), [1, 3, 6, 7, 8, 17, 21, 22]) !== -1) {
-          return $(this).remove();
-        }
-      });
+      panel.find('[data-id]').each(function() {});
       panel.find('[data-group]:not([data-id])').each(function() {
         var prev;
         prev = $(this).prev();
