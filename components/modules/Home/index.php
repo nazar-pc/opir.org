@@ -13,9 +13,14 @@ use			h,
 $Page			= Page::instance();
 $User			= User::instance();
 $Page->Header	=
-	h::{'div.cs-home-logo a[href=/] img'}([
-		'src'	=> "components/modules/Home/includes/img/logo.png"
-	]).
+	h::{'div.cs-home-logo'}(
+		h::{'a[href=/] img'}([
+			'src'	=> "components/modules/Home/includes/img/logo.png"
+		]).
+		h::div(
+			'Гаряча лінія: +38 050 258 17 05<br>+38 093 711 42 53'
+		)
+	).
 	(
 		$User->user() ?
 			h::{'button.cs-home-chat'}([
