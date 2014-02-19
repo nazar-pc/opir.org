@@ -267,7 +267,7 @@ class Events {
 			$data['id'],
 			$data['user'],
 			$data['category'],
-			$data['added'],
+			TIME,
 			$timeout ? TIME + max(0, (int)$timeout) : 0,
 			$lat,
 			$lng,
@@ -464,7 +464,8 @@ class Events {
 						`timeout`	= 0
 					) AND
 					`lat`		!= 0 AND
-					`lng`		!= 0",
+					`lng`		!= 0
+				ORDER BY `added` DESC",
 				TIME
 			]);
 		}
@@ -483,7 +484,8 @@ class Events {
 						`category` IN (1, 3, 6, 7, 8, 17, 21, 22)
 					) AND
 					`lat`		!= 0 AND
-					`lng`		!= 0",	// Magic numbers - if of categories, where driver can add events
+					`lng`		!= 0
+				ORDER BY `added` DESC",	// Magic numbers - if of categories, where driver can add events
 				TIME
 			]);
 		}
@@ -508,7 +510,8 @@ class Events {
 					`timeout`	= 0
 				) AND
 				`lat`	!= 0 AND
-				`lng`	!= 0",
+				`lng`	!= 0
+			ORDER BY `added` DESC",
 			TIME
 		]);
 	}
