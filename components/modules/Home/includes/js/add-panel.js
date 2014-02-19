@@ -60,7 +60,8 @@
         iconLayout: 'default#image',
         iconImageHref: '/components/modules/Home/includes/img/new-event.png',
         iconImageSize: [91, 86],
-        iconImageOffset: [-36, -86]
+        iconImageOffset: [-36, -86],
+        iconImageShape: new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[35 - 36, 85 - 86], [65 - 36, 55 - 86], [71 - 36, 43 - 86], [72 - 36, 31 - 86], [64 - 36, 13 - 86], [53 - 36, 4 - 86], [37 - 36, 0 - 86], [22 - 36, 2 - 86], [11 - 36, 10 - 86], [3 - 36, 22 - 86], [0 - 36, 35 - 86], [3 - 36, 51 - 86], [35 - 36, 85 - 86]]]))
       });
       map.geoObjects.add(event_coords);
       return event_coords.events.add('geometrychange', function(e) {

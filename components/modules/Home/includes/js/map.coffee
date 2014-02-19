@@ -36,6 +36,22 @@ $ ->
 				!categories.length || categories.filter("[data-id=#{event.category}]").length
 		events_stream_panel	= $('.cs-home-events-stream-panel')
 		placemarks			= []
+		icons_shape			= new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([
+			[
+				[23-24, 56-58],
+				[44-24, 34-58],
+				[47-24, 23-58],
+				[45-24, 14-58],
+				[40-24, 7-58],
+				[29-24, 0-58],
+				[17-24, 0-58],
+				[7-24, 6-58],
+				[0-24, 18-58],
+				[0-24, 28-58],
+				[4-24, 36-58],
+				[23-24, 56-58]
+			]
+		]))
 		add_events_on_map	= (events) ->
 			if stop_updating
 				return
@@ -104,6 +120,7 @@ $ ->
 							iconImageSize		: [59, 56]
 							iconImageOffset		: [-24, -56]
 							iconImageClipRect	: [[59 * (1 - event.confirmed), 56 * (event.category - 1)], [59 * (2 - event.confirmed), 56 * event.category]]
+							iconImageShape		: icons_shape
 						}
 					)
 				)
