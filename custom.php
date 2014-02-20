@@ -53,7 +53,7 @@ class Page extends \cs\Page {
 		return $this;
 	}
 }
-if (
+/*if (
 	strpos($_SERVER['REQUEST_URI'], '/api/System/user/sign_in') !== false &&
 	(
 		$_SERVER['QUERY_STRING'] ||
@@ -92,3 +92,4 @@ if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] && strpos($_SERV
 	define('STOP', true);
 	exit;
 }
+*/
