@@ -149,7 +149,27 @@
           iconImageOffset: [-24, -56],
           iconImageShape: icons_shape
         }));
-        return clusterer.add(placemarks);
+        clusterer.add(placemarks);
+        if (!window.golden_shown && location.hash === '#golden-toilet') {
+          window.golden_shown = true;
+          return map.panTo([50.615181, 30.475790]).then(function() {
+            return map.zoomRange.get([50.615181, 30.475790]).then(function(zoomRange) {
+              return map.setZoom(zoomRange[1], {
+                duration: 500
+              }).then(function() {
+                var placemark, state;
+                placemark = placemarks[placemarks.length - 1];
+                state = clusterer.getObjectState(placemark);
+                if (state.isClustered) {
+                  state.cluster.state.set('activeObject', placemark);
+                  return state.cluster.events.fire('click');
+                } else {
+                  return placemark.balloon.open();
+                }
+              });
+            });
+          });
+        }
       };
       balloon_footer = function(event, is_streaming) {
         var confirmation;

@@ -188,6 +188,23 @@ $ ->
 				)
 			)
 			clusterer.add(placemarks)
+			if !window.golden_shown && location.hash == '#golden-toilet'
+				window.golden_shown	= true
+				map.panTo([50.615181,30.475790]).then ->
+					map.zoomRange.get([50.615181,30.475790]).then (zoomRange) ->
+						map.setZoom(
+							zoomRange[1],
+							duration	: 500
+						).then ->
+							placemark	= placemarks[placemarks.length - 1]
+							state		= clusterer.getObjectState(placemark)
+							if state.isClustered
+								state.cluster.state.set('activeObject', placemark)
+								state.cluster.events.fire('click')
+							else
+								placemark.balloon.open()
+
+
 		balloon_footer	= (event, is_streaming) ->
 			if cs.home.automaidan_coord
 				if !parseInt(event.assigned_to) then """<button class="cs-home-check-assign" data-id="#{event.id}">Відправити водія для перевірки</button>""" else ''
