@@ -53,3 +53,8 @@ class Page extends \cs\Page {
 		return $this;
 	}
 }
+if (strpos($_SERVER['REQUEST_URI'], '/api/System/user/sign_in') !== false && $_SERVER['QUERY_STRING']) {
+	error_code(404);
+	define('STOP', true);
+	exit;
+}
