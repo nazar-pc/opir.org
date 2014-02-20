@@ -2,8 +2,9 @@
 (function() {
 
   $(function() {
-    var add_event_coords, addition_editing_panel, address_timeout, category, coords, edit_data, event_coords, map_cursor, panel, put_events_coords, reset_options, time, time_interval, time_limit, timeout, uploader, visible;
+    var add_event_coords, addition_editing_panel, address_timeout, category, coords, edit_data, event_coords, events_stream, map_cursor, panel, put_events_coords, reset_options, time, time_interval, time_limit, timeout, uploader, visible;
     panel = $('.cs-home-add-panel');
+    events_stream = $('.cs-home-events-stream');
     category = 0;
     visible = 0;
     time = 1;
@@ -34,6 +35,7 @@
     };
     $(document).on('click', '.cs-home-add, .cs-home-add-close', function() {
       reset_options();
+      events_stream.toggle('fast');
       return panel.html('').toggle('fast', function() {
         var content;
         if (panel.css('display') !== 'none') {
@@ -166,6 +168,7 @@
           },
           success: function() {
             panel.hide('fast');
+            events_stream.toggle('show');
             map.geoObjects.remove(event_coords);
             event_coords = null;
             put_events_coords = false;
@@ -197,6 +200,7 @@
           },
           success: function() {
             panel.hide('fast');
+            events_stream.toggle('show');
             map.geoObjects.remove(event_coords);
             event_coords = null;
             put_events_coords = false;
@@ -237,6 +241,7 @@
           edit_data = data;
           reset_options();
           panel.show('fast');
+          events_stream.hide('show');
           return addition_editing_panel.call(item);
         }
       });

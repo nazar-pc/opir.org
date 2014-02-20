@@ -1,5 +1,6 @@
 $ ->
 	panel				= $('.cs-home-add-panel')
+	events_stream		= $('.cs-home-events-stream')
 	category			= 0
 	visible				= 0
 	time				= 1						#1 day by default
@@ -33,6 +34,7 @@ $ ->
 		'.cs-home-add, .cs-home-add-close'
 		->
 			reset_options()
+			events_stream.toggle('fast')
 			panel
 				.html('')
 				.toggle('fast', ->
@@ -266,6 +268,7 @@ $ ->
 							img				: if img.length then img.attr('src') else ''
 						success	: ->
 							panel.hide('fast')
+							events_stream.toggle('show')
 							map.geoObjects.remove(event_coords)
 							event_coords		= null
 							put_events_coords	= false
@@ -297,6 +300,7 @@ $ ->
 							img				: if img.length then img.attr('src') else ''
 						success	: ->
 							panel.hide('fast')
+							events_stream.toggle('show')
 							map.geoObjects.remove(event_coords)
 							event_coords		= null
 							put_events_coords	= false
@@ -342,6 +346,7 @@ $ ->
 						edit_data	= data
 						reset_options()
 						panel.show('fast')
+						events_stream.hide('show')
 						addition_editing_panel.call(item)
 				)
 		)
