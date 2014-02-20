@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var settings_inner;
+    var focus_map_timer, settings_inner;
     if (!cs.home.automaidan_coord) {
       return;
     }
@@ -15,10 +15,18 @@
       $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
       return map.update_events(true);
     });
-    settings_inner.on('mouseenter', 'li', function() {
-      var location;
-      location = $(this).data('location').split(',');
-      return map.panTo([parseFloat(location[0]), parseFloat(location[1])]);
+    focus_map_timer = 0;
+    settings_inner.on('mousemove', 'li', function() {
+      var $this;
+      $this = $(this);
+      clearTimeout(focus_map_timer);
+      return focus_map_timer = setTimeout((function() {
+        var location;
+        location = $this.data('location').split(',');
+        return map.panTo([parseFloat(location[0]), parseFloat(location[1])]);
+      }), 300);
+    }).on('mouseleave', 'li', function() {
+      return clearTimeout(focus_map_timer);
     });
     return ymaps.ready(function() {
       var check_event, check_event_id, clusterer, refresh_delay, routes;

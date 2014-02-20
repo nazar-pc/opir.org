@@ -34,13 +34,24 @@ $ ->
 				.find('span:last')
 					.html($this.find('a').text())
 		map.update_events(true)
+	focus_map_timer	= 0
 	settings_inner
 		.on(
-			'mouseenter'
+			'mousemove'
 			'li'
 			->
-				location	= $(@).data('location').split(',')
-				map.panTo([parseFloat(location[0]), parseFloat(location[1])])
+				$this	= $(@)
+				clearTimeout(focus_map_timer)
+				focus_map_timer = setTimeout (->
+					location	= $this.data('location').split(',')
+					map.panTo([parseFloat(location[0]), parseFloat(location[1])])
+				), 300
+		)
+		.on(
+			'mouseleave'
+			'li'
+			->
+				clearTimeout(focus_map_timer)
 		)
 	ymaps.ready ->
 		refresh_delay	= 5

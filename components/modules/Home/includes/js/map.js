@@ -3,7 +3,7 @@
 
   $(function() {
     return ymaps.ready(function() {
-      var add_events_on_map, add_zero, balloon_footer, clusterer, events_stream_panel, filter_events, icons_shape, placemarks, refresh_delay, stop_updating, streaming_opened;
+      var add_events_on_map, add_zero, balloon_footer, clusterer, events_stream_panel, filter_events, focus_map_timer, icons_shape, placemarks, refresh_delay, stop_updating, streaming_opened;
       refresh_delay = cs.home.automaidan_coord ? 5 : 60;
       streaming_opened = false;
       stop_updating = false;
@@ -187,17 +187,25 @@
           }
         });
       };
-      return events_stream_panel.on('mouseenter', 'li', function() {
-        var location;
-        location = $(this).data('location').split(',');
-        location = [parseFloat(location[0]), parseFloat(location[1])];
-        return map.panTo(location).then(function() {
-          return map.zoomRange.get(location).then(function(zoomRange) {
-            return map.setZoom(zoomRange[1], {
-              duration: 500
+      focus_map_timer = 0;
+      return events_stream_panel.on('mousemove', 'li', function() {
+        var $this;
+        $this = $(this);
+        clearTimeout(focus_map_timer);
+        return focus_map_timer = setTimeout((function() {
+          var location;
+          location = $this.data('location').split(',');
+          location = [parseFloat(location[0]), parseFloat(location[1])];
+          return map.panTo(location).then(function() {
+            return map.zoomRange.get(location).then(function(zoomRange) {
+              return map.setZoom(zoomRange[1], {
+                duration: 500
+              });
             });
           });
-        });
+        }), 300);
+      }).on('mouseleave', 'li', function() {
+        return clearTimeout(focus_map_timer);
       }).on('click', 'li', function() {
         var placemark, state;
         placemark = placemarks[$(this).data('placemark')];

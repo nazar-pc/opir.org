@@ -204,19 +204,30 @@ $ ->
 					return
 			)
 			return
+		focus_map_timer	= 0
 		events_stream_panel
 			.on(
-				'mouseenter'
+				'mousemove'
 				'li'
 				->
-					location	= $(@).data('location').split(',')
-					location	= [parseFloat(location[0]), parseFloat(location[1])]
-					map.panTo(location).then ->
-						map.zoomRange.get(location).then (zoomRange) ->
-							map.setZoom(
-								zoomRange[1],
-								duration	: 500
-							)
+					$this	= $(@)
+					clearTimeout(focus_map_timer)
+					focus_map_timer = setTimeout (->
+						location	= $this.data('location').split(',')
+						location	= [parseFloat(location[0]), parseFloat(location[1])]
+						map.panTo(location).then ->
+							map.zoomRange.get(location).then (zoomRange) ->
+								map.setZoom(
+									zoomRange[1],
+									duration	: 500
+								)
+					), 300
+			)
+			.on(
+				'mouseleave'
+				'li'
+				->
+					clearTimeout(focus_map_timer)
 			)
 			.on(
 				'click'
