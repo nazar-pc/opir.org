@@ -405,7 +405,7 @@ body {
     width: inherit !important; }
 
 /* mobile devices fix */
-@media (width: 800px) {
+@media (width: 1200px) {
   .uk-form.uk-modal-dialog input,
   .uk-form.uk-modal-dialog button {
     font-size: 36px;
