@@ -168,6 +168,25 @@ $ ->
 						return
 			events_stream_panel.html("<h2>Ефір подій</h2><ul>#{events_stream_panel_content}</ul>")
 			clusterer.removeAll()
+			placemarks.push(
+				new ymaps.Placemark(
+					[50.615181,30.475790]
+					{
+						hintContent				: 'Золотий унітаз'
+						balloonContentHeader	: 'Золотий унітаз'
+						balloonContentBody		: """
+							<img src="/components/modules/Home/includes/img/yanukovych.jpg">
+						"""
+					}
+					{
+						iconLayout			: 'default#image'
+						iconImageHref		: '/components/modules/Home/includes/img/golden-toilet.png'
+						iconImageSize		: [59, 56]
+						iconImageOffset		: [-24, -56]
+						iconImageShape		: icons_shape
+					}
+				)
+			)
 			clusterer.add(placemarks)
 		balloon_footer	= (event, is_streaming) ->
 			if cs.home.automaidan_coord
