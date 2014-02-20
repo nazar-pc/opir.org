@@ -31,14 +31,12 @@ $Page->Header	=
 	).
 	(
 		$User->user() ?
-			h::{'button.cs-home-chat'}([
-				'data-title'	=> 'Ще не реалізовано'
-			]).
 			h::{'button.cs-home-add'}('Додати').
 			h::{'button.cs-home-sign-out'}()
 		:
-			h::{'button.cs-home-sign-in'}('Увійти')
-	);
+			h::{'button.cs-home-sign-in'}()
+	).
+	h::{'button.cs-home-donate'}('Допомогти сайту');
 $categories	= Events_categories::instance()->get_all();
 $groups		= Events_categories_groups::instance()->get_all();
 $groups		= array_combine(array_column($groups, 'id'), $groups);

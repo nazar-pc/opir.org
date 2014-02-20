@@ -24,7 +24,7 @@ body > header {
 	button[class*=cs-home-],
 	button[class*=cs-home-]:hover,
 	button[class*=cs-home-]:focus {
-		background    : #0067b6;
+		background    : #00579d;
 		color         : #fff;
 		border-radius : 0;
 		height        : 62px;
@@ -33,33 +33,11 @@ body > header {
 		position      : absolute;
 		text-align    : center;
 		text-shadow   : none;
-		width         : 249px;
+		width         : 310px;
 	}
 
 	button[class*=cs-home-]:hover {
-		background : #005ea6;
-	}
-
-	.cs-home-chat/*,
-	.cs-home-settings*/         {
-		background : #00579d !important;
-		padding    : 0 5px !important;
-		width      : auto !important;
-	}
-
-	.cs-home-chat:hover/*,
-	.cs-home-settings:hover*/         {
-		background : #004f8c !important;
-	}
-
-	.cs-home-chat:before/*,
-	.cs-home-settings:before*/         {
-		background     : url(../img/chat.png) no-repeat;
-		content        : '';
-		display        : inline-block;
-		height         : 44px;
-		vertical-align : middle;
-		width          : 44px;
+		background : #004f8c;
 	}
 
 	/*.cs-home-settings:before {
@@ -67,21 +45,26 @@ body > header {
 	}*/
 
 	.cs-home-add {
-		left : 61px;
+		left : 0;
 	}
 
 	.cs-home-sign-in,
 	.cs-home-sign-out {
-		right : 0;
-	}
-	.cs-home-sign-out {
 		padding : 10px !important;
+		right   : 0;
 		width   : auto !important;
 	}
 
-	/*.cs-home-settings {
-		right : 0;
-	}*/
+	.cs-home-donate,
+	.cs-home-donate:focus {
+		background : #0067b6 !important;
+		right      : 71px;
+		width      : 239px !important;
+
+		&:hover {
+			background : #005ea6 !important;
+		}
+	}
 
 	.cs-home-add:before,
 	.cs-home-sign-in:before,

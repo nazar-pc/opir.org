@@ -1,9 +1,6 @@
 body > header {
   /*.cs-home-settings:before {
   	background-image : url(../img/setting.png);
-  }*/
-  /*.cs-home-settings {
-  	right : 0;
   }*/ }
   body > header .cs-home-logo {
     position: absolute;
@@ -22,7 +19,7 @@ body > header {
   body > header button[class*=cs-home-],
   body > header button[class*=cs-home-]:hover,
   body > header button[class*=cs-home-]:focus {
-    background: #0067b6;
+    background: #00579d;
     color: #fff;
     border-radius: 0;
     height: 62px;
@@ -31,30 +28,24 @@ body > header {
     position: absolute;
     text-align: center;
     text-shadow: none;
-    width: 249px; }
+    width: 310px; }
   body > header button[class*=cs-home-]:hover {
-    background: #005ea6; }
-  body > header .cs-home-chat {
-    background: #00579d !important;
-    padding: 0 5px !important;
-    width: auto !important; }
-  body > header .cs-home-chat:hover {
-    background: #004f8c !important; }
-  body > header .cs-home-chat:before {
-    background: url(../img/chat.png) no-repeat;
-    content: '';
-    display: inline-block;
-    height: 44px;
-    vertical-align: middle;
-    width: 44px; }
+    background: #004f8c; }
   body > header .cs-home-add {
-    left: 61px; }
+    left: 0; }
   body > header .cs-home-sign-in,
   body > header .cs-home-sign-out {
-    right: 0; }
-  body > header .cs-home-sign-out {
     padding: 10px !important;
+    right: 0;
     width: auto !important; }
+  body > header .cs-home-donate,
+  body > header .cs-home-donate:focus {
+    background: #0067b6 !important;
+    right: 71px;
+    width: 239px !important; }
+    body > header .cs-home-donate:hover,
+    body > header .cs-home-donate:focus:hover {
+      background: #005ea6 !important; }
   body > header .cs-home-add:before,
   body > header .cs-home-sign-in:before,
   body > header .cs-home-sign-out:before {
