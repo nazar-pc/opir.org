@@ -173,7 +173,8 @@ $ ->
 			if cs.home.automaidan_coord
 				if !parseInt(event.assigned_to) then """<button class="cs-home-check-assign" data-id="#{event.id}">Відправити водія для перевірки</button>""" else ''
 			else if !cs.home.automaidan && event.user && !is_streaming
-				"""<button class="cs-home-edit" data-id="#{event.id}">Редагувати</button> <button onclick="cs.home.delete_event(#{event.id})">Видалити</button>"""
+				confirmation	= if !event.confirmed then """<button class="cs-home-check-confirm" data-id="#{event.id}">Підтвердити подію</button>""" else ''
+				"""#{confirmation}<button class="cs-home-edit" data-id="#{event.id}">Редагувати</button> <button onclick="cs.home.delete_event(#{event.id})">Видалити</button>"""
 			else
 				''
 		map.update_events		= (from_cache = false) ->
@@ -241,3 +242,18 @@ $ ->
 					else
 						placemark.balloon.open()
 			)
+		if !cs.home.automaidan
+			$('#map')
+				.on(
+					'click'
+					'.cs-home-check-confirm'
+					->
+						$.ajax(
+							url			: 'api/Home/events/' + $(@).data('id') + '/check'
+							type		: 'put'
+							success		: ->
+								map.update_events()
+								map.balloon.close()
+								alert 'Підтвердження отримано, дякуємо вам!'
+						)
+				)

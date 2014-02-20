@@ -141,6 +141,7 @@
         return clusterer.add(placemarks);
       };
       balloon_footer = function(event, is_streaming) {
+        var confirmation;
         if (cs.home.automaidan_coord) {
           if (!parseInt(event.assigned_to)) {
             return "<button class=\"cs-home-check-assign\" data-id=\"" + event.id + "\">Відправити водія для перевірки</button>";
@@ -148,7 +149,8 @@
             return '';
           }
         } else if (!cs.home.automaidan && event.user && !is_streaming) {
-          return "<button class=\"cs-home-edit\" data-id=\"" + event.id + "\">Редагувати</button> <button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>";
+          confirmation = !event.confirmed ? "<button class=\"cs-home-check-confirm\" data-id=\"" + event.id + "\">Підтвердити подію</button>" : '';
+          return "" + confirmation + "<button class=\"cs-home-edit\" data-id=\"" + event.id + "\">Редагувати</button> <button onclick=\"cs.home.delete_event(" + event.id + ")\">Видалити</button>";
         } else {
           return '';
         }
@@ -188,7 +190,7 @@
         });
       };
       focus_map_timer = 0;
-      return events_stream_panel.on('mousemove', 'li', function() {
+      events_stream_panel.on('mousemove', 'li', function() {
         var $this;
         $this = $(this);
         clearTimeout(focus_map_timer);
@@ -217,6 +219,19 @@
           return placemark.balloon.open();
         }
       });
+      if (!cs.home.automaidan) {
+        return $('#map').on('click', '.cs-home-check-confirm', function() {
+          return $.ajax({
+            url: 'api/Home/events/' + $(this).data('id') + '/check',
+            type: 'put',
+            success: function() {
+              map.update_events();
+              map.balloon.close();
+              return alert('Підтвердження отримано, дякуємо вам!');
+            }
+          });
+        });
+      }
     });
   });
 

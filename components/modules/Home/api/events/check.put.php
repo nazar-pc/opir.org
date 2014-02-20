@@ -14,11 +14,12 @@ if (!isset($Index->route_ids[0])) {
 	error_code(400);;
 	return;
 }
-$User	= User::instance();
-if (!in_array(AUTOMAIDAN_GROUP, $User->get_groups())) {
+$Events	= Events::instance();
+$event	= $Events->get($Index->route_ids[0]);
+if (!$event) {
 	error_code(403);
 	return;
 }
-if (!Events::instance()->check_confirm($Index->route_ids[0])) {
+if (!$Events->check_confirm($event['id'])) {
 	error_code(500);
 }

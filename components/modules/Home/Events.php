@@ -80,9 +80,10 @@ class Events {
 			(new SimpleImage($img))->thumbnail(260, 240)->save($img = STORAGE.'/events/'.md5(MICROTIME.'_'.$User->id).'.png', 100);
 			$img	= url_by_source($img);
 		}
+		$category	= (int)$category;
 		if ($this->create_simple([
 			$User->id,
-			(int)$category,
+			$category,
 			TIME,
 			$timeout ? TIME + max(0, (int)$timeout) : 0,
 			$lat,
@@ -92,7 +93,7 @@ class Events {
 			$time,
 			$time_interval,
 			$img,
-			$visible == AUTOMAIDAN_GROUP ? 0 : 1
+			in_array($category, [1, 3, 6, 7, 8, 17, 21, 22]) ? 0 : 1	// Magic numbers - id of categories, where confirmation is needed
 		])) {
 			unset($this->cache->all);
 			return true;
@@ -184,7 +185,7 @@ class Events {
 						`confirmed`	= 0 OR
 						`category` IN (1, 3, 6, 7, 8, 17, 21, 22)
 					) AND
-					`id`		= '%s'",	// Magic numbers - if of categories, where driver can add events
+					`id`		= '%s'",	// Magic numbers - id of categories, where confirmation is needed
 				$id
 			]);
 			if ($return) {
@@ -362,7 +363,11 @@ class Events {
 			$id
 		]);
 		$User	= User::instance();
-		if ($data['user'] == $User->id || $data['confirmed']) {
+		if (
+			(
+				in_array(AUTOMAIDAN_GROUP, $User->get_groups() ?: []) && $data['user'] == $User->id
+			) || $data['confirmed']
+		) {
 			return false;
 		}
 		if ($this->db_prime()->q(
@@ -495,7 +500,7 @@ class Events {
 					) AND
 					`lat`		!= 0 AND
 					`lng`		!= 0
-				ORDER BY `added` DESC",	// Magic numbers - if of categories, where driver can add events
+				ORDER BY `added` DESC",	// Magic numbers - id of categories, where confirmation is needed
 				TIME
 			]);
 		}
