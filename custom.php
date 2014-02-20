@@ -58,3 +58,9 @@ if (strpos($_SERVER['REQUEST_URI'], '/api/System/user/sign_in') !== false && $_S
 	define('STOP', true);
 	exit;
 }
+
+if (isset($_REQUEST['session']) && strlen($_REQUEST['session']) != 32) {
+	error_code(404);
+	define('STOP', true);
+	exit;
+}
