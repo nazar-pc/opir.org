@@ -457,7 +457,7 @@ class Events {
 		if (!is_array($data) || $data['timeout'] < TIME) {
 			$data	= $this->get_data_internal();
 			$this->cache->{"all/$user_id"}	= [
-				'timeout'	=> TIME + 15,
+				'timeout'	=> TIME + 20,
 				'data'		=> $data
 			];
 			return $this->get($data);
