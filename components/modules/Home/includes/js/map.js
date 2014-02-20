@@ -156,16 +156,6 @@
             return map.zoomRange.get([50.615181, 30.475790]).then(function(zoomRange) {
               return map.setZoom(zoomRange[1], {
                 duration: 500
-              }).then(function() {
-                var placemark, state;
-                placemark = placemarks[placemarks.length - 1];
-                state = clusterer.getObjectState(placemark);
-                if (state.isClustered) {
-                  state.cluster.state.set('activeObject', placemark);
-                  return state.cluster.events.fire('click');
-                } else {
-                  return placemark.balloon.open();
-                }
               });
             });
           });

@@ -195,14 +195,7 @@ $ ->
 						map.setZoom(
 							zoomRange[1],
 							duration	: 500
-						).then ->
-							placemark	= placemarks[placemarks.length - 1]
-							state		= clusterer.getObjectState(placemark)
-							if state.isClustered
-								state.cluster.state.set('activeObject', placemark)
-								state.cluster.events.fire('click')
-							else
-								placemark.balloon.open()
+						)
 
 
 		balloon_footer	= (event, is_streaming) ->

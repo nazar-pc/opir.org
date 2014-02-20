@@ -9,6 +9,13 @@
   right: 0;
   top: 62px;
   width: 310px; }
+  .cs-home-settings-panel .cs-home-address-search {
+    border: none;
+    border-radius: 7px;
+    color: #444444;
+    margin: 10px 20px;
+    padding: 7px;
+    width: 260px; }
   .cs-home-settings-panel .cs-home-settings {
     background: #363E45;
     border-radius: 10px 0 0 10px;
