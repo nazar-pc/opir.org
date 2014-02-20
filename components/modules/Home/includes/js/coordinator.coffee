@@ -45,7 +45,7 @@ $ ->
 				focus_map_timer = setTimeout (->
 					location	= $this.data('location').split(',')
 					map.panTo([parseFloat(location[0]), parseFloat(location[1])])
-				), 300
+				), 500
 		)
 		.on(
 			'mouseleave'

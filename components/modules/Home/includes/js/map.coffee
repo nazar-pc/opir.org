@@ -221,7 +221,7 @@ $ ->
 									zoomRange[1],
 									duration	: 500
 								)
-					), 300
+					), 500
 			)
 			.on(
 				'mouseleave'

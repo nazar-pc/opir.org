@@ -203,7 +203,7 @@
               });
             });
           });
-        }), 300);
+        }), 500);
       }).on('mouseleave', 'li', function() {
         return clearTimeout(focus_map_timer);
       }).on('click', 'li', function() {

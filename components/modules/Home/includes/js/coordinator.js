@@ -24,7 +24,7 @@
         var location;
         location = $this.data('location').split(',');
         return map.panTo([parseFloat(location[0]), parseFloat(location[1])]);
-      }), 300);
+      }), 500);
     }).on('mouseleave', 'li', function() {
       return clearTimeout(focus_map_timer);
     });
