@@ -225,6 +225,12 @@
           map.panTo(coords, {
             fly: true,
             checkZoomRange: true
+          }).then(function() {
+            return map.zoomRange.get(coords).then(function(zoomRange) {
+              return map.setZoom(zoomRange[1], {
+                duration: 500
+              });
+            });
           });
           return add_event_coords(coords);
         });
