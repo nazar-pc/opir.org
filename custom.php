@@ -71,7 +71,7 @@ if (isset($_REQUEST['session']) && strlen($_REQUEST['session']) != 32) {
 	exit;
 }
 
-if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] && strpos($_SERVER['HTTP_REFERER'], 'https://opir.org') !== 0) {
+if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] && strpos($_SERVER['HTTP_REFERER'], 'https://opir.org') !== 0 && $_SERVER['REQUEST_URI'] !== '/') {
 	error_code(404);
 	define('STOP', true);
 	exit;
