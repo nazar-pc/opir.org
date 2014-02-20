@@ -186,6 +186,8 @@
           type: 'delete',
           success: function() {
             map.update_events();
+            map.balloon.close();
+            alert('Успішно видалено');
           }
         });
       };

@@ -202,6 +202,8 @@ $ ->
 				type		: 'delete'
 				success		: ->
 					map.update_events()
+					map.balloon.close()
+					alert('Успішно видалено')
 					return
 			)
 			return

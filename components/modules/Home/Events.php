@@ -441,7 +441,10 @@ class Events {
 			LIMIT 1",
 			$id
 		)) {
-			unset($this->cache->$id);
+			unset(
+				$this->cache->$id,
+				$this->cache->all
+			);
 			return true;
 		}
 		return false;
