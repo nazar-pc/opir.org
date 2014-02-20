@@ -3,16 +3,17 @@ body > header {
   	background-image : url(../img/setting.png);
   }*/ }
   body > header .cs-home-logo {
+    padding: 0 310px;
     position: absolute;
     text-align: center;
     top: 14px;
     width: 100%; }
     body > header .cs-home-logo > div {
       display: inline-block;
-      text-align: right;
+      text-align: left;
       vertical-align: middle; }
       body > header .cs-home-logo > div:nth-of-type(-n+2) {
-        padding-left: 50px; }
+        padding-left: 15px; }
     body > header .cs-home-logo .hot-line {
       line-height: 16px;
       margin-top: -10px; }

@@ -24,7 +24,7 @@ $Page->Header	=
 			'src'	=> "components/modules/Home/includes/img/logo.png"
 		]).
 		h::{'div.hot-line'}(
-			'Гаряча лінія: +38 050 258 17 05<br>+38 050 258 17 43<br>+38 093 01 222 11'
+			'+38 050 258 17 05 (мед. питання)<br>+38 050 258 17 43 (самооборона)<br>+38 093 01 222 11 (інше)'
 		).
 		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="facebook" data-yashareLink="https://www.facebook.com/opir.org" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'.
 		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="vkontakte,twitter" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'

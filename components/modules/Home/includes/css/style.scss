@@ -1,5 +1,6 @@
 body > header {
 	.cs-home-logo {
+		padding    : 0 310px;
 		position   : absolute;
 		text-align : center;
 		top        : 14px;
@@ -7,11 +8,11 @@ body > header {
 
 		> div {
 			display        : inline-block;
-			text-align     : right;
+			text-align     : left;
 			vertical-align : middle;
 
 			&:nth-of-type(-n+2) {
-				padding-left : 50px;
+				padding-left : 15px;
 			}
 		}
 
