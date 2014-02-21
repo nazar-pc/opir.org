@@ -170,7 +170,7 @@ $ ->
 			clusterer.removeAll()
 			placemarks.push(
 				new ymaps.Placemark(
-					[50.615181,30.475790]
+					[50.615181, 30.475790]
 					{
 						hintContent				: 'Золотий унітаз'
 						balloonContentHeader	: 'Золотий унітаз'
@@ -181,6 +181,22 @@ $ ->
 					{
 						iconLayout			: 'default#image'
 						iconImageHref		: '/components/modules/Home/includes/img/golden-toilet.png'
+						iconImageSize		: [59, 56]
+						iconImageOffset		: [-24, -56]
+						iconImageShape		: icons_shape
+					}
+				)
+			)
+			placemarks.push(
+				new ymaps.Placemark(
+					[50.449573, 30.525336]
+					{
+						hintContent				: 'Меморіал пам’яті за загиблими'
+						balloonContentHeader	: 'Меморіал пам’яті за загиблими'
+					}
+					{
+						iconLayout			: 'default#image'
+						iconImageHref		: '/components/modules/Home/includes/img/cross.png'
 						iconImageSize		: [59, 56]
 						iconImageOffset		: [-24, -56]
 						iconImageShape		: icons_shape
