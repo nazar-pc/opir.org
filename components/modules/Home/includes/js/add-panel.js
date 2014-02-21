@@ -121,6 +121,9 @@
         if (edit_data.img) {
           return $('.cs-home-add-image-button').after("<img src=\"" + edit_data.img + "\" alt=\"\" class=\"cs-home-add-image\">");
         }
+      } else if (category === 1) {
+        $(".cs-home-add-time").val(2).change();
+        return $(".cs-home-add-time-interval [data-id=3600]").click();
       }
     };
     panel.on('click', '> ul > li', addition_editing_panel).on('click', '.cs-home-add-visible [data-id]', function() {

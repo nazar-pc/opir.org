@@ -200,6 +200,9 @@ $ ->
 				$('.cs-home-add-image-button').after(
 					"""<img src="#{edit_data.img}" alt="" class="cs-home-add-image">"""
 				)
+		else if category == 1	# Magic number, tityshky category id
+			$(".cs-home-add-time").val(2).change()
+			$(".cs-home-add-time-interval [data-id=3600]").click()
 	panel
 		.on(
 			'click'
