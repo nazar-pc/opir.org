@@ -368,6 +368,7 @@ class Events {
 				in_array(AUTOMAIDAN_GROUP, $User->get_groups() ?: []) && $data['user'] == $User->id
 			) || $data['confirmed']
 		) {
+			unset($this->cache->$id);
 			return false;
 		}
 		if ($this->db_prime()->q(
