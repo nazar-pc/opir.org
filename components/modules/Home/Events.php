@@ -456,16 +456,11 @@ class Events {
 	 */
 	function get_all () {
 		$user_id	= User::instance()->id;
-		$data		= $this->cache->{"all/$user_id"};
-		if (!is_array($data) || $data['timeout'] < TIME) {
-			$data	= $this->get_data_internal();
-			$this->cache->{"all/$user_id"}	= [
-				'timeout'	=> TIME + 20,
-				'data'		=> $data
-			];
-			return $this->get($data);
-		}
-		return $this->get($data['data']);
+		return $this->cache->get("all/$user_id", function () use ($user_id) {
+			return $this->get(
+				$this->get_data_internal()
+			);
+		});
 	}
 
 	protected function get_data_internal () {
