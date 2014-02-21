@@ -187,12 +187,13 @@
           $.ajax({
             url: 'api/Home/events',
             type: 'get',
-            complete: function() {
-              return setTimeout(map.update_events, refresh_delay * 1000);
-            },
             success: function(events) {
               map.update_events.cache = events;
               add_events_on_map(events);
+              setTimeout(map.update_events, refresh_delay * 1000);
+            },
+            error: function() {
+              return setTimeout(map.update_events, refresh_delay * 1000);
             }
           });
         }

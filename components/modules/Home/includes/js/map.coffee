@@ -214,12 +214,13 @@ $ ->
 				$.ajax(
 					url			: 'api/Home/events'
 					type		: 'get'
-					complete	: ->
-						setTimeout(map.update_events, refresh_delay * 1000)
 					success		: (events) ->
 						map.update_events.cache	= events
 						add_events_on_map(events)
+						setTimeout(map.update_events, refresh_delay * 1000)
 						return
+					error		: ->
+						setTimeout(map.update_events, refresh_delay * 1000)
 				)
 			return
 		map.update_events()
