@@ -10,8 +10,9 @@ namespace	cs\modules\Home;
 use			h,
 			cs\Page,
 			cs\User;
-$Page			= Page::instance();
-$User			= User::instance();
+$Page				= Page::instance();
+$Page->Description	= 'opir.org - Тут ви можете  з орієнтуватися на самому майдані, дізнатися де проходять суди над евромайданівцями, бути попередженим про появлення тітушок';
+$User				= User::instance();
 $Page->og('image', 'https://opir.org/components/modules/Home/includes/img/share.png');
 $Page->og('image:secure_url', 'https://opir.org/components/modules/Home/includes/img/share.png');
 $Page->link([
