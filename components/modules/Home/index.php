@@ -67,7 +67,7 @@ $Page->content(
 	h::{'aside.cs-home-add-panel'}().
 	h::{'aside.cs-home-events-stream-panel'}().
 	(
-		!in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups()) ? h::{'aside.cs-home-settings-panel'}(
+		!in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups() ?: []) ? h::{'aside.cs-home-settings-panel'}(
 			h::{'input.cs-home-address-search'}([
 				'placeholder'	=> 'Пошук адреси на карті'
 			]).
