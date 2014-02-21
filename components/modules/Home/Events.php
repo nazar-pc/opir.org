@@ -289,7 +289,10 @@ class Events {
 			$img,
 			$data['confirmed']
 		])) {
-			unset($this->cache->$id);
+			unset(
+				$this->cache->$id,
+				$this->cache->all
+			);
 			return true;
 		}
 		return false;
