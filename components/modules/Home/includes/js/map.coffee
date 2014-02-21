@@ -1,6 +1,6 @@
 $ ->
 	ymaps.ready ->
-		refresh_delay		= if cs.home.automaidan_coord then 5 else 60
+		refresh_delay		= if cs.home.automaidan_coord then 5 else 5
 		streaming_opened	= false
 		stop_updating		= false
 		add_zero		= (input) ->
