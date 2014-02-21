@@ -10,9 +10,9 @@ use			cs\Language,
 			cs\Trigger;
 $_SERVER['REMOTE_ADDR']	= '127.0.0.1';
 class Page extends \cs\Page {
-	function init ($title, $keywords, $description, $theme, $color_scheme) {
+	function init ($title, $theme, $color_scheme) {
 		$this->replace('<meta content="CleverStyle CMS by Mokrynskyi Nazar" name="generator">', '');
-		parent::init($title, $keywords, $description, $theme, $color_scheme);
+		parent::init($title, $theme, $color_scheme);
 	}
 	protected function rebuild_cache () {
 		$key	= '';
