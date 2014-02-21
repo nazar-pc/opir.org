@@ -15,8 +15,7 @@ body > header {
       body > header .cs-home-logo > div:nth-of-type(-n+2) {
         padding-left: 15px; }
     body > header .cs-home-logo .hot-line {
-      font-size: 14px;
-      line-height: 14px;
+      line-height: 16px;
       margin-top: -10px; }
   body > header button[class*=cs-home-],
   body > header button[class*=cs-home-]:hover,
