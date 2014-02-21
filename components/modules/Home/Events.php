@@ -369,7 +369,7 @@ class Events {
 			) || $data['confirmed']
 		) {
 			unset($this->cache->$id);
-			return true;
+			return (bool)$data['confirmed'];
 		}
 		if ($this->db_prime()->q(
 			"UPDATE `$this->table`
