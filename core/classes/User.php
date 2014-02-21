@@ -133,7 +133,8 @@ class User {
 				$init					= false,	//Current state of initialization
 				$reg_id					= 0,		//User id after registration
 				$users_columns			= [],		//Copy of columns list of users table for internal needs without Cache usage
-				$permissions			= [];		//Permissions cache
+				$permissions			= [],		//Permissions cache
+				$memory_cache			= true;
 	/**
 	 * @var Prefix
 	 */
@@ -359,11 +360,16 @@ class User {
 			case 'ip':
 				return $_SERVER['REMOTE_ADDR'];
 			case 'forwarded_for':
-				return isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? preg_replace('/[^a-f0-9\.:]/i', '', array_pop($tmp = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']))) : false;
+				$tmp	= explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+				return isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? preg_replace('/[^a-f0-9\.:]/i', '', array_pop($tmp)) : false;
 			case 'client_ip':
 				return isset($_SERVER['HTTP_CLIENT_IP']) ? preg_replace('/[^a-f0-9\.:]/i', '', $_SERVER['HTTP_CLIENT_IP']) : false;
 		}
-		return $this->get_internal($item, $user);
+		$result	= $this->get_internal($item, $user);
+		if (!$this->memory_cache) {
+			$this->__finish();
+		}
+		return $result;
 	}
 	/**
 	 * Get data item of specified user
@@ -393,7 +399,7 @@ class User {
 			 */
 			foreach ($item as $i) {
 				if (in_array($i, $this->users_columns)) {
-					if (($res = $this->get($i, $user, true)) !== false) {
+					if (($res = $this->get_internal($i, $user, true)) !== false) {
 						$result[$i] = $res;
 					} else {
 						$new_items[] = $i;
@@ -481,6 +487,22 @@ class User {
 	 * @return bool
 	 */
 	function set ($item, $value = null, $user = false) {
+		$result	= $this->set_internal($item, $value, $user);
+		if (!$this->memory_cache) {
+			$this->__finish();
+		}
+		return $result;
+	}
+	/**
+	 * Set data item of specified user
+	 *
+	 * @param array|string	$item	Item-value array may be specified for setting several items at once
+	 * @param mixed|null	$value
+	 * @param bool|int		$user	If not specified - current user assumed
+	 *
+	 * @return bool
+	 */
+	protected function set_internal ($item, $value = null, $user = false) {
 		$user = (int)($user ?: $this->id);
 		if (!$user) {
 			return false;
@@ -630,24 +652,27 @@ class User {
 			return false;
 		}
 		if (is_array($item)) {
-			$inserts		= [];
-			$inserts_data	= [];
+			$params	= [];
 			foreach ($item as $i => $v) {
-				$inserts[]		= "($user, '%s', '%s')";
-				$inserts_data[]	= $i;
-				$inserts_data[]	= _json_encode($v);
+				$params[]	= [
+					$i,
+					_json_encode($v)
+				];
 			}
 			unset($i, $v);
-			$inserts		= implode(',', $inserts);
-			$result			= $this->db_prime()->q(
+			$result			= $this->db_prime()->insert(
 				"INSERT INTO `[prefix]users_data`
 					(
 						`id`,
 						`item`,
 						`value`
-					) VALUES $inserts
+					) VALUES (
+						$user,
+						'%s',
+						'%s'
+					)
 				ON DUPLICATE KEY UPDATE `value` = VALUES(`value`)",
-				$inserts_data
+				$params
 			);
 		} else {
 			$result	= $this->db_prime()->q(
@@ -842,12 +867,18 @@ class User {
 					if (is_array($groups)) {
 						$Group	= Group::instance();
 						foreach ($groups as $group_id) {
-							$permissions = array_merge($permissions ?: [], $Group->get_permissions($group_id) ?: []);
+							foreach ($Group->get_permissions($group_id) ?: [] as $p => $v) {
+								$permissions[$p]	= $v;
+							}
+							unset($p, $v);
 						}
 					}
 					unset($groups, $group_id);
 				}
-				return array_merge($permissions ?: [], $this->get_permissions($user) ?: []);
+				foreach ($this->get_permissions($user) ?: [] as $p => $v) {
+					$permissions[$p]	= $v;
+				}
+				return $permissions;
 			});
 		}
 		$all_permission	= Cache::instance()->{'permissions/all'} ?: Permission::instance()->get_all();
@@ -939,11 +970,31 @@ class User {
 		return $this->del_any_permissions_all($user, 'user');
 	}
 	/**
-	 * Get user groups
+	 * Add user's groups
+	 *
+	 * @param int|int[]		$group	Group id
+	 * @param bool|int		$user	If not specified - current user assumed
+	 *
+	 * @return bool
+	 */
+	function add_groups ($group, $user = false) {
+		$user	= (int)($user ?: $this->id);
+		if (!$user || $user == self::GUEST_ID) {
+			return false;
+		}
+		$groups	= $this->get_groups($user);
+		foreach ((array)_int($group) as $g) {
+			$groups[]	= $g;
+		}
+		unset($g);
+;		return $this->set_groups($groups, $user);
+	}
+	/**
+	 * Get user's groups
 	 *
 	 * @param bool|int		$user	If not specified - current user assumed
 	 *
-	 * @return array|bool
+	 * @return bool|int[]
 	 */
 	function get_groups ($user = false) {
 		$user	= (int)($user ?: $this->id);
@@ -960,31 +1011,31 @@ class User {
 		});
 	}
 	/**
-	 * Set user groups
+	 * Set user's groups
 	 *
-	 * @param array		$data
+	 * @param int[]		$groups
 	 * @param bool|int	$user
 	 *
 	 * @return bool
 	 */
-	function set_groups ($data, $user = false) {
+	function set_groups ($groups, $user = false) {
 		$user		= (int)($user ?: $this->id);
 		if (!$user) {
 			return false;
 		}
-		if (!empty($data) && is_array_indexed($data)) {
-			foreach ($data as $i => &$group) {
+		if (!empty($groups) && is_array_indexed($groups)) {
+			foreach ($groups as $i => &$group) {
 				if (!($group = (int)$group)) {
-					unset($data[$i]);
+					unset($groups[$i]);
 				}
 			}
 		}
 		unset($i, $group);
-		$exiting	= $this->get_groups($user);
+		$existing	= $this->get_groups($user);
 		$return		= true;
-		$insert		= array_diff($data, $exiting);
-		$delete		= array_diff($exiting, $data);
-		unset($exiting);
+		$insert		= array_diff($groups, $existing);
+		$delete		= array_diff($existing, $groups);
+		unset($existing);
 		if (!empty($delete)) {
 			$delete	= implode(', ', $delete);
 			$return	= $return && $this->db_prime()->q(
@@ -996,25 +1047,25 @@ class User {
 		}
 		unset($delete);
 		if (!empty($insert)) {
-			$q		= [];
-			foreach ($insert as $group) {
-				$q[] = $user."', '".$group;
+			foreach ($insert as &$i) {
+				$i = [$user, $i];
 			}
-			unset($group, $insert);
-			$q		= implode('), (', $q);
-			$return	= $return && $this->db_prime()->q(
+			unset($i);
+			$return	= $return && $this->db_prime()->insert(
 				"INSERT INTO `[prefix]users_groups`
 					(
 						`id`,
 						`group`
 					) VALUES (
-						'$q'
-					)"
+						'%s',
+						'%s'
+					)",
+				$insert
 			);
-			unset($q);
 		}
+		unset($insert);
 		$update		= [];
-		foreach ($data as $i => $group) {
+		foreach ($groups as $i => $group) {
 			$update[] =
 				"UPDATE `[prefix]users_groups`
 				SET `priority` = '$i'
@@ -1030,6 +1081,25 @@ class User {
 			$Cache->{"permissions/$user"}
 		);
 		return $return;
+	}
+	/**
+	 * Delete user's groups
+	 *
+	 * @param int|int[]		$group	Group id
+	 * @param bool|int		$user	If not specified - current user assumed
+	 *
+	 * @return bool
+	 */
+	function del_groups ($group, $user = false) {
+		$user	= (int)($user ?: $this->id);
+		if (!$user || $user == self::GUEST_ID) {
+			return false;
+		}
+		$groups	= array_diff(
+			$this->get_groups($user),
+			(array)_int($group)
+		);
+;		return $this->set_groups($groups, $user);
 	}
 	/**
 	 * Returns current session id
@@ -2018,6 +2088,15 @@ class User {
 		return array_unique($contacts);
 	}
 	/**
+	 * Disable memory cache
+	 *
+	 * Memory cache stores users data inside User class in order to get data faster next time.
+	 * But in case of working with large amount of users this cache can be too large. Disabling will cause some performance drop, but save a lot of RAM.
+	 */
+	function disable_memory_cache () {
+		$this->memory_cache	= false;
+	}
+	/**
 	 * Saving changes of cache and users data
 	 */
 	function __finish () {
@@ -2030,8 +2109,8 @@ class User {
 				$data = [];
 				foreach ($data_set as $i => &$val) {
 					if (in_array($i, $this->users_columns) && $i != 'id') {
-						$val = xap($val, false);
-						$data[] = '`'.$i.'` = '.$this->db_prime()->s($val);
+						$val	= xap($val, false);
+						$data[]	= "`$i` = ".$this->db_prime()->s($val);
 					} elseif ($i != 'id') {
 						unset($data_set[$i]);
 					}

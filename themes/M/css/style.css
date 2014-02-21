@@ -134,7 +134,7 @@ a:hover {
 button, input, select, textarea {
   color: inherit;
   font-size: 100%;
-  margin: 0 0 1px; }
+  margin: 0; }
 
 .cs-table-borderless {
   margin: 0 auto;

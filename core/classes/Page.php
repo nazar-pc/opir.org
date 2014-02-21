@@ -25,7 +25,6 @@ class Page {
 				$interface			= true,
 				$pre_Html			= '',
 				$Html 				= '',
-					$Keywords			= '',
 					$Description		= '',
 					$Title				= [],
 				$debug_info			= '',
@@ -75,20 +74,16 @@ class Page {
 				$og_type			= '',
 				$canonical_url		= false;
 	/**
-	 * Initialization: setting of title, keywords, description, theme and color scheme according to specified parameters
+	 * Initialization: setting of title, theme and color scheme according to specified parameters
 	 *
 	 * @param string	$title
-	 * @param string	$keywords
-	 * @param string	$description
 	 * @param string	$theme
 	 * @param string	$color_scheme
 	 *
 	 * @return Page
 	 */
-	function init ($title, $keywords, $description, $theme, $color_scheme) {
+	function init ($title, $theme, $color_scheme) {
 		$this->Title[0] = htmlentities($title, ENT_COMPAT, 'utf-8');
-		$this->Keywords = $keywords;
-		$this->Description = $description;
 		$this->set_theme($theme);
 		$this->set_color_scheme($color_scheme);
 		return $this;
@@ -293,14 +288,10 @@ class Page {
 				[
 					'charset'		=> 'utf-8'
 				],
-				[
-					'name'			=> 'keywords',
-					'content'		=> $this->Keywords
-				],
-				[
+				$this->Description ? [
 					'name'			=> 'description',
 					'content'		=> $this->Description
-				],
+				] : false,
 				[
 					'name'			=> 'generator',
 					'content'		=> base64_decode('Q2xldmVyU3R5bGUgQ01TIGJ5IE1va3J5bnNreWkgTmF6YXI=')
@@ -657,7 +648,12 @@ class Page {
 		if (!isset($og['title']) || empty($og['title'])) {
 			$this->og('title', $this->Title);
 		}
-		if (!isset($og['description']) || empty($og['description'])) {
+		if (
+			(
+				!isset($og['description']) || empty($og['description'])
+			) &&
+			$this->Description
+		) {
 			$this->og('description', $this->Description);
 		}
 		if (!isset($og['url']) || empty($og['url'])) {
@@ -942,11 +938,40 @@ class Page {
 		$cwd	= getcwd();
 		chdir(dirname($file));
 		/**
-		 * Simple minification, removes comments, newlines, tabs and unnecessary spaces
+		 * Remove comments, tabs and new lines
 		 */
 		$data	= preg_replace('#(/\*.*?\*/)|\t|\n|\r#s', '', $data);
-		$data	= preg_replace('#\s*([,:;+>{}])\s*#s', '$1', $data);
+		/**
+		 * Remove unnecessary spaces
+		 */
+		$data	= preg_replace('#\s*([,:;+>{}\(])\s*#s', '$1', $data);
+		/**
+		 * Remove unnecessary trailing semicolons
+		 */
 		$data	= str_replace(';}', '}', $data);
+		/**
+		 * Minify repeated colors declarations
+		 */
+		$data	= preg_replace('/#([0-9a-f])\1([0-9a-f])\2([0-9a-f])\3/is', '#$1$2$3', $data);
+		/**
+		 * Minify rgb colors declarations
+		 */
+		$data	= preg_replace_callback(
+			'/rgb\(([0-9,\.]+)\)/is',
+			function ($rgb) {
+				$rgb	= explode(',', $rgb[1]);
+				return
+					'#'.
+					str_pad(dechex($rgb[0]), 2, 0, STR_PAD_LEFT).
+					str_pad(dechex($rgb[1]), 2, 0, STR_PAD_LEFT).
+					str_pad(dechex($rgb[2]), 2, 0, STR_PAD_LEFT);
+			},
+			$data
+		);
+		/**
+		 * Remove unnecessary zeros
+		 */
+		$data	= preg_replace('/([^0-9])0\.([0-9]+)/is', '$1.$2', $data);
 		/**
 		 * Includes processing
 		 */
@@ -1156,15 +1181,18 @@ class Page {
 		if (!defined('ERROR_CODE')) {
 			error_code(500);
 		}
-		if (!API && ERROR_CODE == 403 && _getcookie('sign_out')) {
+		if (defined('API') && !API && ERROR_CODE == 403 && _getcookie('sign_out')) {
 			header('Location: '.Config::instance()->base_url(), true, 302);
 			$this->Content	= '';
 			exit;
 		}
 		interface_off();
-		$error_text	= code_header(ERROR_CODE);
-		$error_text	= $custom_text ?: $error_text;
-		if (API || $json) {
+		code_header(ERROR_CODE);
+		$error_text	= $custom_text ?: code_header(ERROR_CODE);
+		if (
+			(defined('API') && API) ||
+			$json
+		) {
 			if ($json) {
 				header('Content-Type: application/json', true);
 				interface_off();
@@ -1180,13 +1208,12 @@ class Page {
 				!_include_once(THEMES."/$this->theme/error.php", false)
 			) {
 				echo "<!doctype html>\n".
-					h::title($error_text ?: ERROR_CODE).
+					h::title(code_header(ERROR_CODE)).
 					 ($error_text ?: ERROR_CODE);
 			}
 			$this->Content	= ob_get_clean();
 		}
-		Page::instance()->__finish();
-		User::instance(true)->__finish();
+		$this->__finish();
 		exit;
 	}
 	/**
@@ -1284,7 +1311,7 @@ class Page {
 					'style'	=> 'display: none;'
 				]
 			).
-			h::{'div.cs-header-sign-in-form'}(
+			h::{'form.cs-header-sign-in-form.cs-no-ui'}(
 				h::{'input.cs-no-ui.cs-header-sign-in-email[tabindex=1]'}([
 					'placeholder'		=> $L->login_or_email,
 					'autocapitalize'	=> 'off',
@@ -1294,7 +1321,7 @@ class Page {
 					'placeholder'	=> $L->password
 				]).
 				h::br().
-				h::{'button.cs-header-sign-in-process.cs-button-compact.uk-icon-sign-in[tabindex=3]'}($L->sign_in).
+				h::{'button.cs-button-compact.uk-icon-sign-in[tabindex=3][type=submit]'}($L->sign_in).
 				h::{'button.cs-button-compact.cs-header-back[tabindex=5]'}(
 					h::icon('chevron-down'),
 					[
@@ -1319,6 +1346,11 @@ class Page {
 	 * Page generation
 	 */
 	function __finish () {
+		static $executed = false;
+		if ($executed) {
+			return;
+		}
+		$executed	= true;
 		/**
 		 * Cleaning of output
 		 */
