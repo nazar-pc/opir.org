@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    if (!cs.module === 'Streams') {
+    if (cs.module !== 'Streams') {
       return;
     }
     return ymaps.ready(function() {

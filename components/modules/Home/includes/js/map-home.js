@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    if (!cs.module === 'Home') {
+    if (cs.module !== 'Home') {
       return;
     }
     return ymaps.ready(function() {

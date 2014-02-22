@@ -1,5 +1,5 @@
 $ ->
-	if !cs.module == 'Streams'
+	if cs.module != 'Streams'
 		return
 	ymaps.ready ->
 		refresh_delay		= if cs.home.automaidan_coord then 10 else 10

@@ -26,6 +26,8 @@ class Streams {
 	protected $data_model	= [
 		'id'		=> 'int',
 		'steam_url'	=> 'text',
+		'lat'		=> 'float',
+		'lng'		=> 'float',
 		'added'		=> 'int',
 		'approved'	=> 'int',
 		'abuse'		=> 'int'
@@ -41,12 +43,16 @@ class Streams {
 	 * Add new stream
 	 *
 	 * @param $stream_url
+	 * @param $lat
+	 * @param $lng
 	 *
 	 * @return bool|int
 	 */
-	function add ($stream_url) {
+	function add ($stream_url, $lat, $lng) {
 		return $this->create_simple([
 			$stream_url,
+			$lat,
+			$lng,
 			TIME,
 			0,
 			0
@@ -80,7 +86,9 @@ class Streams {
 			return $this->db()->qf([
 				"SELECT
 					`id`,
-					`stream_url`
+					`stream_url`,
+					`lat`,
+					`lng`
 				FROM `$this->table`
 				WHERE
 					`id`		= '%s' AND
