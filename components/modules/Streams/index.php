@@ -1,6 +1,6 @@
 <?php
 /**
- * @package		Home
+ * @package		Streams
  * @category	modules
  * @author		Nazar Mokrynskyi <nazar@mokrynskyi.com>
  * @copyright	Copyright (c) 2014, Nazar Mokrynskyi

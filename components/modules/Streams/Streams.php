@@ -1,0 +1,197 @@
+<?php
+/**
+ * @package		Streams
+ * @category	modules
+ * @author		Nazar Mokrynskyi <nazar@mokrynskyi.com>
+ * @copyright	Copyright (c) 2014, Nazar Mokrynskyi
+ * @license		MIT License, see license.txt
+ */
+namespace	cs\modules\Streams;
+use			cs\Cache\Prefix,
+			cs\User,
+			cs\CRUD,
+			cs\Singleton;
+/**
+ * @method static \cs\modules\Streams\Streams instance($check = false)
+ */
+class Streams {
+	use	CRUD,
+		Singleton;
+
+	/**
+	 * @var Prefix
+	 */
+	protected $cache;
+	protected $table		= '[prefix]streams_streams';
+	protected $data_model	= [
+		'id'		=> 'int',
+		'steam_url'	=> 'text',
+		'added'		=> 'int',
+		'approved'	=> 'int',
+		'abuse'		=> 'int'
+	];
+
+	protected function construct () {
+		$this->cache	= new Prefix('streams');
+	}
+	protected function cdb () {
+		return '0';
+	}
+	/**
+	 * Add new stream
+	 *
+	 * @param $stream_url
+	 *
+	 * @return bool|int
+	 */
+	function add ($stream_url) {
+		return $this->create_simple([
+			$stream_url,
+			TIME,
+			0,
+			0
+		]);
+	}
+	/**
+	 * Get stream
+	 *
+	 * @param int|int[]	$id
+	 *
+	 * @return array|array[]|bool
+	 */
+	function get ($id) {
+		if (is_array($id)) {
+			foreach ($id as &$i) {
+				$i	= $this->get($i);
+			}
+			return $id;
+		}
+		$id	= (int)$id;
+		if (User::instance()->admin()) {
+			return $this->db()->qf([
+				"SELECT *
+				FROM `$this->table`
+				WHERE `id` = '%s'
+				LIMIT 1",
+				$id
+			]);
+		}
+		return $this->cache->get($id, function () use ($id) {
+			return $this->db()->qf([
+				"SELECT
+					`id`,
+					`stream_url`
+				FROM `$this->table`
+				WHERE
+					`id`		= '%s' AND
+					`approved`	= 1 AND
+					`abuse`		< 5
+				LIMIT 1",
+				$id
+			]) ?: false;
+		});
+	}
+	/**
+	 * Approve added stream
+	 *
+	 * @param $id
+	 *
+	 * @return bool
+	 */
+	function approve ($id) {
+		$id			= (int)$id;
+		if ($this->db_prime()->q(
+			"UPDATE `$this->table`
+			SET
+				`approved`	= 1 AND
+				`abuse`		= 0
+			WHERE `id` = '%s'
+			LIMIT 1",
+			$id
+		)) {
+			unset(
+				$this->cache->$id,
+				$this->cache->all
+			);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * Decline added stream
+	 *
+	 * @param $id
+	 *
+	 * @return bool
+	 */
+	function decline ($id) {
+		$id			= (int)$id;
+		if ($this->db_prime()->q(
+			"UPDATE `$this->table`
+			SET `approved` = '-1'
+			WHERE `id` = '%s'
+			LIMIT 1",
+			$id
+		)) {
+			unset(
+				$this->cache->$id,
+				$this->cache->all
+			);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * Abuse stream
+	 *
+	 * @param $id
+	 *
+	 * @return bool
+	 */
+	function abuse ($id) {
+		$id			= (int)$id;
+		if ($this->db_prime()->q(
+			"UPDATE `$this->table`
+			SET `abuse` = `abuse` + 1
+			WHERE `id` = '%s'
+			LIMIT 1",
+			$id
+		)) {
+			unset(
+				$this->cache->$id,
+				$this->cache->all
+			);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * Get all streams
+	 *
+	 * @return array|bool
+	 */
+	function get_all () {
+		return $this->cache->get('all', function () {
+			return $this->db()->qfas(
+				"SELECT `id`
+				FROM `$this->table`
+				WHERE
+					`approved`	= 1 AND
+					`abuse`		< 5"
+			);
+		});
+	}
+	/**
+	 * Get all streams
+	 *
+	 * @return array|bool
+	 */
+	function need_approval () {
+		return $this->db()->qfas(
+			"SELECT `id`
+			FROM `$this->table`
+			WHERE
+				`approved`	= 0"
+		);
+	}
+}

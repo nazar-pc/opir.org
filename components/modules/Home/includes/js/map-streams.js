@@ -2,6 +2,9 @@
 (function() {
 
   $(function() {
+    if (!cs.module === 'Streams') {
+      return;
+    }
     return ymaps.ready(function() {
       var add_events_on_map, add_zero, balloon_footer, clusterer, events_stream_panel, filter_events, focus_map_timer, icons_shape, placemarks, refresh_delay, stop_updating, streaming_opened;
       refresh_delay = cs.home.automaidan_coord ? 10 : 10;
