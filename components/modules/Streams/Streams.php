@@ -24,13 +24,13 @@ class Streams {
 	protected $cache;
 	protected $table		= '[prefix]streams_streams';
 	protected $data_model	= [
-		'id'		=> 'int',
-		'steam_url'	=> 'text',
-		'lat'		=> 'float',
-		'lng'		=> 'float',
-		'added'		=> 'int',
-		'approved'	=> 'int',
-		'abuse'		=> 'int'
+		'id'			=> 'int',
+		'stream_url'	=> 'text',
+		'lat'			=> 'float',
+		'lng'			=> 'float',
+		'added'			=> 'int',
+		'approved'		=> 'int',
+		'abuse'			=> 'int'
 	];
 
 	protected function construct () {
@@ -45,11 +45,12 @@ class Streams {
 	 * @param $stream_url
 	 * @param $lat
 	 * @param $lng
+	 * @param $tags
 	 *
 	 * @return bool|int
 	 */
-	function add ($stream_url, $lat, $lng) {
-		return $this->create_simple([
+	function add ($stream_url, $lat, $lng, $tags) {
+		$id	= $this->create_simple([
 			$stream_url,
 			$lat,
 			$lng,
@@ -57,6 +58,46 @@ class Streams {
 			0,
 			0
 		]);
+		if ($id) {
+			if ($tags) {
+				$this->db_prime()->insert(
+					"INSERT IGNORE INTO `[prefix]streams_tags`
+						(
+							`title`
+						) VALUES (
+							'%s'
+						)",
+						array_map(function ($t) {
+							return [$t];
+						}, $tags),
+					true
+				);
+				foreach ($tags as &$t) {
+					$t	= $this->db_prime()->qfs([
+						"SELECT `id`
+						FROM `[prefix]streams_tags`
+						WHERE `title` = '%s'
+						LIMIT 1",
+						$t
+					]);
+					$t	= [$t];
+				}
+				$this->db_prime()->insert(
+					"INSERT IGNORE INTO `[prefix]streams_streams_tags`
+						(
+							`id`,
+							`tag`
+						) VALUES (
+							$id,
+							'%s'
+						)",
+					$tags,
+					true
+				);
+			}
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * Get stream

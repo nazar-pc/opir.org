@@ -67,7 +67,7 @@
       };
       streams_cache = [];
       $.ajax({
-        url: 'api/Streams/events',
+        url: 'api/Streams/streams',
         type: 'get',
         success: function(events) {
           streams_cache = events;

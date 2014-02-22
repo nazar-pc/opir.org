@@ -2,7 +2,8 @@
 (function() {
 
   $(function() {
-    if (!cs.home.automaidan) {
+    var _ref;
+    if (!((_ref = cs.home) != null ? _ref.automaidan : void 0)) {
       return;
     }
     return ymaps.ready(function() {

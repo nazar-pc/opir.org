@@ -1,0 +1,64 @@
+.cs-stream-add-panel {
+  background: #363e45;
+  color: #fff;
+  bottom: 0;
+  display: none;
+  font-size: 16px;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  top: 62px;
+  width: 310px;
+  z-index: 10; }
+  .cs-stream-add-panel > h2 {
+    font-weight: bold;
+    padding: 10px 20px;
+    text-align: center; }
+  .cs-stream-add-panel textarea,
+  .cs-stream-add-panel input {
+    border: none;
+    border-radius: 7px;
+    color: #444;
+    margin: 0 20px 15px;
+    padding: 7px; }
+  .cs-stream-add-panel textarea {
+    height: 100px;
+    width: 270px; }
+  .cs-stream-add-panel input {
+    margin-right: 0;
+    width: 100px; }
+  .cs-stream-add-panel .cs-stream-add-location,
+  .cs-stream-add-panel .cs-stream-add-close,
+  .cs-stream-add-panel .cs-stream-add-process {
+    background: #0067b6;
+    border: none;
+    border-radius: 7px;
+    height: 38px;
+    margin: 0 0 15px 20px;
+    text-align: center;
+    width: 270px; }
+  .cs-stream-add-panel .cs-stream-add-location:hover,
+  .cs-stream-add-panel .cs-stream-add-close:hover,
+  .cs-stream-add-panel .cs-stream-add-process:hover {
+    background: #005ea6; }
+  .cs-stream-add-panel .cs-stream-add-location-address {
+    width: 222px; }
+  .cs-stream-add-panel .cs-stream-add-location {
+    font-size: 20px;
+    margin-left: 5px;
+    width: 38px; }
+  .cs-stream-add-panel .help {
+    color: #e6e6e6;
+    font-size: 14px;
+    margin: 0 20px 20px; }
+  .cs-stream-add-panel .cs-stream-add-close {
+    background: #262e35;
+    font-size: 20px;
+    margin-left: 20px;
+    width: 38px; }
+  .cs-stream-add-panel .cs-stream-add-close:hover {
+    background: #1d2226; }
+  .cs-stream-add-panel .cs-stream-add-process {
+    margin-left: 5px;
+    width: 222px; }

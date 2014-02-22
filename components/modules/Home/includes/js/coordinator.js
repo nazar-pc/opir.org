@@ -2,8 +2,8 @@
 (function() {
 
   $(function() {
-    var focus_map_timer, settings_inner;
-    if (!cs.home.automaidan_coord) {
+    var focus_map_timer, settings_inner, _ref;
+    if (!((_ref = cs.home) != null ? _ref.automaidan_coord : void 0)) {
       return;
     }
     settings_inner = $('.cs-home-settings-coordinator').children('div');
@@ -58,11 +58,11 @@
                 routes.length && map.geoObjects.remove(routes);
                 routes = [];
                 _fn = function(id) {
-                  var event, _ref;
+                  var event, _ref1;
                   if (driver.busy) {
-                    _ref = map.update_events.cache;
-                    for (event in _ref) {
-                      event = _ref[event];
+                    _ref1 = map.update_events.cache;
+                    for (event in _ref1) {
+                      event = _ref1[event];
                       if (event.assigned_to === id) {
                         ymaps.route([[driver.lat, driver.lng], [event.lat, event.lng]], {
                           avoidTrafficJams: true
@@ -95,12 +95,12 @@
                 clusterer.removeAll();
                 clusterer.add(placemarks);
                 (function() {
-                  var category_name, confirmed, event, events_stream_panel_content, settings_panel_content, _ref;
+                  var category_name, confirmed, event, events_stream_panel_content, settings_panel_content, _ref1;
                   settings_panel_content = '';
                   events_stream_panel_content = '';
-                  _ref = map.update_events.cache;
-                  for (event in _ref) {
-                    event = _ref[event];
+                  _ref1 = map.update_events.cache;
+                  for (event in _ref1) {
+                    event = _ref1[event];
                     category_name = cs.home.categories[event.category].name;
                     confirmed = event.confirmed ? 'confirmed' : (event.assigned_to ? 'assigned' : 'unconfirmed');
                     settings_panel_content += ("<li class=\"" + confirmed + "\" data-location=\"" + event.lat + "," + event.lng + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + " <span>(додав " + event.user_login + ")</span></h2>") + (event.confirmed_login ? "підтвердив " + event.confirmed_login : (event.assigned_login ? "їде перевіряти " + event.assigned_login : '')) + "</li>";

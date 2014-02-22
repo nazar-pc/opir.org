@@ -2,8 +2,8 @@
 (function() {
 
   $(function() {
-    var location_updating, modal, stream_code;
-    if (!cs.home.reporter) {
+    var location_updating, modal, stream_code, _ref;
+    if (!((_ref = cs.home) != null ? _ref.reporter : void 0)) {
       return;
     }
     modal = $("<div>\n	<div class=\"uk-form\" style=\"width: 600px;margin-left: -300px;\">\n		<a class=\"uk-modal-close uk-close\"></a>\n		<p>\n			<textarea class=\"cs-home-stream-code\" placeholder=\"Вставте код плеєру з трансляцією (youtube чи ustream) або посилання на сторінку з трансляцією в youtube\"></textarea>\n		</p>\n		<p>Дозвольте браузеру завжди отримувати доступ до вашого місцезнаходження, це необхідно для трансляції!</p>\n		<p class=\"cs-right\">\n			<button class=\"uk-button cs-home-stream-code-save\">Почати трансляцію</button>\n		</p>\n	</div>\n</div>").appendTo('body').cs().modal('show').on('uk.modal.hide', function() {

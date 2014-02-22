@@ -1,5 +1,5 @@
 $ ->
-	if !cs.home.automaidan_coord
+	if !cs.home?.automaidan_coord
 		return
 	settings_inner	= $('.cs-home-settings-coordinator').children('div')
 	settings_inner.before("""

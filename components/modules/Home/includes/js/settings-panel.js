@@ -2,10 +2,10 @@
 (function() {
 
   $(function() {
-    var filter_category, map_container, panel;
+    var filter_category, map_container, panel, _ref, _ref1;
     map_container = $('#map');
     panel = $('.cs-home-settings-panel, .cs-home-settings-coordinator');
-    if (!cs.home.automaidan && !cs.home.automaidan_coord && !cs.is_admin) {
+    if (!((_ref = cs.home) != null ? _ref.automaidan : void 0) && !((_ref1 = cs.home) != null ? _ref1.automaidan_coord : void 0) && !cs.is_admin) {
       panel.find('[data-id]').each(function() {});
       panel.find('[data-group]:not([data-id])').each(function() {
         var prev;

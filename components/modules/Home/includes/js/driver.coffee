@@ -1,5 +1,5 @@
 $ ->
-	if !cs.home.automaidan
+	if !cs.home?.automaidan
 		return
 	ymaps.ready ->
 		add_zero		= (input) ->

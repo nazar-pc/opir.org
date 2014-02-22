@@ -17,30 +17,27 @@ body > header {
 		}
 	}
 
-	button[class*=cs-home-],
-	button[class*=cs-home-]:hover,
-	button[class*=cs-home-]:focus {
-		background    : #00579d;
-		color         : #fff;
-		border-radius : 0;
+	button,
+	button:hover,
+	button:focus {
+		background    : #00579d !important;
+		color         : #fff !important;
+		border-radius : 0 !important;
 		height        : 62px;
 		overflow-y    : auto;
 		padding       : 0 25px;
 		position      : absolute;
 		text-align    : center;
-		text-shadow   : none;
+		text-shadow   : none !important;
 		width         : 310px;
 	}
 
-	button[class*=cs-home-]:hover {
-		background : #004f8c;
+	button:hover {
+		background : #004f8c !important;
 	}
 
-	/*.cs-home-settings:before {
-		background-image : url(../img/setting.png);
-	}*/
-
-	.cs-home-add {
+	.cs-home-add,
+	.cs-stream-add {
 		left : 0;
 	}
 
@@ -63,6 +60,7 @@ body > header {
 	}
 
 	.cs-home-add:before,
+	.cs-stream-add:before,
 	.cs-home-sign-in:before,
 	.cs-home-sign-out:before {
 		background     : url(../img/add.png) no-repeat;

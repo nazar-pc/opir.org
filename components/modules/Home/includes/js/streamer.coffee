@@ -1,5 +1,5 @@
 $ ->
-	if !cs.home.reporter
+	if !cs.home?.reporter
 		return
 	modal = $("""
 		<div>

@@ -80,7 +80,7 @@ $ ->
 			clusterer.add(placemarks)
 		streams_cache	= []
 		$.ajax(
-			url			: 'api/Streams/events'
+			url			: 'api/Streams/streams'
 			type		: 'get'
 			success		: (events) ->
 				streams_cache	= events
