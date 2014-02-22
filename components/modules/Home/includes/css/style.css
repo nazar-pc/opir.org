@@ -35,12 +35,12 @@ body > header .cs-home-sign-out {
   width: auto !important; }
 body > header .cs-home-donate,
 body > header .cs-home-donate:focus {
-  background: #d68732 !important;
+  background: #e5a324 !important;
   right: 71px;
   width: 239px !important; }
   body > header .cs-home-donate:hover,
   body > header .cs-home-donate:focus:hover {
-    background: #bf792e !important; }
+    background: #d69722 !important; }
 body > header .cs-home-add:before,
 body > header .cs-stream-add:before,
 body > header .cs-home-sign-in:before,
