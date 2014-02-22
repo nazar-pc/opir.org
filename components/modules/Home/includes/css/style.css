@@ -12,11 +12,8 @@ body > header {
       display: inline-block;
       text-align: left;
       vertical-align: middle; }
-      body > header .cs-home-logo > div:nth-of-type(-n+2) {
+      body > header .cs-home-logo > div:nth-of-type(1) {
         padding-left: 15px; }
-    body > header .cs-home-logo .hot-line {
-      line-height: 16px;
-      margin-top: -10px; }
   body > header button[class*=cs-home-],
   body > header button[class*=cs-home-]:hover,
   body > header button[class*=cs-home-]:focus {
@@ -63,3 +60,12 @@ body > header {
 
 .ymaps-image {
   background-size: auto !important; }
+
+.cs-hot-line {
+  padding: 10px 20px; }
+  .cs-hot-line h3 {
+    text-align: center; }
+  .cs-hot-line small {
+    display: inline-block;
+    font-size: 14px;
+    padding: 0 0 10px 10px; }

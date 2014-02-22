@@ -11,14 +11,9 @@ body > header {
 			text-align     : left;
 			vertical-align : middle;
 
-			&:nth-of-type(-n+2) {
+			&:nth-of-type(1) {
 				padding-left : 15px;
 			}
-		}
-
-		.hot-line {
-			line-height : 16px;
-			margin-top  : -10px;
 		}
 	}
 
@@ -86,6 +81,21 @@ body > header {
 		background-image : url(../img/sign-out.png);
 	}
 }
+
 .ymaps-image {
 	background-size : auto !important;
+}
+
+.cs-hot-line {
+	padding : 10px 20px;
+
+	h3 {
+		text-align : center;
+	}
+
+	small {
+		display   : inline-block;
+		font-size : 14px;
+		padding   : 0 0 10px 10px;
+	}
 }

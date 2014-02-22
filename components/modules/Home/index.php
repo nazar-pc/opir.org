@@ -24,9 +24,6 @@ $Page->Header	=
 		h::{'a[href=/] img'}([
 			'src'	=> "components/modules/Home/includes/img/logo.png"
 		]).
-		h::{'div.hot-line'}(
-			'+38 050 258 17 05 (мед. питання)<br>+38 050 258 17 43 (самооборона)<br>+38 093 01 222 11 (інше)'
-		).
 		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="facebook" data-yashareLink="https://www.facebook.com/opir.org" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'.
 		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="vkontakte,twitter" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'
 	).
@@ -69,6 +66,10 @@ $Page->content(
 	h::{'aside.cs-home-events-stream-panel'}().
 	(
 		!in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups() ?: []) ? h::{'aside.cs-home-settings-panel'}(
+			h::{'div.cs-hot-line'}(
+				h::h3('Гаряча лінія:').
+				'+38 050 258 17 05<br><small>(медичні питання)</small><br>+38 050 258 17 43<br><small>(координація самооборони)</small><br>+38 093 01 222 11<br><small>(інше)</small>'
+			).
 			h::{'input.cs-home-address-search'}([
 				'placeholder'	=> 'Пошук адреси на карті'
 			]).
