@@ -58,6 +58,7 @@ $ ->
 							balloonContentBody		: """<p><iframe width="260" height="240" src="#{stream.stream_url}" frameborder="0" scrolling="no"></iframe></p>"""
 						}
 						{
+							hasHint				: false
 							iconLayout			: 'default#image'
 							iconImageHref		: '/components/modules/Home/includes/img/events.png'
 							iconImageSize		: [59, 56]
