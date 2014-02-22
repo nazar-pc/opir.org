@@ -169,7 +169,6 @@ $ ->
 							)
 						return
 			events_stream_panel.html("<h2>Ефір подій</h2><ul>#{events_stream_panel_content}</ul>")
-			clusterer.removeAll()
 			placemarks.push(
 				new ymaps.Placemark(
 					[50.615181, 30.475790]
@@ -205,6 +204,7 @@ $ ->
 					}
 				)
 			)
+			clusterer.removeAll()
 			clusterer.add(placemarks)
 			if !window.golden_shown && location.hash == '#golden-toilet'
 				window.golden_shown	= true

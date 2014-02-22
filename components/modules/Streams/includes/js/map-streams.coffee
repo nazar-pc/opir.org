@@ -47,24 +47,15 @@ $ ->
 				[23-24, 56-58]
 			]
 		]))
-		add_streams_on_map	= (events) ->
-			events						= filter_streams(events)
+		add_streams_on_map	= (streams) ->
+			#streams						= filter_streams(streams)
 			placemarks					= []
-			for event, event of events
-				text	= """<p><iframe width="260" height="240" src="#{text}" frameborder="0" scrolling="no"></iframe></p>"""
+			for stream, stream of streams
 				placemarks.push(
 					new ymaps.Placemark(
-						[event.lat, event.lng]
+						[stream.lat, stream.lng]
 						{
-							hintContent				: category_name
-							balloonContentHeader	: category_name
-							balloonContentBody		: """
-								#{added}
-								#{timeout}
-								#{img}
-								#{text}
-							"""
-							balloonContentFooter	: balloon_footer(event, is_streaming)
+							balloonContentBody		: """<p><iframe width="260" height="240" src="#{stream.stream_url}" frameborder="0" scrolling="no"></iframe></p>"""
 						}
 						{
 							iconLayout			: 'default#image'
@@ -82,9 +73,9 @@ $ ->
 		$.ajax(
 			url			: 'api/Streams/streams'
 			type		: 'get'
-			success		: (events) ->
-				streams_cache	= events
-				add_streams_on_map(events)
+			success		: (streams) ->
+				streams_cache	= streams
+				add_streams_on_map(streams)
 				return
 			error		: ->
 		)

@@ -9,5 +9,7 @@
 namespace	cs\modules\Streams;
 use			cs\Page;
 Page::instance()->json(
-	Streams::instance()->get_all() ?: []
+	Streams::instance()->get(
+		Streams::instance()->get_all()
+	) ?: []
 );

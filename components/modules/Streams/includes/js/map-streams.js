@@ -41,18 +41,13 @@
       };
       placemarks = [];
       icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[23 - 24, 56 - 58], [44 - 24, 34 - 58], [47 - 24, 23 - 58], [45 - 24, 14 - 58], [40 - 24, 7 - 58], [29 - 24, 0 - 58], [17 - 24, 0 - 58], [7 - 24, 6 - 58], [0 - 24, 18 - 58], [0 - 24, 28 - 58], [4 - 24, 36 - 58], [23 - 24, 56 - 58]]]));
-      add_streams_on_map = function(events) {
-        var event, text;
-        events = filter_streams(events);
+      add_streams_on_map = function(streams) {
+        var stream;
         placemarks = [];
-        for (event in events) {
-          event = events[event];
-          text = "<p><iframe width=\"260\" height=\"240\" src=\"" + text + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>";
-          placemarks.push(new ymaps.Placemark([event.lat, event.lng], {
-            hintContent: category_name,
-            balloonContentHeader: category_name,
-            balloonContentBody: "" + added + "\n" + timeout + "\n" + img + "\n" + text,
-            balloonContentFooter: balloon_footer(event, is_streaming)
+        for (stream in streams) {
+          stream = streams[stream];
+          placemarks.push(new ymaps.Placemark([stream.lat, stream.lng], {
+            balloonContentBody: "<p><iframe width=\"260\" height=\"240\" src=\"" + stream.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>"
           }, {
             iconLayout: 'default#image',
             iconImageHref: '/components/modules/Home/includes/img/events.png',
@@ -69,9 +64,9 @@
       $.ajax({
         url: 'api/Streams/streams',
         type: 'get',
-        success: function(events) {
-          streams_cache = events;
-          add_streams_on_map(events);
+        success: function(streams) {
+          streams_cache = streams;
+          add_streams_on_map(streams);
         },
         error: function() {}
       });

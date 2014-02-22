@@ -55,7 +55,7 @@ class Streams {
 			$lat,
 			$lng,
 			TIME,
-			0,
+			1,
 			0
 		]);
 		if ($id) {
