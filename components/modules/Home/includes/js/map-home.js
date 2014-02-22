@@ -21,7 +21,7 @@
       window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
-        controls: ['typeSelector', 'zoomControl']
+        controls: ['typeSelector', 'zoomControl', 'fullscreenControl', 'rulerControl', 'trafficControl']
       });
       clusterer = new ymaps.Clusterer();
       clusterer.createCluster = function(center, geoObjects) {
