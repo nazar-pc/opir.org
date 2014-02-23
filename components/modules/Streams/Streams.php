@@ -97,6 +97,7 @@ class Streams {
 			}
 			return true;
 		}
+		unset($this->cache->all);
 		return false;
 	}
 	/**
