@@ -8,11 +8,21 @@ $ ->
 		add_zero		= (input) ->
 			if input < 10 then '0' + input else input
 		placemarks	= []
-		window.map				= new ymaps.Map 'map', {
-			center				: [50.45, 30.523611]
-			zoom				: 13
-			controls			: ['typeSelector', 'zoomControl', 'fullscreenControl', 'rulerControl', 'trafficControl']
-		}
+		window.map				= new ymaps.Map(
+			'map'
+			{
+				center				: [50.45, 30.523611]
+				zoom				: 12
+				controls			: ['typeSelector', 'zoomControl', 'fullscreenControl', 'rulerControl', 'trafficControl']
+			}
+			{
+				avoidFractionalZoom	: false
+			}
+		)
+		map.setBounds(
+			[[44.02462975216294, 21.777120521484335], [52.82663432351663, 40.32204239648433]]
+			preciseZoom	: true
+		)
 		map.balloon.events
 			.add('open', ->
 				stop_updating	= true

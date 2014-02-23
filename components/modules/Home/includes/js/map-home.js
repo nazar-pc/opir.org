@@ -20,8 +20,13 @@
       placemarks = [];
       window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
-        zoom: 13,
+        zoom: 12,
         controls: ['typeSelector', 'zoomControl', 'fullscreenControl', 'rulerControl', 'trafficControl']
+      }, {
+        avoidFractionalZoom: false
+      });
+      map.setBounds([[44.02462975216294, 21.777120521484335], [52.82663432351663, 40.32204239648433]], {
+        preciseZoom: true
       });
       map.balloon.events.add('open', function() {
         stop_updating = true;
