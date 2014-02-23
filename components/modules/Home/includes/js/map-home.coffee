@@ -13,6 +13,15 @@ $ ->
 			zoom				: 13
 			controls			: ['typeSelector', 'zoomControl', 'fullscreenControl', 'rulerControl', 'trafficControl']
 		}
+		map.balloon.events
+			.add('open', ->
+				stop_updating	= true
+				return
+			)
+			.add('close', ->
+				stop_updating	= false
+				return
+			)
 		clusterer				= new ymaps.Clusterer()
 		clusterer.createCluster	= (center, geoObjects) ->
 			cluster	= ymaps.Clusterer.prototype.createCluster.call(this, center, geoObjects)
@@ -152,20 +161,6 @@ $ ->
 								streaming_opened	= false
 								refresh_delay		= 60
 								map.update_events(true)
-							)
-						return
-				else
-					do (event = event) ->
-						placemark	= placemarks[placemarks.length - 1]
-						placemark.balloon.events
-							.add('open', ->
-								stop_updating	= true
-								return
-							)
-							.add('close', ->
-								stop_updating	= false
-								#map.update_events(true)
-								return
 							)
 						return
 			events_stream_panel.html("<h2>Ефір подій</h2><ul>#{events_stream_panel_content}</ul>")

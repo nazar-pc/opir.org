@@ -23,6 +23,11 @@
         zoom: 13,
         controls: ['typeSelector', 'zoomControl', 'fullscreenControl', 'rulerControl', 'trafficControl']
       });
+      map.balloon.events.add('open', function() {
+        stop_updating = true;
+      }).add('close', function() {
+        stop_updating = false;
+      });
       clusterer = new ymaps.Clusterer();
       clusterer.createCluster = function(center, geoObjects) {
         var cluster;
@@ -125,16 +130,6 @@
                 streaming_opened = false;
                 refresh_delay = 60;
                 return map.update_events(true);
-              });
-            })(event);
-          } else {
-            (function(event) {
-              var placemark;
-              placemark = placemarks[placemarks.length - 1];
-              placemark.balloon.events.add('open', function() {
-                stop_updating = true;
-              }).add('close', function() {
-                stop_updating = false;
               });
             })(event);
           }
