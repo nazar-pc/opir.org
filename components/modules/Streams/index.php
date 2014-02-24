@@ -39,7 +39,7 @@ $Page->Header	=
 		:
 			h::{'button.cs-home-sign-in'}()
 	).
-	h::{'button.cs-home-donate'}('Допомогти сайту');
+	h::{'button.cs-home-donate'}('Допомогти ініціативі');
 $Page->content(
 	h::{'aside.cs-stream-add-panel'}()/*.
 	h::{'aside.cs-home-settings-panel'}(

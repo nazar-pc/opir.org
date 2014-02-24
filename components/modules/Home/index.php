@@ -36,7 +36,7 @@ $Page->Header	=
 			h::{'a.cs-home-cameras[href=Streams]'}('Камери').
 			h::{'button.cs-home-sign-in'}()
 	).
-	h::{'button.cs-home-donate'}('Допомогти сайту');
+	h::{'button.cs-home-donate'}('Допомогти ініціативі');
 $categories	= Events_categories::instance()->get_all();
 $groups		= Events_categories_groups::instance()->get_all();
 $groups		= array_combine(array_column($groups, 'id'), $groups);
