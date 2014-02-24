@@ -20,7 +20,7 @@ $Page->link([
 	'href'	=> 'https://opir.org/components/modules/Home/includes/img/share.png'
 ]);
 $Page->css(
-	'#map {left:0;}',
+	'#map {left:0;right:0;}',
 	'code'
 );
 $Page->Header	=
@@ -32,6 +32,7 @@ $Page->Header	=
 		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="vkontakte,twitter" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'
 	).
 	h::{'button.cs-stream-add'}('Додати камеру').
+	h::{'a.cs-home-cameras[href=Streams]'}().
 	(
 		$User->user() ?
 			h::{'button.cs-home-sign-out'}()
@@ -40,12 +41,12 @@ $Page->Header	=
 	).
 	h::{'button.cs-home-donate'}('Допомогти сайту');
 $Page->content(
-	h::{'aside.cs-stream-add-panel'}().
+	h::{'aside.cs-stream-add-panel'}()/*.
 	h::{'aside.cs-home-settings-panel'}(
 		h::{'input.cs-home-address-search'}([
 			'placeholder'	=> 'Пошук адреси на карті'
 		]).
 		h::h2('Фільтр')
 	).
-	h::{'div.cs-home-settings.uk-icon-chevron-right'}()
+	h::{'div.cs-home-settings.uk-icon-chevron-right'}()*/
 );

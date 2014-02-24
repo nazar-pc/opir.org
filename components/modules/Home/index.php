@@ -30,8 +30,10 @@ $Page->Header	=
 	(
 		$User->user() ?
 			h::{'button.cs-home-add'}('Додати').
+			h::{'a.cs-home-cameras[href=Streams]'}().
 			h::{'button.cs-home-sign-out'}()
 		:
+			h::{'a.cs-home-cameras[href=Streams]'}('Камери').
 			h::{'button.cs-home-sign-in'}()
 	).
 	h::{'button.cs-home-donate'}('Допомогти сайту');

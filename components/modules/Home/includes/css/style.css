@@ -10,11 +10,13 @@ body > header .cs-home-logo {
     vertical-align: middle; }
     body > header .cs-home-logo > div:nth-of-type(1) {
       padding-left: 15px; }
+body > header .cs-home-cameras,
 body > header button,
 body > header button:hover,
 body > header button:focus {
   background: #00579d !important;
   color: white !important;
+  display: block;
   border-radius: 0 !important;
   height: 62px;
   overflow-y: auto;
@@ -23,11 +25,20 @@ body > header button:focus {
   text-align: center;
   text-shadow: none !important;
   width: 310px; }
+body > header .cs-home-cameras {
+  background: #0067b6 !important;
+  padding: 10px; }
+  body > header .cs-home-cameras:hover {
+    background: #005ea6 !important; }
 body > header button:hover {
   background: #004f8c !important; }
 body > header .cs-home-add,
 body > header .cs-stream-add {
   left: 0; }
+  body > header .cs-home-add + .cs-home-cameras,
+  body > header .cs-stream-add + .cs-home-cameras {
+    left: 310px;
+    width: auto; }
 body > header .cs-home-sign-in,
 body > header .cs-home-sign-out {
   padding: 10px !important;
@@ -43,6 +54,7 @@ body > header .cs-home-donate:focus {
     background: #d69722 !important; }
 body > header .cs-home-add:before,
 body > header .cs-stream-add:before,
+body > header .cs-home-cameras:before,
 body > header .cs-home-sign-in:before,
 body > header .cs-home-sign-out:before {
   background: url(../img/add.png) no-repeat;
@@ -51,6 +63,8 @@ body > header .cs-home-sign-out:before {
   height: 44px;
   vertical-align: middle;
   width: 44px; }
+body > header .cs-home-cameras:before {
+  background-image: url(../img/cameras.png); }
 body > header .cs-home-sign-in:before {
   background-image: url(../img/sign-in.png); }
 body > header .cs-home-sign-out:before {
