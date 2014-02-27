@@ -1,0 +1,29 @@
+.cs-stream-filter-panel {
+  background: #363e45;
+  color: #fff;
+  bottom: 0;
+  font-size: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-top: 20px;
+  position: absolute;
+  right: 0;
+  top: 62px;
+  width: 310px; }
+  .cs-stream-filter-panel .cs-stream-filter {
+    border: none;
+    border-radius: 7px;
+    color: #444444;
+    margin: 10px 20px;
+    padding: 7px;
+    width: 270px; }
+  .cs-stream-filter-panel button {
+    background: #0067b6;
+    border: none;
+    border-radius: 7px;
+    height: 38px;
+    margin: 0 0 15px 20px;
+    text-align: center;
+    width: 270px; }
+  .cs-stream-filter-panel button:hover {
+    background: #005ea6; }

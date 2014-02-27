@@ -22,7 +22,7 @@ class Tags {
 	 * @var Prefix
 	 */
 	protected $cache;
-	protected $table		= '[prefix]streams_streams';
+	protected $table		= '[prefix]streams_tags';
 	protected $data_model	= [
 		'id'		=> 'int',
 		'title'		=> 'text'
@@ -85,7 +85,7 @@ class Tags {
 			"SELECT `id`
 			FROM `$this->table`
 			WHERE
-				`title`	LIKE `%s`",
+				`title`	LIKE '%s'",
 			"$tag%"
 		]);
 	}

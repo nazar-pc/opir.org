@@ -116,16 +116,24 @@ class Streams {
 		}
 		$id	= (int)$id;
 		if (User::instance()->admin()) {
-			return $this->db()->qf([
+			$streams	= $this->db()->qf([
 				"SELECT *
 				FROM `$this->table`
 				WHERE `id` = '%s'
 				LIMIT 1",
 				$id
 			]);
+			foreach ($streams as &$stream) {
+				$stream['tags']	= $this->db()->qfas([
+					"SELECT `tag`
+					FROM `[prefix]streams_streams_tags`
+					WHERE `id` = '%s'",
+					$stream['id']
+				]);
+			}
 		}
 		return $this->cache->get($id, function () use ($id) {
-			return $this->db()->qf([
+			$data			= $this->db()->qf([
 				"SELECT
 					`id`,
 					`stream_url`,
@@ -139,6 +147,13 @@ class Streams {
 				LIMIT 1",
 				$id
 			]) ?: false;
+			$data['tags']	= $this->db()->qfas([
+				"SELECT `tag`
+				FROM `[prefix]streams_streams_tags`
+				WHERE `id` = '%s'",
+				$id
+			]);
+			return $data;
 		});
 	}
 	/**

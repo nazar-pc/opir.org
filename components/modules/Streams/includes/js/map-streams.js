@@ -6,7 +6,7 @@
       return;
     }
     return ymaps.ready(function() {
-      var add_streams_on_map, clusterer, filter_streams, icons_shape, placemarks, streams_cache;
+      var clusterer, filter_streams, icons_shape, placemarks, streams_cache;
       window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
@@ -32,17 +32,32 @@
         return cluster;
       };
       map.geoObjects.add(clusterer);
-      filter_streams = function(events) {
-        var categories;
-        categories = $('.cs-home-filter-category .active');
-        return events.filter(function(event) {
-          return !categories.length || categories.filter("[data-id=" + event.category + "]").length;
+      filter_streams = function(streams) {
+        var tags;
+        tags = $('.cs-stream-added-tags [data-id]');
+        if (!tags.length) {
+          return streams;
+        }
+        tags = tags.map(function() {
+          return $(this).data('id');
+        }).get();
+        return streams.filter(function(stream) {
+          var tag, _i, _len;
+          for (_i = 0, _len = tags.length; _i < _len; _i++) {
+            tag = tags[_i];
+            if (stream.tags.indexOf(tag) === -1) {
+              return true;
+            }
+          }
+          return false;
         });
       };
       placemarks = [];
       icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[23 - 24, 56 - 58], [44 - 24, 34 - 58], [47 - 24, 23 - 58], [45 - 24, 14 - 58], [40 - 24, 7 - 58], [29 - 24, 0 - 58], [17 - 24, 0 - 58], [7 - 24, 6 - 58], [0 - 24, 18 - 58], [0 - 24, 28 - 58], [4 - 24, 36 - 58], [23 - 24, 56 - 58]]]));
-      add_streams_on_map = function(streams) {
+      streams_cache = [];
+      map.add_streams_on_map = function(streams) {
         var stream;
+        streams = filter_streams(streams || streams_cache);
         placemarks = [];
         for (stream in streams) {
           stream = streams[stream];
@@ -61,13 +76,12 @@
         clusterer.removeAll();
         return clusterer.add(placemarks);
       };
-      streams_cache = [];
       $.ajax({
         url: 'api/Streams/streams',
         type: 'get',
         success: function(streams) {
           streams_cache = streams;
-          add_streams_on_map(streams);
+          map.add_streams_on_map(streams);
         },
         error: function() {}
       });

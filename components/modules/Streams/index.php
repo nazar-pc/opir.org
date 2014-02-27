@@ -20,7 +20,7 @@ $Page->link([
 	'href'	=> 'https://opir.org/components/modules/Home/includes/img/share.png'
 ]);
 $Page->css(
-	'#map {left:0;right:0;}',
+	'#map {left:0;}',
 	'code'
 );
 $Page->Header	=
@@ -41,12 +41,13 @@ $Page->Header	=
 	).
 	h::{'button.cs-home-donate'}('Допомогти ініціативі');
 $Page->content(
-	h::{'aside.cs-stream-add-panel'}()/*.
-	h::{'aside.cs-home-settings-panel'}(
-		h::{'input.cs-home-address-search'}([
-			'placeholder'	=> 'Пошук адреси на карті'
+	h::{'aside.cs-stream-add-panel'}().
+	h::{'aside.cs-stream-filter-panel'}(
+		h::{'div.cs-stream-added-tags[level=0]'}().
+		h::{'input.cs-stream-filter'}([
+			'placeholder'	=> 'Фільтр по адресі'
 		]).
-		h::h2('Фільтр')
+		h::{'div.cs-stream-found-tags[level=0]'}()
 	).
-	h::{'div.cs-home-settings.uk-icon-chevron-right'}()*/
+	h::{'div.cs-home-settings.uk-icon-chevron-right'}()
 );

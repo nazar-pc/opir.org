@@ -9,11 +9,12 @@
 namespace	cs\modules\Streams;
 use			cs\Page;
 $Page	= Page::instance();
-if (!isset($_GET['text']) || !$_GET['text']) {
+if (!isset($_GET['title']) || !$_GET['title']) {
 	error_code(400);
-	$Page->error('non-empty "text" parameter required');
+	$Page->error('non-empty "title" parameter required');
 	return;
 }
+$Tags	= Tags::instance();
 Page::instance()->json(
-	Tags::instance()->search($_GET['text']) ?: []
+	$Tags->get($Tags->search($_GET['title']) ?: [])
 );

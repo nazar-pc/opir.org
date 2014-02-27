@@ -26,10 +26,19 @@ $ ->
 			)
 			cluster
 		map.geoObjects.add(clusterer)
-		filter_streams		= (events) ->
-			categories	= $('.cs-home-filter-category .active')
-			events.filter (event) ->
-				!categories.length || categories.filter("[data-id=#{event.category}]").length
+		filter_streams		= (streams) ->
+			tags	= $('.cs-stream-added-tags [data-id]')
+			if !tags.length
+				return streams
+			tags	= tags
+				.map ->
+					$(@).data('id')
+				.get()
+			streams.filter (stream) ->
+				for tag in tags
+					if stream.tags.indexOf(tag) == -1
+						return true
+				return false
 		placemarks			= []
 		icons_shape			= new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([
 			[
@@ -47,8 +56,9 @@ $ ->
 				[23-24, 56-58]
 			]
 		]))
-		add_streams_on_map	= (streams) ->
-			#streams						= filter_streams(streams)
+		streams_cache	= []
+		map.add_streams_on_map	= (streams) ->
+			streams						= filter_streams(streams || streams_cache)
 			placemarks					= []
 			for stream, stream of streams
 				placemarks.push(
@@ -70,13 +80,12 @@ $ ->
 				)
 			clusterer.removeAll()
 			clusterer.add(placemarks)
-		streams_cache	= []
 		$.ajax(
 			url			: 'api/Streams/streams'
 			type		: 'get'
 			success		: (streams) ->
 				streams_cache	= streams
-				add_streams_on_map(streams)
+				map.add_streams_on_map(streams)
 				return
 			error		: ->
 		)
