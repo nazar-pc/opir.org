@@ -96,7 +96,8 @@
               event_coords = null;
               put_events_coords = false;
               map_cursor.remove();
-              return alert('Камеру успішно додано, дякуємо вам! Після перевірки вона з’явиться на карті.');
+              alert('Камеру успішно додано, дякуємо вам! Після перевірки вона з’явиться на карті.');
+              return location.reload();
             }
           });
         });

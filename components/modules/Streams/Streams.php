@@ -95,6 +95,7 @@ class Streams {
 					true
 				);
 			}
+			unset($this->cache->all);
 			return true;
 		}
 		unset($this->cache->all);

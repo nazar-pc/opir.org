@@ -126,6 +126,7 @@ $ ->
 								put_events_coords	= false
 								map_cursor.remove()
 								alert 'Камеру успішно додано, дякуємо вам! Після перевірки вона з’явиться на карті.'
+								location.reload()
 						)
 				else if !stream_code
 					alert 'Код стріму з ustream обов’язковий'
