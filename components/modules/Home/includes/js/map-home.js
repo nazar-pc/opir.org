@@ -101,7 +101,7 @@
             timeout = '';
             is_streaming = true;
             text = text.substr(7);
-            text = "<p><iframe width=\"260\" height=\"240\" src=\"" + text + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>";
+            text = "<p><iframe width=\"400\" height=\"240\" src=\"" + text + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>";
           } else {
             text = text ? "<p>" + text + "</p>" : '';
           }

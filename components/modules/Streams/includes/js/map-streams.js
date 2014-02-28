@@ -62,7 +62,7 @@
         for (stream in streams) {
           stream = streams[stream];
           placemarks.push(new ymaps.Placemark([stream.lat, stream.lng], {
-            balloonContentBody: "<p><iframe width=\"260\" height=\"240\" src=\"" + stream.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>"
+            balloonContentBody: "<p><iframe width=\"400\" height=\"240\" src=\"" + stream.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>"
           }, {
             hasHint: false,
             iconLayout: 'default#image',
