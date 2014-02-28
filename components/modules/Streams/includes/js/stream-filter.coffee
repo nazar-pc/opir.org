@@ -41,3 +41,31 @@ $ ->
 			last	= ''
 			stream_filter.val('')
 	)
+	panel			= $('.cs-stream-filter-panel')
+	map_container	= $('#map')
+	$('.cs-stream-filter-hide').click ->
+		shown	= panel.css('width') != '0px'
+		map_container.animate(
+			right	: (if shown then 0 else 310) + 'px'
+			'fast'
+			->
+				map.container.fitToViewport()
+		)
+		if shown
+			panel.animate(
+				width	: '0'
+				'fast'
+			)
+			$(@).animate(
+				right	: '0'
+				'fast'
+			).removeClass('uk-icon-chevron-right').addClass('uk-icon-chevron-left')
+		else
+			panel.animate(
+				width	: '310'
+				'fast'
+			)
+			$(@).animate(
+				right	: '310'
+				'fast'
+			).removeClass('uk-icon-chevron-left').addClass('uk-icon-chevron-right')

@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var added_tags, found_tags, last, stream_filter;
+    var added_tags, found_tags, last, map_container, panel, stream_filter;
     stream_filter = $('.cs-stream-filter');
     last = '';
     added_tags = $('.cs-stream-added-tags');
@@ -43,11 +43,37 @@
       $(this).remove();
       return map.add_streams_on_map();
     });
-    return found_tags.on('click', 'button', function() {
+    found_tags.on('click', 'button', function() {
       added_tags.append($(this).detach()[0].outerHTML.replace(/uk-icon-plus/, 'uk-icon-times'));
       map.add_streams_on_map();
       last = '';
       return stream_filter.val('');
+    });
+    panel = $('.cs-stream-filter-panel');
+    map_container = $('#map');
+    return $('.cs-stream-filter-hide').click(function() {
+      var shown;
+      shown = panel.css('width') !== '0px';
+      map_container.animate({
+        right: (shown ? 0 : 310) + 'px'
+      }, 'fast', function() {
+        return map.container.fitToViewport();
+      });
+      if (shown) {
+        panel.animate({
+          width: '0'
+        }, 'fast');
+        return $(this).animate({
+          right: '0'
+        }, 'fast').removeClass('uk-icon-chevron-right').addClass('uk-icon-chevron-left');
+      } else {
+        panel.animate({
+          width: '310'
+        }, 'fast');
+        return $(this).animate({
+          right: '310'
+        }, 'fast').removeClass('uk-icon-chevron-left').addClass('uk-icon-chevron-right');
+      }
     });
   });
 

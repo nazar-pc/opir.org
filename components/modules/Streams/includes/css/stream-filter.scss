@@ -34,3 +34,17 @@
 		background : #005ea6;
 	}
 }
+
+
+.cs-stream-filter-hide {
+	background    : #363E45;
+	border-radius : 10px 0 0 10px;
+	color         : #fff;
+	cursor        : pointer;
+	font-size     : 48px;
+	padding       : 15px 0 15px 15px;
+	position      : absolute;
+	right         : 310px;
+	top           : 110px;
+	z-index       : 1000;
+}

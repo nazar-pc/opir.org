@@ -3,6 +3,9 @@
 
   $(function() {
     var filter_category, map_container, panel, _ref, _ref1;
+    if (!$('.cs-home-settings').length) {
+      return;
+    }
     map_container = $('#map');
     panel = $('.cs-home-settings-panel, .cs-home-settings-coordinator');
     if (!((_ref = cs.home) != null ? _ref.automaidan : void 0) && !((_ref1 = cs.home) != null ? _ref1.automaidan_coord : void 0) && !cs.is_admin) {

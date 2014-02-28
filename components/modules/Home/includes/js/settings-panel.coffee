@@ -1,4 +1,6 @@
 $ ->
+	if !$('.cs-home-settings').length
+		return
 	map_container	= $('#map')
 	panel			= $('.cs-home-settings-panel, .cs-home-settings-coordinator')
 	if !cs.home?.automaidan && !cs.home?.automaidan_coord && !cs.is_admin

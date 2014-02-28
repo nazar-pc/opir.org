@@ -49,5 +49,5 @@ $Page->content(
 		]).
 		h::{'div.cs-stream-found-tags[level=0]'}()
 	).
-	h::{'div.cs-home-settings.uk-icon-chevron-right'}()
+	h::{'div.cs-stream-filter-hide.uk-icon-chevron-right'}()
 );
