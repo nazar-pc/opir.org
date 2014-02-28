@@ -8,11 +8,14 @@
  */
 namespace	cs\modules\Home;
 use			h,
+			cs\Index,
 			cs\Page,
 			cs\User;
-$Page				= Page::instance();
-$Page->Description	= 'opir.org - Тут ви можете з орієнтуватися на самому майдані, дізнатися де проходять суди над евромайданівцями, бути попередженим про появлення тітушок';
-$User				= User::instance();
+$Page							= Page::instance();
+Index::instance()->title_auto	= false;
+$Page->Description				= 'opir.org - Тут ви можете з орієнтуватися на самому майдані, дізнатися де проходять суди над евромайданівцями, бути попередженим про появлення тітушок';
+$User							= User::instance();
+$Page->title('Камери');
 $Page->og('image', 'https://opir.org/components/modules/Home/includes/img/share.png');
 $Page->og('image:secure_url', 'https://opir.org/components/modules/Home/includes/img/share.png');
 $Page->link([
