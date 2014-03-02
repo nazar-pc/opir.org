@@ -8,6 +8,7 @@
  */
 namespace	cs\modules\Home;
 use			h,
+			cs\Index,
 			cs\Page,
 			cs\User;
 $Page				= Page::instance();
@@ -63,6 +64,17 @@ $Page->js(
 	]).';',
 	'code'
 );
+$Index	= Index::instance();
+if (isset($Index->route_ids[0])) {
+	$Page->js(
+		'cs.home.show_event = '.$Index->route_ids[0].';',
+		'code'
+	);
+	Page::instance()->js(
+		"var disqus_shortname = 'opirorg', disqus_identifier = 'Events/".$Index->route_ids[0]."';",
+		'code'
+	);
+}
 $Page->content(
 	h::{'aside.cs-home-add-panel'}().
 	h::{'aside.cs-home-events-stream-panel'}().

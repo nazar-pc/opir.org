@@ -108,6 +108,7 @@
           img = event.img ? "<p><img height=\"240\" width=\"260\" src=\"" + event.img + "\" alt=\"\"></p>" : '';
           event.confirmed = parseInt(event.confirmed);
           placemarks.push(new ymaps.Placemark([event.lat, event.lng], {
+            event_id: event.id,
             hintContent: category_name,
             balloonContentHeader: category_name,
             balloonContentBody: "" + added + "\n" + timeout + "\n" + img + "\n" + text,
@@ -121,7 +122,7 @@
             iconImageShape: icons_shape
           }));
           placemark_id = placemarks.length - 1;
-          events_stream_panel_content += "<li data-location=\"" + event.lat + "," + event.lng + "\" data-placemark=\"" + placemark_id + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</span></h2>\n	<br>\n	" + added + "\n	" + timeout + "\n	" + img + "\n	" + text + "\n</li>";
+          events_stream_panel_content += "<li data-location=\"" + event.lat + "," + event.lng + "\" data-placemark=\"" + placemark_id + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</span></h2>\n	<br>\n	" + added + "<br>\n	" + timeout + "\n	" + img + "\n	" + text + "\n</li>";
           if (is_streaming) {
             (function(event) {
               var placemark;
@@ -165,13 +166,42 @@
         clusterer.add(placemarks);
         if (!window.golden_shown && location.hash === '#golden-toilet') {
           window.golden_shown = true;
-          return map.panTo([50.615181, 30.475790]).then(function() {
+          map.panTo([50.615181, 30.475790]).then(function() {
             return map.zoomRange.get([50.615181, 30.475790]).then(function(zoomRange) {
               return map.setZoom(zoomRange[1], {
                 duration: 500
               });
             });
           });
+        }
+        if (!window.event_shown && window.cs.home.show_event) {
+          return (function() {
+            var content, i, placemark, state, title, _i, _len;
+            window.event_shown = true;
+            for (_i = 0, _len = placemarks.length; _i < _len; _i++) {
+              i = placemarks[_i];
+              if (parseInt(i.properties.get('event_id')) === cs.home.show_event) {
+                placemark = i;
+                break;
+              }
+            }
+            delete cs.home.show_event;
+            if (!placemark) {
+              $.cs.simple_modal('<h3 class="cs-center">Подія більше не актуальна</h3>', false, 400);
+              return;
+            }
+            state = clusterer.getObjectState(placemark);
+            if (state.isClustered) {
+              state.cluster.state.set('activeObject', placemark);
+              state.cluster.events.fire('click');
+            } else {
+              placemark.balloon.open();
+            }
+            title = placemark.properties.get('balloonContentHeader');
+            content = placemark.properties.get('balloonContentBody');
+            $.cs.simple_modal("<h1>" + title + "</h1>\n" + content + "\n<div id=\"disqus_thread\"></div>", true, 800);
+            return init_disqus();
+          })();
         }
       };
       balloon_footer = function(event, is_streaming) {

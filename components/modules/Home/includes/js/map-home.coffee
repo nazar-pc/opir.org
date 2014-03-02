@@ -125,6 +125,7 @@ $ ->
 					new ymaps.Placemark(
 						[event.lat, event.lng]
 						{
+							event_id				: event.id
 							hintContent				: category_name
 							balloonContentHeader	: category_name
 							balloonContentBody		: """
@@ -151,7 +152,7 @@ $ ->
 						<img src="/components/modules/Home/includes/img/#{event.category}.png" alt="">
 						<h2>#{category_name}</span></h2>
 						<br>
-						#{added}
+						#{added}<br>
 						#{timeout}
 						#{img}
 						#{text}
@@ -219,8 +220,39 @@ $ ->
 							zoomRange[1],
 							duration	: 500
 						)
-
-
+			if !window.event_shown && window.cs.home.show_event
+				do ->
+					window.event_shown	= true
+					for i in placemarks
+						if parseInt(i.properties.get('event_id')) == cs.home.show_event
+							placemark	= i
+							break
+					delete cs.home.show_event
+					if !placemark
+						$.cs.simple_modal(
+							'<h3 class="cs-center">Подія більше не актуальна</h3>'
+							false
+							400
+						)
+						return
+					state		= clusterer.getObjectState(placemark)
+					if state.isClustered
+						state.cluster.state.set('activeObject', placemark)
+						state.cluster.events.fire('click')
+					else
+						placemark.balloon.open()
+					title	= placemark.properties.get('balloonContentHeader')
+					content	= placemark.properties.get('balloonContentBody')
+					$.cs.simple_modal(
+						"""
+							<h1>#{title}</h1>
+							#{content}
+							<div id="disqus_thread"></div>
+						"""
+						true
+						800
+					)
+					init_disqus()
 		balloon_footer	= (event, is_streaming) ->
 			if cs.home.automaidan_coord
 				if !parseInt(event.assigned_to) then """<button class="cs-home-check-assign" data-id="#{event.id}">Відправити водія для перевірки</button>""" else ''
