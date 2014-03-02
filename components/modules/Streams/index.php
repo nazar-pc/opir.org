@@ -35,7 +35,7 @@ $Page->Header	=
 		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="vkontakte,twitter" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'
 	).
 	h::{'button.cs-stream-add'}('Додати камеру').
-	h::{'a.cs-home-cameras[href=Streams]'}().
+	h::{'a.cs-home-home[href=/]'}().
 	(
 		$User->user() ?
 			h::{'button.cs-home-sign-out'}()

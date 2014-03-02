@@ -18,6 +18,7 @@ body > header {
 	}
 
 	.cs-home-cameras,
+	.cs-home-home,
 	button,
 	button:hover,
 	button:focus {
@@ -33,7 +34,8 @@ body > header {
 		width         : 310px;
 	}
 
-	.cs-home-cameras {
+	.cs-home-cameras,
+	.cs-home-home {
 		background : #0067b6 !important;
 		padding    : 10px;
 
@@ -50,7 +52,8 @@ body > header {
 	.cs-stream-add {
 		left : 0;
 
-		& + .cs-home-cameras {
+		& + .cs-home-cameras,
+		& + .cs-home-home {
 			left  : 310px;
 			width : auto;
 		}
@@ -77,6 +80,7 @@ body > header {
 	.cs-home-add:before,
 	.cs-stream-add:before,
 	.cs-home-cameras:before,
+	.cs-home-home:before,
 	.cs-home-sign-in:before,
 	.cs-home-sign-out:before {
 		background     : url(../img/add.png) no-repeat;
@@ -89,6 +93,10 @@ body > header {
 
 	.cs-home-cameras:before {
 		background-image : url(../img/cameras.png);
+	}
+
+	.cs-home-home:before {
+		background-image : url(../img/home.png);
 	}
 
 	.cs-home-sign-in:before {
