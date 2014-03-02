@@ -129,10 +129,17 @@ $ ->
 							hintContent				: category_name
 							balloonContentHeader	: category_name
 							balloonContentBody		: """
-								#{added}
-								#{timeout}
-								#{img}
-								#{text}
+								<div>
+									#{added}<br>
+									#{timeout}
+									#{img}
+									#{text}
+								</div>
+								<div class="cs-home-video-social-links" data-id="#{event.id}">
+									<a class="fb uk-icon-facebook"></a>
+									<a class="vk uk-icon-vk"></a>
+									<a class="tw uk-icon-twitter"></a>
+								</div>
 							"""
 							balloonContentFooter	: balloon_footer(event, is_streaming)
 						}
@@ -150,12 +157,19 @@ $ ->
 				events_stream_panel_content	+= """
 					<li data-location="#{event.lat},#{event.lng}" data-placemark="#{placemark_id}">
 						<img src="/components/modules/Home/includes/img/#{event.category}.png" alt="">
-						<h2>#{category_name}</span></h2>
+						<h2>#{category_name}</h2>
 						<br>
-						#{added}<br>
-						#{timeout}
-						#{img}
-						#{text}
+						<div>
+							#{added}<br>
+							#{timeout}
+							#{img}
+							#{text}
+						</div>
+						<div class="cs-home-video-social-links" data-id="#{event.id}">
+							<a class="fb uk-icon-facebook"></a>
+							<a class="vk uk-icon-vk"></a>
+							<a class="tw uk-icon-twitter"></a>
+						</div>
 					</li>
 				"""
 				if is_streaming

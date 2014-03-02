@@ -111,7 +111,7 @@
             event_id: event.id,
             hintContent: category_name,
             balloonContentHeader: category_name,
-            balloonContentBody: "" + added + "\n" + timeout + "\n" + img + "\n" + text,
+            balloonContentBody: "<div>\n	" + added + "<br>\n	" + timeout + "\n	" + img + "\n	" + text + "\n</div>\n<div class=\"cs-home-video-social-links\" data-id=\"" + event.id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>",
             balloonContentFooter: balloon_footer(event, is_streaming)
           }, {
             iconLayout: 'default#image',
@@ -122,7 +122,7 @@
             iconImageShape: icons_shape
           }));
           placemark_id = placemarks.length - 1;
-          events_stream_panel_content += "<li data-location=\"" + event.lat + "," + event.lng + "\" data-placemark=\"" + placemark_id + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</span></h2>\n	<br>\n	" + added + "<br>\n	" + timeout + "\n	" + img + "\n	" + text + "\n</li>";
+          events_stream_panel_content += "<li data-location=\"" + event.lat + "," + event.lng + "\" data-placemark=\"" + placemark_id + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</h2>\n	<br>\n	<div>\n		" + added + "<br>\n		" + timeout + "\n		" + img + "\n		" + text + "\n	</div>\n	<div class=\"cs-home-video-social-links\" data-id=\"" + event.id + "\">\n		<a class=\"fb uk-icon-facebook\"></a>\n		<a class=\"vk uk-icon-vk\"></a>\n		<a class=\"tw uk-icon-twitter\"></a>\n	</div>\n</li>";
           if (is_streaming) {
             (function(event) {
               var placemark;
