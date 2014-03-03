@@ -6,7 +6,7 @@
       return;
     }
     return ymaps.ready(function() {
-      var add_events_on_map, add_zero, balloon_footer, clusterer, events_stream_panel, filter_events, focus_map_timer, icons_shape, placemarks, refresh_delay, stop_updating, streaming_opened;
+      var add_events_on_map, add_zero, balloon_footer, clusterer, events_stream_panel, filter_events, focus_map_timer, icons_shape, map_moving, open_modal_commenting, placemarks, refresh_delay, stop_updating, streaming_opened;
       refresh_delay = cs.home.automaidan_coord ? 10 : 10;
       streaming_opened = false;
       stop_updating = false;
@@ -111,7 +111,7 @@
             event_id: event.id,
             hintContent: category_name,
             balloonContentHeader: category_name,
-            balloonContentBody: "<div>\n	" + added + "<br>\n	" + timeout + "\n	" + img + "\n	" + text + "\n</div>\n<div class=\"cs-home-video-social-links\" data-id=\"" + event.id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>",
+            balloonContentBody: "<div>\n	" + added + "<br>\n	" + timeout + "\n	" + img + "\n	" + text + "\n</div>\n<div class=\"cs-home-video-social-links\" data-id=\"" + event.id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>\n<button onclick=\"cs.home.commenting(" + event.id + ")\" class=\"uk-icon-comment\" data-uk-tooltip title=\"Коментувати\"></button>",
             balloonContentFooter: balloon_footer(event, is_streaming)
           }, {
             iconLayout: 'default#image',
@@ -122,7 +122,7 @@
             iconImageShape: icons_shape
           }));
           placemark_id = placemarks.length - 1;
-          events_stream_panel_content += "<li data-location=\"" + event.lat + "," + event.lng + "\" data-placemark=\"" + placemark_id + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</h2>\n	<br>\n	<div>\n		" + added + "<br>\n		" + timeout + "\n		" + img + "\n		" + text + "\n	</div>\n	<div class=\"cs-home-video-social-links\" data-id=\"" + event.id + "\">\n		<a class=\"fb uk-icon-facebook\"></a>\n		<a class=\"vk uk-icon-vk\"></a>\n		<a class=\"tw uk-icon-twitter\"></a>\n	</div>\n</li>";
+          events_stream_panel_content += "<li data-location=\"" + event.lat + "," + event.lng + "\" data-placemark=\"" + placemark_id + "\">\n	<img src=\"/components/modules/Home/includes/img/" + event.category + ".png\" alt=\"\">\n	<h2>" + category_name + "</h2>\n	<br>\n	<div>\n		" + added + "<br>\n		" + timeout + "\n		" + img + "\n		" + text + "\n	</div>\n	<div class=\"cs-home-video-social-links\" data-id=\"" + event.id + "\">\n		<a class=\"fb uk-icon-facebook\"></a>\n		<a class=\"vk uk-icon-vk\"></a>\n		<a class=\"tw uk-icon-twitter\"></a>\n	</div>\n	<button onclick=\"cs.home.commenting(" + event.id + ")\" class=\"uk-icon-comment\" data-uk-tooltip title=\"Коментувати\"></button>\n</li>";
           if (is_streaming) {
             (function(event) {
               var placemark;
@@ -174,33 +174,10 @@
             });
           });
         }
-        if (!window.event_shown && window.cs.home.show_event) {
+        if (!window.event_shown) {
           return (function() {
-            var content, i, placemark, state, title, _i, _len;
             window.event_shown = true;
-            for (_i = 0, _len = placemarks.length; _i < _len; _i++) {
-              i = placemarks[_i];
-              if (parseInt(i.properties.get('event_id')) === cs.home.show_event) {
-                placemark = i;
-                break;
-              }
-            }
-            delete cs.home.show_event;
-            if (!placemark) {
-              $.cs.simple_modal('<h3 class="cs-center">Подія більше не актуальна</h3>', false, 400);
-              return;
-            }
-            state = clusterer.getObjectState(placemark);
-            if (state.isClustered) {
-              state.cluster.state.set('activeObject', placemark);
-              state.cluster.events.fire('click');
-            } else {
-              placemark.balloon.open();
-            }
-            title = placemark.properties.get('balloonContentHeader');
-            content = placemark.properties.get('balloonContentBody');
-            $.cs.simple_modal("<h1>" + title + "</h1>\n" + content + "\n<div id=\"disqus_thread\"></div>", true, 800);
-            return init_disqus();
+            return open_modal_commenting();
           })();
         }
       };
@@ -256,9 +233,18 @@
           }
         });
       };
+      cs.home.commenting = function(id) {
+        history.pushState(null, null, id);
+        return open_modal_commenting();
+      };
+      window.addEventListener('popstate', function() {
+        return open_modal_commenting();
+      });
       focus_map_timer = 0;
+      map_moving = false;
       events_stream_panel.on('mousemove', 'li', function() {
         var $this;
+        map_moving = true;
         $this = $(this);
         clearTimeout(focus_map_timer);
         return focus_map_timer = setTimeout((function() {
@@ -267,6 +253,7 @@
           location = [parseFloat(location[0]), parseFloat(location[1])];
           return map.panTo(location).then(function() {
             return map.zoomRange.get(location).then(function(zoomRange) {
+              map_moving = false;
               return map.setZoom(zoomRange[1], {
                 duration: 500
               });
@@ -276,18 +263,30 @@
       }).on('mouseleave', 'li', function() {
         return clearTimeout(focus_map_timer);
       }).on('click', 'li', function() {
-        var placemark, state;
+        var action, interval, placemark;
         placemark = placemarks[$(this).data('placemark')];
-        state = clusterer.getObjectState(placemark);
-        if (state.isClustered) {
-          state.cluster.state.set('activeObject', placemark);
-          return state.cluster.events.fire('click');
+        action = function() {
+          var state;
+          if (map_moving) {
+            return;
+          }
+          clearInterval(interval);
+          state = clusterer.getObjectState(placemark);
+          if (state.isClustered) {
+            state.cluster.state.set('activeObject', placemark);
+            return state.cluster.events.fire('click');
+          } else {
+            return placemark.balloon.open();
+          }
+        };
+        if (map_moving) {
+          return interval = setInterval(action, 100);
         } else {
-          return placemark.balloon.open();
+          return action();
         }
       });
       if (!cs.home.automaidan) {
-        return $('#map').on('click', '.cs-home-check-confirm', function() {
+        $('#map').on('click', '.cs-home-check-confirm', function() {
           return $.ajax({
             url: 'api/Home/events/' + $(this).data('id') + '/check',
             type: 'put',
@@ -299,6 +298,42 @@
           });
         });
       }
+      return open_modal_commenting = function() {
+        var content, i, id, placemark, state, title, _i, _len;
+        if (/\/[0-9]+/.test(location.pathname)) {
+          id = parseInt(location.pathname.substr(1));
+          window.disqus_shortname = 'opirorg';
+          window.disqus_identifier = 'Events/' + id;
+          for (_i = 0, _len = placemarks.length; _i < _len; _i++) {
+            i = placemarks[_i];
+            if (parseInt(i.properties.get('event_id')) === id) {
+              placemark = i;
+              break;
+            }
+          }
+          if (!placemark) {
+            $.cs.simple_modal('<h3 class="cs-center">Подія більше не актуальна</h3>', false, 400);
+            return;
+          }
+          state = clusterer.getObjectState(placemark);
+          if (state.isClustered) {
+            state.cluster.state.set('activeObject', placemark);
+            state.cluster.events.fire('click');
+          } else {
+            placemark.balloon.open();
+          }
+          title = placemark.properties.get('balloonContentHeader');
+          content = placemark.properties.get('balloonContentBody');
+          $.cs.simple_modal("<h1>" + title + "</h1>\n" + content + "\n<div id=\"disqus_thread\"></div>", true, 800).on('uk.modal.hide', function() {
+            return history.pushState(null, null, '/');
+          });
+          $('#disqus_thread').prev('button').remove();
+          init_disqus();
+          return false;
+        } else {
+          return true;
+        }
+      };
     });
   });
 

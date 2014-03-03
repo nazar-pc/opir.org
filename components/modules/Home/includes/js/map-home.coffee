@@ -140,6 +140,7 @@ $ ->
 									<a class="vk uk-icon-vk"></a>
 									<a class="tw uk-icon-twitter"></a>
 								</div>
+								<button onclick="cs.home.commenting(#{event.id})" class="uk-icon-comment" data-uk-tooltip title="Коментувати"></button>
 							"""
 							balloonContentFooter	: balloon_footer(event, is_streaming)
 						}
@@ -170,6 +171,7 @@ $ ->
 							<a class="vk uk-icon-vk"></a>
 							<a class="tw uk-icon-twitter"></a>
 						</div>
+						<button onclick="cs.home.commenting(#{event.id})" class="uk-icon-comment" data-uk-tooltip title="Коментувати"></button>
 					</li>
 				"""
 				if is_streaming
@@ -234,39 +236,10 @@ $ ->
 							zoomRange[1],
 							duration	: 500
 						)
-			if !window.event_shown && window.cs.home.show_event
+			if !window.event_shown
 				do ->
 					window.event_shown	= true
-					for i in placemarks
-						if parseInt(i.properties.get('event_id')) == cs.home.show_event
-							placemark	= i
-							break
-					delete cs.home.show_event
-					if !placemark
-						$.cs.simple_modal(
-							'<h3 class="cs-center">Подія більше не актуальна</h3>'
-							false
-							400
-						)
-						return
-					state		= clusterer.getObjectState(placemark)
-					if state.isClustered
-						state.cluster.state.set('activeObject', placemark)
-						state.cluster.events.fire('click')
-					else
-						placemark.balloon.open()
-					title	= placemark.properties.get('balloonContentHeader')
-					content	= placemark.properties.get('balloonContentBody')
-					$.cs.simple_modal(
-						"""
-							<h1>#{title}</h1>
-							#{content}
-							<div id="disqus_thread"></div>
-						"""
-						true
-						800
-					)
-					init_disqus()
+					open_modal_commenting()
 		balloon_footer	= (event, is_streaming) ->
 			if cs.home.automaidan_coord
 				if !parseInt(event.assigned_to) then """<button class="cs-home-check-assign" data-id="#{event.id}">Відправити водія для перевірки</button>""" else ''
@@ -306,19 +279,30 @@ $ ->
 					return
 			)
 			return
+		cs.home.commenting	= (id) ->
+			history.pushState(null, null, id)
+			open_modal_commenting()
+		window.addEventListener(
+			'popstate'
+			->
+				return open_modal_commenting()
+		)
 		focus_map_timer	= 0
+		map_moving		= false
 		events_stream_panel
 			.on(
 				'mousemove'
 				'li'
 				->
-					$this	= $(@)
+					map_moving	= true
+					$this		= $(@)
 					clearTimeout(focus_map_timer)
 					focus_map_timer = setTimeout (->
 						location	= $this.data('location').split(',')
 						location	= [parseFloat(location[0]), parseFloat(location[1])]
 						map.panTo(location).then ->
 							map.zoomRange.get(location).then (zoomRange) ->
+								map_moving	= false
 								map.setZoom(
 									zoomRange[1],
 									duration	: 500
@@ -336,12 +320,20 @@ $ ->
 				'li'
 				->
 					placemark	= placemarks[$(@).data('placemark')]
-					state		= clusterer.getObjectState(placemark)
-					if state.isClustered
-						state.cluster.state.set('activeObject', placemark)
-						state.cluster.events.fire('click')
+					action		= ->
+						if map_moving
+							return
+						clearInterval(interval)
+						state		= clusterer.getObjectState(placemark)
+						if state.isClustered
+							state.cluster.state.set('activeObject', placemark)
+							state.cluster.events.fire('click')
+						else
+							placemark.balloon.open()
+					if map_moving
+						interval	= setInterval(action, 100)
 					else
-						placemark.balloon.open()
+						action()
 			)
 		if !cs.home.automaidan
 			$('#map')
@@ -358,3 +350,45 @@ $ ->
 								alert 'Підтвердження отримано, дякуємо вам!'
 						)
 				)
+		open_modal_commenting	= ->
+			if /\/[0-9]+/.test(location.pathname)
+				id	= parseInt(location.pathname.substr(1))
+				window.disqus_shortname		= 'opirorg'
+				window.disqus_identifier	= 'Events/' + id
+				for i in placemarks
+					if parseInt(i.properties.get('event_id')) == id
+						placemark	= i
+						break
+				if !placemark
+					$.cs.simple_modal(
+						'<h3 class="cs-center">Подія більше не актуальна</h3>'
+						false
+						400
+					)
+					return
+				state		= clusterer.getObjectState(placemark)
+				if state.isClustered
+					state.cluster.state.set('activeObject', placemark)
+					state.cluster.events.fire('click')
+				else
+					placemark.balloon.open()
+				title	= placemark.properties.get('balloonContentHeader')
+				content	= placemark.properties.get('balloonContentBody')
+				$.cs.simple_modal(
+					"""
+						<h1>#{title}</h1>
+						#{content}
+						<div id="disqus_thread"></div>
+					"""
+					true
+					800
+				).on(
+					'uk.modal.hide'
+					->
+						history.pushState(null, null, '/')
+				)
+				$('#disqus_thread').prev('button').remove()
+				init_disqus()
+				return false
+			else
+				return true

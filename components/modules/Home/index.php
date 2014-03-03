@@ -66,25 +66,17 @@ $Page->js(
 );
 $Index	= Index::instance();
 if (isset($Index->route_ids[0])) {
-	$Page->js(
-		'cs.home.show_event = '.$Index->route_ids[0].';',
-		'code'
-	);
-	Page::instance()->js(
-		"var disqus_shortname = 'opirorg', disqus_identifier = 'Events/".$Index->route_ids[0]."';",
-		'code'
-	);
 	$event				= Events::instance()->get($Index->route_ids[0]);
 	if ($event) {
 		$Page->Description	= 'Додано: '.date('H:i d.m.Y', $event['added']);
 		if ($event['timeout'] > 0) {
-			$Page->Description	.= ' Актуально до:'.date('H:i d.m.Y', $event['timeout']);
+			$Page->Description	.= ' Актуально до: '.date('H:i d.m.Y', $event['timeout']);
 		}
 		if ($event['img']) {
 			$Page->replace('https://opir.org/components/modules/Home/includes/img/share.png', $event['img']);
 		}
 		if (strpos($event['text'], 'stream:') === false) {
-			$Page->Description	.= $event['text'];
+			$Page->Description	.= ' '.$event['text'];
 		}
 		$Page->og(
 			'title',
