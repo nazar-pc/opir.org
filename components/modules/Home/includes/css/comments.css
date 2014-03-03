@@ -1,0 +1,17 @@
+.cs-home-video-social-links + .uk-icon-comment {
+  background: transparent;
+  border: solid 2px #b1b1b1;
+  border-radius: 14px;
+  box-sizing: border-box !important;
+  color: #B1B1B1;
+  display: inline-block;
+  font-size: 14px;
+  height: 28px;
+  margin: -30px 20px 2px 2px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  width: 28px; }
+  .cs-home-video-social-links + .uk-icon-comment:hover {
+    border-color: #7C7C7C;
+    color: #7C7C7C; }
