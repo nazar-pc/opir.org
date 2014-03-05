@@ -46,11 +46,21 @@ $Page->Header	=
 $Page->content(
 	h::{'aside.cs-stream-add-panel'}().
 	h::{'aside.cs-stream-filter-panel'}(
+		h::{"div.uk-button-dropdown[data-uk-dropdown={mode:'click'}]"}(
+			h::{'button.uk-button'}(
+				h::icon('caret-down').' '.h::span('Показати карту')
+			).
+			h::{'div.uk-dropdown ul.cs-stream-show.uk-nav.uk-nav-dropdown'}(
+				h::{'li[data-mode=map] a'}('Показати карту').
+				h::{'li[data-mode=list] a'}('Показати список')
+			)
+		).
 		h::{'div.cs-stream-added-tags[level=0]'}().
 		h::{'input.cs-stream-filter'}([
 			'placeholder'	=> 'Фільтр по адресі'
 		]).
 		h::{'div.cs-stream-found-tags[level=0]'}()
 	).
-	h::{'div.cs-stream-filter-hide.uk-icon-chevron-right'}()
+	h::{'div.cs-stream-filter-hide.uk-icon-chevron-right'}().
+	h::{'div.cs-stream-list'}()
 );

@@ -57,9 +57,11 @@ $ ->
 			]
 		]))
 		streams_cache	= []
+		streams_list	= $('.cs-stream-list')
 		map.add_streams_on_map	= (streams) ->
-			streams						= filter_streams(streams || streams_cache)
-			placemarks					= []
+			streams			= filter_streams(streams || streams_cache)
+			placemarks		= []
+			list_content	= ''
 			for stream, stream of streams
 				placemarks.push(
 					new ymaps.Placemark(
@@ -78,8 +80,10 @@ $ ->
 						}
 					)
 				)
+				list_content	+= """<iframe src="#{stream.stream_url}" frameborder="0" scrolling="no"></iframe>"""
 			clusterer.removeAll()
 			clusterer.add(placemarks)
+			streams_list.html(list_content)
 		$.ajax(
 			url			: 'api/Streams/streams'
 			type		: 'get'

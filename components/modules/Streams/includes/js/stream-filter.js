@@ -2,7 +2,18 @@
 (function() {
 
   $(function() {
-    var added_tags, found_tags, last, map_container, panel, stream_filter;
+    var added_tags, found_tags, last, map_container, panel, stream_filter, streams_list;
+    streams_list = $('.cs-stream-list');
+    $('.cs-stream-show [data-mode]').click(function() {
+      var $this;
+      $this = $(this);
+      if ($this.data('mode') === 'map') {
+        streams_list.hide();
+      } else {
+        streams_list.show();
+      }
+      return $this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text());
+    });
     stream_filter = $('.cs-stream-filter');
     last = '';
     added_tags = $('.cs-stream-added-tags');
@@ -54,6 +65,9 @@
     return $('.cs-stream-filter-hide').click(function() {
       var shown;
       shown = panel.css('width') !== '0px';
+      streams_list.animate({
+        right: (shown ? 0 : 310) + 'px'
+      }, 'fast');
       map_container.animate({
         right: (shown ? 0 : 310) + 'px'
       }, 'fast', function() {

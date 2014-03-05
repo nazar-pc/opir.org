@@ -1,4 +1,12 @@
 $ ->
+	streams_list	= $('.cs-stream-list')
+	$('.cs-stream-show [data-mode]').click ->
+		$this	= $(@)
+		if $this.data('mode') == 'map'
+			streams_list.hide()
+		else
+			streams_list.show()
+		$this.parentsUntil('[data-uk-dropdown]').prev().find('span:last').html($this.find('a').text())
 	stream_filter	= $('.cs-stream-filter')
 	last			= ''
 	added_tags		= $('.cs-stream-added-tags')
@@ -45,6 +53,10 @@ $ ->
 	map_container	= $('#map')
 	$('.cs-stream-filter-hide').click ->
 		shown	= panel.css('width') != '0px'
+		streams_list.animate(
+			right	: (if shown then 0 else 310) + 'px'
+			'fast'
+		)
 		map_container.animate(
 			right	: (if shown then 0 else 310) + 'px'
 			'fast'

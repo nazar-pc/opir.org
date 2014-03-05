@@ -1,0 +1,21 @@
+.cs-stream-list {
+	background : #EFEFEF;
+	bottom     : 0;
+	color      : #fff;
+	display    : none;
+	font-size  : 16px;
+	left       : 0;
+	overflow-x : hidden;
+	overflow-y : auto;
+	padding    : 40px;
+	position   : absolute;
+	right      : 310px;
+	text-align : center;
+	top        : 62px;
+
+	iframe {
+		height : 250px;
+		margin : 20px;
+		width  : 30%;
+	}
+}

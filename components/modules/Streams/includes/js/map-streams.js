@@ -6,7 +6,7 @@
       return;
     }
     return ymaps.ready(function() {
-      var clusterer, filter_streams, icons_shape, placemarks, streams_cache;
+      var clusterer, filter_streams, icons_shape, placemarks, streams_cache, streams_list;
       window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
@@ -55,10 +55,12 @@
       placemarks = [];
       icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[23 - 24, 56 - 58], [44 - 24, 34 - 58], [47 - 24, 23 - 58], [45 - 24, 14 - 58], [40 - 24, 7 - 58], [29 - 24, 0 - 58], [17 - 24, 0 - 58], [7 - 24, 6 - 58], [0 - 24, 18 - 58], [0 - 24, 28 - 58], [4 - 24, 36 - 58], [23 - 24, 56 - 58]]]));
       streams_cache = [];
+      streams_list = $('.cs-stream-list');
       map.add_streams_on_map = function(streams) {
-        var stream;
+        var list_content, stream;
         streams = filter_streams(streams || streams_cache);
         placemarks = [];
+        list_content = '';
         for (stream in streams) {
           stream = streams[stream];
           placemarks.push(new ymaps.Placemark([stream.lat, stream.lng], {
@@ -72,9 +74,11 @@
             iconImageClipRect: [[0, 56 * (28 - 1)], [59, 56 * 28]],
             iconImageShape: icons_shape
           }));
+          list_content += "<iframe src=\"" + stream.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe>";
         }
         clusterer.removeAll();
-        return clusterer.add(placemarks);
+        clusterer.add(placemarks);
+        return streams_list.html(list_content);
       };
       $.ajax({
         url: 'api/Streams/streams',
