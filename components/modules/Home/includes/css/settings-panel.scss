@@ -37,6 +37,30 @@
 		text-align  : center;
 	}
 
+	.cs-stream-filter {
+		border        : none;
+		border-radius : 7px;
+		color         : #444444;
+		margin        : 10px 20px;
+		padding       : 7px;
+		width         : 260px;
+	}
+
+	> button,
+	:not(.uk-button-dropdown) button {
+		background    : #0067b6;
+		border        : none;
+		border-radius : 7px;
+		height        : 38px;
+		margin        : 0 0 15px 20px;
+		text-align    : center;
+		width         : 260px;
+
+		&:hover {
+			background : #005ea6;
+		}
+	}
+
 	> ul {
 		list-style : none;
 		padding    : 0;

@@ -22,6 +22,14 @@ if (in_array(AUTOMAIDAN_GROUP, $User->get_groups()) && !in_array($_POST['categor
 	error_code(403);
 	return;
 }
-if (!$Events->add($_POST['category'], $_POST['timeout'], $_POST['lat'], $_POST['lng'], $_POST['visible'], $_POST['text'], $_POST['time'], $_POST['time_interval'], $_POST['img'])) {
+$tags				= [];
+if ($_POST['address_details']) {
+	$tags	= _trim(explode(',', $_POST['address_details']));
+	$last	= count($tags) - 1;
+	if (preg_match('/^[0-9].*/s', $tags[$last])) {
+		unset($tags[$last]);
+	}
+}
+if (!$Events->add($_POST['category'], $_POST['timeout'], $_POST['lat'], $_POST['lng'], $_POST['visible'], $_POST['text'], $_POST['time'], $_POST['time_interval'], $_POST['img'], $tags)) {
 	error_code(500);
 }

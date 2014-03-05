@@ -61,10 +61,11 @@ class Events {
 	 * @param $time
 	 * @param $time_interval
 	 * @param $img
+	 * @param $tags
 	 *
 	 * @return bool|int
 	 */
-	function add ($category, $timeout, $lat, $lng, $visible, $text, $time, $time_interval, $img) {
+	function add ($category, $timeout, $lat, $lng, $visible, $text, $time, $time_interval, $img, $tags) {
 		$User	= User::instance();
 		if ($visible == 2) {
 			$visible	= array_filter(
@@ -81,7 +82,7 @@ class Events {
 			$img	= url_by_source($img);
 		}
 		$category	= (int)$category;
-		if ($this->create_simple([
+		$id			= $this->create_simple([
 			$User->id,
 			$category,
 			TIME,
@@ -94,7 +95,44 @@ class Events {
 			$time_interval,
 			$img,
 			in_array($category, [1, 3, 6, 7, 8, 17, 21, 22]) ? 0 : 1	// Magic numbers - id of categories, where confirmation is needed
-		])) {
+		]);
+		if ($id) {
+			if ($tags) {
+				$this->db_prime()->insert(
+					"INSERT IGNORE INTO `[prefix]events_tags`
+						(
+							`title`
+						) VALUES (
+							'%s'
+						)",
+						array_map(function ($t) {
+							return [$t];
+						}, $tags),
+					true
+				);
+				foreach ($tags as &$t) {
+					$t	= $this->db_prime()->qfs([
+						"SELECT `id`
+						FROM `[prefix]events_tags`
+						WHERE `title` = '%s'
+						LIMIT 1",
+						$t
+					]);
+					$t	= [$t];
+				}
+				$this->db_prime()->insert(
+					"INSERT IGNORE INTO `[prefix]events_events_tags`
+						(
+							`id`,
+							`tag`
+						) VALUES (
+							$id,
+							'%s'
+						)",
+					$tags,
+					true
+				);
+			}
 			unset($this->cache->all);
 			return true;
 		}
@@ -161,6 +199,7 @@ class Events {
 				$id
 			]);
 			$return['text']	= str_replace('&apos;', "'", $return['text']);
+			$return['tags']	= $this->get_tags($return['id']);
 			return $return;
 		}
 		if (in_array(AUTOMAIDAN_COORD_GROUP, $groups ?: [])) {
@@ -194,6 +233,7 @@ class Events {
 				$return['assigned_login']	= $return['assigned_to'] ? $User->get('login', $return['assigned_to']) : '';
 				$return['confirmed']		= (int)(bool)$return['confirmed'];
 				$return['text']				= str_replace('&apos;', "'", $return['text']);
+				$return['tags']				= $this->get_tags($return['id']);
 			}
 			return $return;
 		}
@@ -235,8 +275,28 @@ class Events {
 			}
 			$return['confirmed']	= (int)(bool)$return['confirmed'];
 			$return['text']			= str_replace('&apos;', "'", $return['text']);
+			$return['tags']			= $this->get_tags($return['id']);
 		}
 		return $return;
+	}
+	/**
+	 * @param int|int[] $id
+	 *
+	 * @return array|bool
+	 */
+	protected function get_tags ($id) {
+		if (is_array($id)) {
+			foreach ($id as &$i) {
+				$i	= $this->get_tags($i);
+			}
+			return $id;
+		}
+		return $this->db()->qfas([
+			"SELECT `tag`
+			FROM `[prefix]events_events_tags`
+			WHERE `id` = '%s'",
+			$id
+		]);
 	}
 	/**
 	 * Set event
@@ -250,10 +310,11 @@ class Events {
 	 * @param $time
 	 * @param $time_interval
 	 * @param $img
+	 * @param $tags
 	 *
 	 * @return bool|int
 	 */
-	function set ($id, $timeout, $lat, $lng, $visible, $text, $time, $time_interval, $img) {
+	function set ($id, $timeout, $lat, $lng, $visible, $text, $time, $time_interval, $img, $tags) {
 		$data	= $this->get($id);
 		$User	= User::instance();
 		$id		= (int)$id;
@@ -289,6 +350,47 @@ class Events {
 			$img,
 			$data['confirmed']
 		])) {
+			if ($tags) {
+				$this->db_prime()->q(
+					"DELETE FROM `[prefix]events_events_tags`
+					WHERE `id` = '%s'",
+					$id
+				);
+				$this->db_prime()->insert(
+					"INSERT IGNORE INTO `[prefix]events_tags`
+						(
+							`title`
+						) VALUES (
+							'%s'
+						)",
+						array_map(function ($t) {
+							return [$t];
+						}, $tags),
+					true
+				);
+				foreach ($tags as &$t) {
+					$t	= $this->db_prime()->qfs([
+						"SELECT `id`
+						FROM `[prefix]events_tags`
+						WHERE `title` = '%s'
+						LIMIT 1",
+						$t
+					]);
+					$t	= [$t];
+				}
+				$this->db_prime()->insert(
+					"INSERT IGNORE INTO `[prefix]events_events_tags`
+						(
+							`id`,
+							`tag`
+						) VALUES (
+							$id,
+							'%s'
+						)",
+					$tags,
+					true
+				);
+			}
 			unset(
 				$this->cache->$id,
 				$this->cache->all
@@ -445,6 +547,11 @@ class Events {
 			LIMIT 1",
 			$id
 		)) {
+			$this->db_prime()->q(
+				"DELETE FROM `[prefix]events_events_tags`
+				WHERE `id` = '%s'",
+				$id
+			);
 			unset(
 				$this->cache->$id,
 				$this->cache->all
@@ -462,12 +569,12 @@ class Events {
 		$user_id	= User::instance()->id;
 		return $this->cache->get("all/$user_id", function () use ($user_id) {
 			return $this->get(
-				$this->get_data_internal()
+				$this->get_all_internal()
 			);
 		});
 	}
 
-	protected function get_data_internal () {
+	protected function get_all_internal () {
 		$User		= User::instance();
 		$admin		= $User->admin();
 		$user_id	= $User->id;

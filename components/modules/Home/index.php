@@ -102,6 +102,11 @@ $Page->content(
 				'placeholder'	=> 'Пошук адреси на карті'
 			]).
 			h::h2('Фільтр').
+			h::{'div.cs-stream-added-tags[level=0]'}().
+			h::{'input.cs-stream-filter'}([
+				'placeholder'	=> 'Фільтр по адресі'
+			]).
+			h::{'div.cs-stream-found-tags[level=0]'}().
 			h::{'ul.cs-home-filter-category li'}(array_map(
 				function ($g) use ($categories) {
 					$return = [[
