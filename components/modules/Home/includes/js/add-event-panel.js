@@ -155,30 +155,43 @@
       if (category && coords[0] && coords[1]) {
         comment = panel.find('textarea').val();
         img = panel.find('.cs-home-add-image');
-        return $.ajax({
-          url: 'api/Home/events',
-          type: 'post',
-          data: {
-            category: category,
-            time: time,
-            time_interval: time_interval,
-            timeout: timeout,
-            lat: coords[0],
-            lng: coords[1],
-            visible: visible,
-            text: comment,
-            img: img.length ? img.attr('src') : ''
-          },
-          success: function() {
-            panel.hide('fast');
-            events_stream.toggle('show');
-            map.geoObjects.remove(event_coords);
-            event_coords = null;
-            put_events_coords = false;
-            map_cursor.remove();
-            map.update_events();
-            return alert('Успішно додано, дякуємо вам!');
+        return ymaps.geocode(coords, {
+          json: true,
+          results: 1
+        }).then(function(res) {
+          var address_details;
+          address_details = res.GeoObjectCollection.featureMember;
+          if (address_details.length) {
+            address_details = address_details[0].GeoObject.metaDataProperty.GeocoderMetaData.text;
+          } else {
+            address_details = '';
           }
+          return $.ajax({
+            url: 'api/Home/events',
+            type: 'post',
+            data: {
+              category: category,
+              time: time,
+              time_interval: time_interval,
+              timeout: timeout,
+              lat: coords[0],
+              lng: coords[1],
+              visible: visible,
+              text: comment,
+              img: img.length ? img.attr('src') : '',
+              address_details: address_details
+            },
+            success: function() {
+              panel.hide('fast');
+              events_stream.toggle('show');
+              map.geoObjects.remove(event_coords);
+              event_coords = null;
+              put_events_coords = false;
+              map_cursor.remove();
+              map.update_events();
+              return alert('Успішно додано, дякуємо вам!');
+            }
+          });
         });
       } else {
         return alert('Вкажіть точку на карті');
@@ -188,29 +201,42 @@
       if (coords[0] && coords[1]) {
         comment = panel.find('textarea').val();
         img = panel.find('.cs-home-add-image');
-        return $.ajax({
-          url: "api/Home/events/" + edit_data.id,
-          type: 'put',
-          data: {
-            time: time,
-            time_interval: time_interval,
-            timeout: timeout,
-            lat: coords[0],
-            lng: coords[1],
-            visible: visible,
-            text: comment,
-            img: img.length ? img.attr('src') : ''
-          },
-          success: function() {
-            panel.hide('fast');
-            events_stream.toggle('show');
-            map.geoObjects.remove(event_coords);
-            event_coords = null;
-            put_events_coords = false;
-            map_cursor.remove();
-            map.update_events();
-            return alert('Успішно відредаговано!');
+        return ymaps.geocode(coords, {
+          json: true,
+          results: 1
+        }).then(function(res) {
+          var address_details;
+          address_details = res.GeoObjectCollection.featureMember;
+          if (address_details.length) {
+            address_details = address_details[0].GeoObject.metaDataProperty.GeocoderMetaData.text;
+          } else {
+            address_details = '';
           }
+          return $.ajax({
+            url: "api/Home/events/" + edit_data.id,
+            type: 'put',
+            data: {
+              time: time,
+              time_interval: time_interval,
+              timeout: timeout,
+              lat: coords[0],
+              lng: coords[1],
+              visible: visible,
+              text: comment,
+              img: img.length ? img.attr('src') : '',
+              address_details: address_details
+            },
+            success: function() {
+              panel.hide('fast');
+              events_stream.toggle('show');
+              map.geoObjects.remove(event_coords);
+              event_coords = null;
+              put_events_coords = false;
+              map_cursor.remove();
+              map.update_events();
+              return alert('Успішно відредаговано!');
+            }
+          });
         });
       } else {
         return alert('Вкажіть точку на карті');

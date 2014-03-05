@@ -256,29 +256,40 @@ $ ->
 				if category && coords[0] && coords[1]
 					comment	= panel.find('textarea').val()
 					img		= panel.find('.cs-home-add-image')
-					$.ajax(
-						url		: 'api/Home/events'
-						type	: 'post'
-						data	:
-							category		: category
-							time			: time
-							time_interval	: time_interval
-							timeout			: timeout
-							lat				: coords[0]
-							lng				: coords[1]
-							visible			: visible
-							text			: comment
-							img				: if img.length then img.attr('src') else ''
-						success	: ->
-							panel.hide('fast')
-							events_stream.toggle('show')
-							map.geoObjects.remove(event_coords)
-							event_coords		= null
-							put_events_coords	= false
-							map_cursor.remove()
-							map.update_events()
-							alert 'Успішно додано, дякуємо вам!'
-					)
+					ymaps.geocode(
+						coords
+						json	: true
+						results	: 1
+					).then (res) ->
+						address_details	= res.GeoObjectCollection.featureMember
+						if address_details.length
+							address_details	= address_details[0].GeoObject.metaDataProperty.GeocoderMetaData.text
+						else
+							address_details	= ''
+						$.ajax(
+							url		: 'api/Home/events'
+							type	: 'post'
+							data	:
+								category		: category
+								time			: time
+								time_interval	: time_interval
+								timeout			: timeout
+								lat				: coords[0]
+								lng				: coords[1]
+								visible			: visible
+								text			: comment
+								img				: if img.length then img.attr('src') else ''
+								address_details	: address_details
+							success	: ->
+								panel.hide('fast')
+								events_stream.toggle('show')
+								map.geoObjects.remove(event_coords)
+								event_coords		= null
+								put_events_coords	= false
+								map_cursor.remove()
+								map.update_events()
+								alert 'Успішно додано, дякуємо вам!'
+						)
 				else
 					alert 'Вкажіть точку на карті'
 		)
@@ -289,28 +300,39 @@ $ ->
 				if coords[0] && coords[1]
 					comment	= panel.find('textarea').val()
 					img		= panel.find('.cs-home-add-image')
-					$.ajax(
-						url		: "api/Home/events/#{edit_data.id}"
-						type	: 'put'
-						data	:
-							time			: time
-							time_interval	: time_interval
-							timeout			: timeout
-							lat				: coords[0]
-							lng				: coords[1]
-							visible			: visible
-							text			: comment
-							img				: if img.length then img.attr('src') else ''
-						success	: ->
-							panel.hide('fast')
-							events_stream.toggle('show')
-							map.geoObjects.remove(event_coords)
-							event_coords		= null
-							put_events_coords	= false
-							map_cursor.remove()
-							map.update_events()
-							alert 'Успішно відредаговано!'
-					)
+					ymaps.geocode(
+						coords
+						json	: true
+						results	: 1
+					).then (res) ->
+						address_details	= res.GeoObjectCollection.featureMember
+						if address_details.length
+							address_details	= address_details[0].GeoObject.metaDataProperty.GeocoderMetaData.text
+						else
+							address_details	= ''
+						$.ajax(
+							url		: "api/Home/events/#{edit_data.id}"
+							type	: 'put'
+							data	:
+								time			: time
+								time_interval	: time_interval
+								timeout			: timeout
+								lat				: coords[0]
+								lng				: coords[1]
+								visible			: visible
+								text			: comment
+								img				: if img.length then img.attr('src') else ''
+								address_details	: address_details
+							success	: ->
+								panel.hide('fast')
+								events_stream.toggle('show')
+								map.geoObjects.remove(event_coords)
+								event_coords		= null
+								put_events_coords	= false
+								map_cursor.remove()
+								map.update_events()
+								alert 'Успішно відредаговано!'
+						)
 				else
 					alert 'Вкажіть точку на карті'
 		)

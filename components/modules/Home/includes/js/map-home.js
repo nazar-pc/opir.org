@@ -54,10 +54,27 @@
       };
       map.geoObjects.add(clusterer);
       filter_events = function(events) {
-        var categories;
+        var categories, tags;
         categories = $('.cs-home-filter-category .active');
+        tags = $('.cs-home-added-tags [data-id]');
+        if (!tags.length) {
+          return events;
+        }
+        tags = tags.map(function() {
+          return $(this).data('id');
+        }).get();
         return events.filter(function(event) {
-          return !categories.length || categories.filter("[data-id=" + event.category + "]").length;
+          var tag, _i, _len;
+          if (categories.length && !categories.filter("[data-id=" + event.category + "]").length) {
+            return false;
+          }
+          for (_i = 0, _len = tags.length; _i < _len; _i++) {
+            tag = tags[_i];
+            if (event.tags.indexOf(String(tag)) > -1) {
+              return true;
+            }
+          }
+          return false;
         });
       };
       events_stream_panel = $('.cs-home-events-stream-panel');

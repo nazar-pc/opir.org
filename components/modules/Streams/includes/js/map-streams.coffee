@@ -36,7 +36,7 @@ $ ->
 				.get()
 			streams.filter (stream) ->
 				for tag in tags
-					if stream.tags.indexOf(tag) == -1
+					if stream.tags.indexOf(String(tag)) > -1
 						return true
 				return false
 		placemarks			= []

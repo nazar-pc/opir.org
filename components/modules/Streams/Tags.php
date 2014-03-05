@@ -86,7 +86,7 @@ class Tags {
 			FROM `$this->table`
 			WHERE
 				`title`	LIKE '%s'",
-			"$tag%"
+			"%$tag%"
 		]);
 	}
 }

@@ -58,3 +58,45 @@ $ ->
 			group	= $(@).data('group')
 			$(".cs-home-filter-category [data-id][data-group=#{group}]").toggleClass('active')
 			map.update_events(true)
+	event_filter_tags	= $('.cs-home-filter-tags')
+	last				= ''
+	added_tags			= $('.cs-home-added-tags')
+	found_tags			= $('.cs-home-found-tags')
+	event_filter_tags.keyup ->
+		val	= event_filter_tags.val()
+		if last == val
+			return
+		last	= val
+		if val.length > 2
+			$.ajax(
+				url		: 'api/Home/tags'
+				data	:
+					title	: val
+				type	: 'get'
+				success	: (tags) ->
+					found_tags.html(
+						(for tag, tag of tags
+							"""<button data-id="#{tag.id}"><i class="uk-icon-plus"></i> #{tag.title}</button>"""
+						).join()
+					)
+				error	: ->
+					found_tags.html('')
+			)
+	added_tags.on(
+		'click'
+		'button'
+		->
+			$(@).remove()
+			map.update_events(true)
+	)
+	found_tags.on(
+		'click'
+		'button'
+		->
+			added_tags.append(
+				$(@).detach()[0].outerHTML.replace(/uk-icon-plus/, 'uk-icon-times')
+			)
+			map.update_events(true)
+			last	= ''
+			event_filter_tags.val('')
+	)

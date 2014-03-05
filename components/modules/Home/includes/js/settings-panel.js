@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var filter_category, map_container, panel, _ref, _ref1;
+    var added_tags, event_filter_tags, filter_category, found_tags, last, map_container, panel, _ref, _ref1;
     if (!$('.cs-home-settings').length) {
       return;
     }
@@ -43,7 +43,7 @@
       }
     });
     filter_category = $('.cs-home-filter-category');
-    return filter_category.find('[data-id]').click(function() {
+    filter_category.find('[data-id]').click(function() {
       var $this;
       $this = $(this);
       if ($this.hasClass('active')) {
@@ -57,6 +57,52 @@
       group = $(this).data('group');
       $(".cs-home-filter-category [data-id][data-group=" + group + "]").toggleClass('active');
       return map.update_events(true);
+    });
+    event_filter_tags = $('.cs-home-filter-tags');
+    last = '';
+    added_tags = $('.cs-home-added-tags');
+    found_tags = $('.cs-home-found-tags');
+    event_filter_tags.keyup(function() {
+      var val;
+      val = event_filter_tags.val();
+      if (last === val) {
+        return;
+      }
+      last = val;
+      if (val.length > 2) {
+        return $.ajax({
+          url: 'api/Home/tags',
+          data: {
+            title: val
+          },
+          type: 'get',
+          success: function(tags) {
+            var tag;
+            return found_tags.html(((function() {
+              var _results;
+              _results = [];
+              for (tag in tags) {
+                tag = tags[tag];
+                _results.push("<button data-id=\"" + tag.id + "\"><i class=\"uk-icon-plus\"></i> " + tag.title + "</button>");
+              }
+              return _results;
+            })()).join());
+          },
+          error: function() {
+            return found_tags.html('');
+          }
+        });
+      }
+    });
+    added_tags.on('click', 'button', function() {
+      $(this).remove();
+      return map.update_events(true);
+    });
+    return found_tags.on('click', 'button', function() {
+      added_tags.append($(this).detach()[0].outerHTML.replace(/uk-icon-plus/, 'uk-icon-times'));
+      map.update_events(true);
+      last = '';
+      return event_filter_tags.val('');
     });
   });
 

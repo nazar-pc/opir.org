@@ -45,7 +45,7 @@
           var tag, _i, _len;
           for (_i = 0, _len = tags.length; _i < _len; _i++) {
             tag = tags[_i];
-            if (stream.tags.indexOf(tag) === -1) {
+            if (stream.tags.indexOf(String(tag)) > -1) {
               return true;
             }
           }
