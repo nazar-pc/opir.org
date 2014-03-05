@@ -41,7 +41,8 @@
 		width         : 270px;
 	}
 
-	> button {
+	> button,
+	:not(.Smuk-button-dropdown) button {
 		background    : #0067b6;
 		border        : none;
 		border-radius : 7px;

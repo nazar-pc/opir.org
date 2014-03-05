@@ -30,7 +30,8 @@
     margin: 10px 20px;
     padding: 7px;
     width: 270px; }
-  .cs-stream-filter-panel > button {
+  .cs-stream-filter-panel > button,
+  .cs-stream-filter-panel :not(.uk-button-dropdown) button {
     background: #0067b6;
     border: none;
     border-radius: 7px;
@@ -38,7 +39,8 @@
     margin: 0 0 15px 20px;
     text-align: center;
     width: 270px; }
-    .cs-stream-filter-panel > button:hover {
+    .cs-stream-filter-panel > button:hover,
+    .cs-stream-filter-panel :not(.uk-button-dropdown) button:hover {
       background: #005ea6; }
 
 .cs-stream-filter-hide {
