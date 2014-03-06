@@ -57,16 +57,18 @@
         var categories, tags;
         categories = $('.cs-home-filter-category .active');
         tags = $('.cs-home-added-tags [data-id]');
-        if (!tags.length) {
-          return events;
+        if (tags.length) {
+          tags = tags.map(function() {
+            return $(this).data('id');
+          }).get();
         }
-        tags = tags.map(function() {
-          return $(this).data('id');
-        }).get();
         return events.filter(function(event) {
           var tag, _i, _len;
           if (categories.length && !categories.filter("[data-id=" + event.category + "]").length) {
             return false;
+          }
+          if (!tags.length) {
+            return events;
           }
           for (_i = 0, _len = tags.length; _i < _len; _i++) {
             tag = tags[_i];

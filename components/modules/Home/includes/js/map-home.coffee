@@ -54,15 +54,16 @@ $ ->
 		filter_events		= (events) ->
 			categories	= $('.cs-home-filter-category .active')
 			tags		= $('.cs-home-added-tags [data-id]')
-			if !tags.length
-				return events
-			tags	= tags
-				.map ->
-					$(@).data('id')
-				.get()
+			if tags.length
+				tags	= tags
+					.map ->
+						$(@).data('id')
+					.get()
 			events.filter (event) ->
 				if categories.length && !categories.filter("[data-id=#{event.category}]").length
 					return false
+				if !tags.length
+					return events
 				for tag in tags
 					if event.tags.indexOf(String(tag)) > -1
 						return true
