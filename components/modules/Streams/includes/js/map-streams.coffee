@@ -7,6 +7,10 @@ $ ->
 			zoom				: 13
 			controls			: ['typeSelector', 'zoomControl', 'fullscreenControl']
 		}
+		map.setBounds(
+			[[44.02462975216294, 21.777120521484335], [52.82663432351663, 40.32204239648433]]
+			preciseZoom	: true
+		)
 		clusterer				= new ymaps.Clusterer()
 		clusterer.createCluster	= (center, geoObjects) ->
 			cluster	= ymaps.Clusterer.prototype.createCluster.call(this, center, geoObjects)
