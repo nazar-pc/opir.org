@@ -69,6 +69,10 @@
     }).on('click', '.cs-stream-add-process', function() {
       var stream_code;
       stream_code = panel.find('textarea').val();
+      if (!/ustream.tv\/embed\/[0-9]+/g.test(stream_code)) {
+        alert('Це не Live Stream з Ustream, вставте коректний код');
+        return;
+      }
       if (stream_code && coords[0] && coords[1]) {
         return ymaps.geocode(coords, {
           json: true,
