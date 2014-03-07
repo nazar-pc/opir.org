@@ -25,7 +25,7 @@
           if ($('.cs-home-settings-panel').css('width') !== '0px') {
             $('.cs-home-settings').click();
           }
-          content = "<h2>Додати камеру</h2>\n<textarea placeholder=\"Код з ustream.tv\"></textarea>\n<p class=\"help\">при виникненні питань звертайтесь за телефоном +38 093 01 222 11</p>\n<input type=\"text\" class=\"cs-stream-add-location-address\" placeholder=\"Адреса або точка на карті\">\n<button class=\"cs-stream-add-location uk-icon-location-arrow\"></button>\n<p class=\"help\">не забувайте вказувати місто для точного пошуку, і перевіряйте де помістилась точка</p>\n<div>\n	<button class=\"cs-stream-add-close uk-icon-times\"></button>\n	<button class=\"cs-stream-add-process\">Додати</button>\n</div>";
+          content = "<h2>Додати камеру</h2>\n<a class=\"cs-stream-howto\" href=\"FAQ\" target=\"_blank\">Не знаєте як?</a>\n<textarea placeholder=\"Код з ustream.tv\"></textarea>\n<input type=\"text\" class=\"cs-stream-add-location-address\" placeholder=\"Адреса або точка на карті\">\n<button class=\"cs-stream-add-location uk-icon-location-arrow\"></button>\n<p class=\"help\">не забувайте вказувати місто для точного пошуку, і перевіряйте де помістилась точка</p>\n<div>\n	<button class=\"cs-stream-add-close uk-icon-times\"></button>\n	<button class=\"cs-stream-add-process\">Додати</button>\n</div>";
           panel.html(content);
           put_events_coords = true;
           map_cursor = map.cursors.push('pointer');

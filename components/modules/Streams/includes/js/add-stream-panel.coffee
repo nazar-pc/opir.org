@@ -26,8 +26,8 @@ $ ->
 							$('.cs-home-settings').click()
 						content		= """
 							<h2>Додати камеру</h2>
+							<a class="cs-stream-howto" href="FAQ" target="_blank">Не знаєте як?</a>
 							<textarea placeholder="Код з ustream.tv"></textarea>
-							<p class="help">при виникненні питань звертайтесь за телефоном +38 093 01 222 11</p>
 							<input type="text" class="cs-stream-add-location-address" placeholder="Адреса або точка на карті">
 							<button class="cs-stream-add-location uk-icon-location-arrow"></button>
 							<p class="help">не забувайте вказувати місто для точного пошуку, і перевіряйте де помістилась точка</p>

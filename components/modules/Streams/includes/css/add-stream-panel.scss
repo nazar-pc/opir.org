@@ -18,6 +18,22 @@
 		text-align  : center;
 	}
 
+	.cs-stream-howto {
+		background    : #0067b6;
+		border        : none;
+		border-radius : 7px;
+		display       : inline-block;
+		height        : 38px;
+		line-height   : 38px;
+		margin        : 0 0 15px 20px;
+		text-align    : center;
+		width         : 270px;
+
+		&:hover {
+			background : #005ea6;
+		}
+	}
+
 	textarea,
 	input {
 		border        : none;
@@ -47,12 +63,10 @@
 		margin        : 0 0 15px 20px;
 		text-align    : center;
 		width         : 270px;
-	}
 
-	.cs-stream-add-location:hover,
-	.cs-stream-add-close:hover,
-	.cs-stream-add-process:hover {
-		background : #005ea6;
+		&:hover {
+			background : #005ea6;
+		}
 	}
 
 	.cs-stream-add-location-address {
