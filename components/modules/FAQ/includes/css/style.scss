@@ -1,0 +1,21 @@
+.cs-faq {
+	background : #fff;
+	bottom     : 0;
+	left       : 0;
+	overflow-x : auto;
+	position   : absolute;
+	right      : 0;
+	text-align : center;
+	top        : 62px;
+
+	div {
+		display        : inline-block;
+		vertical-align : top;
+		width          : 200px;
+
+		img {
+			display : block;
+			padding : 20px;
+		}
+	}
+}
