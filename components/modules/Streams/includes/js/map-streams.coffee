@@ -11,9 +11,6 @@ $ ->
 			[[44.02462975216294, 21.777120521484335], [52.82663432351663, 40.32204239648433]]
 			preciseZoom	: true
 		)
-		map.balloon.events.add('close', ->
-			history.pushState(null, null, '/Streams')
-		)
 		clusterer				= new ymaps.Clusterer()
 		clusterer.createCluster	= (center, geoObjects) ->
 			cluster	= ymaps.Clusterer.prototype.createCluster.call(this, center, geoObjects)
@@ -70,12 +67,16 @@ $ ->
 			placemarks		= []
 			list_content	= ''
 			for stream, stream of streams
+				stream_url	= stream.stream_url
+				if /youtube/.test(stream_url)
+					stream_url	+= '?wmode=transparent'
 				placemarks.push(
 					new ymaps.Placemark(
 						[stream.lat, stream.lng]
 						{
 							stream_id				: stream.id
-							balloonContentBody		: """<p><iframe width="400" height="240" src="#{stream.stream_url}" frameborder="0" scrolling="no"></iframe></p>"""
+							stream_url				: stream_url
+							balloonContentBody		: """<p><iframe width="400" height="240" src="#{stream_url}" frameborder="0" scrolling="no"></iframe></p>"""
 						}
 						{
 							hasHint				: false
@@ -89,31 +90,37 @@ $ ->
 					)
 				)
 				list_content	+= """<iframe src="#{stream.stream_url}" frameborder="0" scrolling="no"></iframe>"""
-				do (id = stream.id) ->
-					placemarks[placemarks.length - 1].balloon.events.add('open', ->
-						history.pushState(null, null, "/Streams/#{id}")
-					)
 			clusterer.removeAll()
 			clusterer.add(placemarks)
 			streams_list.html(list_content)
+			open_modal_commenting()
 		$.ajax(
 			url			: 'api/Streams/streams'
 			type		: 'get'
 			success		: (streams) ->
 				streams_cache	= streams
 				map.add_streams_on_map(streams)
-				open_balloon()
 				return
 			error		: ->
 		)
+		cs.streams				= {}
+		cs.streams.commenting	= (id) ->
+			history.pushState(null, null, "Streams/id")
+			open_modal_commenting()
+		modal_opened_once	= false
 		window.addEventListener(
 			'popstate'
 			->
-				return open_balloon()
+				if !modal_opened_once
+					return false
+				return open_modal_commenting()
 		)
-		open_balloon	= ->
+		open_modal_commenting	= ->
+			modal_opened_once	= true
 			if /\/Streams\/[0-9]+/.test(location.pathname)
-				id	= parseInt(location.pathname.substr(9))
+				id							= parseInt(location.pathname.substr(9))
+				window.disqus_shortname		= 'opirorg'
+				window.disqus_identifier	= 'Streams/' + id
 				for i in placemarks
 					if parseInt(i.properties.get('stream_id')) == id
 						placemark	= i
@@ -125,12 +132,28 @@ $ ->
 						400
 					)
 					return
+				map.balloon.close()
 				state		= clusterer.getObjectState(placemark)
 				if state.isClustered
 					state.cluster.state.set('activeObject', placemark)
 					state.cluster.events.fire('click')
 				else
 					placemark.balloon.open()
+				stream_url	= placemark.properties.get('stream_url')
+				$.cs.simple_modal(
+					"""
+						<p><iframe width="700" height="420" src="#{stream_url}" frameborder="0" scrolling="no" style="display : block; margin : 0 auto;"></iframe></p>
+						<div id="disqus_thread"></div>
+					"""
+					true
+					800
+				).on(
+					'uk.modal.hide'
+					->
+						history.pushState(null, null, 'Streams')
+				)
+				$('#disqus_thread').prev('button').remove()
+				init_disqus()
 				return false
 			else
 				return true

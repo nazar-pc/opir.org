@@ -6,7 +6,7 @@
       return;
     }
     return ymaps.ready(function() {
-      var add_events_on_map, add_zero, balloon_footer, clusterer, events_stream_panel, filter_events, focus_map_timer, icons_shape, map_moving, open_modal_commenting, placemarks, refresh_delay, stop_updating, streaming_opened;
+      var add_events_on_map, add_zero, balloon_footer, clusterer, events_stream_panel, filter_events, focus_map_timer, icons_shape, map_moving, modal_opened_once, open_modal_commenting, placemarks, refresh_delay, stop_updating, streaming_opened;
       refresh_delay = cs.home.automaidan_coord ? 10 : 10;
       streaming_opened = false;
       stop_updating = false;
@@ -120,6 +120,9 @@
             timeout = '';
             is_streaming = true;
             text = text.substr(7);
+            if (/youtube/.test(text)) {
+              text += '?wmode=transparent';
+            }
             text = "<p><iframe width=\"400\" height=\"240\" src=\"" + text + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>";
           } else {
             text = text ? "<p>" + text + "</p>" : '';
@@ -256,7 +259,11 @@
         history.pushState(null, null, id);
         return open_modal_commenting();
       };
+      modal_opened_once = false;
       window.addEventListener('popstate', function() {
+        if (!modal_opened_once) {
+          return false;
+        }
         return open_modal_commenting();
       });
       focus_map_timer = 0;
@@ -319,6 +326,7 @@
       }
       return open_modal_commenting = function() {
         var content, i, id, placemark, state, title, _i, _len;
+        modal_opened_once = true;
         if (/\/[0-9]+/.test(location.pathname)) {
           id = parseInt(location.pathname.substr(1));
           window.disqus_shortname = 'opirorg';

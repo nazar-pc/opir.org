@@ -6,7 +6,7 @@
       return;
     }
     return ymaps.ready(function() {
-      var clusterer, filter_streams, icons_shape, open_balloon, placemarks, streams_cache, streams_list;
+      var clusterer, filter_streams, icons_shape, modal_opened_once, open_modal_commenting, placemarks, streams_cache, streams_list;
       window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
@@ -14,9 +14,6 @@
       });
       map.setBounds([[44.02462975216294, 21.777120521484335], [52.82663432351663, 40.32204239648433]], {
         preciseZoom: true
-      });
-      map.balloon.events.add('close', function() {
-        return history.pushState(null, null, '/Streams');
       });
       clusterer = new ymaps.Clusterer();
       clusterer.createCluster = function(center, geoObjects) {
@@ -63,20 +60,20 @@
       streams_cache = [];
       streams_list = $('.cs-stream-list');
       map.add_streams_on_map = function(streams) {
-        var list_content, stream, _fn;
+        var list_content, stream, stream_url;
         streams = filter_streams(streams || streams_cache);
         placemarks = [];
         list_content = '';
-        _fn = function(id) {
-          return placemarks[placemarks.length - 1].balloon.events.add('open', function() {
-            return history.pushState(null, null, "/Streams/" + id);
-          });
-        };
         for (stream in streams) {
           stream = streams[stream];
+          stream_url = stream.stream_url;
+          if (/youtube/.test(stream_url)) {
+            stream_url += '?wmode=transparent';
+          }
           placemarks.push(new ymaps.Placemark([stream.lat, stream.lng], {
             stream_id: stream.id,
-            balloonContentBody: "<p><iframe width=\"400\" height=\"240\" src=\"" + stream.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>"
+            stream_url: stream_url,
+            balloonContentBody: "<p><iframe width=\"400\" height=\"240\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>"
           }, {
             hasHint: false,
             iconLayout: 'default#image',
@@ -87,11 +84,11 @@
             iconImageShape: icons_shape
           }));
           list_content += "<iframe src=\"" + stream.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe>";
-          _fn(stream.id);
         }
         clusterer.removeAll();
         clusterer.add(placemarks);
-        return streams_list.html(list_content);
+        streams_list.html(list_content);
+        return open_modal_commenting();
       };
       $.ajax({
         url: 'api/Streams/streams',
@@ -99,17 +96,28 @@
         success: function(streams) {
           streams_cache = streams;
           map.add_streams_on_map(streams);
-          open_balloon();
         },
         error: function() {}
       });
+      cs.streams = {};
+      cs.streams.commenting = function(id) {
+        history.pushState(null, null, "Streams/id");
+        return open_modal_commenting();
+      };
+      modal_opened_once = false;
       window.addEventListener('popstate', function() {
-        return open_balloon();
+        if (!modal_opened_once) {
+          return false;
+        }
+        return open_modal_commenting();
       });
-      open_balloon = function() {
-        var i, id, placemark, state, _i, _len;
+      open_modal_commenting = function() {
+        var i, id, placemark, state, stream_url, _i, _len;
+        modal_opened_once = true;
         if (/\/Streams\/[0-9]+/.test(location.pathname)) {
           id = parseInt(location.pathname.substr(9));
+          window.disqus_shortname = 'opirorg';
+          window.disqus_identifier = 'Streams/' + id;
           for (_i = 0, _len = placemarks.length; _i < _len; _i++) {
             i = placemarks[_i];
             if (parseInt(i.properties.get('stream_id')) === id) {
@@ -121,6 +129,7 @@
             $.cs.simple_modal('<h3 class="cs-center">Стрім не знайдено</h3>', false, 400);
             return;
           }
+          map.balloon.close();
           state = clusterer.getObjectState(placemark);
           if (state.isClustered) {
             state.cluster.state.set('activeObject', placemark);
@@ -128,6 +137,12 @@
           } else {
             placemark.balloon.open();
           }
+          stream_url = placemark.properties.get('stream_url');
+          $.cs.simple_modal("<p><iframe width=\"700\" height=\"420\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\" style=\"display : block; margin : 0 auto;\"></iframe></p>\n<div id=\"disqus_thread\"></div>", true, 800).on('uk.modal.hide', function() {
+            return history.pushState(null, null, 'Streams');
+          });
+          $('#disqus_thread').prev('button').remove();
+          init_disqus();
           return false;
         } else {
           return true;

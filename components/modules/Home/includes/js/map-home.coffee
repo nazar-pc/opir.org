@@ -129,6 +129,8 @@ $ ->
 					timeout			= ''
 					is_streaming	= true
 					text			= text.substr(7)
+					if /youtube/.test(text)
+						text	+= '?wmode=transparent'
 					text			= """<p><iframe width="400" height="240" src="#{text}" frameborder="0" scrolling="no"></iframe></p>"""
 				else
 					text			= if text then """<p>#{text}</p>""" else ''
@@ -295,9 +297,12 @@ $ ->
 		cs.home.commenting	= (id) ->
 			history.pushState(null, null, id)
 			open_modal_commenting()
+		modal_opened_once	= false
 		window.addEventListener(
 			'popstate'
 			->
+				if !modal_opened_once
+					return false
 				return open_modal_commenting()
 		)
 		focus_map_timer	= 0
@@ -364,6 +369,7 @@ $ ->
 						)
 				)
 		open_modal_commenting	= ->
+			modal_opened_once	= true
 			if /\/[0-9]+/.test(location.pathname)
 				id	= parseInt(location.pathname.substr(1))
 				window.disqus_shortname		= 'opirorg'
