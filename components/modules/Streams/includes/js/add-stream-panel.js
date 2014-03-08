@@ -69,7 +69,7 @@
     }).on('click', '.cs-stream-add-process', function() {
       var stream_code;
       stream_code = panel.find('textarea').val();
-      if (!/ustream.tv\/embed\/[0-9]+/g.test(stream_code)) {
+      if (!/ustream.tv\/(embed|channel)\/[0-9]+/g.test(stream_code) && !/(youtube.com\/embed\/|youtube.com\/watch\?v=)([0-9a-z\-]+)/gi.test(stream_code)) {
         alert('Це не Live Stream з Ustream, вставте коректний код');
         return;
       }
