@@ -11,6 +11,9 @@ $ ->
 			[[44.02462975216294, 21.777120521484335], [52.82663432351663, 40.32204239648433]]
 			preciseZoom	: true
 		)
+		map.balloon.events.add('close', ->
+			history.pushState(null, null, '/Streams')
+		)
 		clusterer				= new ymaps.Clusterer()
 		clusterer.createCluster	= (center, geoObjects) ->
 			cluster	= ymaps.Clusterer.prototype.createCluster.call(this, center, geoObjects)
@@ -71,6 +74,7 @@ $ ->
 					new ymaps.Placemark(
 						[stream.lat, stream.lng]
 						{
+							stream_id				: stream.id
 							balloonContentBody		: """<p><iframe width="400" height="240" src="#{stream.stream_url}" frameborder="0" scrolling="no"></iframe></p>"""
 						}
 						{
@@ -85,6 +89,10 @@ $ ->
 					)
 				)
 				list_content	+= """<iframe src="#{stream.stream_url}" frameborder="0" scrolling="no"></iframe>"""
+				do (id = stream.id) ->
+					placemarks[placemarks.length - 1].balloon.events.add('open', ->
+						history.pushState(null, null, "/Streams/#{id}")
+					)
 			clusterer.removeAll()
 			clusterer.add(placemarks)
 			streams_list.html(list_content)
@@ -94,7 +102,36 @@ $ ->
 			success		: (streams) ->
 				streams_cache	= streams
 				map.add_streams_on_map(streams)
+				open_balloon()
 				return
 			error		: ->
 		)
+		window.addEventListener(
+			'popstate'
+			->
+				return open_balloon()
+		)
+		open_balloon	= ->
+			if /\/Streams\/[0-9]+/.test(location.pathname)
+				id	= parseInt(location.pathname.substr(9))
+				for i in placemarks
+					if parseInt(i.properties.get('stream_id')) == id
+						placemark	= i
+						break
+				if !placemark
+					$.cs.simple_modal(
+						'<h3 class="cs-center">Стрім не знайдено</h3>'
+						false
+						400
+					)
+					return
+				state		= clusterer.getObjectState(placemark)
+				if state.isClustered
+					state.cluster.state.set('activeObject', placemark)
+					state.cluster.events.fire('click')
+				else
+					placemark.balloon.open()
+				return false
+			else
+				return true
 		return

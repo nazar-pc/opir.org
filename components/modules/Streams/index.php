@@ -1,23 +1,34 @@
 <?php
 /**
- * @package		Home
+ * @package		Streams
  * @category	modules
  * @author		Nazar Mokrynskyi <nazar@mokrynskyi.com>
  * @copyright	Copyright (c) 2014, Nazar Mokrynskyi
  * @license		MIT License, see license.txt
  */
-namespace	cs\modules\Home;
+namespace	cs\modules\Streams;
 use			h,
 			cs\Index,
 			cs\Page,
 			cs\User;
-$Page							= Page::instance();
-Index::instance()->title_auto	= false;
-$Page->Description				= 'opir.org - Тут ви можете з орієнтуватися на самому майдані, дізнатися де проходять суди над евромайданівцями, бути попередженим про появлення тітушок';
-$User							= User::instance();
+$Page				= Page::instance();
+$Index				= Index::instance();
+$Index->title_auto	= false;
+$Page->Description	= 'opir.org - Тут ви можете з орієнтуватися на самому майдані, дізнатися де проходять суди над евромайданівцями, бути попередженим про появлення тітушок';
+$User				= User::instance();
 $Page->title('Камери');
 $Page->og('image', 'https://opir.org/components/modules/Home/includes/img/share.png');
 $Page->og('image:secure_url', 'https://opir.org/components/modules/Home/includes/img/share.png');
+if (isset($Index->route_ids[0])) {
+	$stream				= Streams::instance()->get($Index->route_ids[0]);
+	if (preg_match('/youtube.com\/embed\/(.*)/', $stream['stream_url'], $image)) {
+		$Page->replace(
+			'https://opir.org/components/modules/Home/includes/img/share.png',
+			"https://i1.ytimg.com/vi/$image[1]/hqdefault.jpg"
+		);
+	}
+	unset($stream, $image);
+}
 $Page->link([
 	'rel'	=> 'image_src',
 	'href'	=> 'https://opir.org/components/modules/Home/includes/img/share.png'

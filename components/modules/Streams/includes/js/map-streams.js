@@ -6,7 +6,7 @@
       return;
     }
     return ymaps.ready(function() {
-      var clusterer, filter_streams, icons_shape, placemarks, streams_cache, streams_list;
+      var clusterer, filter_streams, icons_shape, open_balloon, placemarks, streams_cache, streams_list;
       window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
@@ -14,6 +14,9 @@
       });
       map.setBounds([[44.02462975216294, 21.777120521484335], [52.82663432351663, 40.32204239648433]], {
         preciseZoom: true
+      });
+      map.balloon.events.add('close', function() {
+        return history.pushState(null, null, '/Streams');
       });
       clusterer = new ymaps.Clusterer();
       clusterer.createCluster = function(center, geoObjects) {
@@ -60,13 +63,19 @@
       streams_cache = [];
       streams_list = $('.cs-stream-list');
       map.add_streams_on_map = function(streams) {
-        var list_content, stream;
+        var list_content, stream, _fn;
         streams = filter_streams(streams || streams_cache);
         placemarks = [];
         list_content = '';
+        _fn = function(id) {
+          return placemarks[placemarks.length - 1].balloon.events.add('open', function() {
+            return history.pushState(null, null, "/Streams/" + id);
+          });
+        };
         for (stream in streams) {
           stream = streams[stream];
           placemarks.push(new ymaps.Placemark([stream.lat, stream.lng], {
+            stream_id: stream.id,
             balloonContentBody: "<p><iframe width=\"400\" height=\"240\" src=\"" + stream.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>"
           }, {
             hasHint: false,
@@ -78,6 +87,7 @@
             iconImageShape: icons_shape
           }));
           list_content += "<iframe src=\"" + stream.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe>";
+          _fn(stream.id);
         }
         clusterer.removeAll();
         clusterer.add(placemarks);
@@ -89,9 +99,40 @@
         success: function(streams) {
           streams_cache = streams;
           map.add_streams_on_map(streams);
+          open_balloon();
         },
         error: function() {}
       });
+      window.addEventListener('popstate', function() {
+        return open_balloon();
+      });
+      open_balloon = function() {
+        var i, id, placemark, state, _i, _len;
+        if (/\/Streams\/[0-9]+/.test(location.pathname)) {
+          id = parseInt(location.pathname.substr(9));
+          for (_i = 0, _len = placemarks.length; _i < _len; _i++) {
+            i = placemarks[_i];
+            if (parseInt(i.properties.get('stream_id')) === id) {
+              placemark = i;
+              break;
+            }
+          }
+          if (!placemark) {
+            $.cs.simple_modal('<h3 class="cs-center">Стрім не знайдено</h3>', false, 400);
+            return;
+          }
+          state = clusterer.getObjectState(placemark);
+          if (state.isClustered) {
+            state.cluster.state.set('activeObject', placemark);
+            state.cluster.events.fire('click');
+          } else {
+            placemark.balloon.open();
+          }
+          return false;
+        } else {
+          return true;
+        }
+      };
     });
   });
 
