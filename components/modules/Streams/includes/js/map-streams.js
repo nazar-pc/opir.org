@@ -73,7 +73,7 @@
           placemarks.push(new ymaps.Placemark([stream.lat, stream.lng], {
             stream_id: stream.id,
             stream_url: stream_url,
-            balloonContentBody: "<p><iframe width=\"400\" height=\"240\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>\n<div class=\"cs-home-social-links\" data-id=\"" + stream.id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>\n<button onclick=\"cs.streams.commenting(" + stream.id + ")\" class=\"uk-icon-comment\" data-uk-tooltip title=\"Коментувати\"></button>"
+            balloonContentBody: "<p><iframe width=\"400\" height=\"240\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>\n<div class=\"cs-streams-social-links\" data-id=\"" + stream.id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>\n<button onclick=\"cs.streams.commenting(" + stream.id + ")\" class=\"uk-icon-comment\" data-uk-tooltip title=\"Коментувати\"></button>"
           }, {
             hasHint: false,
             iconLayout: 'default#image',

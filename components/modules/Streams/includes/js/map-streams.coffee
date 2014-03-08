@@ -78,7 +78,7 @@ $ ->
 							stream_url				: stream_url
 							balloonContentBody		: """
 								<p><iframe width="400" height="240" src="#{stream_url}" frameborder="0" scrolling="no"></iframe></p>
-								<div class="cs-home-social-links" data-id="#{stream.id}">
+								<div class="cs-streams-social-links" data-id="#{stream.id}">
 									<a class="fb uk-icon-facebook"></a>
 									<a class="vk uk-icon-vk"></a>
 									<a class="tw uk-icon-twitter"></a>
