@@ -5,10 +5,10 @@
     if (cs.module !== 'Home') {
       return;
     }
-    return $(document).on('click', '.cs-home-video-social-links > *', function() {
+    return $(document).on('click', '.cs-home-social-links > *', function() {
       var $this, content, id, image, link, params, parent, title;
       $this = $(this);
-      parent = $(this).parent();
+      parent = $this.parent();
       id = parent.data('id');
       title = parent.parent().find('h2:first').text();
       content = parent.prev().text().replace(/\n/g, ' ');

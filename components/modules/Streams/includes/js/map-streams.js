@@ -73,7 +73,7 @@
           placemarks.push(new ymaps.Placemark([stream.lat, stream.lng], {
             stream_id: stream.id,
             stream_url: stream_url,
-            balloonContentBody: "<p><iframe width=\"400\" height=\"240\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>"
+            balloonContentBody: "<p><iframe width=\"400\" height=\"240\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe></p>\n<div class=\"cs-home-social-links\" data-id=\"" + stream.id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>\n<button onclick=\"cs.streams.commenting(" + stream.id + ")\" class=\"uk-icon-comment\" data-uk-tooltip title=\"Коментувати\"></button>"
           }, {
             hasHint: false,
             iconLayout: 'default#image',
@@ -101,7 +101,7 @@
       });
       cs.streams = {};
       cs.streams.commenting = function(id) {
-        history.pushState(null, null, "Streams/id");
+        history.pushState(null, null, "Streams/" + id);
         return open_modal_commenting();
       };
       modal_opened_once = false;
@@ -138,10 +138,9 @@
             placemark.balloon.open();
           }
           stream_url = placemark.properties.get('stream_url');
-          $.cs.simple_modal("<p><iframe width=\"700\" height=\"420\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\" style=\"display : block; margin : 0 auto;\"></iframe></p>\n<div id=\"disqus_thread\"></div>", true, 800).on('uk.modal.hide', function() {
+          $.cs.simple_modal("<p><iframe width=\"700\" height=\"420\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\" style=\"display : block; margin : 0 auto;\"></iframe></p>\n<div class=\"cs-streams-social-links\" data-id=\"" + id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>\n<div id=\"disqus_thread\"></div>", true, 800).on('uk.modal.hide', function() {
             return history.pushState(null, null, 'Streams');
           });
-          $('#disqus_thread').prev('button').remove();
           init_disqus();
           return false;
         } else {

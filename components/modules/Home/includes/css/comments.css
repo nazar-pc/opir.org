@@ -1,4 +1,4 @@
-.cs-home-video-social-links + .uk-icon-comment {
+.cs-home-social-links + .uk-icon-comment {
   background: transparent;
   border: solid 2px #b1b1b1;
   border-radius: 14px;
@@ -12,6 +12,6 @@
   right: 0;
   text-align: center;
   width: 28px; }
-  .cs-home-video-social-links + .uk-icon-comment:hover {
+  .cs-home-social-links + .uk-icon-comment:hover {
     border-color: #7C7C7C;
     color: #7C7C7C; }

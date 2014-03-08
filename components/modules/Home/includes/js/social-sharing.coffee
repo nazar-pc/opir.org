@@ -3,10 +3,10 @@ $ ->
 		return
 	$(document).on(
 		'click'
-		'.cs-home-video-social-links > *'
+		'.cs-home-social-links > *'
 		->
 			$this	= $(@)
-			parent	= $(@).parent()
+			parent	= $this.parent()
 			id		= parent.data('id')
 			title	= parent.parent().find('h2:first').text()
 			content	= parent.prev().text().replace(/\n/g, ' ')

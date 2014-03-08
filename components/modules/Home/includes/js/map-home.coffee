@@ -150,7 +150,7 @@ $ ->
 									#{img}
 									#{text}
 								</div>
-								<div class="cs-home-video-social-links" data-id="#{event.id}">
+								<div class="cs-home-social-links" data-id="#{event.id}">
 									<a class="fb uk-icon-facebook"></a>
 									<a class="vk uk-icon-vk"></a>
 									<a class="tw uk-icon-twitter"></a>
@@ -181,7 +181,7 @@ $ ->
 							#{img}
 							#{text}
 						</div>
-						<div class="cs-home-video-social-links" data-id="#{event.id}">
+						<div class="cs-home-social-links" data-id="#{event.id}">
 							<a class="fb uk-icon-facebook"></a>
 							<a class="vk uk-icon-vk"></a>
 							<a class="tw uk-icon-twitter"></a>

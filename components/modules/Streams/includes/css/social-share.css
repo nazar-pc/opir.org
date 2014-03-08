@@ -1,4 +1,4 @@
-.cs-home-social-links > * {
+.cs-streams-social-links > * {
   border: solid 2px #b1b1b1;
   border-radius: 14px;
   box-sizing: border-box !important;
@@ -10,6 +10,6 @@
   padding-top: 5px;
   text-align: center;
   width: 28px; }
-  .cs-home-social-links > *:hover {
+  .cs-streams-social-links > *:hover {
     border-color: #7C7C7C;
     color: #7C7C7C; }

@@ -76,7 +76,15 @@ $ ->
 						{
 							stream_id				: stream.id
 							stream_url				: stream_url
-							balloonContentBody		: """<p><iframe width="400" height="240" src="#{stream_url}" frameborder="0" scrolling="no"></iframe></p>"""
+							balloonContentBody		: """
+								<p><iframe width="400" height="240" src="#{stream_url}" frameborder="0" scrolling="no"></iframe></p>
+								<div class="cs-home-social-links" data-id="#{stream.id}">
+									<a class="fb uk-icon-facebook"></a>
+									<a class="vk uk-icon-vk"></a>
+									<a class="tw uk-icon-twitter"></a>
+								</div>
+								<button onclick="cs.streams.commenting(#{stream.id})" class="uk-icon-comment" data-uk-tooltip title="Коментувати"></button>
+							"""
 						}
 						{
 							hasHint				: false
@@ -105,7 +113,7 @@ $ ->
 		)
 		cs.streams				= {}
 		cs.streams.commenting	= (id) ->
-			history.pushState(null, null, "Streams/id")
+			history.pushState(null, null, "Streams/#{id}")
 			open_modal_commenting()
 		modal_opened_once	= false
 		window.addEventListener(
@@ -143,6 +151,11 @@ $ ->
 				$.cs.simple_modal(
 					"""
 						<p><iframe width="700" height="420" src="#{stream_url}" frameborder="0" scrolling="no" style="display : block; margin : 0 auto;"></iframe></p>
+						<div class="cs-streams-social-links" data-id="#{id}">
+							<a class="fb uk-icon-facebook"></a>
+							<a class="vk uk-icon-vk"></a>
+							<a class="tw uk-icon-twitter"></a>
+						</div>
 						<div id="disqus_thread"></div>
 					"""
 					true
@@ -152,7 +165,6 @@ $ ->
 					->
 						history.pushState(null, null, 'Streams')
 				)
-				$('#disqus_thread').prev('button').remove()
 				init_disqus()
 				return false
 			else
