@@ -303,7 +303,7 @@ $ ->
 			->
 				if !modal_opened_once
 					return false
-				return open_modal_commenting()
+				#return open_modal_commenting()
 		)
 		focus_map_timer	= 0
 		map_moving		= false
@@ -393,7 +393,7 @@ $ ->
 					placemark.balloon.open()
 				title	= placemark.properties.get('balloonContentHeader')
 				content	= placemark.properties.get('balloonContentBody')
-				modal	= $.cs.simple_modal(
+				$.cs.simple_modal(
 					"""
 						<h1>#{title}</h1>
 						#{content}
@@ -401,14 +401,13 @@ $ ->
 					"""
 					true
 					800
-				)
-				$('#disqus_thread').prev('button').remove()
-				init_disqus()
-				modal.on(
+				).on(
 					'uk.modal.hide'
 					->
 						history.pushState(null, null, '/')
 				)
+				$('#disqus_thread').prev('button').remove()
+				init_disqus()
 				return false
 			else
 				return true
