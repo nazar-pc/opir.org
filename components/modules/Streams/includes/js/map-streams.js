@@ -109,9 +109,10 @@
         if (!modal_opened_once) {
           return false;
         }
+        return open_modal_commenting();
       });
       open_modal_commenting = function() {
-        var i, id, placemark, state, stream_url, _i, _len;
+        var i, id, modal, placemark, state, stream_url, _i, _len;
         modal_opened_once = true;
         if (/\/Streams\/[0-9]+/.test(location.pathname)) {
           id = parseInt(location.pathname.substr(9));
@@ -137,7 +138,8 @@
             placemark.balloon.open();
           }
           stream_url = placemark.properties.get('stream_url');
-          $.cs.simple_modal("<p><iframe width=\"700\" height=\"420\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\" style=\"display : block; margin : 0 auto;\"></iframe></p>\n<div class=\"cs-streams-social-links\" data-id=\"" + id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>\n<div id=\"disqus_thread\"></div>", true, 800).on('uk.modal.hide', function() {
+          modal = $.cs.simple_modal("<p><iframe width=\"700\" height=\"420\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\" style=\"display : block; margin : 0 auto;\"></iframe></p>\n<div class=\"cs-streams-social-links\" data-id=\"" + id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>\n<div id=\"disqus_thread\"></div>", true, 800);
+          modal.on('uk.modal.hide', function() {
             return history.pushState(null, null, 'Streams');
           });
           init_disqus();

@@ -303,7 +303,7 @@ $ ->
 			->
 				if !modal_opened_once
 					return false
-				#return open_modal_commenting()
+				return open_modal_commenting()
 		)
 		focus_map_timer	= 0
 		map_moving		= false
@@ -393,7 +393,7 @@ $ ->
 					placemark.balloon.open()
 				title	= placemark.properties.get('balloonContentHeader')
 				content	= placemark.properties.get('balloonContentBody')
-				$.cs.simple_modal(
+				modal	= $.cs.simple_modal(
 					"""
 						<h1>#{title}</h1>
 						#{content}
@@ -401,7 +401,8 @@ $ ->
 					"""
 					true
 					800
-				).on(
+				)
+				modal.on(
 					'uk.modal.hide'
 					->
 						history.pushState(null, null, '/')
