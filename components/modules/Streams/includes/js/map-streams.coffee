@@ -148,7 +148,7 @@ $ ->
 				else
 					placemark.balloon.open()
 				stream_url	= placemark.properties.get('stream_url')
-				$.cs.simple_modal(
+				modal		= $.cs.simple_modal(
 					"""
 						<p><iframe width="700" height="420" src="#{stream_url}" frameborder="0" scrolling="no" style="display : block; margin : 0 auto;"></iframe></p>
 						<div class="cs-streams-social-links" data-id="#{id}">
@@ -160,12 +160,13 @@ $ ->
 					"""
 					true
 					800
-				).on(
+				)
+				init_disqus()
+				modal.on(
 					'uk.modal.hide'
 					->
 						history.pushState(null, null, 'Streams')
 				)
-				init_disqus()
 				return false
 			else
 				return true

@@ -393,7 +393,7 @@ $ ->
 					placemark.balloon.open()
 				title	= placemark.properties.get('balloonContentHeader')
 				content	= placemark.properties.get('balloonContentBody')
-				$.cs.simple_modal(
+				modal	= $.cs.simple_modal(
 					"""
 						<h1>#{title}</h1>
 						#{content}
@@ -401,13 +401,14 @@ $ ->
 					"""
 					true
 					800
-				).on(
+				)
+				$('#disqus_thread').prev('button').remove()
+				init_disqus()
+				modal.on(
 					'uk.modal.hide'
 					->
 						history.pushState(null, null, '/')
 				)
-				$('#disqus_thread').prev('button').remove()
-				init_disqus()
 				return false
 			else
 				return true
