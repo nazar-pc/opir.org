@@ -6,7 +6,7 @@
       return;
     }
     return ymaps.ready(function() {
-      var add_events_on_map, add_zero, balloon_footer, clusterer, events_stream_panel, filter_events, focus_map_timer, icons_shape, map_moving, modal_opened_once, open_modal_commenting, placemarks, refresh_delay, stop_updating, streaming_opened;
+      var add_events_on_map, add_zero, balloon_footer, clusterer, events_stream_panel, filter_events, focus_map_timer, icons_shape, map_moving, modal_opened, open_modal_commenting, placemarks, refresh_delay, stop_updating, streaming_opened;
       refresh_delay = cs.home.automaidan_coord ? 10 : 10;
       streaming_opened = false;
       stop_updating = false;
@@ -259,9 +259,9 @@
         history.pushState(null, null, id);
         return open_modal_commenting();
       };
-      modal_opened_once = false;
+      modal_opened = false;
       window.addEventListener('popstate', function() {
-        if (!modal_opened_once) {
+        if (modal_opened) {
           return false;
         }
         return open_modal_commenting();
@@ -325,9 +325,9 @@
         });
       }
       return open_modal_commenting = function() {
-        var content, i, id, modal, placemark, state, title, _i, _len;
-        modal_opened_once = true;
+        var content, i, id, placemark, state, title, _i, _len;
         if (/\/[0-9]+/.test(location.pathname)) {
+          modal_opened = true;
           id = parseInt(location.pathname.substr(1));
           window.disqus_shortname = 'opirorg';
           window.disqus_identifier = 'Events/' + id;
@@ -351,8 +351,8 @@
           }
           title = placemark.properties.get('balloonContentHeader');
           content = placemark.properties.get('balloonContentBody');
-          modal = $.cs.simple_modal("<h1>" + title + "</h1>\n" + content + "\n<div id=\"disqus_thread\"></div>", true, 800);
-          modal.on('uk.modal.hide', function() {
+          $.cs.simple_modal("<h1>" + title + "</h1>\n" + content + "\n<div id=\"disqus_thread\"></div>", true, 800).on('uk.modal.hide', function() {
+            modal_opened = false;
             return history.pushState(null, null, '/');
           });
           $('#disqus_thread').prev('button').remove();

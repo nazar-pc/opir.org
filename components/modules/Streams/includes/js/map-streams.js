@@ -6,7 +6,7 @@
       return;
     }
     return ymaps.ready(function() {
-      var clusterer, filter_streams, icons_shape, modal_opened_once, open_modal_commenting, placemarks, streams_cache, streams_list;
+      var clusterer, filter_streams, icons_shape, modal_opened, open_modal_commenting, placemarks, streams_cache, streams_list;
       window.map = new ymaps.Map('map', {
         center: [50.45, 30.523611],
         zoom: 13,
@@ -104,17 +104,17 @@
         history.pushState(null, null, "Streams/" + id);
         return open_modal_commenting();
       };
-      modal_opened_once = false;
+      modal_opened = false;
       window.addEventListener('popstate', function() {
-        if (!modal_opened_once) {
+        if (modal_opened) {
           return false;
         }
         return open_modal_commenting();
       });
       open_modal_commenting = function() {
-        var i, id, modal, placemark, state, stream_url, _i, _len;
-        modal_opened_once = true;
+        var i, id, placemark, state, stream_url, _i, _len;
         if (/\/Streams\/[0-9]+/.test(location.pathname)) {
+          modal_opened = true;
           id = parseInt(location.pathname.substr(9));
           window.disqus_shortname = 'opirorg';
           window.disqus_identifier = 'Streams/' + id;
@@ -138,8 +138,8 @@
             placemark.balloon.open();
           }
           stream_url = placemark.properties.get('stream_url');
-          modal = $.cs.simple_modal("<p><iframe width=\"700\" height=\"420\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\" style=\"display : block; margin : 0 auto;\"></iframe></p>\n<div class=\"cs-streams-social-links\" data-id=\"" + id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>\n<div id=\"disqus_thread\"></div>", true, 800);
-          modal.on('uk.modal.hide', function() {
+          $.cs.simple_modal("<p><iframe width=\"700\" height=\"420\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\" style=\"display : block; margin : 0 auto;\"></iframe></p>\n<div class=\"cs-streams-social-links\" data-id=\"" + id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>\n<div id=\"disqus_thread\"></div>", true, 800).on('uk.modal.hide', function() {
+            modal_opened = false;
             return history.pushState(null, null, 'Streams');
           });
           init_disqus();

@@ -297,11 +297,11 @@ $ ->
 		cs.home.commenting	= (id) ->
 			history.pushState(null, null, id)
 			open_modal_commenting()
-		modal_opened_once	= false
+		modal_opened	= false
 		window.addEventListener(
 			'popstate'
 			->
-				if !modal_opened_once
+				if modal_opened
 					return false
 				return open_modal_commenting()
 		)
@@ -369,9 +369,9 @@ $ ->
 						)
 				)
 		open_modal_commenting	= ->
-			modal_opened_once	= true
 			if /\/[0-9]+/.test(location.pathname)
-				id	= parseInt(location.pathname.substr(1))
+				modal_opened				= true
+				id							= parseInt(location.pathname.substr(1))
 				window.disqus_shortname		= 'opirorg'
 				window.disqus_identifier	= 'Events/' + id
 				for i in placemarks
@@ -393,7 +393,7 @@ $ ->
 					placemark.balloon.open()
 				title	= placemark.properties.get('balloonContentHeader')
 				content	= placemark.properties.get('balloonContentBody')
-				modal	= $.cs.simple_modal(
+				$.cs.simple_modal(
 					"""
 						<h1>#{title}</h1>
 						#{content}
@@ -401,10 +401,10 @@ $ ->
 					"""
 					true
 					800
-				)
-				modal.on(
+				).on(
 					'uk.modal.hide'
 					->
+						modal_opened	= false
 						history.pushState(null, null, '/')
 				)
 				$('#disqus_thread').prev('button').remove()

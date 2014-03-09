@@ -115,17 +115,17 @@ $ ->
 		cs.streams.commenting	= (id) ->
 			history.pushState(null, null, "Streams/#{id}")
 			open_modal_commenting()
-		modal_opened_once	= false
+		modal_opened	= false
 		window.addEventListener(
 			'popstate'
 			->
-				if !modal_opened_once
+				if modal_opened
 					return false
 				return open_modal_commenting()
 		)
 		open_modal_commenting	= ->
-			modal_opened_once	= true
 			if /\/Streams\/[0-9]+/.test(location.pathname)
+				modal_opened				= true
 				id							= parseInt(location.pathname.substr(9))
 				window.disqus_shortname		= 'opirorg'
 				window.disqus_identifier	= 'Streams/' + id
@@ -148,7 +148,7 @@ $ ->
 				else
 					placemark.balloon.open()
 				stream_url	= placemark.properties.get('stream_url')
-				modal		= $.cs.simple_modal(
+				$.cs.simple_modal(
 					"""
 						<p><iframe width="700" height="420" src="#{stream_url}" frameborder="0" scrolling="no" style="display : block; margin : 0 auto;"></iframe></p>
 						<div class="cs-streams-social-links" data-id="#{id}">
@@ -160,10 +160,10 @@ $ ->
 					"""
 					true
 					800
-				)
-				modal.on(
+				).on(
 					'uk.modal.hide'
 					->
+						modal_opened	= false
 						history.pushState(null, null, 'Streams')
 				)
 				init_disqus()
