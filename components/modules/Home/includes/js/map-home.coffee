@@ -385,12 +385,28 @@ $ ->
 						400
 					)
 					return
-				state		= clusterer.getObjectState(placemark)
-				if state.isClustered
-					state.cluster.state.set('activeObject', placemark)
-					state.cluster.events.fire('click')
-				else
-					placemark.balloon.open()
+				do (c = placemark.geometry.getCoordinates()) ->
+					c[0]	= parseFloat(c[0])
+					c[1]	= parseFloat(c[1])
+					map.panTo(c).then ->
+						map.zoomRange.get(c).then (zoomRange) ->
+							map.setZoom(
+								zoomRange[1],
+								duration	: 500
+							).then ->
+								state	= clusterer.getObjectState(placemark)
+								if state.isClustered
+									state.cluster.state.set('activeObject', placemark)
+									state.cluster.events.once('click', ->
+										if state.isClustered
+											state.cluster.state.set('activeObject', placemark)
+											state.cluster.events.fire('click')
+										else
+											placemark.balloon.open()
+									)
+									state.cluster.events.fire('click')
+								else
+									placemark.balloon.open()
 				title	= placemark.properties.get('balloonContentHeader')
 				content	= placemark.properties.get('balloonContentBody')
 				$.cs.simple_modal(

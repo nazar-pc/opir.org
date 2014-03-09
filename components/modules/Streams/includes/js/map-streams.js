@@ -112,7 +112,7 @@
         return open_modal_commenting();
       });
       open_modal_commenting = function() {
-        var i, id, placemark, state, stream_url, _i, _len;
+        var i, id, placemark, stream_url, _i, _len;
         if (/\/Streams\/[0-9]+/.test(location.pathname)) {
           modal_opened = true;
           id = parseInt(location.pathname.substr(9));
@@ -130,13 +130,26 @@
             return;
           }
           map.balloon.close();
-          state = clusterer.getObjectState(placemark);
-          if (state.isClustered) {
-            state.cluster.state.set('activeObject', placemark);
-            state.cluster.events.fire('click');
-          } else {
-            placemark.balloon.open();
-          }
+          (function(c) {
+            c[0] = parseFloat(c[0]);
+            c[1] = parseFloat(c[1]);
+            return map.panTo(c).then(function() {
+              return map.zoomRange.get(c).then(function(zoomRange) {
+                return map.setZoom(zoomRange[1], {
+                  duration: 500
+                }).then(function() {
+                  var state;
+                  state = clusterer.getObjectState(placemark);
+                  if (state.isClustered) {
+                    state.cluster.state.set('activeObject', placemark);
+                    return state.cluster.events.fire('click');
+                  } else {
+                    return placemark.balloon.open();
+                  }
+                });
+              });
+            });
+          })(placemark.geometry.getCoordinates());
           stream_url = placemark.properties.get('stream_url');
           $.cs.simple_modal("<p><iframe width=\"700\" height=\"420\" src=\"" + stream_url + "\" frameborder=\"0\" scrolling=\"no\" style=\"display : block; margin : 0 auto;\"></iframe></p>\n<div class=\"cs-streams-social-links\" data-id=\"" + id + "\">\n	<a class=\"fb uk-icon-facebook\"></a>\n	<a class=\"vk uk-icon-vk\"></a>\n	<a class=\"tw uk-icon-twitter\"></a>\n</div>\n<div id=\"disqus_thread\"></div>", true, 800).on('uk.modal.hide', function() {
             modal_opened = false;

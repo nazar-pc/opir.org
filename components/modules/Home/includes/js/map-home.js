@@ -325,7 +325,7 @@
         });
       }
       return open_modal_commenting = function() {
-        var content, i, id, placemark, state, title, _i, _len;
+        var content, i, id, placemark, title, _i, _len;
         if (/\/[0-9]+/.test(location.pathname)) {
           modal_opened = true;
           id = parseInt(location.pathname.substr(1));
@@ -342,13 +342,34 @@
             $.cs.simple_modal('<h3 class="cs-center">Подія більше не актуальна</h3>', false, 400);
             return;
           }
-          state = clusterer.getObjectState(placemark);
-          if (state.isClustered) {
-            state.cluster.state.set('activeObject', placemark);
-            state.cluster.events.fire('click');
-          } else {
-            placemark.balloon.open();
-          }
+          (function(c) {
+            c[0] = parseFloat(c[0]);
+            c[1] = parseFloat(c[1]);
+            return map.panTo(c).then(function() {
+              return map.zoomRange.get(c).then(function(zoomRange) {
+                return map.setZoom(zoomRange[1], {
+                  duration: 500
+                }).then(function() {
+                  var state;
+                  state = clusterer.getObjectState(placemark);
+                  if (state.isClustered) {
+                    state.cluster.state.set('activeObject', placemark);
+                    state.cluster.events.once('click', function() {
+                      if (state.isClustered) {
+                        state.cluster.state.set('activeObject', placemark);
+                        return state.cluster.events.fire('click');
+                      } else {
+                        return placemark.balloon.open();
+                      }
+                    });
+                    return state.cluster.events.fire('click');
+                  } else {
+                    return placemark.balloon.open();
+                  }
+                });
+              });
+            });
+          })(placemark.geometry.getCoordinates());
           title = placemark.properties.get('balloonContentHeader');
           content = placemark.properties.get('balloonContentBody');
           $.cs.simple_modal("<h1>" + title + "</h1>\n" + content + "\n<div id=\"disqus_thread\"></div>", true, 800).on('uk.modal.hide', function() {

@@ -141,12 +141,21 @@ $ ->
 					)
 					return
 				map.balloon.close()
-				state		= clusterer.getObjectState(placemark)
-				if state.isClustered
-					state.cluster.state.set('activeObject', placemark)
-					state.cluster.events.fire('click')
-				else
-					placemark.balloon.open()
+				do (c = placemark.geometry.getCoordinates()) ->
+					c[0]	= parseFloat(c[0])
+					c[1]	= parseFloat(c[1])
+					map.panTo(c).then ->
+						map.zoomRange.get(c).then (zoomRange) ->
+							map.setZoom(
+								zoomRange[1],
+								duration	: 500
+							).then ->
+								state	= clusterer.getObjectState(placemark)
+								if state.isClustered
+									state.cluster.state.set('activeObject', placemark)
+									state.cluster.events.fire('click')
+								else
+									placemark.balloon.open()
 				stream_url	= placemark.properties.get('stream_url')
 				$.cs.simple_modal(
 					"""
