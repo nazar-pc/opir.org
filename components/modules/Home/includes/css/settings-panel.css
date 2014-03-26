@@ -9,6 +9,21 @@
   right: 0;
   top: 62px;
   width: 310px; }
+  .cs-home-settings-panel .cs-app-store {
+    display: block;
+    font-size: 20px;
+    line-height: 30px;
+    padding: 5px 20px; }
+    .cs-home-settings-panel .cs-app-store:before {
+      display: inline-block;
+      background: url(../img/app-store.png) no-repeat;
+      content: '';
+      height: 29px;
+      margin-right: 10px;
+      vertical-align: middle;
+      width: 30px; }
+    .cs-home-settings-panel .cs-app-store:hover {
+      background: #2a3036; }
   .cs-home-settings-panel .cs-home-address-search {
     border: none;
     border-radius: 7px;

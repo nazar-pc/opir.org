@@ -94,6 +94,12 @@ $Page->content(
 	h::{'aside.cs-home-events-stream-panel'}().
 	(
 		!in_array(AUTOMAIDAN_COORD_GROUP, $User->get_groups() ?: []) ? h::{'aside.cs-home-settings-panel'}(
+			h::{'a.cs-app-store[target=_blank]'}(
+				'App Store',
+				[
+					'href'	=> 'https://itunes.apple.com/in/app/opir/id828565038'
+				]
+			).
 			h::{'div.cs-hot-line'}(
 				h::h3('Гаряча лінія:').
 				'+38 050 258 17 05<br><small>(медичні питання)</small><br>+38 050 258 17 43<br><small>(координація самооборони)</small><br>+38 093 01 222 11<br><small>(інше)</small>'
