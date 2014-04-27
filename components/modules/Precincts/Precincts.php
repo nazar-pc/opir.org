@@ -137,8 +137,11 @@ class Precincts {
 	 */
 	function del ($id) {
 		if ($this->delete_simple($id)) {
+			foreach ((array)$id as $i) {
+				unset($this->cache->$i);
+			}
 			unset(
-				$this->cache->$id,
+				$id,
 				$this->cache->all
 			);
 			return true;
