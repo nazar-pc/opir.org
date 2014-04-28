@@ -64,8 +64,11 @@ cs.file_upload	= (button, success, error, progress, multi) ->
 	if error
 		uploader.bind(
 			'Error'
-			(uploader, error) ->
-				error(error)
+			(uploader, error_details) ->
+				if error
+					error error_details
+				else
+					alert error_details.message
 		)
 	this.stop		= ->
 		uploader.stop()
@@ -81,6 +84,6 @@ cs.file_upload	= (button, success, error, progress, multi) ->
 			if !input.attr('accept')
 				input.removeAttr('accept')
 			browse_button.click()
-		), 0
+		), 1
 	this
 return
