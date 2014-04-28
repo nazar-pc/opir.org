@@ -156,7 +156,6 @@
           var $this, content, modal;
           $this = $(this);
           if (!$this.data('modal')) {
-            $this.addClass('uk-modal').data('modal', new UI.modal.Modal($this));
             content = $this.children();
             if (!content.length) {
               content = $this.wrapInner('<div />').children();
@@ -171,6 +170,7 @@
             if (content.attr('title')) {
               $('<h3 />').html(content.attr('title')).prependTo(content);
             }
+            $this.addClass('uk-modal').data('modal', new UI.modal.Modal($this));
           }
           modal = $this.data('modal');
           switch (mode) {
@@ -222,7 +222,7 @@
         if (close == null) {
           close = false;
         }
-        style = width ? ' style="width:' + width + 'px; margin-left:-' + (width / 2) + 'px"' : '';
+        style = width ? ' style="width:' + width + 'px;"' : '';
         close = close ? "<a class=\"uk-modal-close uk-close\"></a>" : '';
         return $("<div>\n	<div class=\"uk-form\"" + style + ">\n		" + close + "\n		" + content + "\n	</div>\n</div>").appendTo('body').cs().modal('show').on('uk.modal.hide', function() {
           return $(this).remove();

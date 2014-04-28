@@ -76,8 +76,6 @@ use			cs\Cache\Prefix,
  * @property	string	$ip
  * @property	string	$forwarded_for
  * @property	string	$client_ip
- *
- * @method static \cs\User instance($check = false)
  */
 class User {
 	use	Accessor,
@@ -304,6 +302,11 @@ class User {
 			if ($Config->core['multilingual']) {
 				Language::instance()->change($this->language);
 			}
+		} elseif ($Config->core['multilingual']) {
+			/**
+			 * Automatic detection of current language for guest
+			 */
+			Language::instance()->change('');
 		}
 		/**
 		 * Security check
@@ -360,8 +363,11 @@ class User {
 			case 'ip':
 				return $_SERVER['REMOTE_ADDR'];
 			case 'forwarded_for':
+				if (!isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+					return false;
+				}
 				$tmp	= explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-				return isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? preg_replace('/[^a-f0-9\.:]/i', '', array_pop($tmp)) : false;
+				return preg_replace('/[^a-f0-9\.:]/i', '', array_pop($tmp));
 			case 'client_ip':
 				return isset($_SERVER['HTTP_CLIENT_IP']) ? preg_replace('/[^a-f0-9\.:]/i', '', $_SERVER['HTTP_CLIENT_IP']) : false;
 		}
@@ -527,6 +533,13 @@ class User {
 				if ($user == $this->id) {
 					$L->change($value);
 					$value	= $value ? $L->clanguage : '';
+				}
+			} elseif ($item == 'avatar') {
+				if (
+					$value &&
+					strpos($value, 'http') === false
+				) {
+					$value	= '';
 				}
 			}
 			$this->update_cache[$user]		= true;
@@ -1676,7 +1689,7 @@ class User {
 		$email_hash		= hash('sha224', $email);
 		$login			= strstr($email, '@', true);
 		$login_hash		= hash('sha224', $login);
-		if ($login && in_array($login, _json_decode(file_get_contents(MODULES.'/System/index.json'))['profile']) || $this->get_id($login_hash) !== false) {
+		if ($login && in_array($login, file_get_json(MODULES.'/System/index.json')['profile']) || $this->get_id($login_hash) !== false) {
 			$login		= $email;
 			$login_hash	= $email_hash;
 		}

@@ -92,14 +92,14 @@ if (
 					break;
 				}
 				$rc[3]									= $module;
-				if (!file_exists("$tmp_dir/meta.json") || _json_decode(file_get_contents("$tmp_dir/meta.json"))['category'] != 'modules') {
+				if (!file_exists("$tmp_dir/meta.json") || file_get_json("$tmp_dir/meta.json")['category'] != 'modules') {
 					$Page->warning($L->this_is_not_module_installer_file);
 					unlink($tmp_file);
 					break;
 				}
 				if (isset($Config->components['modules'][$module])) {
-					$current_version		= _json_decode(file_get_contents(MODULES."/$module/meta.json"))['version'];
-					$new_version			= _json_decode(file_get_contents("$tmp_dir/meta.json"))['version'];
+					$current_version		= file_get_json(MODULES."/$module/meta.json")['version'];
+					$new_version			= file_get_json("$tmp_dir/meta.json")['version'];
 					if (!version_compare($current_version, $new_version, '<')) {
 						$Page->warning($L->update_module_impossible_older_version($module));
 						unlink($tmp_file);
@@ -133,13 +133,13 @@ if (
 					unlink($tmp_file);
 					break;
 				}
-				$fs										= _json_decode(file_get_contents("$tmp_dir/fs.json"));
+				$fs										= file_get_json("$tmp_dir/fs.json");
 				$extract								= array_product(
 					array_map(
 						function ($index, $file) use ($tmp_dir, $module) {
 							if (
-								!file_exists(pathinfo(MODULES."/$module/$file", PATHINFO_DIRNAME)) &&
-								!mkdir(pathinfo(MODULES."/$module/$file", PATHINFO_DIRNAME), 0700, true)
+								!file_exists(dirname(MODULES."/$module/$file")) &&
+								!mkdir(dirname(MODULES."/$module/$file"), 0700, true)
 							) {
 								return 0;
 							}
@@ -149,7 +149,7 @@ if (
 						array_keys($fs)
 					)
 				);
-				file_put_contents(MODULES."/$module/fs.json", _json_encode(array_keys($fs)));
+				file_put_json(MODULES."/$module/fs.json", array_keys($fs));
 				unset($tmp_dir);
 				if (!$extract) {
 					$Page->warning($L->module_files_unpacking_error);
@@ -209,7 +209,7 @@ if (
 				break;
 			}
 			if (file_exists(MODULES."/$rc[3]/meta.json")) {
-				$meta	= _json_decode(file_get_contents(MODULES."/$rc[3]/meta.json"));
+				$meta	= file_get_json(MODULES."/$rc[3]/meta.json");
 				if (isset($meta['optional'])) {
 					$Page->success(
 						$L->for_complete_feature_set(
@@ -222,7 +222,7 @@ if (
 			$a->cancel_button_back	= true;
 			if ($Config->core['simple_admin_mode']) {
 				if (file_exists(MODULES."/$rc[3]/meta/db.json")) {
-					$db_json = _json_decode(file_get_contents(MODULES."/$rc[3]/meta/db.json"));
+					$db_json = file_get_json(MODULES."/$rc[3]/meta/db.json");
 					foreach ($db_json as $database) {
 						$a->content(
 							h::{'input[type=hidden]'}([
@@ -234,7 +234,7 @@ if (
 					unset($db_json, $database);
 				}
 				if (file_exists(MODULES."/$rc[3]/meta/storage.json")) {
-					$storage_json = _json_decode(file_get_contents(MODULES."/$rc[3]/meta/storage.json"));
+					$storage_json = file_get_json(MODULES."/$rc[3]/meta/storage.json");
 					foreach ($storage_json as $storage) {
 						$a->content(
 							h::{'input[type=hidden]'}([
@@ -316,15 +316,15 @@ if (
 				unlink($tmp_file);
 				break;
 			}
-			$current_version		= _json_decode(file_get_contents(MODULES.'/System/meta.json'))['version'];
-			$new_version			= _json_decode(file_get_contents("$tmp_dir/version"));
+			$current_version		= file_get_json(MODULES.'/System/meta.json')['version'];
+			$new_version			= file_get_json("$tmp_dir/version");
 			if (!version_compare($current_version, $new_version, '<')) {
 				$Page->warning($L->update_system_impossible_older_version);
 				unlink($tmp_file);
 				break;
 			}
-			$new_meta				= _json_decode(file_get_contents("$tmp_dir/fs.json"))['components/modules/System/meta.json'];
-			$new_meta				= _json_decode(file_get_contents("$tmp_dir/fs/$new_meta"));
+			$new_meta				= file_get_json("$tmp_dir/fs.json")['components/modules/System/meta.json'];
+			$new_meta				= file_get_json("$tmp_dir/fs/$new_meta");
 			if (isset($new_meta['update_from_version']) && version_compare($new_meta['update_from_version'], $current_version, '>')) {
 				$Page->warning(
 					$L->update_system_impossible_from_version_to($current_version, $new_version, $new_meta['update_from_version'])
@@ -402,7 +402,7 @@ if (
 					}
 					unset($i, $db_data);
 					$db_list				= [];
-					$db_json				= _json_decode(file_get_contents(MODULES."/$rc[3]/meta/db.json"));
+					$db_json				= file_get_json(MODULES."/$rc[3]/meta/db.json");
 					foreach ($db_json as $database) {
 						$db_list[] = [
 							$L->{"$rc[3]_db_$database"},
@@ -468,7 +468,7 @@ if (
 					}
 					unset($i, $storage_data);
 					$storage_list			= [];
-					$storage_json			= _json_decode(file_get_contents(MODULES."/$rc[3]/meta/storage.json"));
+					$storage_json			= file_get_json(MODULES."/$rc[3]/meta/storage.json");
 					foreach ($storage_json as $storage) {
 						$storage_list[] = [
 							$L->{"$rc[3]_storage_$storage"},
@@ -578,8 +578,8 @@ foreach ($Config->components['modules'] as $module => &$mdata) {
 				} else {
 					$tag = 'div';
 				}
-				$addition_state .= h::{'div.cs-dialog'}(
-					h::$tag($tag == 'pre' ? prepare_attr_value(file_get_contents($file)) : file_get_contents($file)),
+				$addition_state .= h::{'div.uk-modal.cs-left'}(
+					h::{"$tag.uk-modal-dialog-large"}($tag == 'pre' ? prepare_attr_value(file_get_contents($file)) : file_get_contents($file)),
 					[
 						'id'			=> "{$module}_api",
 						'title'			=> "$module » $L->api"
@@ -607,8 +607,8 @@ foreach ($Config->components['modules'] as $module => &$mdata) {
 			}
 			$uniqid			= uniqid('module_info_');
 			$Page->replace($uniqid, $tag == 'pre' ? prepare_attr_value(file_get_contents($file)) : file_get_contents($file));
-			$addition_state .= h::{'div.cs-dialog'}(
-				h::$tag($uniqid),
+			$addition_state .= h::{'div.uk-modal.cs-left'}(
+				h::{"$tag.uk-modal-dialog-large"}($uniqid),
 				[
 					'id'			=> "{$module}_readme",
 					'title'			=> "$module » $L->information_about_module"
@@ -633,8 +633,8 @@ foreach ($Config->components['modules'] as $module => &$mdata) {
 			} else {
 				$tag = 'div';
 			}
-			$addition_state .= h::{'div.cs-dialog'}(
-				h::$tag(file_get_contents($file)),
+			$addition_state .= h::{'div.uk-modal.cs-left'}(
+				h::{"$tag.uk-modal-dialog-large"}(file_get_contents($file)),
 				[
 					'id'			=> "{$module}_license",
 					'title'			=> "$module » $L->license"
@@ -738,7 +738,7 @@ foreach ($Config->components['modules'] as $module => &$mdata) {
 	}
 	$module_info	= false;
 	if (file_exists(MODULES."/$module/meta.json")) {
-		$module_meta	= _json_decode(file_get_contents(MODULES."/$module/meta.json"));
+		$module_meta	= file_get_json(MODULES."/$module/meta.json");
 		$module_info	= $L->module_info(
 			$module_meta['package'],
 			$module_meta['version'],
@@ -760,9 +760,9 @@ foreach ($Config->components['modules'] as $module => &$mdata) {
 	unset($module_meta);
 	$modules_list[]	= [
 		h::a(
-			$module,
+			$L->$module,
 			[
-				'href'	=> $admin_link ? "admin/$module" : false,
+				'href'			=> $admin_link ? "admin/$module" : false,
 				'data-title'	=> $module_info
 			]
 		),

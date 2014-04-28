@@ -32,7 +32,7 @@
   padding: .5rem; }
   .cs-blocks-items li {
     cursor: move;
-    margin: 0 0.5rem 0.5rem 0.5rem;
+    margin: 0 .5rem .5rem .5rem;
     padding: .5rem; }
     .cs-blocks-items li:nth-child(1) {
       cursor: pointer !important; }
@@ -72,13 +72,6 @@
 .cs-test-result {
   text-align: center;
   text-transform: capitalize; }
-
-#site_info_config_mirrors td:nth-child(1) {
-  width: 40%; }
-#site_info_config_mirrors td:nth-child(2) {
-  width: 30%; }
-#site_info_config_mirrors td:nth-child(3) {
-  width: 30%; }
 
 #cs-debug code {
   display: block; }
@@ -141,11 +134,7 @@ button, input, select, textarea {
   width: 100%; }
 
 .cs-button-compact {
-  padding: 0.2em 0.3em !important; }
-
-.cs-dialog {
-  display: none;
-  text-align: left; }
+  padding: .2em .3em !important; }
 
 .cs-left-odd > thead > tr > :nth-child(odd),
 .cs-left-even > thead > tr > :nth-child(even),
@@ -341,11 +330,6 @@ a {
 .uk-table table:not(.uk-table) th,
 .uk-table table:not(.uk-table) td {
   border-bottom: none; }
-
-.uk-modal-dialog {
-  margin-left: -40%;
-  top: 5%;
-  width: 80%; }
 
 .uk-tooltip {
   max-width: 30%;

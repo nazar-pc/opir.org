@@ -151,9 +151,6 @@ do ($=jQuery) ->
 			this.each ->
 				$this	= $(@)
 				if !$this.data('modal')
-					$this
-						.addClass('uk-modal')
-						.data('modal', new UI.modal.Modal($this))
 					content	= $this.children()
 					if !content.length
 						content	= $this
@@ -172,6 +169,9 @@ do ($=jQuery) ->
 						$('<h3 />')
 							.html(content.attr('title'))
 							.prependTo(content)
+					$this
+						.addClass('uk-modal')
+						.data('modal', new UI.modal.Modal($this))
 				modal	= $this.data('modal')
 				switch mode
 					when 'show' then modal.show()
@@ -202,7 +202,7 @@ do ($=jQuery) ->
 		 * @return jQuery Root modal element, it is possible to use .cs().modal() on it and listen for events
 		###
 		simple_modal	: (content, close = false, width) ->
-			style	= if width then ' style="width:' + width + 'px; margin-left:-' + (width / 2) + 'px"' else ''
+			style	= if width then ' style="width:' + width + 'px;"' else ''
 			close	= if close then """<a class="uk-modal-close uk-close"></a>""" else ''
 			$("""
 				<div>

@@ -100,7 +100,7 @@ if (isset($_POST['update_modules_list'])) {
 			$module_data['active'] = 0;
 			if (isset($_POST['db']) && is_array($_POST['db']) && file_exists(MODULES."/$module/meta/db.json")) {
 				$module_data['db'] = $_POST['db'];
-				$db_json = _json_decode(file_get_contents(MODULES."/$module/meta/db.json"));
+				$db_json = file_get_json(MODULES."/$module/meta/db.json");
 				time_limit_pause();
 				foreach ($db_json as $database) {
 					if ($module_data['db'][$database] == 0) {
@@ -147,7 +147,7 @@ if (isset($_POST['update_modules_list'])) {
 			);
 			$Config->save();
 			if (isset($module_data['db']) && file_exists(MODULES."/$module/meta/db.json")) {
-				$db_json = _json_decode(file_get_contents(MODULES."/$module/meta/db.json"));
+				$db_json = file_get_json(MODULES."/$module/meta/db.json");
 				time_limit_pause();
 				foreach ($db_json as $database) {
 					if ($module_data['db'][$database] == 0) {
@@ -206,13 +206,13 @@ if (isset($_POST['update_modules_list'])) {
 			 * Extracting new versions of files
 			 */
 			$tmp_dir	= 'phar://'.TEMP.'/'.$User->get_session().'_module_update.phar.php';
-			$fs			= _json_decode(file_get_contents("$tmp_dir/fs.json"));
+			$fs			= file_get_json("$tmp_dir/fs.json");
 			$extract	= array_product(
 				array_map(
 					function ($index, $file) use ($tmp_dir, $module_dir) {
 						if (
-							!file_exists(pathinfo("$module_dir/$file", PATHINFO_DIRNAME)) &&
-							!mkdir(pathinfo("$module_dir/$file", PATHINFO_DIRNAME), 0700, true)
+							!file_exists(dirname("$module_dir/$file")) &&
+							!mkdir(dirname("$module_dir/$file"), 0700, true)
 						) {
 							return 0;
 						}
@@ -255,15 +255,15 @@ if (isset($_POST['update_modules_list'])) {
 			}
 			unlink($tmp_file);
 			unset($api_request, $tmp_file);
-			file_put_contents("$module_dir/fs.json", _json_encode($fs = array_keys($fs)));
+			file_put_json("$module_dir/fs.json", $fs = array_keys($fs));
 			/**
 			 * Removing of old unnecessary files and directories
 			 */
-			foreach (array_diff(_json_decode(file_get_contents("$module_dir/fs_old.json")), $fs) as $file) {
+			foreach (array_diff(file_get_json("$module_dir/fs_old.json"), $fs) as $file) {
 				$file	= "$module_dir/$file";
 				if (file_exists($file) && is_writable($file)) {
 					unlink($file);
-					if (!get_files_list($dir = pathinfo($file, PATHINFO_DIRNAME))) {
+					if (!get_files_list($dir = dirname($file))) {
 						rmdir($dir);
 					}
 				}
@@ -273,8 +273,8 @@ if (isset($_POST['update_modules_list'])) {
 			 * Updating of module
 			 */
 			if ($active && file_exists("$module_dir/versions.json")) {
-				$old_version	= _json_decode(file_get_contents("$module_dir/meta_old.json"))['version'];
-				foreach (_json_decode(file_get_contents("$module_dir/versions.json")) as $version) {
+				$old_version	= file_get_json("$module_dir/meta_old.json")['version'];
+				foreach (file_get_json("$module_dir/versions.json") as $version) {
 					if (version_compare($old_version, $version, '<')) {
 						/**
 						 * PHP update script
@@ -284,7 +284,7 @@ if (isset($_POST['update_modules_list'])) {
 						 * Database update
 						 */
 						if (isset($module_data['db']) && file_exists("$module_dir/meta/db.json")) {
-							$db_json = _json_decode(file_get_contents("$module_dir/meta/db.json"));
+							$db_json = file_get_json("$module_dir/meta/db.json");
 							time_limit_pause();
 							foreach ($db_json as $database) {
 								if ($module_data['db'][$database] == 0) {
@@ -344,14 +344,14 @@ if (isset($_POST['update_modules_list'])) {
 			 * Extracting new versions of files
 			 */
 			$tmp_dir	= 'phar://'.TEMP.'/'.$User->get_session().'_update_system.phar.php';
-			$fs			= _json_decode(file_get_contents("$tmp_dir/fs.json"))['core/fs.json'];
-			$fs			= _json_decode(file_get_contents("$tmp_dir/fs/$fs"));
+			$fs			= file_get_json("$tmp_dir/fs.json")['core/fs.json'];
+			$fs			= file_get_json("$tmp_dir/fs/$fs");
 			$extract	= array_product(
 				array_map(
 					function ($index, $file) use ($tmp_dir, $module_dir) {
 						if (
-							!file_exists(pathinfo(DIR."/$file", PATHINFO_DIRNAME)) &&
-							!mkdir(pathinfo(DIR."/$file", PATHINFO_DIRNAME), 0700, true)
+							!file_exists(dirname(DIR."/$file")) &&
+							!mkdir(dirname(DIR."/$file"), 0700, true)
 						) {
 							return 0;
 						}
@@ -394,15 +394,15 @@ if (isset($_POST['update_modules_list'])) {
 			}
 			unlink($tmp_file);
 			unset($api_request, $tmp_file);
-			file_put_contents(DIR.'/core/fs.json', _json_encode($fs = array_keys($fs)));
+			file_put_json(DIR.'/core/fs.json', $fs = array_keys($fs));
 			/**
 			 * Removing of old unnecessary files and directories
 			 */
-			foreach (array_diff(_json_decode(file_get_contents(DIR.'/core/fs_old.json')), $fs) as $file) {
+			foreach (array_diff(file_get_json(DIR.'/core/fs_old.json'), $fs) as $file) {
 				$file	= DIR."/$file";
 				if (file_exists($file) && is_writable($file)) {
 					unlink($file);
-					if (!get_files_list($dir = pathinfo($file, PATHINFO_DIRNAME))) {
+					if (!get_files_list($dir = dirname($file))) {
 						rmdir($dir);
 					}
 				}
@@ -412,8 +412,8 @@ if (isset($_POST['update_modules_list'])) {
 			 * Updating of System
 			 */
 			if (file_exists("$module_dir/versions.json")) {
-				$old_version	= _json_decode(file_get_contents("$module_dir/meta_old.json"))['version'];
-				foreach (_json_decode(file_get_contents("$module_dir/versions.json")) as $version) {
+				$old_version	= file_get_json("$module_dir/meta_old.json")['version'];
+				foreach (file_get_json("$module_dir/versions.json") as $version) {
 					if (version_compare($old_version, $version, '<')) {
 						/**
 						 * PHP update script
@@ -423,7 +423,7 @@ if (isset($_POST['update_modules_list'])) {
 						 * Database update
 						 */
 						if (isset($module_data['db']) && file_exists("$module_dir/meta/db.json")) {
-							$db_json = _json_decode(file_get_contents("$module_dir/meta/db.json"));
+							$db_json = file_get_json("$module_dir/meta/db.json");
 							time_limit_pause();
 							foreach ($db_json as $database) {
 								if ($module_data['db'][$database] == 0) {

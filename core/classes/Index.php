@@ -27,8 +27,6 @@ use			h;
  *  System/Index/preload
  *
  *  System/Index/postload
- *
- * @method static \cs\Index instance($check = false)
  */
 class Index {
 	use	Singleton;
@@ -191,7 +189,7 @@ class Index {
 			$structure_file	= 'index.json';
 		}
 		if (file_exists(MFOLDER."/$structure_file")) {
-			$this->structure	= _json_decode(file_get_contents(MFOLDER."/$structure_file"));
+			$this->structure	= file_get_json(MFOLDER."/$structure_file");
 			if (is_array($this->structure)) {
 				foreach ($this->structure as $item => $value) {
 					if (!is_array($value)) {
@@ -216,7 +214,7 @@ class Index {
 				}
 				unset($item, $value, $subpart);
 			}
-		} elseif (API && !file_exists(MFOLDER.'/index.php')) {
+		} elseif (API && !file_exists(MFOLDER.'/index.php') && !file_exists(MFOLDER."/index.$this->request_method.php")) {
 			error_code(404);
 			return;
 		}
@@ -530,6 +528,7 @@ class Index {
 			) {
 				continue;
 			}
+			$block['title']	= $Text->process($Config->module('System')->db('texts'), $block['title'], true, true);
 			if (Trigger::instance()->run(
 				'System/Index/block_render',
 				[
@@ -559,7 +558,7 @@ class Index {
 					],
 					[
 						$block['index'],
-						$Text->process($Config->module('System')->db('texts'), $block['title'], true, true),
+						$block['title'],
 						$content
 					],
 					ob_wrapper(function () use ($template) {

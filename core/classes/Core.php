@@ -10,8 +10,6 @@ use			h;
 /**
  * Core class.
  * Provides loading of base system configuration, API requests sending
- *
- * @method static \cs\Core instance($check = false)
  */
 class Core {
 	use Singleton;
@@ -35,7 +33,7 @@ class Core {
 			);
 			exit;
 		}
-		$this->config	= _json_decode_nocomments(file_get_contents(CONFIG.'/main.json'));
+		$this->config	= file_get_json_nocomments(CONFIG.'/main.json');
 		_include_once(CONFIG.'/main.php', false);
 		defined('DEBUG') || define('DEBUG', false);
 		define('DOMAIN', $this->config['domain']);
@@ -65,8 +63,19 @@ class Core {
 			@mkdir(PCACHE, 0755);
 			file_put_contents(
 				PCACHE.'/.htaccess',
-				"Allow From All\r\nAddEncoding gzip .js\n".
-				"AddEncoding gzip .css"
+				'<FilesMatch "\.(css|js)$">
+	Allow From All
+</FilesMatch>
+<ifModule mod_expires.c>
+	ExpiresActive On
+	ExpiresDefault "access plus 1 month"
+</ifModule>
+<ifModule mod_headers.c>
+	Header set Cache-Control "max-age=2592000, public"
+</ifModule>
+AddEncoding gzip .js
+AddEncoding gzip .css
+'
 			);
 		}
 		if (!is_dir(LOGS)) {

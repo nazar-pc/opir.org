@@ -23,14 +23,14 @@ if (User::instance()->system()) {
 		$Page->content(1);
 	}
 	copy(DIR.'/core/fs.json',		DIR.'/core/fs_old.json');
-	$fs			= _json_decode(file_get_contents("$tmp_dir/fs.json"))['core/fs.json'];
-	$fs			= _json_decode(file_get_contents("$tmp_dir/fs/$fs"));
+	$fs			= file_get_json("$tmp_dir/fs.json")['core/fs.json'];
+	$fs			= file_get_json("$tmp_dir/fs/$fs");
 	$extract	= array_product(
 		array_map(
 			function ($index, $file) use ($tmp_dir, $module_dir) {
 				if (
-					!file_exists(pathinfo(DIR."/$file", PATHINFO_DIRNAME)) &&
-					!mkdir(pathinfo(DIR."/$file", PATHINFO_DIRNAME), 0700, true)
+					!file_exists(dirname(DIR."/$file")) &&
+					!mkdir(dirname(DIR."/$file"), 0700, true)
 				) {
 					return 0;
 				}
@@ -40,15 +40,15 @@ if (User::instance()->system()) {
 			array_keys($fs)
 		)
 	);
-	file_put_contents(DIR.'/core/fs.json', _json_encode($fs = array_keys($fs)));
+	file_put_json(DIR.'/core/fs.json', $fs = array_keys($fs));
 	/**
 	 * Removing of old unnecessary files and directories
 	 */
-	foreach (array_diff(_json_decode(file_get_contents(DIR.'/core/fs_old.json')), $fs) as $file) {
+	foreach (array_diff(file_get_json(DIR.'/core/fs_old.json'), $fs) as $file) {
 		$file	= DIR."/$file";
 		if (file_exists($file) && is_writable($file)) {
 			unlink($file);
-			if (!get_files_list($dir = pathinfo($file, PATHINFO_DIRNAME))) {
+			if (!get_files_list($dir = dirname($file))) {
 				rmdir($dir);
 			}
 		}
