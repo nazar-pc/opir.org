@@ -1,0 +1,13 @@
+{
+	"Streams"	: [
+		"add-stream-panel.css",
+		"comments.css",
+		"social-share.css",
+		"stream-filter.css",
+		"stream-list.css",
+		"add-stream-panel.js",
+		"map-streams.js",
+		"social-sharing.js",
+		"stream-filter.js"
+	]
+}

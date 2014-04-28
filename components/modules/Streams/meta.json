@@ -1,0 +1,14 @@
+{
+	"package"		: "Streams",
+	"category"		: "modules",
+	"version"		: "1.0.0",
+	"description"	: "Streams page functionality for opir.org",
+	"author"		: "Nazar Mokrynskyi",
+	"website"		: "cleverstyle.org/cms",
+	"license"		: "MIT License",
+	"db_support"	: [
+		"MySQLi"
+	],
+	"provide"		: "opir.org_streams",
+	"require"		: "opir.org_home"
+}

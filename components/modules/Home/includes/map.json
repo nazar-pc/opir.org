@@ -1,0 +1,23 @@
+{
+	"Home"	: [
+		"add-event-panel.css",
+		"comments.css",
+		"event-stream-panel.css",
+		"settings-panel.css",
+		"settings-coordinator.css",
+		"social-share.css",
+		"style.css",
+		"add-event-panel.js",
+		"address-search.js",
+		"coordinator.js",
+		"disqus.js",
+		"donate.js",
+		"driver.js",
+		"events-stream-panel.js",
+		"general.js",
+		"map-home.js",
+		"settings-panel.js",
+		"social-sharing.js",
+		"streamer.js"
+	]
+}
