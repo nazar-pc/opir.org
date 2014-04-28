@@ -18,14 +18,15 @@ use
  * @method static \cs\modules\Precincts\Precincts instance($check = false)
  */
 class Precincts {
-	use    CRUD,
+	use
+		CRUD,
 		Singleton;
 
 	/**
 	 * @var Prefix
 	 */
 	protected $cache;
-	protected $table = '[prefix]precincts';
+	protected $table      = '[prefix]precincts';
 	protected $data_model = [
 		'id'         => 'int',
 		'number'     => 'int',
