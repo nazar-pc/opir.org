@@ -16,9 +16,10 @@ body > header button,
 body > header button:hover,
 body > header button:focus {
   background: #00579d !important;
-  color: white !important;
+  color: #fff !important;
   display: block;
   border-radius: 0 !important;
+  font-size: inherit !important;
   height: 62px;
   padding: 0 25px;
   position: absolute;
