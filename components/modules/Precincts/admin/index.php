@@ -50,8 +50,8 @@ if (isset($_POST['update'])) {
 			preg_match_all('#<tr><td>Виборча дільниця №:</td><td><b>(.*)</b></td></tr>#Uims', $district_precincts, $numbers);
 			preg_match_all('#<tr><td>Адреса:</td><td><b>(.*)</b></td></tr>#Uims', $district_precincts, $addresses);
 			preg_match_all('#<tr><td>Округ №:</td><td><b>(.*)</b></td></tr>#Uims', $district_precincts, $districts);
-			preg_match_all('#<coordinates>(.*),#Uims', $district_precincts, $latitudes);
-			preg_match_all('#<coordinates>.*,(.*)</coordinates>#Uims', $district_precincts, $longitudes);
+			preg_match_all('#<coordinates>(.*),#Uims', $district_precincts, $longitudes);
+			preg_match_all('#<coordinates>.*,(.*)</coordinates>#Uims', $district_precincts, $latitudes);
 			/**
 			 * Make array of arrays with precincts data
 			 */

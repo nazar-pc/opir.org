@@ -22,7 +22,7 @@ if (isset($Index->route_ids[0])) {
 	foreach ($precincts as &$precinct) {
 		$precinct = [
 			'id'         => $precinct['id'],
-			'nuber'      => $precinct['number'],
+			'number'     => $precinct['number'],
 			'lat'        => $precinct['lat'],
 			'lng'        => $precinct['lng'],
 			'violations' => $precinct['violations']

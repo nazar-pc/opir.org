@@ -48,10 +48,10 @@ body {
 
 #map {
 	bottom   : 0;
-	left     : 310px;
+	left     : 0;
 	position : absolute;
-	right    : 310px;
-	top      : 62px;
+	right    : 0;
+	top      : 75px;
 
 	.ymaps-map {
 		width : inherit !important;
