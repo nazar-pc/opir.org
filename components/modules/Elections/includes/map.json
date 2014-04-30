@@ -1,6 +1,8 @@
 {
 	"Elections"	: [
 		"style.css",
+		"elections-info.js",
+		"help-initiative.js",
 		"map.js"
 	]
 }
