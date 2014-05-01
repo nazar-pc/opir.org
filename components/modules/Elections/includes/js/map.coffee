@@ -19,7 +19,7 @@ $ ->
 				).then (result) ->
 					user_location	= result.geoObjects.get(0).geometry.getCoordinates()
 					map.panTo(user_location)
-					cs.setcookie('location', JSON.stringify(user_location))
+					cs.setcookie('coordinates', JSON.stringify(user_location))
 	begin = ->
 		window.map	= new ymaps.Map(
 			'map'
@@ -69,7 +69,24 @@ $ ->
 					map.geoObjects.add(precincts_clusterer)
 
 			)
-		icons_shape			= new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([# TODO edit shape
+		districts_icons_shape	= new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([
+			[
+				[0-15, 32-36],
+				[11-15, 11-36],
+				[31-15, 0-36],
+				[47-15, 0-36],
+				[68-15, 11-36],
+				[79-15, 32-36],
+				[78-15, 49-36],
+				[67-15, 67-36],
+				[52-15, 77-36],
+				[31-15, 78-36],
+				[11-15, 67-36],
+				[0-15, 48-36],
+				[0-15, 32-36]
+			]
+		]))
+		precincts_icons_shape	= new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([
 			[
 				[15-15, 37-36],
 				[1-15, 22-36],
@@ -97,17 +114,18 @@ $ ->
 							{
 								hasBalloon	: false
 								hasHint		: false
+								iconContent	: """<div class="cs-elections-map-district-placemark-content">"""+cs.Language.district_map_content(district.district)+"""</div>"""
 							}
 							{
-								iconLayout			: 'default#image'
-								iconImageHref		: '/components/modules/Elections/includes/img/map-precincts.png' # TODO special district icon here
-								iconImageSize		: [38, 37]
-								iconImageOffset		: [-15, -36]
+								iconLayout			: 'default#imageWithContent'
+								iconImageHref		: '/components/modules/Elections/includes/img/map-districts.png'
+								iconImageSize		: [81, 82]
+								iconImageOffset		: [-40, -41]
 								iconImageClipRect	: [
-									[38 * district.violations, 0],
-									[38 * (district.violations + 1), 0]
+									[81 * district.violations, 0],
+									[81 * (district.violations + 1), 0]
 								]
-								iconImageShape		: icons_shape
+								iconImageShape		: districts_icons_shape
 							}
 						)
 					)
@@ -138,7 +156,7 @@ $ ->
 									[38 * precinct.violations, 0],
 									[38 * (precinct.violations + 1), 0]
 								]
-								iconImageShape		: icons_shape
+								iconImageShape		: precincts_icons_shape
 							}
 						)
 					)

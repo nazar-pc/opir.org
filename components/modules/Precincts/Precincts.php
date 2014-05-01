@@ -156,7 +156,8 @@ class Precincts {
 					`district`,
 					COUNT(`id`) AS `count`,
 					AVG(`lat`) AS `lat`,
-					AVG(`lng`) AS `lng`
+					AVG(`lng`) AS `lng`,
+					SUM(`violations`) AS `violations`
 				FROM `$this->table`
 				GROUP BY `district`"
 			);

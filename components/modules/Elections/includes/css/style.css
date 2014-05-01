@@ -5,143 +5,60 @@
  * @copyright	Copyright (c) 2014, Nazar Mokrynskyi
  * @license		MIT License, see license.txt
  */
-body > header {
-  	/*.cs-elections-cameras,
-  	.cs-elections-home,
-  	button,
-  	button:hover,
-  	button:focus {
-  		background    : #00579d !important;
-  		color         : #fff !important;
-  		display       : block;
-  		border-radius : 0 !important;
-  		font-size     : inherit !important;
-  		height        : 62px;
-  		padding       : 0 25px;
-  		position      : absolute;
-  		text-align    : center;
-  		text-shadow   : none !important;
-  		width         : 310px;
-  	}
-  
-  	.cs-elections-cameras,
-  	.cs-elections-home {
-  		background : #0067b6 !important;
-  		padding    : 10px;
-  
-  		&:hover {
-  			background : #005ea6 !important;
-  		}
-  	}
-  
-  	button:hover {
-  		background : #004f8c !important;
-  	}
-  
-  	.cs-elections-add,
-  	.cs-stream-add {
-  		left : 0;
-  
-  		& + .cs-elections-cameras,
-  		& + .cs-elections-home {
-  			left  : 310px;
-  			width : auto;
-  		}
-  	}
-  
-  	.cs-elections-sign-in,
-  	.cs-elections-sign-out {
-  		padding : 10px !important;
-  		right   : 0;
-  		width   : auto !important;
-  	}
-  
-  	.cs-elections-help-initiative,
-  	.cs-elections-help-initiative:focus {
-  		background : #e5a324 !important;
-  		right      : 71px;
-  		width      : 239px !important;
-  
-  		&:hover {
-  			background : #d69722 !important;
-  		}
-  	}
-  
-  	.cs-elections-add:before,
-  	.cs-stream-add:before,
-  	.cs-elections-cameras:before,
-  	.cs-elections-home:before,
-  	.cs-elections-sign-in:before,
-  	.cs-elections-sign-out:before {
-  		background     : url(../img/add.png) no-repeat;
-  		content        : '';
-  		display        : inline-block;
-  		height         : 44px;
-  		vertical-align : middle;
-  		width          : 44px;
-  	}
-  
-  	.cs-elections-cameras:before {
-  		background-image : url(../img/cameras.png);
-  	}
-  
-  	.cs-elections-home:before {
-  		background-image : url(../img/home.png);
-  	}
-  
-  	.cs-elections-sign-in:before {
-  		background-image : url(../img/sign-in.png);
-  	}
-  
-  	.cs-elections-sign-out:before {
-  		background-image : url(../img/sign-out.png);
-  	}*/ }
-  body > header .cs-elections-logo {
-    position: absolute;
-    text-align: center;
-    top: 10px;
-    width: 100%; }
-  body > header .cs-elections-info {
-    background: #00579d !important;
-    color: #fff !important;
-    border: 0;
-    border-radius: 0 !important;
-    font-size: inherit !important;
-    height: 75px;
-    padding: 19px;
-    position: absolute;
-    text-shadow: none;
-    top: 0;
-    text-align: center;
-    right: 240px;
-    width: 80px; }
-    body > header .cs-elections-info:hover {
-      background: #004f8c !important; }
-    body > header .cs-elections-info:before {
-      background: url(../img/header-buttons.png) -39px 0 no-repeat;
-      content: '';
-      display: inline-block;
-      height: 38px;
-      width: 39px; }
-  body > header .cs-elections-help-initiative,
-  body > header .cs-elections-help-initiative:focus {
-    background: #00579d !important;
-    color: #fff !important;
-    border: 0;
-    border-radius: 0 !important;
-    font-size: inherit !important;
-    height: 75px;
-    padding: 19px;
-    position: absolute;
-    text-shadow: none;
-    top: 0;
-    text-align: center;
-    background: #ff5b52 !important;
-    right: 0;
-    width: 240px !important; }
-    body > header .cs-elections-help-initiative:hover,
-    body > header .cs-elections-help-initiative:focus:hover {
-      background: #004f8c !important; }
-    body > header .cs-elections-help-initiative:hover,
-    body > header .cs-elections-help-initiative:focus:hover {
-      background: #e6534c !important; }
+body > header .cs-elections-logo {
+  position: absolute;
+  text-align: center;
+  top: 10px;
+  width: 100%; }
+body > header .cs-elections-info {
+  background: #00579d !important;
+  color: #fff !important;
+  border: 0;
+  border-radius: 0 !important;
+  font-size: inherit !important;
+  height: 75px;
+  padding: 19px;
+  position: absolute;
+  text-shadow: none;
+  top: 0;
+  text-align: center;
+  right: 240px;
+  width: 80px; }
+  body > header .cs-elections-info:hover {
+    background: #004f8c !important; }
+  body > header .cs-elections-info:before {
+    background: url(../img/header-buttons.png) -39px 0 no-repeat;
+    content: '';
+    display: inline-block;
+    height: 38px;
+    width: 39px; }
+body > header .cs-elections-help-initiative,
+body > header .cs-elections-help-initiative:focus {
+  background: #00579d !important;
+  color: #fff !important;
+  border: 0;
+  border-radius: 0 !important;
+  font-size: inherit !important;
+  height: 75px;
+  padding: 19px;
+  position: absolute;
+  text-shadow: none;
+  top: 0;
+  text-align: center;
+  background: #ff5b52 !important;
+  right: 0;
+  width: 240px !important; }
+  body > header .cs-elections-help-initiative:hover,
+  body > header .cs-elections-help-initiative:focus:hover {
+    background: #004f8c !important; }
+  body > header .cs-elections-help-initiative:hover,
+  body > header .cs-elections-help-initiative:focus:hover {
+    background: #e6534c !important; }
+
+.cs-elections-map-district-placemark-content {
+  color: #0072c7;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 23px 0;
+  text-align: center;
+  width: 80px; }

@@ -12,7 +12,8 @@ use
 	cs\Language,
 	cs\Page,
 	cs\User,
-	cs\modules\Info\Info;
+	cs\modules\Info\Info,
+	cs\modules\Help\Help;
 
 $L					= Language::instance();
 $Page				= Page::instance();
@@ -36,5 +37,8 @@ $Page->Header	=
 $Page->content(
 	h::{'section.cs-elections-info-modal[style=display:none] article'}(
 		Info::get()
+	).
+	h::{'section.cs-elections-help-initiative-modal[style=display:none] article'}(
+		Help::get()
 	)
 );

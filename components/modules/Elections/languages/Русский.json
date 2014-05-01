@@ -1,3 +1,4 @@
 {
-	"help_initiative"		: "Помочь инициативе"
+	"help_initiative"		: "Помочь инициативе",
+	"district_map_content"	: "Округ<br>№%s"
 }

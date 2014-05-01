@@ -1,3 +1,4 @@
 {
-	"help_initiative"		: "Help initiative"
+	"help_initiative"		: "Help initiative",
+	"district_map_content"	: "District<br>#%s"
 }
