@@ -69,7 +69,7 @@ $ ->
 				else
 					map.geoObjects.remove(districts_clusterer)
 					map.geoObjects.add(precincts_clusterer)
-
+					setTimeout(add_precincts_on_map, 0)
 			)
 		districts_icons_shape	= new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([
 			[
@@ -107,8 +107,10 @@ $ ->
 		filter_precincts	= (precincts) ->
 			bounds	= map.getBounds()
 			precincts.filter (precinct) ->
-				parseFloat(precinct.lat) > bounds[0][0] && parseFloat(precinct.lat) < bounds[1][0] &&
-				parseFloat(precinct.lng) > bounds[0][1] && parseFloat(precinct.lng) < bounds[1][1]
+				lat	= parseFloat(precinct.lat)
+				lng	= parseFloat(precinct.lng)
+				lat > bounds[0][0] && lat < bounds[1][0] &&
+				lng > bounds[0][1] && lng < bounds[1][1]
 		add_precincts_on_map	= ->
 			placemarks	= []
 			for precinct, precinct of filter_precincts(precincts)
@@ -172,6 +174,7 @@ $ ->
 			data		: null
 			success		: (precincts_loaded) ->
 				precincts	= precincts_loaded
+				window.p = precincts_loaded
 				add_precincts_on_map()
 			error		: ->
 				console.error('Precincts loading error')

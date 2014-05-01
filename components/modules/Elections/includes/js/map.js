@@ -75,7 +75,8 @@
             return map.geoObjects.add(districts_clusterer);
           } else {
             map.geoObjects.remove(districts_clusterer);
-            return map.geoObjects.add(precincts_clusterer);
+            map.geoObjects.add(precincts_clusterer);
+            return setTimeout(add_precincts_on_map, 0);
           }
         });
       })();
@@ -86,7 +87,10 @@
         var bounds;
         bounds = map.getBounds();
         return precincts.filter(function(precinct) {
-          return parseFloat(precinct.lat) > bounds[0][0] && parseFloat(precinct.lat) < bounds[1][0] && parseFloat(precinct.lng) > bounds[0][1] && parseFloat(precinct.lng) < bounds[1][1];
+          var lat, lng;
+          lat = parseFloat(precinct.lat);
+          lng = parseFloat(precinct.lng);
+          return lat > bounds[0][0] && lat < bounds[1][0] && lng > bounds[0][1] && lng < bounds[1][1];
         });
       };
       add_precincts_on_map = function() {
@@ -144,6 +148,7 @@
         data: null,
         success: function(precincts_loaded) {
           precincts = precincts_loaded;
+          window.p = precincts_loaded;
           return add_precincts_on_map();
         },
         error: function() {
