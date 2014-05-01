@@ -9,10 +9,10 @@
 namespace	cs\modules\Home;
 use
 	h,
-	cs\Index,
 	cs\Language,
 	cs\Page,
-	cs\User;
+	cs\User,
+	cs\modules\Info\Info;
 
 $L					= Language::instance();
 $Page				= Page::instance();
@@ -33,3 +33,8 @@ $Page->Header	=
 	).
 	h::{'button.cs-elections-info'}().
 	h::{'button.cs-elections-help-initiative'}($L->help_initiative);
+$Page->content(
+	h::{'section.cs-elections-info-modal[style=display:none] article'}(
+		Info::get()
+	)
+);

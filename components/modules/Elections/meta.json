@@ -12,6 +12,7 @@
 	"provide"		: "opir.org_elections",
 	"require"		: [
 		"opir.org_precincts",
-		"opir.org_districts"
+		"opir.org_districts",
+		"opir.org_info"
 	]
 }
