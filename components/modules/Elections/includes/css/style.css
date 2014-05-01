@@ -62,3 +62,5 @@ body > header .cs-elections-help-initiative:focus {
   padding: 23px 0;
   text-align: center;
   width: 80px; }
+  .cs-elections-map-district-placemark-content.violations {
+    color: #d6433b; }

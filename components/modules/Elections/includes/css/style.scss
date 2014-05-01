@@ -66,4 +66,8 @@ body > header {
 	padding     : 23px 0;
 	text-align  : center;
 	width       : 80px;
+
+	&.violations {
+		color : #d6433b;
+	}
 }
