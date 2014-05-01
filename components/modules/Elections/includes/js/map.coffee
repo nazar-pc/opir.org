@@ -59,6 +59,8 @@ $ ->
 			map.events.add('boundschange', (e)->
 				# If previous and current zoom both smaller or greater than 14 - there is no need to change placemarks detalization
 				if (previous_zoom < 14) == (e.get('newZoom') < 14)
+					if previous_zoom > 14
+						setTimeout(add_precincts_on_map, 0)
 					return
 				previous_zoom	= e.get('newZoom')
 				if previous_zoom < 14
@@ -101,6 +103,37 @@ $ ->
 				[15-15, 37-36]
 			]
 		]))
+		precincts			= []
+		filter_precincts	= (precincts) ->
+			bounds	= map.getBounds()
+			precincts.filter (precinct) ->
+				parseFloat(precinct.lat) > bounds[0][0] && parseFloat(precinct.lat) < bounds[1][0] &&
+				parseFloat(precinct.lng) > bounds[0][1] && parseFloat(precinct.lng) < bounds[1][1]
+		add_precincts_on_map	= ->
+			placemarks	= []
+			for precinct, precinct of filter_precincts(precincts)
+				placemarks.push(
+					new ymaps.Placemark(
+						[precinct.lat, precinct.lng]
+						{
+							hintContent				: "Дільниця №#{precinct.number}"
+							balloonContentHeader	: "Дільниця №#{precinct.number}"
+						}
+						{
+							iconLayout			: 'default#image'
+							iconImageHref		: '/components/modules/Elections/includes/img/map-precincts.png'
+							iconImageSize		: [38, 37]
+							iconImageOffset		: [-15, -36]
+							iconImageClipRect	: [
+								[38 * precinct.violations, 0],
+								[38 * (precinct.violations + 1), 0]
+							]
+							iconImageShape		: precincts_icons_shape
+						}
+					)
+				)
+			precincts_clusterer.removeAll()
+			precincts_clusterer.add(placemarks)
 		$.ajax(
 			url			: 'api/Districts'
 			type		: 'get'
@@ -137,30 +170,9 @@ $ ->
 			url			: 'api/Precincts'
 			type		: 'get'
 			data		: null
-			success		: (precincts) ->
-				placemarks	= []
-				for precinct, precinct of precincts
-					placemarks.push(
-						new ymaps.Placemark(
-							[precinct.lat, precinct.lng]
-							{
-								hintContent				: "Дільниця №#{precinct.number}"
-								balloonContentHeader	: "Дільниця №#{precinct.number}"
-							}
-							{
-								iconLayout			: 'default#image'
-								iconImageHref		: '/components/modules/Elections/includes/img/map-precincts.png'
-								iconImageSize		: [38, 37]
-								iconImageOffset		: [-15, -36]
-								iconImageClipRect	: [
-									[38 * precinct.violations, 0],
-									[38 * (precinct.violations + 1), 0]
-								]
-								iconImageShape		: precincts_icons_shape
-							}
-						)
-					)
-				precincts_clusterer.add(placemarks)
+			success		: (precincts_loaded) ->
+				precincts	= precincts_loaded
+				add_precincts_on_map()
 			error		: ->
 				console.error('Precincts loading error')
 		)

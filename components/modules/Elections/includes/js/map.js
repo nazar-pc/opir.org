@@ -30,7 +30,7 @@
       }
     });
     return begin = function() {
-      var cluster_icons, districts_clusterer, districts_icons_shape, precincts_clusterer, precincts_icons_shape;
+      var add_precincts_on_map, cluster_icons, districts_clusterer, districts_icons_shape, filter_precincts, precincts, precincts_clusterer, precincts_icons_shape;
       window.map = new ymaps.Map('map', {
         center: user_location,
         zoom: 15,
@@ -64,6 +64,9 @@
         previous_zoom = 15;
         return map.events.add('boundschange', function(e) {
           if ((previous_zoom < 14) === (e.get('newZoom') < 14)) {
+            if (previous_zoom > 14) {
+              setTimeout(add_precincts_on_map, 0);
+            }
             return;
           }
           previous_zoom = e.get('newZoom');
@@ -78,6 +81,35 @@
       })();
       districts_icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[0 - 81, 32 - 82], [11 - 81, 11 - 82], [31 - 81, 0 - 82], [47 - 81, 0 - 82], [68 - 81, 11 - 82], [79 - 81, 32 - 82], [78 - 81, 49 - 82], [67 - 81, 67 - 82], [52 - 81, 77 - 82], [31 - 81, 78 - 82], [11 - 81, 67 - 82], [0 - 81, 48 - 82], [0 - 81, 32 - 82]]]));
       precincts_icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[15 - 15, 37 - 36], [1 - 15, 22 - 36], [0 - 15, 16 - 36], [1 - 15, 10 - 36], [5 - 15, 5 - 36], [11 - 15, 1 - 36], [19 - 15, 1 - 36], [26 - 15, 5 - 36], [31 - 15, 14 - 36], [30 - 15, 22 - 36], [15 - 15, 37 - 36]]]));
+      precincts = [];
+      filter_precincts = function(precincts) {
+        var bounds;
+        bounds = map.getBounds();
+        return precincts.filter(function(precinct) {
+          return parseFloat(precinct.lat) > bounds[0][0] && parseFloat(precinct.lat) < bounds[1][0] && parseFloat(precinct.lng) > bounds[0][1] && parseFloat(precinct.lng) < bounds[1][1];
+        });
+      };
+      add_precincts_on_map = function() {
+        var placemarks, precinct, _ref;
+        placemarks = [];
+        _ref = filter_precincts(precincts);
+        for (precinct in _ref) {
+          precinct = _ref[precinct];
+          placemarks.push(new ymaps.Placemark([precinct.lat, precinct.lng], {
+            hintContent: "Дільниця №" + precinct.number,
+            balloonContentHeader: "Дільниця №" + precinct.number
+          }, {
+            iconLayout: 'default#image',
+            iconImageHref: '/components/modules/Elections/includes/img/map-precincts.png',
+            iconImageSize: [38, 37],
+            iconImageOffset: [-15, -36],
+            iconImageClipRect: [[38 * precinct.violations, 0], [38 * (precinct.violations + 1), 0]],
+            iconImageShape: precincts_icons_shape
+          }));
+        }
+        precincts_clusterer.removeAll();
+        return precincts_clusterer.add(placemarks);
+      };
       $.ajax({
         url: 'api/Districts',
         type: 'get',
@@ -110,24 +142,9 @@
         url: 'api/Precincts',
         type: 'get',
         data: null,
-        success: function(precincts) {
-          var placemarks, precinct;
-          placemarks = [];
-          for (precinct in precincts) {
-            precinct = precincts[precinct];
-            placemarks.push(new ymaps.Placemark([precinct.lat, precinct.lng], {
-              hintContent: "Дільниця №" + precinct.number,
-              balloonContentHeader: "Дільниця №" + precinct.number
-            }, {
-              iconLayout: 'default#image',
-              iconImageHref: '/components/modules/Elections/includes/img/map-precincts.png',
-              iconImageSize: [38, 37],
-              iconImageOffset: [-15, -36],
-              iconImageClipRect: [[38 * precinct.violations, 0], [38 * (precinct.violations + 1), 0]],
-              iconImageShape: precincts_icons_shape
-            }));
-          }
-          return precincts_clusterer.add(placemarks);
+        success: function(precincts_loaded) {
+          precincts = precincts_loaded;
+          return add_precincts_on_map();
         },
         error: function() {
           return console.error('Precincts loading error');
