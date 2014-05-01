@@ -2,53 +2,114 @@
 (function() {
 
   $(function() {
+    var begin, user_location;
     if (cs.module !== 'Elections') {
       return;
     }
-    return ymaps.ready(function() {
-      var clusterer, icons_shape, placemarks;
-      placemarks = [];
+    user_location = null;
+    ymaps.ready(function() {
+      user_location = cs.getcookie('coordinates');
+      if (user_location) {
+        user_location = JSON.parse(user_location);
+        return begin();
+      } else {
+        return ymaps.geolocation.get({
+          autoReverseGeocode: false,
+          provider: 'yandex'
+        }).then(function(result) {
+          user_location = result.geoObjects.get(0).geometry.getCoordinates();
+          setTimeout(begin, 0);
+          return ymaps.geolocation.get({
+            autoReverseGeocode: false
+          }).then(function(result) {
+            user_location = result.geoObjects.get(0).geometry.getCoordinates();
+            map.panTo(user_location);
+            return cs.setcookie('location', JSON.stringify(user_location));
+          });
+        });
+      }
+    });
+    return begin = function() {
+      var cluster_icons, districts_clusterer, icons_shape, precincts_clusterer;
       window.map = new ymaps.Map('map', {
-        center: [50.45, 30.523611],
-        zoom: 12,
+        center: user_location,
+        zoom: 15,
         controls: ['typeSelector', 'zoomControl', 'fullscreenControl', 'rulerControl', 'trafficControl']
       }, {
         avoidFractionalZoom: false
       });
-      map.setBounds([[44.02462975216294, 21.777120521484335], [52.82663432351663, 40.32204239648433]], {
-        preciseZoom: true
-      });
-      clusterer = new ymaps.Clusterer({
-        gridSize: 128,
+      cluster_icons = [
+        {
+          href: '/components/modules/Elections/includes/img/cluster-46.png',
+          size: [46, 46],
+          offset: [-23, -23]
+        }, {
+          href: '/components/modules/Elections/includes/img/cluster-58.png',
+          size: [58, 58],
+          offset: [-27, -27]
+        }
+      ];
+      districts_clusterer = new ymaps.Clusterer({
+        clusterIcons: cluster_icons,
         hasBalloon: false,
         hasHint: false
       });
-      clusterer.createCluster = function(center, geoObjects) {
-        var cluster;
-        cluster = ymaps.Clusterer.prototype.createCluster.call(this, center, geoObjects);
-        cluster.options.set({
-          icons: [
-            {
-              href: '/components/modules/Elections/includes/img/cluster-46.png',
-              size: [46, 46],
-              offset: [-23, -23]
-            }, {
-              href: '/components/modules/Elections/includes/img/cluster-58.png',
-              size: [58, 58],
-              offset: [-27, -27]
-            }
-          ]
+      precincts_clusterer = new ymaps.Clusterer({
+        clusterIcons: cluster_icons,
+        hasHint: false
+      });
+      map.geoObjects.add(precincts_clusterer);
+      (function() {
+        var previous_zoom;
+        previous_zoom = 15;
+        return map.events.add('boundschange', function(e) {
+          if ((previous_zoom < 14) === (e.get('newZoom') < 14)) {
+            return;
+          }
+          previous_zoom = e.get('newZoom');
+          if (previous_zoom < 14) {
+            map.geoObjects.remove(precincts_clusterer);
+            return map.geoObjects.add(districts_clusterer);
+          } else {
+            map.geoObjects.remove(districts_clusterer);
+            return map.geoObjects.add(precincts_clusterer);
+          }
         });
-        return cluster;
-      };
-      map.geoObjects.add(clusterer);
-      icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[23 - 24, 56 - 58], [44 - 24, 34 - 58], [47 - 24, 23 - 58], [45 - 24, 14 - 58], [40 - 24, 7 - 58], [29 - 24, 0 - 58], [17 - 24, 0 - 58], [7 - 24, 6 - 58], [0 - 24, 18 - 58], [0 - 24, 28 - 58], [4 - 24, 36 - 58], [23 - 24, 56 - 58]]]));
+      })();
+      icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[15 - 15, 37 - 36], [1 - 15, 22 - 36], [0 - 15, 16 - 36], [1 - 15, 10 - 36], [5 - 15, 5 - 36], [11 - 15, 1 - 36], [19 - 15, 1 - 36], [26 - 15, 5 - 36], [31 - 15, 14 - 36], [30 - 15, 22 - 36], [15 - 15, 37 - 36]]]));
+      $.ajax({
+        url: 'api/Districts',
+        type: 'get',
+        data: null,
+        success: function(districts) {
+          var district, placemarks;
+          placemarks = [];
+          for (district in districts) {
+            district = districts[district];
+            placemarks.push(new ymaps.Placemark([district.lat, district.lng], {
+              hasBalloon: false,
+              hasHint: false
+            }, {
+              iconLayout: 'default#image',
+              iconImageHref: '/components/modules/Elections/includes/img/map-precincts.png',
+              iconImageSize: [38, 37],
+              iconImageOffset: [-15, -36],
+              iconImageClipRect: [[38 * district.violations, 0], [38 * (district.violations + 1), 0]],
+              iconImageShape: icons_shape
+            }));
+          }
+          return districts_clusterer.add(placemarks);
+        },
+        error: function() {
+          return console.error('Districts loading error');
+        }
+      });
       $.ajax({
         url: 'api/Precincts',
         type: 'get',
         data: null,
         success: function(precincts) {
-          var precinct;
+          var placemarks, precinct;
           placemarks = [];
           for (precinct in precincts) {
             precinct = precincts[precinct];
@@ -64,13 +125,13 @@
               iconImageShape: icons_shape
             }));
           }
-          return clusterer.add(placemarks);
+          return precincts_clusterer.add(placemarks);
         },
         error: function() {
           return console.error('Precincts loading error');
         }
       });
-    });
+    };
   });
 
 }).call(this);

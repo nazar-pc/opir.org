@@ -93,7 +93,7 @@ class Precincts {
 	 * @return bool|int[]
 	 */
 	function get_all () {
-		return $this->cache->get('all', function () {
+		return $this->cache->get('all/ids', function () {
 			return $this->db()->qfas(
 				"SELECT `id`
 				FROM `$this->table`"
@@ -148,5 +148,18 @@ class Precincts {
 			return true;
 		}
 		return false;
+	}
+	function group_by_district () {
+		return $this->cache->get('all/group_by_district', function () {
+			return $this->db()->qfa(
+				"SELECT
+					`district`,
+					COUNT(`id`) AS `count`,
+					AVG(`lat`) AS `lat`,
+					AVG(`lng`) AS `lng`
+				FROM `$this->table`
+				GROUP BY `district`"
+			);
+		});
 	}
 }
