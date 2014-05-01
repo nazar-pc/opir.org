@@ -90,7 +90,7 @@
             placemarks.push(new ymaps.Placemark([district.lat, district.lng], {
               hasBalloon: false,
               hasHint: false,
-              iconContent: '<div class="cs-elections-map-district-placemark-content' + (district.violations ? ' violations' : '') + '">' + cs.Language.district_map_content(district.district) + '</div>'
+              iconContent: '<div class="cs-elections-map-district-placemark-content' + (parseInt(district.violations) ? ' violations' : '') + '">' + cs.Language.district_map_content(district.district) + '</div>'
             }, {
               iconLayout: 'default#imageWithContent',
               iconImageHref: '/components/modules/Elections/includes/img/map-districts.png',

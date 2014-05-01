@@ -114,7 +114,7 @@ $ ->
 							{
 								hasBalloon	: false
 								hasHint		: false
-								iconContent	: '<div class="cs-elections-map-district-placemark-content'+(if district.violations then ' violations' else '')+'">'+cs.Language.district_map_content(district.district)+'</div>'
+								iconContent	: '<div class="cs-elections-map-district-placemark-content'+(if parseInt(district.violations) then ' violations' else '')+'">'+cs.Language.district_map_content(district.district)+'</div>'
 							}
 							{
 								iconLayout			: 'default#imageWithContent'
