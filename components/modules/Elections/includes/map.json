@@ -1,7 +1,7 @@
 {
 	"Elections"	: [
 		"style.css",
-		"elections-info.js",
+		"opir.og-info.js",
 		"help-initiative.js",
 		"map.js"
 	]
