@@ -11,7 +11,6 @@ namespace cs\modules\Precincts;
 use
 	cs\Cache\Prefix,
 	cs\Config,
-	cs\User,
 	cs\CRUD,
 	cs\Singleton;
 
