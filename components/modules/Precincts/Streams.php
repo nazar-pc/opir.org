@@ -51,17 +51,16 @@ class Streams {
 	 *
 	 * @param $precinct
 	 * @param $user
-	 * @param $added
 	 * @param $stream_url
 	 *
 	 * @return bool|int
 	 */
-	function add ($precinct, $user, $added, $stream_url) {
+	function add ($precinct, $user, $stream_url) {
 		$precinct = (int)$precinct;
 		$id       = $this->create_simple([
 			$precinct,
 			$user,
-			$added,
+			TIME,
 			$stream_url,
 			self::STATUS_ADDED
 		]);
