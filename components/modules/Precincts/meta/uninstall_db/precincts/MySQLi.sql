@@ -1,1 +1,1 @@
-DROP TABLE `[prefix]precincts`;
+DROP TABLE `[prefix]precincts`, `[prefix]precincts_streams`;
