@@ -10,6 +10,7 @@ namespace cs\modules\Precincts;
 
 use
 	cs\Cache\Prefix,
+	cs\Config,
 	cs\User,
 	cs\CRUD,
 	cs\Singleton;
@@ -41,7 +42,7 @@ class Precincts {
 		$this->cache = new Prefix('precincts');
 	}
 	protected function cdb () {
-		return '0';
+		return Config::instance()->module('Precincts')->db('precincts');
 	}
 	/**
 	 * Add new precinct
