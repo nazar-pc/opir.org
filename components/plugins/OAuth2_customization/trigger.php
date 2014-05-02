@@ -11,7 +11,7 @@ namespace cs;
 
 Trigger::instance()
 	->register(
-		'OAuth2/custom_login_page',
+		'OAuth2/custom_sign_in_page',
 		function () {
 			//define('MOBILE_AUTH', true);
 			//TODO: remove next line and add normal auth page for mobile apps
