@@ -377,6 +377,7 @@ body {
   body > section {
     height: 100%;
     overflow-x: hidden;
+    padding-top: 75px;
     width: 100%; }
 
 #map {
