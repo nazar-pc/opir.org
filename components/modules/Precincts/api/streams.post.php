@@ -14,6 +14,11 @@ use
 	cs\User;
 
 $Index = Index::instance();
+$User	= User::instance();
+if (!$User->user()) {
+	error_code(403);
+	return;
+}
 if (!isset($Index->route_ids[0], $_POST['stream_url'])) {
 	error_code(400);
 	return;
@@ -21,7 +26,7 @@ if (!isset($Index->route_ids[0], $_POST['stream_url'])) {
 $Streams = Streams::instance();
 $id      = $Streams->add(
 	$Index->route_ids[0],
-	User::instance()->id,
+	$User->id,
 	$_POST['stream_url']
 );
 if (!$id) {
