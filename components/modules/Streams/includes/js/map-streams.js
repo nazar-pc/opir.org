@@ -5,6 +5,7 @@
     if (cs.module !== 'Streams') {
       return;
     }
+    $('#map').show();
     return ymaps.ready(function() {
       var clusterer, filter_streams, icons_shape, modal_opened, open_modal_commenting, placemarks, streams_cache, streams_list;
       window.map = new ymaps.Map('map', {

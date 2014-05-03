@@ -6,6 +6,7 @@
     if (cs.module !== 'Elections') {
       return;
     }
+    $('#map').show();
     user_location = null;
     ymaps.ready(function() {
       user_location = cs.getcookie('coordinates');

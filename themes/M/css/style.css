@@ -382,6 +382,7 @@ body {
 
 #map {
   bottom: 0;
+  display: none;
   left: 0;
   position: absolute;
   right: 0;

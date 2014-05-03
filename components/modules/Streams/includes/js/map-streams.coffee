@@ -1,6 +1,7 @@
 $ ->
 	if cs.module != 'Streams'
 		return
+	$('#map').show()
 	ymaps.ready ->
 		window.map				= new ymaps.Map 'map', {
 			center				: [50.45, 30.523611]

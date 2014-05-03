@@ -1,6 +1,7 @@
 $ ->
 	if cs.module != 'Elections'
 		return
+	$('#map').show()
 	user_location = null
 	ymaps.ready ->
 		user_location	= cs.getcookie('coordinates')
