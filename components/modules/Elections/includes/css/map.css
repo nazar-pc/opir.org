@@ -1,0 +1,16 @@
+/**
+ * @package		Elections
+ * @category	modules
+ * @author		Nazar Mokrynskyi <nazar@mokrynskyi.com>
+ * @copyright	Copyright (c) 2014, Nazar Mokrynskyi
+ * @license		MIT License, see license.txt
+ */
+.cs-elections-map-district-placemark-content {
+  color: #0072c7;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 23px 0;
+  text-align: center;
+  width: 80px; }
+  .cs-elections-map-district-placemark-content.violations {
+    color: #d6433b; }

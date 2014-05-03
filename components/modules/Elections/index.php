@@ -35,6 +35,31 @@ $Page->Header =
 		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="facebook" data-yashareLink="https://www.facebook.com/opir.org" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'.
 		'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="vkontakte,twitter" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Home/includes/img/share.png"></div>'*/
 	).
+	h::{'nav.cs-elections-switch-language'}(
+		h::span(
+			"$L->clang ".h::icon('caret-down'),
+			[
+				'class'	=> $L->clang
+			]
+		).
+		h::{'div a[href=/$i[lang]][in=$i[language]]'}([
+			'class'		=> '$i[lang]',
+			'insert'	=> [
+				[
+					'lang'		=> 'uk',
+					'language'	=> 'Українська'
+				],
+				[
+					'lang'		=> 'ru',
+					'language'	=> 'Русский'
+				],
+				[
+					'lang'		=> 'en',
+					'language'	=> 'English'
+				]
+			]
+		])
+	).
 	h::{'button.cs-elections-info'}().
 	h::{'button.cs-elections-help-initiative'}($L->help_initiative);
 $Page->content(
