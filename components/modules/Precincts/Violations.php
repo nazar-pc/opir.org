@@ -11,13 +11,15 @@ namespace cs\modules\Precincts;
 use
 	cs\Cache\Prefix,
 	cs\Config,
+	cs\Storage,
+	cs\Trigger,
 	cs\CRUD,
 	cs\Singleton;
 
 /**
- * @method static \cs\modules\Precincts\Streams instance($check = false)
+ * @method static \cs\modules\Precincts\Violations instance($check = false)
  */
-class Streams {
+class Violations {
 	use
 		CRUD,
 		Singleton;
@@ -30,44 +32,66 @@ class Streams {
 	 * @var Prefix
 	 */
 	protected $cache;
-	protected $table      = '[prefix]precincts_streams';
+	protected $table      = '[prefix]precincts_violations';
 	protected $data_model = [
-		'id'        => 'int',
-		'precinct'  => 'int',
-		'user'      => 'int',
-		'added'     => 'int',
-		'steam_url' => null, //Set in constructor
-		'status'    => 'int'
+		'id'       => 'int',
+		'precinct' => 'int',
+		'user'     => 'int',
+		'date'     => 'int',
+		'text'     => 'text',
+		'images'   => null, //Set in constructor, array of strings
+		'video'    => 'string', //TODO: check for allowed services, probably youtube only
+		'status'   => 'int'
 	];
 
 	protected function construct () {
-		$this->cache                   = new Prefix('precincts/streams');
-		$this->data_model['steam_url'] = function ($steam_url) {
-			return preg_match("#^(http[s]?://)#", $steam_url) ? $steam_url : ''; //TODO: check for allowed streaming services, probably youtube only
+		$this->cache                = new Prefix('precincts/violations');
+		$this->data_model['images'] = function ($images) {
+			return array_filter($images, function ($image) {
+				return preg_match("#^(http[s]?://)#", $image);
+			});
+		};
+		$this->data_model['video']  = function ($video) {
+			return preg_match("#^(http[s]?://)#", $video) ? $video : '';
 		};
 	}
 	protected function cdb () {
 		return Config::instance()->module('Precincts')->db('precincts');
 	}
 	/**
-	 * Add new stream
+	 * Add new violation
 	 *
 	 * @param $precinct
 	 * @param $user
-	 * @param $stream_url
+	 * @param $text
+	 * @param $images
+	 * @param $video
 	 *
 	 * @return bool|int
 	 */
-	function add ($precinct, $user, $stream_url) {
+	function add ($precinct, $user, $text, $images, $video) { //TODO: add tags to files
 		$precinct = (int)$precinct;
 		$id       = $this->create_simple([
 			$precinct,
 			$user,
 			TIME,
-			$stream_url,
+			$text,
+			$images,
+			$video,
 			self::STATUS_ADDED
 		]);
 		if ($id) {
+			$images	= $this->data_model['images']($images);
+			foreach ($images as $image) {
+				Trigger::instance()->run(
+					'System/upload_files/add_tag',
+					[
+						'tag' => "Precincts/violations/$id",
+						'url' => $image
+					]
+				);
+			}
+			unset($images, $image);
 			unset($this->cache->all_for_precincts);
 			return $id;
 		}
@@ -112,7 +136,7 @@ class Streams {
 		});
 	}
 	/**
-	 * Approve added stream
+	 * Approve added violation
 	 *
 	 * @param int $id
 	 *
@@ -132,7 +156,7 @@ class Streams {
 		return false;
 	}
 	/**
-	 * Decline added stream
+	 * Decline added violation
 	 *
 	 * @param int $id
 	 *
