@@ -9,5 +9,9 @@
 	"db_support"	: [
 		"MySQLi"
 	],
-	"provide"		: "opir.org_precincts"
+	"provide"		: "opir.org_precincts",
+	"optional"		: [
+		"Plupload",
+		"file_upload"
+	]
 }
