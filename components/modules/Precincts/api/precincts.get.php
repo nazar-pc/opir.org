@@ -9,6 +9,7 @@
 namespace cs\modules\Precincts;
 
 use
+	cs\Cache\Prefix,
 	cs\Index,
 	cs\Page;
 
@@ -18,16 +19,30 @@ $Precincts = Precincts::instance();
 if (isset($Index->route_ids[0])) {
 	$Page->json($Precincts->get($Index->route_ids[0]));
 } else {
-	$precincts = $Precincts->get($Precincts->get_all());
-	foreach ($precincts as &$precinct) {
-		$precinct = [
-			'id'         => $precinct['id'],
-			'number'     => $precinct['number'],
-			'lat'        => $precinct['lat'],
-			'lng'        => $precinct['lng'],
-			'violations' => $precinct['violations']
-		];
+	$Cache     = new Prefix('precincts');
+	$precincts = $Cache->get('all/ids_api', function () use ($Precincts) {
+		$precincts = $Precincts->get($Precincts->get_all());
+		foreach ($precincts as &$precinct) {
+			$precinct = [
+				'id'         => $precinct['id'],
+				'number'     => $precinct['number'],
+				'lat'        => $precinct['lat'],
+				'lng'        => $precinct['lng'],
+				'violations' => $precinct['violations']
+			];
+		}
+		unset($precinct);
+		return $precincts;
+	});
+	if (isset($_GET['number'])) {
+		if (isset($_GET['page'])) {
+			$page = max((int)$_GET['page'], 1);
+		} else {
+			$page = 1;
+		}
+		$number    = max((int)$_GET['number'], 1);
+		$offset    = $number * ($page - 1);
+		$precincts = array_slice($precincts, $offset, $number);
 	}
-	unset($precinct);
 	$Page->json($precincts);
 }
