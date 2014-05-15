@@ -1,11 +1,11 @@
 {
-	"package"		: "Districts",
+	"package"		: "Violations",
 	"category"		: "modules",
 	"version"		: "1.0.0",
-	"description"	: "Districts functionality for opir.org",
+	"description"	: "Violations functionality for opir.org",
 	"author"		: "Nazar Mokrynskyi",
 	"website"		: "cleverstyle.org/cms",
 	"license"		: "MIT License",
-	"provide"		: "opir.org_districts",
+	"provide"		: "opir.org_violations",
 	"require"		: "opir.org_precincts"
 }

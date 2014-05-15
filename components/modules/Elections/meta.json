@@ -13,6 +13,7 @@
 	"require"		: [
 		"opir.org_precincts",
 		"opir.org_districts",
+		"opir.org_violations",
 		"opir.org_info",
 		"opir.org_help"
 	]

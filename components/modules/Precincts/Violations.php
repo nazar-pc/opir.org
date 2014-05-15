@@ -81,7 +81,7 @@ class Violations {
 			self::STATUS_ADDED
 		]);
 		if ($id) {
-			$images	= $this->data_model['images']($images);
+			$images = $this->data_model['images']($images);
 			foreach ($images as $image) {
 				Trigger::instance()->run(
 					'System/upload_files/add_tag',
@@ -148,8 +148,8 @@ class Violations {
 		$data['status'] = self::STATUS_APPROVED;
 		if ($this->update_simple($data)) {
 			unset(
-				$this->cache->$id,
-				$this->cache->{"all_for_precincts/$data[precinct]"}
+			$this->cache->$id,
+			$this->cache->{"all_for_precincts/$data[precinct]"}
 			);
 			return true;
 		}
@@ -167,11 +167,28 @@ class Violations {
 		$data['status'] = self::STATUS_DECLINED;
 		if ($this->update_simple($data)) {
 			unset(
-				$this->cache->$id,
-				$this->cache->{"all_for_precincts/$data[precinct]"}
+			$this->cache->$id,
+			$this->cache->{"all_for_precincts/$data[precinct]"}
 			);
 			return true;
 		}
 		return false;
+	}
+	function last_violations ($number, $last_id) {
+		$number  = (int)$number;
+		$last_id = (int)$last_id;
+		$where   = '';
+		if ($last_id) {
+			$where = "WHERE `id` < $last_id";
+		}
+		return $this->get(
+			$this->db()->qfas(
+				"SELECT `id`
+				FROM `$this->table`
+				$where
+				ORDER BY `id` DESC
+				LIMIT $number"
+			)
+		);
 	}
 }
