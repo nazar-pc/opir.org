@@ -12,7 +12,9 @@ $ ->
 				.appendTo('body')
 				.slideDown()
 		else
-			$('.cs-elections-loading').slideUp().remove()
+			setTimeout (->
+				$('.cs-elections-loading').slideUp().remove()
+			), 200
 	loading('show')
 	$('#map').show()
 	user_location = null
