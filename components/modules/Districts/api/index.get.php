@@ -15,3 +15,5 @@ $Precincts = Precincts::instance();
 $Page->json(
 	$Precincts->group_by_district()
 );
+header('Cache-Control: max-age=600, public');
+header('Expires: access plus 10 minutes');

@@ -24,3 +24,5 @@ $Page->json(
 		$Streams->get_all_for_precinct($Index->route_ids[0])
 	)
 );
+header('Cache-Control: max-age=60, public');
+header('Expires: access plus 1 minute');

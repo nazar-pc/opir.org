@@ -84,7 +84,13 @@ class Precincts {
 			return $id;
 		}
 		return $this->cache->get($id, function () use ($id) {
-			return $this->read_simple($id);
+			$data               = $this->read_simple($id);
+			$data['id']         = (int)$data['id'];
+			$data['lat']        = (float)$data['lat'];
+			$data['lng']        = (float)$data['lng'];
+			$data['district']   = (int)$data['district'];
+			$data['violations'] = (int)$data['violations'];
+			return $data;
 		});
 	}
 	/**

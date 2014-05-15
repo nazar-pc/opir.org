@@ -18,6 +18,8 @@ $Page      = Page::instance();
 $Precincts = Precincts::instance();
 if (isset($Index->route_ids[0])) {
 	$Page->json($Precincts->get($Index->route_ids[0]));
+	header('Cache-Control: max-age=60, public');
+	header('Expires: access plus 1 minute');
 } else {
 	$Cache     = new Prefix('precincts');
 	$precincts = $Cache->get('all/ids_api', function () use ($Precincts) {
@@ -45,4 +47,6 @@ if (isset($Index->route_ids[0])) {
 		$precincts = array_slice($precincts, $offset, $number);
 	}
 	$Page->json($precincts);
+	header('Cache-Control: max-age=600, public');
+	header('Expires: access plus 10 minutes');
 }
