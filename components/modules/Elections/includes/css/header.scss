@@ -25,10 +25,11 @@
 
 body > header {
 	.cs-elections-logo {
-		position   : absolute;
-		text-align : center;
-		top        : 10px;
-		width      : 100%;
+		padding-right : 100px;
+		position      : absolute;
+		text-align    : center;
+		top           : 10px;
+		width         : 100%;
 	}
 
 	.cs-elections-switch-language {
@@ -59,7 +60,7 @@ body > header {
 				text-align : left;
 
 				&:nth-child(n-1) {
-					border-bottom: 1px solid #005ea7;
+					border-bottom : 1px solid #005ea7;
 				}
 
 				&:hover {
@@ -92,11 +93,11 @@ body > header {
 		}
 
 		.ru:before {
-			background-position: -56px 0;
+			background-position : -56px 0;
 		}
 
 		.en:before {
-			background-position: -28px 0;
+			background-position : -28px 0;
 		}
 	}
 

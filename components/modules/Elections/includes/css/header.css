@@ -6,6 +6,7 @@
  * @license		MIT License, see license.txt
  */
 body > header .cs-elections-logo {
+  padding-right: 100px;
   position: absolute;
   text-align: center;
   top: 10px;
