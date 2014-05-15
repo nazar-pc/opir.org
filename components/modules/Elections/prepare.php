@@ -8,5 +8,5 @@
  */
 namespace	cs;
 Page::instance()->post_Body	.=
-	"<script src=\"//api-maps.yandex.ru/2.1/?load=package.full&lang=".Language::instance()->clang."-UA\"></script>\n".
+	"<script src=\"//api-maps.yandex.ru/2.1/?load=package.full&lang=".Language::instance()->clang."_UA\"></script>\n".
 	"<script type=\"text/javascript\" src=\"//yandex.st/share/share.js\"></script>\n";
