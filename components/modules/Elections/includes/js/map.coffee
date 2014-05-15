@@ -4,7 +4,7 @@ $ ->
 	$('#map').show()
 	user_location = null
 	ymaps.ready ->
-		user_location	= cs.getcookie('coordinates')
+		user_location	= localStorage.getItem('coordinates')
 		if user_location
 			user_location	= JSON.parse(user_location)
 			begin()
@@ -20,7 +20,7 @@ $ ->
 				).then (result) ->
 					user_location	= result.geoObjects.get(0).geometry.getCoordinates()
 					map.panTo(user_location)
-					cs.setcookie('coordinates', JSON.stringify(user_location))
+					localStorage.setItem('coordinates', JSON.stringify(user_location))
 	begin = ->
 		window.map	= new ymaps.Map(
 			'map'
@@ -104,7 +104,11 @@ $ ->
 				[15-15, 37-36]
 			]
 		]))
-		precincts			= []
+		get_precincts		= (check) ->
+			precincts			= localStorage.getItem('precincts')
+			if check
+				return !!precincts
+			if precincts then JSON.parse(precincts) else {}
 		filter_precincts	= (precincts) ->
 			bounds	= map.getBounds()
 			precincts.filter (precinct) ->
@@ -114,7 +118,7 @@ $ ->
 				lng > bounds[0][1] && lng < bounds[1][1]
 		add_precincts_on_map	= ->
 			placemarks	= []
-			for precinct, precinct of filter_precincts(precincts)
+			for precinct, precinct of filter_precincts(get_precincts())
 				placemarks.push(
 					new ymaps.Placemark(
 						[precinct.lat, precinct.lng]
@@ -169,15 +173,39 @@ $ ->
 			error		: ->
 				console.error('Districts loading error')
 		)
-		$.ajax(
-			url			: 'api/Precincts'
-			type		: 'get'
-			data		: null
-			success		: (precincts_loaded) ->
-				precincts	= precincts_loaded
-				window.p = precincts_loaded
-				add_precincts_on_map()
-			error		: ->
-				console.error('Precincts loading error')
-		)
+		if !get_precincts(true)
+			$.ajax(
+				url			: 'api/Precincts'
+				type		: 'get'
+				data		: null
+				success		: (precincts_loaded) ->
+					precincts	= precincts_loaded
+					localStorage.setItem('precincts', JSON.stringify(precincts))
+					add_precincts_on_map()
+				error		: ->
+					console.error('Precincts loading error')
+			)
+		else
+			add_precincts_on_map()
+			$.ajax(
+				url			: 'api/Precincts?fields=violations'
+				type		: 'get'
+				data		: null
+				success		: (violations_loaded) ->
+					violations	= {}
+					do ->
+						for p in violations_loaded
+							violations[p.id]	= p.violations
+						return
+					precincts	= get_precincts()
+					update		= false
+					for precinct of precincts
+						update							= update || (precincts[precinct].violations == violations[precincts[precinct].id])
+						precincts[precinct].violations	= violations[precincts[precinct].id]
+					if update
+						localStorage.setItem('precincts', JSON.stringify(precincts))
+						add_precincts_on_map()
+				error		: ->
+					console.error('Precincts loading error')
+			)
 		return
