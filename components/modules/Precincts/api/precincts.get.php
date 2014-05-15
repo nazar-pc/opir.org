@@ -23,18 +23,7 @@ if (isset($Index->route_ids[0])) {
 } else {
 	$Cache     = new Prefix('precincts');
 	$precincts = $Cache->get('all/ids_api', function () use ($Precincts) {
-		$precincts = $Precincts->get($Precincts->get_all());
-		foreach ($precincts as &$precinct) {
-			$precinct = [
-				'id'         => $precinct['id'],
-				'number'     => $precinct['number'],
-				'lat'        => $precinct['lat'],
-				'lng'        => $precinct['lng'],
-				'violations' => $precinct['violations']
-			];
-		}
-		unset($precinct);
-		return $precincts;
+		return $Precincts->get($Precincts->get_all());
 	});
 	if (isset($_GET['number'])) {
 		if (isset($_GET['page'])) {
@@ -46,7 +35,48 @@ if (isset($Index->route_ids[0])) {
 		$offset    = $number * ($page - 1);
 		$precincts = array_slice($precincts, $offset, $number);
 	}
+	if (isset($_GET['fields'])) {
+		$fields = array_intersect(explode(',', $_GET['fields']), ['id', 'number', 'address', 'lat', 'lng', 'district', 'violations']);
+	} else {
+		$fields = ['id', 'number', 'lat', 'lng', 'violations'];
+	}
+	if (empty($fields)) {
+		error_code(400);
+		return;
+	}
+	$fields[] = 'id';
+	$fields   = array_flip(array_unique($fields)); //For usage in array_intersect_key()
+	if (isset($_GET['flat'])) {
+		$result = [];
+		foreach (array_keys($fields) as $key) {
+			$result[$key] = [];
+		}
+		unset($key);
+		foreach ($precincts as &$precinct) {
+			$precinct = array_intersect_key($precinct, $fields);
+			foreach ($precinct as $k => $v) {
+				$result[$k][] = $v;
+			}
+			unset($k, $v);
+		}
+		unset($precinct);
+		$precincts = $result;
+		unset($result);
+	} else {
+		foreach ($precincts as &$precinct) {
+			$precinct = array_intersect_key($precinct, $fields);
+		}
+	}
+	unset($precinct);
+	/**
+	 * Cache expiration depending on violations field availability
+	 */
+	if (!isset($fields['violations'])) {
+		header('Cache-Control: max-age=86400, public');
+		header('Expires: access plus 1 day');
+	} else {
+		header('Cache-Control: max-age=600, public');
+		header('Expires: access plus 10 minutes');
+	}
 	$Page->json($precincts);
-	header('Cache-Control: max-age=600, public');
-	header('Expires: access plus 10 minutes');
 }
