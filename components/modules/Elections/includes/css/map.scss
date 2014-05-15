@@ -5,6 +5,22 @@
  * @copyright	Copyright (c) 2014, Nazar Mokrynskyi
  * @license		MIT License, see license.txt
  */
+
+.cs-elections-loading {
+	background    : #0072c7;
+	border-radius : 0 0 10px 10px;
+	color         : #fff;
+	font-size     : 44px;
+	height        : 50px;
+	margin        : 0 auto;
+	position      : absolute;
+	text-align    : center;
+	top           : 75px;
+	width         : 60px;
+	left          : 0;
+	right         : 100px;
+}
+
 .cs-elections-map-district-placemark-content {
 	color       : #0072c7;
 	font-size   : 14px;

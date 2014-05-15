@@ -2,10 +2,18 @@
 (function() {
 
   $(function() {
-    var begin, user_location;
+    var begin, loading, user_location;
     if (cs.module !== 'Elections') {
       return;
     }
+    loading = function(mode) {
+      if (mode === 'show') {
+        return $("<div class=\"cs-elections-loading\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>").hide().appendTo('body').slideDown();
+      } else {
+        return $('.cs-elections-loading').slideUp().remove();
+      }
+    };
+    loading('show');
     $('#map').show();
     user_location = null;
     ymaps.ready(function() {
@@ -124,7 +132,8 @@
           }));
         }
         precincts_clusterer.removeAll();
-        return precincts_clusterer.add(placemarks);
+        precincts_clusterer.add(placemarks);
+        return loading('hide');
       };
       $.ajax({
         url: 'api/Districts',

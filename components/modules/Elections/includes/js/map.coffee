@@ -1,6 +1,19 @@
 $ ->
 	if cs.module != 'Elections'
 		return
+	loading		= (mode) ->
+		if mode == 'show'
+			$("""
+				<div class="cs-elections-loading">
+					<i class="uk-icon-spinner uk-icon-spin"></i>
+				</div>
+			""")
+				.hide()
+				.appendTo('body')
+				.slideDown()
+		else
+			$('.cs-elections-loading').slideUp().remove()
+	loading('show')
 	$('#map').show()
 	user_location = null
 	ymaps.ready ->
@@ -141,6 +154,7 @@ $ ->
 				)
 			precincts_clusterer.removeAll()
 			precincts_clusterer.add(placemarks)
+			loading('hide')
 		$.ajax(
 			url			: 'api/Districts'
 			type		: 'get'
