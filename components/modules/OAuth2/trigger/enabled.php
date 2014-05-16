@@ -92,7 +92,7 @@ Trigger::instance()->register(
 			]);
 			exit;
 		}
-		$_POST['session']	= $_REQUEST['session']	= $token_data['session'];
+		_setcookie('session', $token_data['session']);
 		if (!Config::instance()->module('OAuth2')->guest_tokens) {
 			Trigger::instance()->register(
 				'System/User/construct/after',
