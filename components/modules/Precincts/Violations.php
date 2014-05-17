@@ -148,8 +148,8 @@ class Violations {
 		$data['status'] = self::STATUS_APPROVED;
 		if ($this->update_simple($data)) {
 			unset(
-			$this->cache->$id,
-			$this->cache->{"all_for_precincts/$data[precinct]"}
+				$this->cache->$id,
+				$this->cache->{"all_for_precincts/$data[precinct]"}
 			);
 			return true;
 		}
@@ -167,8 +167,8 @@ class Violations {
 		$data['status'] = self::STATUS_DECLINED;
 		if ($this->update_simple($data)) {
 			unset(
-			$this->cache->$id,
-			$this->cache->{"all_for_precincts/$data[precinct]"}
+				$this->cache->$id,
+				$this->cache->{"all_for_precincts/$data[precinct]"}
 			);
 			return true;
 		}
