@@ -47,9 +47,11 @@ class Violations {
 	protected function construct () {
 		$this->cache                = new Prefix('precincts/violations');
 		$this->data_model['images'] = function ($images) {
-			return array_filter($images, function ($image) {
-				return preg_match("#^(http[s]?://)#", $image);
-			});
+			return _json_encode(
+				array_filter($images, function ($image) {
+					return preg_match("#^(http[s]?://)#", $image);
+				})
+			);
 		};
 		$this->data_model['video']  = function ($video) {
 			return preg_match("#^(http[s]?://)#", $video) ? $video : '';
@@ -112,7 +114,9 @@ class Violations {
 			return $id;
 		}
 		return $this->cache->get($id, function () use ($id) {
-			return $this->read_simple($id);
+			$return           = $this->read_simple($id);
+			$return['images'] = _json_decode($return['images']);
+			return $return;
 		});
 	}
 	/**
