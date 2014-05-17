@@ -20,11 +20,17 @@ if (!$User->user()) {
 	return;
 }
 if (
-	!isset($Index->route_ids[0], $_POST['text'], $_POST['images'], $_POST['video']) ||
+	!isset($Index->route_ids[0]) ||
 	(
-		empty($_POST['text']) &&
-		empty($_POST['images']) &&
-		empty($_POST['video'])
+		(
+			!isset($_POST['text']) || empty($_POST['text'])
+		) &&
+		(
+			!isset($_POST['images']) || empty($_POST['images'])
+		) &&
+		(
+			!isset($_POST['video']) || empty($_POST['video'])
+		)
 	)
 ) {
 	error_code(400);
@@ -34,9 +40,9 @@ $Violations = Violations::instance();
 $id         = $Violations->add(
 	$Index->route_ids[0],
 	$User->id,
-	$_POST['text'],
-	(array)$_POST['images'],
-	$_POST['video']
+	isset($_POST['text']) ? $_POST['text'] : '',
+	isset($_POST['images']) ? (array)$_POST['images'] : [],
+	isset($_POST['video']) ? $_POST['video'] : ''
 );
 if (!$id) {
 	error_code(500);
