@@ -11,9 +11,23 @@ namespace cs\modules\Precincts;
 use cs\Page;
 
 $Page      = Page::instance();
-$Precincts = Precincts::instance();
-$Page->json(
-	$Precincts->group_by_district()
-);
-header('Cache-Control: max-age=600, public');
-header('Expires: access plus 10 minutes');
+$districts = Precincts::instance()->group_by_district();
+if (isset($_GET['fields'])) {
+	$fields   = array_intersect(explode(',', $_GET['fields']), ['district', 'count', 'lat', 'lng', 'violations']);
+	$fields[] = 'district';
+	$fields   = array_flip(array_unique($fields)); //For usage in array_intersect_key()
+	foreach ($districts as &$district) {
+		$district = array_intersect_key($district, $fields);
+	}
+	if (!isset($fields['violations'])) {
+		header('Cache-Control: max-age=86400, public');
+		header('Expires: access plus 1 day');
+	} else {
+		header('Cache-Control: max-age=600, public');
+		header('Expires: access plus 10 minutes');
+	}
+} else {
+	header('Cache-Control: max-age=600, public');
+	header('Expires: access plus 10 minutes');
+}
+$Page->json($districts);

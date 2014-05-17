@@ -157,7 +157,7 @@ class Precincts {
 	}
 	function group_by_district () {
 		return $this->cache->get('all/group_by_district', function () {
-			return $this->db()->qfa(
+			$districts = $this->db()->qfa(
 				"SELECT
 					`district`,
 					COUNT(`id`) AS `count`,
@@ -167,6 +167,15 @@ class Precincts {
 				FROM `$this->table`
 				GROUP BY `district`"
 			);
+			foreach ($districts as &$d) {
+				$d['district']   = (int)$d['district'];
+				$d['count']      = (int)$d['count'];
+				$d['lat']        = (float)$d['lat'];
+				$d['lng']        = (float)$d['lng'];
+				$d['violations'] = (int)$d['violations'];
+			}
+			unset($d);
+			return $districts;
 		});
 	}
 }
