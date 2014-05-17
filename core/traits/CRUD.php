@@ -32,16 +32,24 @@ trait CRUD {
 					$argument	= $model($argument);
 					return;
 				}
-				list($type, $format) = explode(':', $model)[2];
+				$model	= explode(':', $model, 2);
+				$type	= $model[0];
+				if (isset($model[1])) {
+					$format	= $model[1];
+				}
 				switch ($type) {
 					case 'int':
 					case 'float':
-						$argument	= $model[0] == 'int' ? (int)$argument : (float)$argument;
+						$argument	= $type == 'int' ? (int)$argument : (float)$argument;
 						/**
 						 * Ranges processing
 						 */
 						if (isset($format)) {
-							list($min, $max) = explode('..', $format);
+							$format	= explode('..', $format);
+							$min	= $format[0];
+							if (isset($format[1])) {
+								$max	= $format[1];
+							}
 							/**
 							 * Minimum
 							 */
@@ -61,10 +69,18 @@ trait CRUD {
 						 * Truncation
 						 */
 						if (isset($format)) {
-							list($length, $ending) = explode(':', $format);
+							$format		= explode(':', $format);
+							$length		= $format[0];
+							if (isset($format[1])) {
+								$ending	= $format[1];
+							}
 							$argument	= truncate($argument, $length, isset($ending) ? $ending : '...', true);
 						}
+					break;
 					case 'set':
+						/**
+						 * @var $format
+						 */
 						$allowed_arguments	= explode(',', $format);
 						if (array_search($argument, $allowed_arguments) === false) {
 							$argument	= $allowed_arguments[0];
@@ -91,7 +107,7 @@ trait CRUD {
 		);
 		$columns	= "`".implode("`,`", array_keys($insert_id ? $data_model : array_slice($data_model, 1)))."`";
 		$values		= implode(',', array_fill(0, count($arguments), "'%s'"));
-		return $this->db_prime()->q(
+		$return		= $this->db_prime()->q(
 			"INSERT INTO `$table`
 				(
 					$columns
@@ -99,7 +115,11 @@ trait CRUD {
 					$values
 				)",
 				$arguments
-		) ? $this->db_prime()->id() : false;
+		);
+		if (!$return) {
+			return false;
+		}
+		return $insert_id ? true : $this->db_prime()->id();
 	}
 	/**
 	 * Wrapper for create() method, when $table and $data_model arguments are expected to be a properties of class
@@ -129,11 +149,12 @@ trait CRUD {
 			}
 			return $id;
 		}
-		$columns	= "`".implode("`,`", array_keys($data_model))."`";
+		$columns		= "`".implode("`,`", array_keys($data_model))."`";
+		$first_column	= array_keys($data_model)[0];
 		return $this->db()->qf([
 			"SELECT $columns
 			FROM `$table`
-			WHERE `id` = '%s'
+			WHERE `$first_column` = '%s'
 			LIMIT 1",
 			$id
 		]) ?: false;
@@ -169,10 +190,11 @@ trait CRUD {
 			array_keys($arguments)
 		));
 		$arguments[]	= $id;
+		$first_column	= array_keys($data_model)[0];
 		return (bool)$this->db_prime()->q(
 			"UPDATE `$table`
 			SET $columns
-			WHERE `id` = '%s'
+			WHERE `$first_column` = '%s'
 			LIMIT 1",
 			$arguments
 		);
@@ -192,29 +214,35 @@ trait CRUD {
 	/**
 	 * Delete item
 	 *
-	 * @param string	$table
-	 * @param int|int[]	$id
+	 * @param string					$table
+	 * @param Closure[]|string[]		$data_model
+	 * @param int|int[]|string|string[]	$id
 	 *
 	 * @return bool
 	 */
-	protected function delete ($table, $id) {
-		$id	= implode(',', _int((array)$id));
-		return (bool)$this->db_prime()->q(
-			"DELETE FROM `$table`
-			WHERE `id` IN(%s)",
-			$id
-		);
+	protected function delete ($table, $data_model, $id) {
+		$first_column	= array_keys($data_model)[0];
+		$result			= true;
+		foreach ((array)$id as $i) {
+			$result	= $result && $this->db_prime()->q(
+				"DELETE FROM `$table`
+				WHERE `$first_column` = '%s'
+				LIMIT 1",
+				$i
+			);
+		}
+		return $result;
 	}
 	/**
 	 * Wrapper for delete() method, when $table argument is expected to be a property of class
 	 *
 	 * @see delete
 	 *
-	 * @param int|int[]	$id
+	 * @param int|int[]|string|string[]	$id
 	 *
 	 * @return bool
 	 */
 	protected function delete_simple ($id) {
-		return $this->delete($this->table, $id);
+		return $this->delete($this->table, $this->data_model, $id);
 	}
 }

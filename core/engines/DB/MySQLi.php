@@ -22,7 +22,7 @@ class MySQLi extends _Abstract {
 		 * Parsing of $host variable, detecting port and persistent connection
 		 */
 		$host					= explode(':', $host);
-		$port					= ini_get("mysqli.default_port");
+		$port					= ini_get('mysqli.default_port') ?: 3306;
 		if (count($host) == 1) {
 			$host	= $host[0];
 		} elseif (count($host) == 2) {
@@ -36,10 +36,7 @@ class MySQLi extends _Abstract {
 			$port	= $host[2];
 			$host	= "$host[0]:$host[1]";
 		}
-		/**
-		 * TODO: remove port number casting when HHVM will not fail because of this
-		 */
-		$this->instance = @new \MySQLi($host, $user, $password, $database, (int)$port);
+		$this->instance = @new \MySQLi($host, $user, $password, $database, $port);
 		if(is_object($this->instance) && !$this->instance->connect_errno) {
 			$this->database = $database;
 			/**

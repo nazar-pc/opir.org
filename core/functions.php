@@ -14,34 +14,43 @@ use	cs\Cache,
 	cs\DB,
 	cs\Error,
 	cs\Index,
-	cs\Key,
 	cs\Language,
 	cs\Page,
 	cs\Text,
-	cs\Trigger,
 	cs\User;
 /**
  * Auto Loading of classes
  */
 spl_autoload_register(function ($class) {
+	static $cache;
+	if (!isset($cache)) {
+		$cache = file_exists(CACHE.'/classes_autoloading') ? file_get_json(CACHE.'/classes_autoloading') : [];
+	}
+	if (isset($cache[$class])) {
+		return require_once $cache[$class];
+	}
 	$class	= ltrim($class, '\\');
 	if (substr($class, 0, 3) == 'cs\\') {
 		$class	= substr($class, 3);
 	}
-	$class	= explode('\\', $class);
-	$class	= [
-		'namespace'	=> count($class) > 1 ? implode('/', array_slice($class, 0, -1)) : '',
-		'name'		=> array_pop($class)
-	];
+	$class_exploded	= explode('\\', $class);
+	$namespace		= count($class_exploded) > 1 ? implode('/', array_slice($class_exploded, 0, -1)) : '';
+	$class_name		= array_pop($class_exploded);
 	/**
 	 * Try to load classes from different places. If not found in one place - try in another.
 	 */
-	return
-		_require_once(CLASSES."/$class[namespace]/$class[name].php", false) ||		//Core classes
-		_require_once(THIRDPARTY."/$class[namespace]/$class[name].php", false) ||	//Third party classes
-		_require_once(TRAITS."/$class[namespace]/$class[name].php", false) ||		//Core traits
-		_require_once(ENGINES."/$class[namespace]/$class[name].php", false) ||		//Core engines
-		_require_once(MODULES."/../$class[namespace]/$class[name].php", false);		//Classes in modules and plugins
+	if (
+		_require_once($file = CLASSES."/$namespace/$class_name.php", false) ||		//Core classes
+		_require_once($file = THIRDPARTY."/$namespace/$class_name.php", false) ||	//Third party classes
+		_require_once($file = TRAITS."/$namespace/$class_name.php", false) ||		//Core traits
+		_require_once($file = ENGINES."/$namespace/$class_name.php", false) ||		//Core engines
+		_require_once($file = MODULES."/../$namespace/$class_name.php", false)		//Classes in modules and plugins
+	) {
+		$cache[$class] = $file;
+		file_put_json(CACHE.'/classes_autoloading', $cache);
+		return true;
+	}
+	return false;
 }, true, true);
 /**
  * Correct termination
