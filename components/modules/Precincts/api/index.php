@@ -14,6 +14,11 @@ use
 
 $Config = Config::instance();
 $Index  = Index::instance();
-if (!isset($Config->route[0]) || is_numeric($Config->route[0])) {
+if (
+	!isset($Config->route[0]) ||
+	(
+		!isset($Config->route[1]) && is_numeric($Config->route[0])
+	)
+) {
 	array_unshift($Index->route_path, 'precincts');
 }
