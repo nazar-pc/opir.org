@@ -3,7 +3,7 @@
  * @package		OAuth2
  * @category	modules
  * @author		Nazar Mokrynskyi <nazar@mokrynskyi.com>
- * @copyright	Copyright (c) 2011-2013, Nazar Mokrynskyi
+ * @copyright	Copyright (c) 2011-2014, Nazar Mokrynskyi
  * @license		MIT License, see license.txt
  */
 namespace	cs\modules\OAuth2;
@@ -13,9 +13,6 @@ use			cs\Cache\Prefix,
 			cs\DB\Accessor,
 			cs\Singleton;
 
-/**
- * @method static \cs\modules\OAuth2\OAuth2 instance($check = false)
- */
 class OAuth2 {
 	use	Accessor,
 		Singleton;
