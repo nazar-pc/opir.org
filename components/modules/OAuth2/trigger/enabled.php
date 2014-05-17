@@ -45,8 +45,6 @@ Trigger::instance()
 			if (!isset($client_id, $access_token)) {
 				return;
 			}
-			header('Cache-Control: no-store');
-			header('Pragma: no-cache');
 			$OAuth2 = OAuth2::instance();
 			$Page   = Page::instance();
 			if (!($client = $OAuth2->get_client($client_id))) {
