@@ -32,18 +32,18 @@ class Streams {
 	protected $cache;
 	protected $table      = '[prefix]precincts_streams';
 	protected $data_model = [
-		'id'        => 'int',
-		'precinct'  => 'int',
-		'user'      => 'int',
-		'added'     => 'int',
-		'steam_url' => null, //Set in constructor
-		'status'    => 'int'
+		'id'         => 'int',
+		'precinct'   => 'int',
+		'user'       => 'int',
+		'added'      => 'int',
+		'stream_url' => null, //Set in constructor
+		'status'     => 'int'
 	];
 
 	protected function construct () {
-		$this->cache                   = new Prefix('precincts/streams');
-		$this->data_model['steam_url'] = function ($steam_url) {
-			return preg_match("#^(http[s]?://)#", $steam_url) ? $steam_url : ''; //TODO: check for allowed streaming services, probably youtube only
+		$this->cache                    = new Prefix('precincts/streams');
+		$this->data_model['stream_url'] = function ($stream_url) {
+			return preg_match("#^(http[s]?://)#", $stream_url) ? $stream_url : ''; //TODO: check for allowed streaming services, probably youtube only
 		};
 	}
 	protected function cdb () {
