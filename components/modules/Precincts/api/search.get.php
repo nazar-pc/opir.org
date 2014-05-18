@@ -13,7 +13,7 @@ use
 
 $Page      = Page::instance();
 $Precincts = Precincts::instance();
-if (!isset($_GET['text'])) {
+if (!isset($_GET['text']) || mb_strlen($_GET['text']) < 3) {
 	error_code(400);
 	return;
 }

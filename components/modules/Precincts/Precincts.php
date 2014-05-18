@@ -178,6 +178,12 @@ class Precincts {
 			return $districts;
 		});
 	}
+	/**
+	 * @param string     $text
+	 * @param bool|int[] $coordinates
+	 *
+	 * @return array|bool
+	 */
 	function search ($text, $coordinates = false) {
 		$order = 'ORDER BY `id` ASC';
 		if ($coordinates && isset($coordinates[0], $coordinates[1])) {
