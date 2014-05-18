@@ -178,4 +178,22 @@ class Precincts {
 			return $districts;
 		});
 	}
+	function search ($text, $coordinates = false) {
+		$order = 'ORDER BY `id` ASC';
+		if ($coordinates && isset($coordinates[0], $coordinates[1])) {
+			$coordinates = _float($coordinates);
+			$order       = "ORDER BY SQRT(POW(`lat` - $coordinates[0], 2) + POW(`lng` - $coordinates[0], 2)) ASC";
+		}
+		return $this->db()->qfas([
+			"SELECT `id`
+			FROM `$this->table`
+			WHERE
+				`number`	= '%s' OR
+				`address`	LIKE '%s'
+			$order
+			LIMIT 20",
+			$text,
+			"%$text%"
+		]);
+	}
 }
