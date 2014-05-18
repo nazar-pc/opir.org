@@ -9,5 +9,7 @@
 	"map_legend"					: "Map legend",
 	"precincts_with_violations"		: " - Precincts with messages",
 	"precincts_without_violations"	: " - Precincts without messages",
-	"soon"							: "Soon"
+	"soon"							: "Soon",
+	"no_precincts_found"			: "No precincts found",
+	"precint_number"				: "Precinct #%s"
 }

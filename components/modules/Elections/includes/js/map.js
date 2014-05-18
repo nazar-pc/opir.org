@@ -41,7 +41,7 @@
       }
     });
     return begin = function() {
-      var add_precincts_on_map, cluster_icons, districts_clusterer, districts_icons_shape, filter_precincts, get_precincts, precincts_clusterer, precincts_icons_shape;
+      var add_districts_on_map, add_precincts_on_map, cluster_icons, districts_clusterer, districts_icons_shape, filter_precincts, get_districts, get_precincts, precincts_clusterer, precincts_icons_shape;
       window.map = new ymaps.Map('map', {
         center: user_location,
         zoom: 15,
@@ -105,6 +105,18 @@
           return {};
         }
       };
+      get_districts = function(check) {
+        var districts;
+        districts = localStorage.getItem('districts');
+        if (check) {
+          return !!districts;
+        }
+        if (districts) {
+          return JSON.parse(districts);
+        } else {
+          return {};
+        }
+      };
       filter_precincts = function(precincts) {
         var bounds;
         bounds = map.getBounds();
@@ -137,42 +149,79 @@
         precincts_clusterer.add(placemarks);
         return loading('hide');
       };
-      $.ajax({
-        url: 'api/Districts',
-        type: 'get',
-        data: null,
-        success: function(districts) {
-          var district, placemarks;
-          placemarks = [];
-          for (district in districts) {
-            district = districts[district];
-            placemarks.push(new ymaps.Placemark([district.lat, district.lng], {
-              hasBalloon: false,
-              hasHint: false,
-              iconContent: '<div class="cs-elections-map-district-placemark-content' + (parseInt(district.violations) ? ' violations' : '') + '">' + cs.Language.district_map_content(district.district) + '</div>'
-            }, {
-              iconLayout: 'default#imageWithContent',
-              iconImageHref: '/components/modules/Elections/includes/img/map-districts.png',
-              iconImageSize: [81, 82],
-              iconImageOffset: [-40, -41],
-              iconImageClipRect: [[81 * district.violations, 0], [81 * (district.violations + 1), 0]],
-              iconImageShape: districts_icons_shape
-            }));
-          }
-          return districts_clusterer.add(placemarks);
-        },
-        error: function() {
-          return console.error('Districts loading error');
+      add_districts_on_map = function() {
+        var district, districts, placemarks;
+        districts = get_districts();
+        placemarks = [];
+        for (district in districts) {
+          district = districts[district];
+          placemarks.push(new ymaps.Placemark([district.lat, district.lng], {
+            hasBalloon: false,
+            hasHint: false,
+            iconContent: '<div class="cs-elections-map-district-placemark-content' + (parseInt(district.violations) ? ' violations' : '') + '">' + cs.Language.district_map_content(district.district) + '</div>'
+          }, {
+            iconLayout: 'default#imageWithContent',
+            iconImageHref: '/components/modules/Elections/includes/img/map-districts.png',
+            iconImageSize: [81, 82],
+            iconImageOffset: [-40, -41],
+            iconImageClipRect: [[81 * district.violations, 0], [81 * (district.violations + 1), 0]],
+            iconImageShape: districts_icons_shape
+          }));
         }
-      });
+        districts_clusterer.removeAll();
+        return districts_clusterer.add(placemarks);
+      };
+      if (!get_districts(true)) {
+        $.ajax({
+          url: 'api/Districts',
+          type: 'get',
+          data: null,
+          success: function(districts) {
+            localStorage.setItem('districts', JSON.stringify(districts));
+            return add_districts_on_map();
+          },
+          error: function() {
+            return console.error('Districts loading error');
+          }
+        });
+      } else {
+        add_districts_on_map();
+        $.ajax({
+          url: 'api/Districts?fields=violations',
+          type: 'get',
+          data: null,
+          success: function(violations_loaded) {
+            var district, districts, update, violations;
+            violations = {};
+            (function() {
+              var d, _i, _len;
+              for (_i = 0, _len = violations_loaded.length; _i < _len; _i++) {
+                d = violations_loaded[_i];
+                violations[d.id] = d.violations;
+              }
+            })();
+            districts = get_districts();
+            update = false;
+            for (district in districts) {
+              update = update || (districts[district].violations === violations[districts[district].id]);
+              districts[district].violations = violations[districts[district].id];
+            }
+            if (update) {
+              localStorage.setItem('districts', JSON.stringify(districts));
+              return add_districts_on_map();
+            }
+          },
+          error: function() {
+            return console.error('Districts loading error');
+          }
+        });
+      }
       if (!get_precincts(true)) {
         $.ajax({
           url: 'api/Precincts',
           type: 'get',
           data: null,
-          success: function(precincts_loaded) {
-            var precincts;
-            precincts = precincts_loaded;
+          success: function(precincts) {
             localStorage.setItem('precincts', JSON.stringify(precincts));
             return add_precincts_on_map();
           },

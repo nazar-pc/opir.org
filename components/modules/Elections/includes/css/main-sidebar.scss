@@ -52,6 +52,26 @@
 		width         : 280px;
 	}
 
+	.cs-elections-precincts-search-results article {
+		cursor  : pointer;
+		padding : 10px 20px;
+		width   : 320px;
+
+		&:hover {
+			background : #2a3036;
+		}
+
+		h3 {
+			font-weight : bold;
+			margin      : 0;
+		}
+
+		p {
+			font-size : 14px;
+			margin    : 0;
+		}
+	}
+
 	.cs-elections-mobile-apps {
 		a {
 			border-left : 42px solid #e0e0e0;

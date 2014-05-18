@@ -124,6 +124,11 @@ $ ->
 			if check
 				return !!precincts
 			if precincts then JSON.parse(precincts) else {}
+		get_districts		= (check) ->
+			districts			= localStorage.getItem('districts')
+			if check
+				return !!districts
+			if districts then JSON.parse(districts) else {}
 		filter_precincts	= (precincts) ->
 			bounds	= map.getBounds()
 			precincts.filter (precinct) ->
@@ -157,45 +162,73 @@ $ ->
 			precincts_clusterer.removeAll()
 			precincts_clusterer.add(placemarks)
 			loading('hide')
-		$.ajax(
-			url			: 'api/Districts'
-			type		: 'get'
-			data		: null
-			success		: (districts) ->
-				placemarks	= []
-				for district, district of districts
-					placemarks.push(
-						new ymaps.Placemark(
-							[district.lat, district.lng]
-							{
-								hasBalloon	: false
-								hasHint		: false
-								iconContent	: '<div class="cs-elections-map-district-placemark-content'+(if parseInt(district.violations) then ' violations' else '')+'">'+cs.Language.district_map_content(district.district)+'</div>'
-							}
-							{
-								iconLayout			: 'default#imageWithContent'
-								iconImageHref		: '/components/modules/Elections/includes/img/map-districts.png'
-								iconImageSize		: [81, 82]
-								iconImageOffset		: [-40, -41]
-								iconImageClipRect	: [
-									[81 * district.violations, 0],
-									[81 * (district.violations + 1), 0]
-								]
-								iconImageShape		: districts_icons_shape
-							}
-						)
+		add_districts_on_map	= ->
+			districts	= get_districts()
+			placemarks	= []
+			for district, district of districts
+				placemarks.push(
+					new ymaps.Placemark(
+						[district.lat, district.lng]
+						{
+							hasBalloon	: false
+							hasHint		: false
+							iconContent	: '<div class="cs-elections-map-district-placemark-content'+(if parseInt(district.violations) then ' violations' else '')+'">'+cs.Language.district_map_content(district.district)+'</div>'
+						}
+						{
+							iconLayout			: 'default#imageWithContent'
+							iconImageHref		: '/components/modules/Elections/includes/img/map-districts.png'
+							iconImageSize		: [81, 82]
+							iconImageOffset		: [-40, -41]
+							iconImageClipRect	: [
+								[81 * district.violations, 0],
+								[81 * (district.violations + 1), 0]
+							]
+							iconImageShape		: districts_icons_shape
+						}
 					)
-				districts_clusterer.add(placemarks)
-			error		: ->
-				console.error('Districts loading error')
-		)
+				)
+			districts_clusterer.removeAll()
+			districts_clusterer.add(placemarks)
+		if !get_districts(true)
+			$.ajax(
+				url			: 'api/Districts'
+				type		: 'get'
+				data		: null
+				success		: (districts) ->
+					localStorage.setItem('districts', JSON.stringify(districts))
+					add_districts_on_map()
+				error		: ->
+					console.error('Districts loading error')
+			)
+		else
+			add_districts_on_map()
+			$.ajax(
+				url			: 'api/Districts?fields=violations'
+				type		: 'get'
+				data		: null
+				success		: (violations_loaded) ->
+					violations	= {}
+					do ->
+						for d in violations_loaded
+							violations[d.id]	= d.violations
+						return
+					districts	= get_districts()
+					update		= false
+					for district of districts
+						update							= update || (districts[district].violations == violations[districts[district].id])
+						districts[district].violations	= violations[districts[district].id]
+					if update
+						localStorage.setItem('districts', JSON.stringify(districts))
+						add_districts_on_map()
+				error		: ->
+					console.error('Districts loading error')
+			)
 		if !get_precincts(true)
 			$.ajax(
 				url			: 'api/Precincts'
 				type		: 'get'
 				data		: null
-				success		: (precincts_loaded) ->
-					precincts	= precincts_loaded
+				success		: (precincts) ->
 					localStorage.setItem('precincts', JSON.stringify(precincts))
 					add_precincts_on_map()
 				error		: ->

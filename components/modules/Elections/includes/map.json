@@ -5,6 +5,7 @@
 		"main-sidebar.css",
 		"opir.og-info.js",
 		"help-initiative.js",
-		"map.js"
+		"map.js",
+		"main-sidebar.js"
 	]
 }
