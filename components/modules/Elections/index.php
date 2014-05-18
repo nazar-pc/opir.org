@@ -30,7 +30,7 @@ $Page->link([
 $Page->Header =
 	h::{'div.cs-elections-logo'}(
 		h::{'a[href=/] img'}([
-			'src' => "components/modules/Elections/includes/img/logo.png"
+			'src' => "components/modules/Elections/includes/img/logo-$L->clang.png"
 		])
 	).
 	h::{'nav.cs-elections-switch-language'}(
