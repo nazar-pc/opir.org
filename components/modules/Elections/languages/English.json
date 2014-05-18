@@ -1,4 +1,13 @@
 {
-	"help_initiative"		: "Help initiative",
-	"district_map_content"	: "District<br>#%s"
+	"help_initiative"				: "Help initiative",
+	"district_map_content"			: "District<br>#%s",
+	"precincts_search"				: "Precincts search",
+	"number_or_address"				: "Number or address",
+	"mobile_apps"					: "Mobile Apps",
+	"download_in"					: "Download in %s",
+	"contacts"						: "Contacts",
+	"map_legend"					: "Map legend",
+	"precincts_with_violations"		: " - Precincts with messages",
+	"precincts_without_violations"	: " - Precincts without messages",
+	"soon"							: "Soon"
 }

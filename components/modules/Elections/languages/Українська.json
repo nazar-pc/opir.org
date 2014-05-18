@@ -1,4 +1,13 @@
 {
-	"help_initiative"		: "Допомогти ініціативі",
-	"district_map_content"	: "Округ<br>№%s"
+	"help_initiative"				: "Допомогти ініціативі",
+	"district_map_content"			: "Округ<br>№%s",
+	"precincts_search"				: "Пошук дільниці",
+	"number_or_address"				: "Номер або адреса",
+	"mobile_apps"					: "Мобільні додатки",
+	"download_in"					: "Завантажити в %s",
+	"contacts"						: "Контакти",
+	"map_legend"					: "Позначення на карті",
+	"precincts_with_violations"		: " - Є повідомлення з дільниці",
+	"precincts_without_violations"	: " - Дільниця без повідомлень",
+	"soon"							: "Скоро"
 }

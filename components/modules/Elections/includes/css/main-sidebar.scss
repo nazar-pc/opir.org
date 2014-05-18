@@ -1,0 +1,143 @@
+.cs-elections-main-sidebar {
+	background : #363e45;
+	color      : #fff;
+	bottom     : 0;
+	font-size  : 16px;
+	overflow-x : hidden;
+	overflow-y : auto;
+	position   : absolute;
+	right      : 0;
+	top        : 75px;
+	width      : 320px;
+
+	.cs-elections-socials {
+		padding : 15px 12px;
+
+		> div {
+			display : inline-block;
+		}
+
+		.b-share-btn__wrap a {
+			border-radius : 0;
+
+			.b-share-icon {
+				background-color : rgba(0, 0, 0, .1);
+				border           : 2px solid transparent;
+				height           : 28px;
+				width            : 28px;
+			}
+
+			.b-share-counter {
+				line-height  : 22px;
+				padding-left : 5px;
+			}
+		}
+	}
+
+	> h2 {
+		font-size      : 18px;
+		font-weight    : bold;
+		margin-bottom  : 0;
+		padding        : 10px;
+		text-align     : center;
+		text-transform : uppercase;
+	}
+
+	.cs-elections-precincts-search {
+		border        : none;
+		border-radius : 0;
+		color         : #444444;
+		margin        : 10px 20px;
+		padding       : 7px;
+		width         : 280px;
+	}
+
+	.cs-elections-mobile-apps {
+		a {
+			border-left : 42px solid #e0e0e0;
+			color       : #6a6a6a;
+			display     : block;
+			background  : #f2f2f2;
+			height      : 42px;
+			line-height : 42px;
+			margin-left : 20px;
+			margin-top  : 8px;
+			position    : relative;
+			text-align  : center;
+			width       : 280px;
+
+			&:hover {
+				background : #e0e0e0;
+			}
+
+			&:before {
+				background : url(../img/applications.png);
+				content    : '';
+				display    : inline-block;
+				height     : 29px;
+				left       : -37px;
+				position   : absolute;
+				top        : 7px;
+				width      : 31px;
+			}
+
+			&:nth-of-type(1):before {
+				background-position : -62px 0;
+			}
+
+			&:nth-of-type(2):before {
+				background-position : -31px 0;
+			}
+		}
+	}
+
+	.cs-elections-contacts {
+		margin-left : 20px;
+
+		a {
+			display : block;
+			padding : 4px;
+
+			span {
+				border        : 2px solid #9ea0a4;
+				border-radius : 50%;
+				color         : #9ea0a4;
+				height        : 32px;
+				margin-right  : 10px;
+				padding       : 6px;
+				width         : 32px;
+
+			}
+
+			&:first-child {
+				cursor : default;
+
+				span {
+					padding : 7px;
+				}
+			}
+		}
+	}
+
+	.cs-elections-map-legend {
+		margin-left : 20px;
+
+		div {
+			margin-top : 5px;
+
+			&:before {
+				background     : url(../img/map-legend.png);
+				content        : '';
+				display        : inline-block;
+				height         : 37px;
+				margin-right   : 10px;
+				vertical-align : middle;
+				width          : 31px;
+			}
+
+			&:nth-child(1):before {
+				background-position : -31px 0;
+			}
+		}
+	}
+}
