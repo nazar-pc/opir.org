@@ -36,7 +36,7 @@
     }).on('mouseleave', '[data-id]', function() {
       return clearTimeout(show_timeout);
     }).on('click', '[data-id]', function() {
-      var $this, id, precinct, _ref;
+      var $this, id, precinct, streams_container, violations_container, _ref;
       $this = $(this);
       id = parseInt($this.data('id'));
       _ref = JSON.parse(localStorage.getItem('precincts'));
@@ -46,12 +46,59 @@
           break;
         }
       }
-      precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + "</h2>\n<p>" + $this.children('p').html() + "</p>").animate({
+      precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + "</h2>\n<p>" + $this.children('p').html() + ("</p>\n<h2>" + L.video_stream + "</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>" + L.violations + "</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
         width: 320
       }, 'fast');
-      return map_container.animate({
+      map_container.animate({
         left: 320
       }, 'fast');
+      streams_container = $('.cs-elections-precinct-sidebar-streams');
+      $.ajax({
+        url: "api/Precincts/" + id + "/streams",
+        type: 'get',
+        data: null,
+        success: function(streams) {
+          var content, stream, _i, _len;
+          content = '';
+          for (_i = 0, _len = streams.length; _i < _len; _i++) {
+            stream = streams[_i];
+            content += "<iframe src=\"" + stream.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe>";
+          }
+          if (content) {
+            return streams_container.html(content);
+          } else {
+            return streams_container.hide().prev().hide();
+          }
+        },
+        error: function() {
+          return streams_container.hide().prev().hide();
+        }
+      });
+      violations_container = $('.cs-elections-precinct-sidebar-violations');
+      return $.ajax({
+        url: "api/Precincts/" + id + "/violations",
+        type: 'get',
+        data: null,
+        success: function(violations) {
+          var content, images, text, video, violation, _i, _len;
+          content = '';
+          for (_i = 0, _len = violations.length; _i < _len; _i++) {
+            violation = violations[_i];
+            text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';
+            images = violation.images.length ? "<img src=\"" + violation.images[0] + "\">" : '';
+            video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
+            content += "<article>\n	" + text + "\n	" + images + "\n	" + video + "\n</article>";
+          }
+          if (content) {
+            return violations_container.html(content);
+          } else {
+            return violations_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+          }
+        },
+        error: function() {
+          return violations_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+        }
+      });
     });
     return precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-close', function() {
       precinct_sidebar.animate({

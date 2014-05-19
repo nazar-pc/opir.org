@@ -15,18 +15,62 @@
 		cursor    : pointer;
 		font-size : 20px;
 		margin    : 10px 0 0 290px;
+
+		&:hover {
+			color : #777b80;
+		}
 	}
 
 	> h2 {
 		font-size      : 18px;
 		font-weight    : bold;
-		margin         : -15px 0 0;
-		padding        : 0 10px 10px;
+		margin         : 0;
+		padding        : 10px 20px;
 		text-align     : center;
 		text-transform : uppercase;
+
+		&:first-of-type {
+			margin-top : -25px;
+		}
 	}
 
 	> p {
 		margin : 0 20px;
+	}
+
+	.uk-icon-spinner {
+		font-size  : 20px;
+		text-align : center;
+		width      : 100%;
+	}
+
+	.cs-elections-precinct-sidebar-streams {
+		margin-left : 20px;
+		width       : 280px;
+
+		iframe {
+			height : 180px;
+			width  : 280px;
+		}
+	}
+
+	.cs-elections-precinct-sidebar-violations {
+		article {
+			cursor  : pointer;
+			padding : 10px 20px;
+
+			&:hover {
+				background : #2a3036;
+			}
+
+			iframe {
+				height : 180px;
+				width  : 280px;
+			}
+
+			img {
+				width : 280px;
+			}
+		}
 	}
 }

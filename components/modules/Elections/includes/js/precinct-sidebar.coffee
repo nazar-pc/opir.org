@@ -46,6 +46,14 @@ $ ->
 						<i class="cs-elections-precinct-sidebar-close uk-icon-times"></i>
 						<h2>""" + L.precint_number(precinct.number) + """</h2>
 						<p>""" + $this.children('p').html() + """</p>
+						<h2>#{L.video_stream}</h2>
+						<div class="cs-elections-precinct-sidebar-streams">
+							<i class="uk-icon-spinner uk-icon-spin"></i>
+						</div>
+						<h2>#{L.violations}</h2>
+						<section class="cs-elections-precinct-sidebar-violations">
+							<i class="uk-icon-spinner uk-icon-spin"></i>
+						</section>
 					""")
 					.animate(
 						width	: 320
@@ -54,6 +62,63 @@ $ ->
 				map_container.animate(
 					left	: 320
 					'fast'
+				)
+				streams_container = $('.cs-elections-precinct-sidebar-streams')
+				$.ajax(
+					url		: "api/Precincts/#{id}/streams"
+					type	: 'get'
+					data	: null
+					success	: (streams) ->
+						content = ''
+						for stream in streams
+							content += """<iframe src="#{stream.stream_url}" frameborder="0" scrolling="no"></iframe>"""
+						if content
+							streams_container.html(content)
+						else
+							streams_container
+								.hide()
+								.prev()
+									.hide()
+					error	: ->
+						streams_container
+							.hide()
+							.prev()
+								.hide()
+				)
+				violations_container = $('.cs-elections-precinct-sidebar-violations')
+				$.ajax(
+					url		: "api/Precincts/#{id}/violations"
+					type	: 'get'
+					data	: null
+					success	: (violations) ->
+						content = ''
+						for violation in violations
+							text =
+								if violation.text
+									"<p>" + violation.text.substr(0, 200) + "</p>"
+								else
+									''
+							images =
+								if violation.images.length
+									"""<img src="#{violation.images[0]}">"""
+								else
+									''
+							video =
+								if violation.video
+									"""<iframe src="#{violation.video}" frameborder="0" scrolling="no"></iframe>"""
+								else
+									''
+							content += """<article>
+								#{text}
+								#{images}
+								#{video}
+							</article>"""
+						if content
+							violations_container.html(content)
+						else
+							violations_container.html("""<p class="uk-text-center">#{L.empty}</p>""")
+					error	: ->
+						violations_container.html("""<p class="uk-text-center">#{L.empty}</p>""")
 				)
 		)
 	precinct_sidebar

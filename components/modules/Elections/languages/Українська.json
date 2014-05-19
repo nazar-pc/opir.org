@@ -11,5 +11,7 @@
 	"precincts_without_violations"	: " - Дільниця без повідомлень",
 	"soon"							: "Скоро",
 	"no_precincts_found"			: "Дільниць не знайдено",
-	"precint_number"				: "Дільниця №%s"
+	"precint_number"				: "Дільниця №%s",
+	"video_stream"					: "Відео стрім",
+	"violations"					: "Повідомлення"
 }

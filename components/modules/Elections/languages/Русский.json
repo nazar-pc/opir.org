@@ -11,5 +11,7 @@
 	"precincts_without_violations"	: " - Участок без сообщений",
 	"soon"							: "Скоро",
 	"no_precincts_found"			: "Участков не найдено",
-	"precint_number"				: "Участок №%s"
+	"precint_number"				: "Участок №%s",
+	"video_stream"					: "Видео стрим",
+	"violations"					: "Сообщения"
 }

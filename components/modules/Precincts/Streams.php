@@ -43,7 +43,14 @@ class Streams {
 	protected function construct () {
 		$this->cache                    = new Prefix('precincts/streams');
 		$this->data_model['stream_url'] = function ($stream_url) {
-			return preg_match("#^(http[s]?://)#", $stream_url) ? $stream_url : ''; //TODO: check for allowed streaming services, probably youtube only
+			if (preg_match('/ustream.tv\/(channel|embed)\/([0-9]+)/', $stream_url, $m)) {
+				$stream_url	= "https://www.ustream.tv/embed/$m[2]";
+			} elseif (preg_match('/(youtube.com\/embed\/|youtube.com\/watch\?v=)([0-9a-z\-]+)/i', $stream_url, $m)) {
+				$stream_url = "https://www.youtube.com/embed/$m[2]";
+			} else {
+				$stream_url = '';
+			}
+			return $stream_url;
 		};
 	}
 	protected function cdb () {

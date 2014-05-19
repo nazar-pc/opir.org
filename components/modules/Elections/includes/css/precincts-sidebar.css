@@ -14,12 +14,36 @@
     cursor: pointer;
     font-size: 20px;
     margin: 10px 0 0 290px; }
+    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-close:hover {
+      color: #777b80; }
   .cs-elections-precinct-sidebar > h2 {
     font-size: 18px;
     font-weight: bold;
-    margin: -15px 0 0;
-    padding: 0 10px 10px;
+    margin: 0;
+    padding: 10px 20px;
     text-align: center;
     text-transform: uppercase; }
+    .cs-elections-precinct-sidebar > h2:first-of-type {
+      margin-top: -25px; }
   .cs-elections-precinct-sidebar > p {
     margin: 0 20px; }
+  .cs-elections-precinct-sidebar .uk-icon-spinner {
+    font-size: 20px;
+    text-align: center;
+    width: 100%; }
+  .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-streams {
+    margin-left: 20px;
+    width: 280px; }
+    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-streams iframe {
+      height: 180px;
+      width: 280px; }
+  .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article {
+    cursor: pointer;
+    padding: 10px 20px; }
+    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article:hover {
+      background: #2a3036; }
+    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article iframe {
+      height: 180px;
+      width: 280px; }
+    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article img {
+      width: 280px; }

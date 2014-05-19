@@ -11,5 +11,7 @@
 	"precincts_without_violations"	: " - Precincts without messages",
 	"soon"							: "Soon",
 	"no_precincts_found"			: "No precincts found",
-	"precint_number"				: "Precinct #%s"
+	"precint_number"				: "Precinct #%s",
+	"video_stream"					: "Video stream",
+	"violations"					: "Messages"
 }
