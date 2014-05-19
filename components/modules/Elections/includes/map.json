@@ -3,9 +3,11 @@
 		"header.css",
 		"map.css",
 		"main-sidebar.css",
+		"precinct-sidebar.css",
 		"opir.og-info.js",
 		"help-initiative.js",
 		"map.js",
-		"main-sidebar.js"
+		"main-sidebar.js",
+		"precinct-sidebar.js"
 	]
 }
