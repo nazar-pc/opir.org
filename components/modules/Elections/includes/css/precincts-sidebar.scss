@@ -1,0 +1,32 @@
+.cs-elections-precinct-sidebar {
+	background : #363e45;
+	color      : #fff;
+	bottom     : 0;
+	font-size  : 16px;
+	left       : 0;
+	overflow-x : hidden;
+	overflow-y : auto;
+	position   : absolute;
+	top        : 75px;
+	width      : 0;
+
+	.cs-elections-precinct-sidebar-close {
+		color     : #686c70;
+		cursor    : pointer;
+		font-size : 20px;
+		margin    : 10px 0 0 290px;
+	}
+
+	> h2 {
+		font-size      : 18px;
+		font-weight    : bold;
+		margin         : -15px 0 0;
+		padding        : 0 10px 10px;
+		text-align     : center;
+		text-transform : uppercase;
+	}
+
+	> p {
+		margin : 0 20px;
+	}
+}

@@ -67,6 +67,7 @@ $Page->content(
 	h::{'section.cs-elections-help-initiative-modal[style=display:none] article'}(
 		Help::get()
 	).
+	h::{'aside.cs-elections-precinct-sidebar'}().
 	h::{'aside.cs-elections-main-sidebar'}(
 		h::{'div.cs-elections-socials'}(
 			'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="facebook" data-yashareLink="https://www.facebook.com/opir.org" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Elections/includes/img/share.png"></div>'.
