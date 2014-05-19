@@ -75,15 +75,9 @@ $ ->
 						if content
 							streams_container.html(content)
 						else
-							streams_container
-								.hide()
-								.prev()
-									.hide()
+							streams_container.html("""<p class="uk-text-center">#{L.empty}</p>""")
 					error	: ->
-						streams_container
-							.hide()
-							.prev()
-								.hide()
+						streams_container.html("""<p class="uk-text-center">#{L.empty}</p>""")
 				)
 				violations_container = $('.cs-elections-precinct-sidebar-violations')
 				$.ajax(
