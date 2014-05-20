@@ -393,7 +393,7 @@ body {
         font-size: 18px;
         margin: 10px auto;
         padding: 4px !important;
-        width: 450px;
+        width: 450px !important;
         height: auto !important; }
     body > section > form:first-child > button {
       background: #0072c7;
