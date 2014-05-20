@@ -74,10 +74,12 @@ body {
 				display       : block;
 				margin        : 8px auto;
 				padding       : 10px;
+				text-shadow   : none;
 				width         : 450px;
 
 				&:hover,
 				&:focus {
+					color      : #fff;
 					background : #0069ba;
 				}
 			}

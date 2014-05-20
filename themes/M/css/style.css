@@ -403,8 +403,10 @@ body {
       display: block;
       margin: 8px auto;
       padding: 10px;
+      text-shadow: none;
       width: 450px; }
       body > section > form:first-child > button:hover, body > section > form:first-child > button:focus {
+        color: #fff;
         background: #0069ba; }
 
 #map {
