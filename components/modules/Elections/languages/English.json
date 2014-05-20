@@ -13,5 +13,10 @@
 	"no_precincts_found"			: "No precincts found",
 	"precint_number"				: "Precinct #%s",
 	"video_stream"					: "Video stream",
-	"violations"					: "Messages"
+	"violations"					: "Messages",
+	"add_violation"					: "Add message",
+	"violation_text"				: "Message text",
+	"photo"							: "Photo",
+	"or"							: "or",
+	"video"							: "Video"
 }

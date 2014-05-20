@@ -2,13 +2,14 @@
 (function() {
 
   $(function() {
-    var L, map_container, precinct_sidebar, search_results, show_timeout;
+    var L, add_violation_sidebar, map_container, precinct_sidebar, search_results, show_timeout;
     if (cs.module !== 'Elections') {
       return;
     }
     map_container = $('#map');
     search_results = $('.cs-elections-precincts-search-results');
     precinct_sidebar = $('.cs-elections-precinct-sidebar');
+    add_violation_sidebar = $('.cs-elections-add-violation-sidebar');
     show_timeout = 0;
     L = cs.Language;
     search_results.on('mouseenter', '[data-id]', function() {
@@ -36,7 +37,7 @@
     }).on('mouseleave', '[data-id]', function() {
       return clearTimeout(show_timeout);
     }).on('click', '[data-id]', function() {
-      var $this, id, precinct, streams_container, violations_container, _ref;
+      var $this, id, is_open, precinct, streams_container, violations_container, _ref;
       $this = $(this);
       id = parseInt($this.data('id'));
       _ref = JSON.parse(localStorage.getItem('precincts'));
@@ -46,12 +47,18 @@
           break;
         }
       }
-      precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + "</h2>\n<p>" + $this.children('p').html() + ("</p>\n<h2>" + L.video_stream + "</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>" + L.violations + "</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
+      is_open = precinct_sidebar.data('open');
+      precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + "</h2>\n<p>" + $this.children('p').html() + ("</p>\n<h2>" + L.video_stream + "</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>\n	<!--<button class=\"cs-elections-precinct-sidebar-add-violation uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>-->\n	" + L.violations + "\n</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
         width: 320
-      }, 'fast');
-      map_container.animate({
-        left: 320
-      }, 'fast');
+      }, 'fast').data('open', 1);
+      if (!is_open) {
+        add_violation_sidebar.animate({
+          left: '+=320'
+        }, 'fast');
+        map_container.animate({
+          left: '+=320'
+        }, 'fast');
+      }
       streams_container = $('.cs-elections-precinct-sidebar-streams');
       $.ajax({
         url: "api/Precincts/" + id + "/streams",
@@ -103,9 +110,12 @@
     return precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-close', function() {
       precinct_sidebar.animate({
         width: 0
+      }, 'fast').data('open', 0);
+      add_violation_sidebar.animate({
+        left: '-=320'
       }, 'fast');
       return map_container.animate({
-        left: 0
+        left: '-=320'
       }, 'fast');
     });
   });

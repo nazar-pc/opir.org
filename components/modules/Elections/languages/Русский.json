@@ -13,5 +13,10 @@
 	"no_precincts_found"			: "Участков не найдено",
 	"precint_number"				: "Участок №%s",
 	"video_stream"					: "Видео стрим",
-	"violations"					: "Сообщения"
+	"violations"					: "Сообщения",
+	"add_violation"					: "Добавить сообщение",
+	"violation_text"				: "Текст сообщения",
+	"photo"							: "Фото",
+	"or"							: "или",
+	"video"							: "Видео"
 }

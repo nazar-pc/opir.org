@@ -13,5 +13,10 @@
 	"no_precincts_found"			: "Дільниць не знайдено",
 	"precint_number"				: "Дільниця №%s",
 	"video_stream"					: "Відео стрім",
-	"violations"					: "Повідомлення"
+	"violations"					: "Повідомлення",
+	"add_violation"					: "Додати повідомлення",
+	"violation_text"				: "Текст повідомлення",
+	"photo"							: "Фото",
+	"or"							: "або",
+	"video"							: "Відео"
 }

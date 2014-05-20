@@ -1,11 +1,12 @@
 $ ->
 	if cs.module != 'Elections'
 		return
-	map_container		= $('#map')
-	search_results		= $('.cs-elections-precincts-search-results')
-	precinct_sidebar	= $('.cs-elections-precinct-sidebar')
-	show_timeout		= 0
-	L					= cs.Language
+	map_container			= $('#map')
+	search_results			= $('.cs-elections-precincts-search-results')
+	precinct_sidebar		= $('.cs-elections-precinct-sidebar')
+	add_violation_sidebar	= $('.cs-elections-add-violation-sidebar')
+	show_timeout			= 0
+	L						= cs.Language
 	search_results
 		.on(
 			'mouseenter'
@@ -41,6 +42,7 @@ $ ->
 				for precinct, precinct of JSON.parse(localStorage.getItem('precincts'))
 					if precinct.id == id
 						break
+				is_open = precinct_sidebar.data('open')
 				precinct_sidebar
 					.html("""
 						<i class="cs-elections-precinct-sidebar-close uk-icon-times"></i>
@@ -50,7 +52,10 @@ $ ->
 						<div class="cs-elections-precinct-sidebar-streams">
 							<i class="uk-icon-spinner uk-icon-spin"></i>
 						</div>
-						<h2>#{L.violations}</h2>
+						<h2>
+							<!--<button class="cs-elections-precinct-sidebar-add-violation uk-icon-plus" data-id="#{precinct.id}"></button>-->
+							#{L.violations}
+						</h2>
 						<section class="cs-elections-precinct-sidebar-violations">
 							<i class="uk-icon-spinner uk-icon-spin"></i>
 						</section>
@@ -59,10 +64,16 @@ $ ->
 						width	: 320
 						'fast'
 					)
-				map_container.animate(
-					left	: 320
-					'fast'
-				)
+					.data('open', 1)
+				if !is_open
+					add_violation_sidebar.animate(
+						left	: '+=320'
+						'fast'
+					)
+					map_container.animate(
+						left	: '+=320'
+						'fast'
+					)
 				streams_container = $('.cs-elections-precinct-sidebar-streams')
 				$.ajax(
 					url		: "api/Precincts/#{id}/streams"
@@ -120,12 +131,18 @@ $ ->
 			'click'
 			'.cs-elections-precinct-sidebar-close'
 			->
-				precinct_sidebar.animate(
-					width	: 0
+				precinct_sidebar
+					.animate(
+						width	: 0
+						'fast'
+					)
+					.data('open', 0)
+				add_violation_sidebar.animate(
+					left	: '-=320'
 					'fast'
 				)
 				map_container.animate(
-					left	: 0
+					left	: '-=320'
 					'fast'
 				)
 		)

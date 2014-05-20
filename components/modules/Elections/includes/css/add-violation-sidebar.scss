@@ -1,0 +1,92 @@
+.cs-elections-add-violation-sidebar {
+	background : #2a3036;
+	bottom     : 0;
+	font-size  : 16px;
+	left       : 0;
+	overflow-x : hidden;
+	overflow-y : auto;
+	position   : absolute;
+	top        : 75px;
+	width      : 0;
+
+	.cs-elections-add-violation-sidebar-close {
+		color     : #686c70;
+		cursor    : pointer;
+		font-size : 20px;
+		margin    : 10px 0 0 290px;
+
+		&:hover {
+			color : #777b80;
+		}
+	}
+
+	> h2 {
+		color          : #fff;
+		font-size      : 18px;
+		font-weight    : bold;
+		margin         : -25px 0 0;
+		padding        : 10px 20px;
+		text-align     : center;
+		text-transform : uppercase;
+	}
+
+	textarea {
+		border      : none;
+		margin-left : 20px;
+		height      : 135px;
+		padding     : 8px;
+		width       : 280px;
+	}
+
+	.cs-elections-add-violation-add-image,
+	.cs-elections-add-violation-add-video {
+		border      : none;
+		border-left : 42px solid #e0e0e0;
+		color       : #6a6a6a;
+		display     : inline-block;
+		background  : #f2f2f2;
+		height      : 40px;
+		line-height : 40px;
+		margin-top  : 8px;
+		position    : relative;
+		text-align  : center;
+		width       : 110px;
+
+		&:hover {
+			background : #e0e0e0;
+		}
+
+		i {
+			display   : inline-block;
+			font-size : 20px;
+			left      : -32px;
+			position  : absolute;
+			top       : 10px;
+		}
+	}
+
+	.cs-elections-add-violation-add-image {
+		margin-left : 20px;
+
+		& + span {
+			color          : #95979a;
+			display        : inline-block;
+			text-align     : center;
+			vertical-align : middle;
+			width          : 52px;
+		}
+	}
+
+	.cs-elections-add-violation-add {
+		background : #0072c7;
+		border     : none;
+		color      : #fff;
+		margin     : 8px 0 0 20px;
+		padding    : 10px;
+		width      : 280px;
+
+		&:hover {
+			background : #0069ba;
+		}
+	}
+}

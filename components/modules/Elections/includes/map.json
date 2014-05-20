@@ -4,10 +4,12 @@
 		"map.css",
 		"main-sidebar.css",
 		"precinct-sidebar.css",
+		"add-violation-sidebar.css",
 		"opir.og-info.js",
 		"help-initiative.js",
 		"map.js",
 		"main-sidebar.js",
-		"precinct-sidebar.js"
+		"precinct-sidebar.js",
+		"add-violation-sidebar.js"
 	]
 }

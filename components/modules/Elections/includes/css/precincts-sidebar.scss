@@ -15,6 +15,8 @@
 		cursor    : pointer;
 		font-size : 20px;
 		margin    : 10px 0 0 290px;
+		position  : relative;
+		z-index   : 1;
 
 		&:hover {
 			color : #777b80;
@@ -24,8 +26,8 @@
 	> h2 {
 		font-size      : 18px;
 		font-weight    : bold;
-		margin         : 0;
 		padding        : 10px 20px;
+		position       : relative;
 		text-align     : center;
 		text-transform : uppercase;
 
@@ -42,6 +44,22 @@
 		font-size  : 20px;
 		text-align : center;
 		width      : 100%;
+	}
+
+	.cs-elections-precinct-sidebar-add-violation {
+		background : #0072c7;
+		cursor     : pointer;
+		border     : none;
+		font-size  : 18px;
+		height     : 30px;
+		position   : absolute;
+		right      : 20px;
+		top        : 10px;
+		width      : 30px;
+
+		&:hover {
+			background : #0069ba;
+		}
 	}
 
 	.cs-elections-precinct-sidebar-streams {
