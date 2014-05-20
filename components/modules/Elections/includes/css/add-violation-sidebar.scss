@@ -46,6 +46,11 @@
 		width       : 280px;
 	}
 
+	> img {
+		margin : 8px 20px 0;
+		width  : 280px;
+	}
+
 	.cs-elections-add-violation-add-image,
 	.cs-elections-add-violation-add-video {
 		border      : none;
@@ -85,6 +90,11 @@
 		}
 	}
 
+	iframe {
+		margin : 8px 0 0 20px;
+		width  : 280px;
+	}
+
 	.cs-elections-add-violation-add {
 		background : #0072c7;
 		border     : none;
@@ -92,6 +102,38 @@
 		margin     : 8px 0 0 20px;
 		padding    : 10px;
 		width      : 280px;
+
+		&:hover {
+			background : #0069ba;
+		}
+	}
+}
+
+.cs-elections-add-violation-add-video-modal {
+	h2 {
+		text-align : center;
+	}
+
+	input {
+		background    : #fff !important;
+		border        : 1px solid #cacaca !important;
+		border-radius : 0 !important;
+		display       : block;
+		font-size     : 18px;
+		margin        : 10px auto;
+		padding       : 4px !important;
+		width         : 450px;
+		height        : auto !important;
+	}
+
+	button {
+		background : #0072c7;
+		border     : none;
+		color      : #fff;
+		display    : block;
+		margin     : 8px auto;
+		padding    : 10px;
+		width      : 450px;
 
 		&:hover {
 			background : #0069ba;

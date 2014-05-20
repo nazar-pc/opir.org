@@ -61,7 +61,7 @@ $ ->
 							<i class="uk-icon-spinner uk-icon-spin"></i>
 						</div>
 						<h2>
-							<!--<button class="cs-elections-precinct-sidebar-add-violation uk-icon-plus" data-id="#{precinct.id}"></button>-->
+							<button class="cs-elections-precinct-sidebar-add-violation uk-icon-plus" data-id="#{precinct.id}"></button>
 							#{L.violations}
 						</h2>
 						<section class="cs-elections-precinct-sidebar-violations">

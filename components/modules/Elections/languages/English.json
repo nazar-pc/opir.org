@@ -18,5 +18,8 @@
 	"violation_text"				: "Message text",
 	"photo"							: "Photo",
 	"or"							: "or",
-	"video"							: "Video"
+	"video"							: "Video",
+	"youtube_or_ustream_video_link"	: "Link to video on youtube or ustream",
+	"incorrect_link"				: "Incorrect link",
+	"thank_you_for_your_message"	: "Thank you for your message!"
 }

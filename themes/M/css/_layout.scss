@@ -8,7 +8,8 @@
 @import "common_config";
 
 html {
-	height : 100%;
+	font-size : $base-font-size;
+	height    : 100%;
 }
 //Whole body
 body {

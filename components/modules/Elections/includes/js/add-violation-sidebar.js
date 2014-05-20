@@ -21,7 +21,7 @@
     add_violation_sidebar = $('.cs-elections-add-violation-sidebar');
     L = cs.Language;
     precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-add-violation', function() {
-      var is_open;
+      var add_image_button, id, is_open;
       if (!cs.is_user) {
         cs.elections.sign_in();
         return;
@@ -31,10 +31,65 @@
         width: 320
       }, 'fast').data('open', 1);
       if (!is_open) {
-        return map_container.animate({
+        map_container.animate({
           left: '+=320'
         }, 'fast');
       }
+      add_image_button = $('.cs-elections-add-violation-add-image');
+      cs.file_upload(add_image_button, function(files) {
+        var file, textarea, _i, _len, _results;
+        if (files.length) {
+          textarea = add_violation_sidebar.children('textarea');
+          _results = [];
+          for (_i = 0, _len = files.length; _i < _len; _i++) {
+            file = files[_i];
+            _results.push(textarea.after("<img src=\"" + file + "\" alt=\"\">"));
+          }
+          return _results;
+        }
+      }, null, null, true);
+      $('.cs-elections-add-violation-add-video').click(function() {
+        var modal;
+        modal = $.cs.simple_modal("<div class=\"cs-elections-add-violation-add-video-modal\">\n	<h2>" + L.video + "</h2>\n	<input placeholder=\"" + L.youtube_or_ustream_video_link + "\">\n	<button>" + L.add + "</button>\n</div>");
+        return modal.find('button').click(function() {
+          var match, video_url;
+          video_url = modal.find('input').val();
+          if (match = /ustream.tv\/(channel|embed)\/([0-9]+)/i.exec(video_url)) {
+            video_url = "https://www.ustream.tv/embed/" + match[2];
+          } else if (match = /ustream.tv\/(recorded|embed\/recorded)\/([0-9]+)/i.exec(video_url)) {
+            video_url = "https://www.ustream.tv/embed/recorded/" + match[2];
+          } else if (match = /(youtube.com\/embed\/|youtube.com\/watch\?v=)([0-9a-z\-]+)/i.exec(video_url)) {
+            video_url = "https://www.youtube.com/embed/" + match[2];
+          } else {
+            alert(L.bad_link);
+            return;
+          }
+          add_violation_sidebar.find('iframe').remove();
+          add_image_button.before("<iframe src=\"" + video_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe>");
+          return modal.hide().remove();
+        });
+      });
+      id = $(this).data('id');
+      return $('.cs-elections-add-violation-add').click(function() {
+        var images, video;
+        images = add_violation_sidebar.children('img').map(function() {
+          return $(this).attr('src');
+        }).get() || [];
+        video = add_violation_sidebar.children('iframe').attr('src') || '';
+        return $.ajax({
+          url: "api/Precincts/" + id + "/violations",
+          data: {
+            text: add_violation_sidebar.children('textarea').val(),
+            images: images,
+            video: video
+          },
+          type: 'post',
+          success: function() {
+            alert(L.thank_you_for_your_message);
+            return location.reload();
+          }
+        });
+      });
     });
     return add_violation_sidebar.on('click', '.cs-elections-add-violation-sidebar-close', function() {
       add_violation_sidebar.animate({

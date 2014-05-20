@@ -65,6 +65,8 @@
       background: #2a3036; }
     .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article iframe {
       height: 180px;
+      margin-top: 8px;
       width: 280px; }
     .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article img {
+      margin-top: 8px;
       width: 280px; }

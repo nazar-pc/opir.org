@@ -54,8 +54,10 @@ class Violations {
 			);
 		};
 		$this->data_model['video']  = function ($video) {
-			if (preg_match('/ustream.tv\/(channel|embed)\/([0-9]+)/', $video, $m)) {
+			if (preg_match('/ustream.tv\/(channel|embed)\/([0-9]+)/i', $video, $m)) {
 				$video	= "https://www.ustream.tv/embed/$m[2]";
+			} elseif (preg_match('/ustream.tv\/(recorded|embed\/recorded)\/([0-9]+)/i', $video, $m)) {
+				$video	= "https://www.ustream.tv/embed/recorded/$m[2]";
 			} elseif (preg_match('/(youtube.com\/embed\/|youtube.com\/watch\?v=)([0-9a-z\-]+)/i', $video, $m)) {
 				$video = "https://www.youtube.com/embed/$m[2]";
 			} else {
