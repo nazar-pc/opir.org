@@ -5,11 +5,13 @@
 		"main-sidebar.css",
 		"precinct-sidebar.css",
 		"add-violation-sidebar.css",
+		"sign-in.css",
 		"opir.org-info.js",
 		"help-initiative.js",
 		"map.js",
 		"main-sidebar.js",
 		"precinct-sidebar.js",
-		"add-violation-sidebar.js"
+		"add-violation-sidebar.js",
+		"sign-in.js"
 	]
 }

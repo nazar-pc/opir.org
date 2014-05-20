@@ -1,0 +1,95 @@
+/**
+ * @package        Elections
+ * @category       modules
+ * @author         Nazar Mokrynskyi <nazar@mokrynskyi.com>
+ * @copyright      Copyright (c) 2014, Nazar Mokrynskyi
+ * @license        MIT License, see license.txt
+ */
+.cs-elections-sign-in {
+	h2 ~ a {
+		background   : #155a98;
+		color        : #fff;
+		display      : block;
+		font-size    : 18px;
+		height       : 50px;
+		line-height  : 45px;
+		margin       : 10px auto;
+		padding-left : 50px;
+		position     : relative;
+		text-align   : center;
+		width        : 300px;
+
+		&:hover {
+			background : #17548e;
+		}
+
+		&:nth-of-type(2) {
+			background : #0c739f;
+
+			&:hover {
+				background : #0e6c96;
+			}
+		}
+
+		span {
+			background  : rgba(0, 0, 0, .07);
+			font-size   : 30px;
+			height      : 50px;
+			left        : 0;
+			line-height : 50px;
+			position    : absolute;
+			width       : 50px;
+		}
+	}
+
+	.cs-elections-sign-in-separator {
+		background    : #fff;
+		border        : 1px solid #cacaca;
+		border-radius : 50%;
+		color         : #cacaca;
+		display       : block;
+		height        : 47px;
+		line-height   : 45px;
+		margin        : 0 auto;
+		position      : relative;
+		text-align    : center;
+		width         : 47px;
+
+		&:before {
+			background : #cacaca;
+			content    : '';
+			display    : block;
+			left       : -178px;
+			height     : 1px;
+			position   : absolute;
+			top        : 23px;
+			width      : 400px;
+			z-index    : -1;
+		}
+	}
+
+	input {
+		background    : #fff;
+		border        : 1px solid #cacaca;
+		border-radius : 0;
+		display       : block;
+		font-size     : 18px;
+		margin        : 10px auto;
+		padding       : 8px;
+		width         : 300px;
+	}
+
+	button {
+		background    : #0072c7;
+		border-radius : 0;
+		display       : block;
+		font-size     : 18px;
+		margin        : 10px auto;
+		padding       : 3px;
+		width         : 300px;
+
+		&:hover {
+			background : #006dba;
+		}
+	}
+}

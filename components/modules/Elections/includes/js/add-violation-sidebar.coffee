@@ -10,16 +10,17 @@ $ ->
 	if cs.module != 'Elections'
 		return
 	map_container			= $('#map')
-	search_results			= $('.cs-elections-precincts-search-results')
 	precinct_sidebar		= $('.cs-elections-precinct-sidebar')
 	add_violation_sidebar	= $('.cs-elections-add-violation-sidebar')
-	show_timeout			= 0
 	L						= cs.Language
 	precinct_sidebar
 		.on(
 			'click'
 			'.cs-elections-precinct-sidebar-add-violation'
 			->
+				if !cs.is_user
+					cs.elections.sign_in()
+					return
 				is_open = add_violation_sidebar.data('open')
 				add_violation_sidebar
 					.html("""

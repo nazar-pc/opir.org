@@ -12,18 +12,20 @@
 (function() {
 
   $(function() {
-    var L, add_violation_sidebar, map_container, precinct_sidebar, search_results, show_timeout;
+    var L, add_violation_sidebar, map_container, precinct_sidebar;
     if (cs.module !== 'Elections') {
       return;
     }
     map_container = $('#map');
-    search_results = $('.cs-elections-precincts-search-results');
     precinct_sidebar = $('.cs-elections-precinct-sidebar');
     add_violation_sidebar = $('.cs-elections-add-violation-sidebar');
-    show_timeout = 0;
     L = cs.Language;
     precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-add-violation', function() {
       var is_open;
+      if (!cs.is_user) {
+        cs.elections.sign_in();
+        return;
+      }
       is_open = add_violation_sidebar.data('open');
       add_violation_sidebar.html("<i class=\"cs-elections-add-violation-sidebar-close uk-icon-times\"></i>\n<h2>" + L.add_violation + "</h2>\n<textarea placeholder=\"" + L.violation_text + "\"></textarea>\n<button class=\"cs-elections-add-violation-add-image\">\n	<i class=\"uk-icon-picture-o\"></i>\n	" + L.photo + "\n</button>\n<span>" + L.or + "</span>\n<button class=\"cs-elections-add-violation-add-video\">\n	<i class=\"uk-icon-video-camera\"></i>\n	" + L.video + "\n</button>\n<button class=\"cs-elections-add-violation-add\">" + L.add + "</button>").animate({
         width: 320
