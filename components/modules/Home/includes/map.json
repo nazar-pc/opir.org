@@ -2,9 +2,9 @@
 	"Home"	: [
 		"add-event-panel.css",
 		"comments.css",
-		"event-stream-panel.css",
+		"events-stream-panel.css",
 		"settings-panel.css",
-		"settings-coordinator.css",
+		"settings-panel-coordinator.css",
 		"social-share.css",
 		"style.css",
 		"add-event-panel.js",
