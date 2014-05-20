@@ -19,7 +19,6 @@ Trigger::instance()
 				return true;
 			}
 			define('MOBILE_AUTH', true);
-			//TODO: remove next line and add normal auth page for mobile apps
 			$L           = Language::instance();
 			$Page        = Page::instance();
 			$Page->Title = [$Page->Title[0], $L->sign_in];
@@ -38,13 +37,6 @@ Trigger::instance()
 						$L->sign_in_with('VK'),
 						[
 							'href' => 'HybridAuth/Vkontakte'
-						]
-					).
-					h::a(
-						h::icon('twitter').
-						$L->sign_in_with('Twitter'),
-						[
-							'href' => 'HybridAuth/Twitter'
 						]
 					)
 				)
