@@ -48,9 +48,9 @@ class Violations {
 		$this->cache                = new Prefix('precincts/violations');
 		$this->data_model['images'] = function ($images) {
 			return _json_encode(
-				array_filter($images, function ($image) {
+				array_values(array_filter($images, function ($image) {
 					return preg_match("#^(http[s]?://)#", $image);
-				})
+				}))
 			);
 		};
 		$this->data_model['video']  = function ($video) {
