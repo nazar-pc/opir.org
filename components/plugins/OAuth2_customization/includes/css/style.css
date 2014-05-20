@@ -28,6 +28,8 @@ body {
     background: #17548e; }
   .cs-oauth2-customization a:nth-of-type(2) {
     background: #0c739f; }
+    .cs-oauth2-customization a:nth-of-type(2):hover {
+      background: #0e6c96; }
   .cs-oauth2-customization a span {
     background: rgba(0, 0, 0, 0.07);
     font-size: 30px;

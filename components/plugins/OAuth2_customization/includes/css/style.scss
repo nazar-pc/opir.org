@@ -39,6 +39,10 @@ body {
 
 		&:nth-of-type(2) {
 			background : #0c739f;
+
+			&:hover {
+				background : #0e6c96;
+			}
 		}
 
 		span {
