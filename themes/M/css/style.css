@@ -379,9 +379,33 @@ body {
     height: 100%;
     overflow-x: hidden;
     padding-top: 75px;
-    width: 100%; }
-    body > section > p:first-child {
-      padding: 10px 0; }
+    width: 100%;
+    /**
+     * HybridAuth styling
+     */ }
+    body > section > form:first-child > p {
+      padding-top: 10px; }
+      body > section > form:first-child > p input {
+        background: #fff !important;
+        border: 1px solid #cacaca !important;
+        border-radius: 0 !important;
+        display: block;
+        font-size: 18px;
+        margin: 10px auto;
+        padding: 4px !important;
+        width: 450px;
+        height: auto !important; }
+    body > section > form:first-child > button {
+      background: #0072c7;
+      border: none;
+      border-radius: 0;
+      color: #fff;
+      display: block;
+      margin: 8px auto;
+      padding: 10px;
+      width: 450px; }
+      body > section > form:first-child > button:hover, body > section > form:first-child > button:focus {
+        background: #0069ba; }
 
 #map {
   bottom: 0;

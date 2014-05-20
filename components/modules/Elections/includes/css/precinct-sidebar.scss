@@ -81,8 +81,13 @@
 
 	.cs-elections-precinct-sidebar-violations {
 		article {
-			cursor  : pointer;
-			padding : 10px 20px;
+			border-bottom : 1px solid #2a3036;
+			cursor        : pointer;
+			padding       : 10px 20px;
+
+			&:last-of-type {
+				border-bottom : none;
+			}
 
 			&:hover {
 				background : #2a3036;

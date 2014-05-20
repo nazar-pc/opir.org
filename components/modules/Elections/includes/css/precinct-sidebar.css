@@ -59,8 +59,11 @@
       height: 180px;
       width: 280px; }
   .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article {
+    border-bottom: 1px solid #2a3036;
     cursor: pointer;
     padding: 10px 20px; }
+    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article:last-of-type {
+      border-bottom: none; }
     .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article:hover {
       background: #2a3036; }
     .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article iframe {
