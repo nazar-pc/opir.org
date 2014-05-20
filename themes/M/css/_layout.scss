@@ -44,6 +44,10 @@ body {
 		overflow-x  : hidden;
 		padding-top : 75px;
 		width       : 100%;
+
+		> p:first-child {
+			padding : 10px 0;
+		}
 	}
 }
 
