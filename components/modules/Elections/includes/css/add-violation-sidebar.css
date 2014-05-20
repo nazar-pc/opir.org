@@ -103,5 +103,5 @@
   margin: 8px auto;
   padding: 10px;
   width: 450px; }
-  .cs-elections-add-violation-add-video-modal button:hover {
+  .cs-elections-add-violation-add-video-modal button:hover, .cs-elections-add-violation-add-video-modal button:focus {
     background: #0069ba; }

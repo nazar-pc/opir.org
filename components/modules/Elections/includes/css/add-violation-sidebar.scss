@@ -135,7 +135,8 @@
 		padding    : 10px;
 		width      : 450px;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			background : #0069ba;
 		}
 	}
