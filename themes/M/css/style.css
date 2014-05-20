@@ -383,6 +383,9 @@ body {
     /**
      * HybridAuth styling
      */ }
+    body > section > p {
+      padding: 10px;
+      text-align: center; }
     body > section > form:first-child > p {
       padding-top: 10px; }
       body > section > form:first-child > p input {
