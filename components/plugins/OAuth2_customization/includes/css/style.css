@@ -1,0 +1,40 @@
+/**
+ * @package        OAuth2 customization
+ * @category       plugins
+ * @author         Nazar Mokrynskyi <nazar@mokrynskyi.com>
+ * @copyright      Copyright (c) 2014, Nazar Mokrynskyi
+ * @license        MIT License, see license.txt
+ */
+body {
+  width: 400px; }
+  body > section {
+    padding-top: 0; }
+  body > header {
+    display: none; }
+
+.cs-oauth2-customization a {
+  background: #155a98;
+  color: #fff;
+  display: block;
+  font-size: 20px;
+  height: 50px;
+  line-height: 45px;
+  margin: 10px auto;
+  padding-left: 50px;
+  position: relative;
+  text-align: center;
+  width: 300px; }
+  .cs-oauth2-customization a:hover {
+    background: #17548e; }
+  .cs-oauth2-customization a:nth-of-type(2) {
+    background: #0c739f; }
+  .cs-oauth2-customization a:nth-of-type(3) {
+    background: #00aeed; }
+  .cs-oauth2-customization a span {
+    background: rgba(0, 0, 0, 0.07);
+    font-size: 30px;
+    height: 50px;
+    left: 0;
+    line-height: 50px;
+    position: absolute;
+    width: 50px; }
