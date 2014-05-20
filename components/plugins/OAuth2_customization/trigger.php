@@ -9,17 +9,45 @@
 
 namespace cs;
 
+use h;
+
 Trigger::instance()
 	->register(
 		'OAuth2/custom_sign_in_page',
 		function () {
-			//define('MOBILE_AUTH', true);
+			if (!in_array('OAuth2_customization', Config::instance()->components['plugins'])) {
+				return true;
+			}
+			define('MOBILE_AUTH', true);
 			//TODO: remove next line and add normal auth page for mobile apps
-			interface_off();
-			Page::instance()->content(
-				'<!doctype html>
-				<title>Mobile sign in</title>
-				<a href="/HybridAuth/Facebook">Sign in with Facebook</a>'
+			$L           = Language::instance();
+			$Page        = Page::instance();
+			$Page->Title = [$Page->Title[0], $L->sign_in];
+			$Page->content(
+				h::{'section.cs-oauth2-customization'}(
+					h::{'h2.uk-text-center.uk-margin-top'}($L->sign_in).
+					h::a(
+						h::icon('facebook').
+						$L->sign_in_with('Facebook'),
+						[
+							'href' => 'HybridAuth/Facebook'
+						]
+					).
+					h::a(
+						h::icon('vk').
+						$L->sign_in_with('VK'),
+						[
+							'href' => 'HybridAuth/Vkontakte'
+						]
+					).
+					h::a(
+						h::icon('twitter').
+						$L->sign_in_with('Twitter'),
+						[
+							'href' => 'HybridAuth/Twitter'
+						]
+					)
+				)
 			);
 			return false;
 		}
@@ -33,7 +61,7 @@ Trigger::instance()
 			spl_autoload_register(
 				function ($class) {
 					if (ltrim($class, '\\') == 'cs\modules\OAuth2\OAuth2') {
-						include	__DIR__.'/OAuth2.php';
+						include __DIR__.'/OAuth2.php';
 					}
 				},
 				true,
