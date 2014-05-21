@@ -12,41 +12,16 @@
 (function() {
 
   $(function() {
-    var L, add_violation_sidebar, map_container, precinct_sidebar, search_results, show_timeout;
+    var L, add_violation_sidebar, map_container, precinct_sidebar, precincts_search_results;
     if (cs.module !== 'Elections') {
       return;
     }
     map_container = $('#map');
-    search_results = $('.cs-elections-precincts-search-results');
+    precincts_search_results = $('.cs-elections-precincts-search-results');
     precinct_sidebar = $('.cs-elections-precinct-sidebar');
     add_violation_sidebar = $('.cs-elections-add-violation-sidebar');
-    show_timeout = 0;
     L = cs.Language;
-    search_results.on('mouseenter', '[data-id]', function() {
-      var $this;
-      clearTimeout(show_timeout);
-      $this = $(this);
-      return show_timeout = setTimeout((function() {
-        var id, precinct, _ref;
-        id = parseInt($this.data('id'));
-        _ref = JSON.parse(localStorage.getItem('precincts'));
-        for (precinct in _ref) {
-          precinct = _ref[precinct];
-          if (precinct.id === id) {
-            break;
-          }
-        }
-        return map.panTo([precinct.lat, precinct.lng]).then(function() {
-          return map.zoomRange.get([precinct.lat, precinct.lng]).then(function(zoomRange) {
-            return map.setZoom(zoomRange[1], {
-              duration: 500
-            });
-          });
-        });
-      }), 200);
-    }).on('mouseleave', '[data-id]', function() {
-      return clearTimeout(show_timeout);
-    }).on('click', '[data-id]', function() {
+    precincts_search_results.on('click', '[data-id]', function() {
       var $this, id, is_open, precinct, streams_container, violations_container, _ref;
       $this = $(this);
       id = parseInt($this.data('id'));

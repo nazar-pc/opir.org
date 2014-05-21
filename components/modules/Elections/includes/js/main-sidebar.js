@@ -12,7 +12,7 @@
 (function() {
 
   $(function() {
-    var L, last_search_value, precincts_search_results, precints_search_timeout;
+    var L, last_search_value, precincts_search_results, precints_search_timeout, show_timeout;
     if (cs.module !== 'Elections') {
       return;
     }
@@ -20,7 +20,7 @@
     last_search_value = '';
     precincts_search_results = $('.cs-elections-precincts-search-results');
     L = cs.Language;
-    return $('.cs-elections-precincts-search').keydown(function() {
+    $('.cs-elections-precincts-search').keydown(function() {
       var $this;
       $this = $(this);
       clearTimeout(precints_search_timeout);
@@ -56,6 +56,32 @@
           }
         });
       }), 300);
+    });
+    show_timeout = 0;
+    return precincts_search_results.on('mouseenter', '[data-id]', function() {
+      var $this;
+      clearTimeout(show_timeout);
+      $this = $(this);
+      return show_timeout = setTimeout((function() {
+        var id, precinct, _ref;
+        id = parseInt($this.data('id'));
+        _ref = JSON.parse(localStorage.getItem('precincts'));
+        for (precinct in _ref) {
+          precinct = _ref[precinct];
+          if (precinct.id === id) {
+            break;
+          }
+        }
+        return map.panTo([precinct.lat, precinct.lng]).then(function() {
+          return map.zoomRange.get([precinct.lat, precinct.lng]).then(function(zoomRange) {
+            return map.setZoom(zoomRange[1], {
+              duration: 500
+            });
+          });
+        });
+      }), 200);
+    }).on('mouseleave', '[data-id]', function() {
+      return clearTimeout(show_timeout);
     });
   });
 

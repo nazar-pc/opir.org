@@ -9,38 +9,12 @@
 $ ->
 	if cs.module != 'Elections'
 		return
-	map_container			= $('#map')
-	search_results			= $('.cs-elections-precincts-search-results')
-	precinct_sidebar		= $('.cs-elections-precinct-sidebar')
-	add_violation_sidebar	= $('.cs-elections-add-violation-sidebar')
-	show_timeout			= 0
-	L						= cs.Language
-	search_results
-		.on(
-			'mouseenter'
-			'[data-id]'
-			->
-				clearTimeout(show_timeout)
-				$this			= $(@)
-				show_timeout	= setTimeout (->
-					id = parseInt($this.data('id'))
-					for precinct, precinct of JSON.parse(localStorage.getItem('precincts'))
-						if precinct.id == id
-							break
-					map.panTo([precinct.lat, precinct.lng]).then ->
-						map.zoomRange.get([precinct.lat, precinct.lng]).then (zoomRange) ->
-							map.setZoom(
-								zoomRange[1],
-								duration	: 500
-							)
-				), 200
-		)
-		.on(
-			'mouseleave'
-			'[data-id]'
-			->
-				clearTimeout(show_timeout)
-		)
+	map_container				= $('#map')
+	precincts_search_results	= $('.cs-elections-precincts-search-results')
+	precinct_sidebar			= $('.cs-elections-precinct-sidebar')
+	add_violation_sidebar		= $('.cs-elections-add-violation-sidebar')
+	L							= cs.Language
+	precincts_search_results
 		.on(
 			'click'
 			'[data-id]'

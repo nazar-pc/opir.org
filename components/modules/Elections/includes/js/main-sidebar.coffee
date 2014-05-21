@@ -42,3 +42,30 @@ $ ->
 					precincts_search_results.html(L.no_precincts_found)
 			)
 		), 300
+	show_timeout			= 0
+	precincts_search_results
+		.on(
+			'mouseenter'
+			'[data-id]'
+			->
+				clearTimeout(show_timeout)
+				$this			= $(@)
+				show_timeout	= setTimeout (->
+					id = parseInt($this.data('id'))
+					for precinct, precinct of JSON.parse(localStorage.getItem('precincts'))
+						if precinct.id == id
+							break
+					map.panTo([precinct.lat, precinct.lng]).then ->
+						map.zoomRange.get([precinct.lat, precinct.lng]).then (zoomRange) ->
+							map.setZoom(
+								zoomRange[1],
+								duration	: 500
+							)
+				), 200
+		)
+		.on(
+			'mouseleave'
+			'[data-id]'
+			->
+				clearTimeout(show_timeout)
+		)
