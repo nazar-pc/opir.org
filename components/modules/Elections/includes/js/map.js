@@ -138,9 +138,21 @@
         });
       };
       add_precincts_on_map = function() {
-        var placemarks, precinct, _ref;
+        var placemarks, precinct, _fn, _ref;
         placemarks = [];
         _ref = filter_precincts(get_precincts());
+        _fn = function(id) {
+          return placemarks[placemarks.length - 1].events.add('click', function() {
+            return $.ajax({
+              url: "api/Precincts/" + id,
+              data: null,
+              type: 'get',
+              success: function(precinct) {
+                return cs.elections.open_precinct(id, precinct.address);
+              }
+            });
+          });
+        };
         for (precinct in _ref) {
           precinct = _ref[precinct];
           placemarks.push(new ymaps.Placemark([precinct.lat, precinct.lng], {
@@ -154,6 +166,7 @@
             iconImageClipRect: [[38 * precinct.violations, 0], [38 * (precinct.violations + 1), 0]],
             iconImageShape: precincts_icons_shape
           }));
+          _fn(precinct.id);
         }
         precincts_clusterer.removeAll();
         precincts_clusterer.add(placemarks);
