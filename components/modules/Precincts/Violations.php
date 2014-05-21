@@ -32,6 +32,10 @@ class Violations {
 	 * @var Prefix
 	 */
 	protected $cache;
+	/**
+	 * @var Prefix
+	 */
+	protected $precincts_cache;
 	protected $table      = '[prefix]precincts_violations';
 	protected $data_model = [
 		'id'       => 'int',
@@ -46,6 +50,7 @@ class Violations {
 
 	protected function construct () {
 		$this->cache                = new Prefix('precincts/violations');
+		$this->precincts_cache      = new Prefix('precincts');
 		$this->data_model['images'] = function ($images) {
 			return _json_encode(
 				array_values(array_filter($images, function ($image) {
@@ -103,7 +108,11 @@ class Violations {
 				);
 			}
 			unset($images, $image);
-			unset($this->cache->all_for_precincts);
+			unset(
+				$this->cache->{"all_for_precincts/$precinct"},
+				$this->precincts_cache->$precinct,
+				$this->precincts_cache->{'all/group_by_district'}
+			);
 			return $id;
 		}
 		return false;
@@ -127,6 +136,44 @@ class Violations {
 			$return['images'] = _json_decode($return['images']);
 			return $return;
 		});
+	}
+	/**
+	 * Delete violation
+	 *
+	 * @param int|int[] $id
+	 *
+	 * @return bool
+	 */
+	function del ($id) {
+		if (is_array($id)) {
+			foreach ($id as &$i) {
+				$i = (int)$this->del($i);
+			}
+			return (bool)array_product($id);
+		}
+		$data = $this->read_simple($id);
+		if (!$data) {
+			return false;
+		}
+		if (!$this->delete_simple($id)) {
+			return false;
+		}
+		unset(
+			$data['id'],
+			$this->cache->{"all_for_precincts/$data[precinct]"},
+			$this->precincts_cache->{$data['precinct']},
+			$this->precincts_cache->{'all/group_by_district'}
+		);
+		foreach ($data['images'] as $image) {
+			Trigger::instance()->run(
+				'System/upload_files/del_tag',
+				[
+					'tag' => "Precincts/violations/$data[id]",
+					'url' => $image
+				]
+			);
+		}
+		return true;
 	}
 	/**
 	 * Get array of id of all precincts
