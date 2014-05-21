@@ -16,14 +16,14 @@
   position: absolute;
   top: 75px;
   width: 0; }
-  .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-close {
+  .cs-elections-precinct-sidebar-close {
     color: #686c70;
     cursor: pointer;
     font-size: 20px;
     margin: 10px 0 0 290px;
     position: relative;
     z-index: 1; }
-    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-close:hover {
+    .cs-elections-precinct-sidebar-close:hover {
       color: #777b80; }
   .cs-elections-precinct-sidebar > h2 {
     font-size: 18px;
@@ -40,7 +40,7 @@
     font-size: 20px;
     text-align: center;
     width: 100%; }
-  .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-add-violation {
+  .cs-elections-precinct-sidebar-add-violation {
     background: #0072c7;
     cursor: pointer;
     border: none;
@@ -50,26 +50,29 @@
     right: 20px;
     top: 10px;
     width: 30px; }
-    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-add-violation:hover {
+    .cs-elections-precinct-sidebar-add-violation:hover {
       background: #0069ba; }
-  .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-streams {
+  .cs-elections-precinct-sidebar-streams {
     margin-left: 20px;
     width: 280px; }
-    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-streams iframe {
+    .cs-elections-precinct-sidebar-streams iframe {
       height: 180px;
       width: 280px; }
-  .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article {
+  .cs-elections-precinct-sidebar-violations article {
     border-bottom: 1px solid #2a3036;
-    cursor: pointer;
     padding: 10px 20px; }
-    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article:last-of-type {
+    .cs-elections-precinct-sidebar-violations article:last-of-type {
       border-bottom: none; }
-    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article:hover {
+    .cs-elections-precinct-sidebar-violations article:hover {
       background: #2a3036; }
-    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article iframe {
+    .cs-elections-precinct-sidebar-violations article iframe {
       height: 180px;
       margin-top: 8px;
       width: 280px; }
-    .cs-elections-precinct-sidebar .cs-elections-precinct-sidebar-violations article img {
+    .cs-elections-precinct-sidebar-violations article img {
       margin-top: 8px;
       width: 280px; }
+    .cs-elections-precinct-sidebar-violations article .cs-elections-precinct-sidebar-read-more {
+      color: #9ea0a4;
+      cursor: pointer;
+      text-align: right; }

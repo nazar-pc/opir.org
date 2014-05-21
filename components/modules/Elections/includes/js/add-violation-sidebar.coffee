@@ -9,10 +9,10 @@
 $ ->
 	if cs.module != 'Elections'
 		return
-	map_container			= $('#map')
-	precinct_sidebar		= $('.cs-elections-precinct-sidebar')
-	add_violation_sidebar	= $('.cs-elections-add-violation-sidebar')
-	L						= cs.Language
+	map_container				= $('#map')
+	precinct_sidebar			= $('.cs-elections-precinct-sidebar')
+	add_violation_sidebar		= $('.cs-elections-add-violation-sidebar')
+	L							= cs.Language
 	precinct_sidebar
 		.on(
 			'click'
@@ -44,6 +44,7 @@ $ ->
 					)
 					.data('open', 1)
 				if !is_open
+					$('.cs-elections-violation-read-more-sidebar-close').click()
 					map_container.animate(
 						left	: '+=320'
 						'fast'
@@ -108,6 +109,8 @@ $ ->
 			'click'
 			'.cs-elections-add-violation-sidebar-close'
 			->
+				if !add_violation_sidebar.data('open')
+					return
 				add_violation_sidebar.animate(
 					width	: 0
 					'fast'

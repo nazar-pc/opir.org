@@ -77,13 +77,13 @@ $ ->
 			error	: ->
 				streams_container.html("""<p class="uk-text-center">#{L.empty}</p>""")
 		)
-		violations_container = $('.cs-elections-precinct-sidebar-violations')
+		violations_container	= $('.cs-elections-precinct-sidebar-violations')
 		$.ajax(
 			url		: "api/Precincts/#{id}/violations"
 			type	: 'get'
 			data	: null
 			success	: (violations) ->
-				content = ''
+				content		= ''
 				for violation in violations
 					text =
 						if violation.text
@@ -92,7 +92,7 @@ $ ->
 							''
 					images =
 						if violation.images.length
-							"""<img src="#{violation.images[0]}">"""
+							"""<img src="#{violation.images[0]}" alt="">"""
 						else
 							''
 					video =
@@ -104,9 +104,12 @@ $ ->
 						#{text}
 						#{images}
 						#{video}
+						<div class="cs-elections-precinct-sidebar-read-more" data-id="#{violation.id}">#{L.read_more} »</div>
 					</article>"""
 				if content
 					violations_container.html(content)
+					for violation in violations
+						$(".cs-elections-precinct-sidebar-read-more[data-id=#{violation.id}]").data('violation', violation)
 				else
 					violations_container.html("""<p class="uk-text-center">#{L.empty}</p>""")
 			error	: ->
@@ -117,6 +120,9 @@ $ ->
 			'click'
 			'.cs-elections-precinct-sidebar-close'
 			->
+				if !precinct_sidebar.data('open')
+					return
+				$('.cs-elections-violation-read-more-sidebar-close').click()
 				precinct_sidebar
 					.animate(
 						width	: 0

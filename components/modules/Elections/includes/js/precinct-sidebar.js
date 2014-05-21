@@ -78,17 +78,23 @@
         type: 'get',
         data: null,
         success: function(violations) {
-          var content, images, text, video, violation, _i, _len;
+          var content, images, text, video, violation, _i, _j, _len, _len1, _results;
           content = '';
           for (_i = 0, _len = violations.length; _i < _len; _i++) {
             violation = violations[_i];
             text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';
-            images = violation.images.length ? "<img src=\"" + violation.images[0] + "\">" : '';
+            images = violation.images.length ? "<img src=\"" + violation.images[0] + "\" alt=\"\">" : '';
             video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
-            content += "<article>\n	" + text + "\n	" + images + "\n	" + video + "\n</article>";
+            content += "<article>\n	" + text + "\n	" + images + "\n	" + video + "\n	<div class=\"cs-elections-precinct-sidebar-read-more\" data-id=\"" + violation.id + "\">" + L.read_more + " »</div>\n</article>";
           }
           if (content) {
-            return violations_container.html(content);
+            violations_container.html(content);
+            _results = [];
+            for (_j = 0, _len1 = violations.length; _j < _len1; _j++) {
+              violation = violations[_j];
+              _results.push($(".cs-elections-precinct-sidebar-read-more[data-id=" + violation.id + "]").data('violation', violation));
+            }
+            return _results;
           } else {
             return violations_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
           }
@@ -99,6 +105,10 @@
       });
     };
     return precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-close', function() {
+      if (!precinct_sidebar.data('open')) {
+        return;
+      }
+      $('.cs-elections-violation-read-more-sidebar-close').click();
       precinct_sidebar.animate({
         width: 0
       }, 'fast').data('open', 0);

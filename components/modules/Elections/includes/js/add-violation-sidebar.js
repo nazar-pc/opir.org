@@ -31,6 +31,7 @@
         width: 320
       }, 'fast').data('open', 1);
       if (!is_open) {
+        $('.cs-elections-violation-read-more-sidebar-close').click();
         map_container.animate({
           left: '+=320'
         }, 'fast');
@@ -92,6 +93,9 @@
       });
     });
     return add_violation_sidebar.on('click', '.cs-elections-add-violation-sidebar-close', function() {
+      if (!add_violation_sidebar.data('open')) {
+        return;
+      }
       add_violation_sidebar.animate({
         width: 0
       }, 'fast').data('open', 0);

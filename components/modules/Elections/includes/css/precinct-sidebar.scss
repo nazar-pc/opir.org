@@ -17,7 +17,7 @@
 	top        : 75px;
 	width      : 0;
 
-	.cs-elections-precinct-sidebar-close {
+	&-close {
 		color     : #686c70;
 		cursor    : pointer;
 		font-size : 20px;
@@ -53,7 +53,7 @@
 		width      : 100%;
 	}
 
-	.cs-elections-precinct-sidebar-add-violation {
+	&-add-violation {
 		background : #0072c7;
 		cursor     : pointer;
 		border     : none;
@@ -69,7 +69,7 @@
 		}
 	}
 
-	.cs-elections-precinct-sidebar-streams {
+	&-streams {
 		margin-left : 20px;
 		width       : 280px;
 
@@ -79,10 +79,9 @@
 		}
 	}
 
-	.cs-elections-precinct-sidebar-violations {
+	&-violations {
 		article {
 			border-bottom : 1px solid #2a3036;
-			cursor        : pointer;
 			padding       : 10px 20px;
 
 			&:last-of-type {
@@ -102,6 +101,12 @@
 			img {
 				margin-top : 8px;
 				width      : 280px;
+			}
+
+			.cs-elections-precinct-sidebar-read-more {
+				color      : #9ea0a4;
+				cursor     : pointer;
+				text-align : right;
 			}
 		}
 	}
