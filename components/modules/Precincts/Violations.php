@@ -113,6 +113,7 @@ class Violations {
 				$this->precincts_cache->$precinct,
 				$this->precincts_cache->{'all/group_by_district'}
 			);
+			Precincts::instance()->update_violations($precinct);
 			return $id;
 		}
 		return false;
@@ -158,6 +159,7 @@ class Violations {
 		if (!$this->delete_simple($id)) {
 			return false;
 		}
+		Precincts::instance()->update_violations($data['precinct']);
 		unset(
 			$data['id'],
 			$this->cache->{"all_for_precincts/$data[precinct]"},
@@ -226,6 +228,7 @@ class Violations {
 		$data           = $this->get($id);
 		$data['status'] = self::STATUS_DECLINED;
 		if ($this->update_simple($data)) {
+			Precincts::instance()->update_violations($data['precinct']);
 			unset(
 				$this->cache->$id,
 				$this->cache->{"all_for_precincts/$data[precinct]"}

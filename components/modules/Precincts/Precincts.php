@@ -202,4 +202,31 @@ class Precincts {
 			"%$text%"
 		]);
 	}
+	/**
+	 * Update number of violations for specified precinct
+	 *
+	 * @param int $precinct
+	 */
+	function update_violations ($precinct) {
+		$precinct = (int)$precinct;
+		$this->db_prime()->q(
+			"UPDATE `$this->table`
+			SET `violations` = (
+				SELECT COUNT(`id`)
+				FROM `{$this->table}_violations`
+				WHERE
+					`precinct`	= '%s' AND
+					`status`	!= '%s'
+			)
+			WHERE `id` = '%s'
+			LIMIT 1",
+			$precinct,
+			Violations::STATUS_DECLINED,
+			$precinct
+		);
+		unset(
+			$this->cache->$precinct,
+			$this->cache->{'all/group_by_district'}
+		);
+	}
 }
