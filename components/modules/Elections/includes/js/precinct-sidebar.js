@@ -22,9 +22,15 @@
     add_violation_sidebar = $('.cs-elections-add-violation-sidebar');
     L = cs.Language;
     precincts_search_results.on('click', '[data-id]', function() {
-      var $this, id, is_open, precinct, streams_container, violations_container, _ref;
+      var $this, address, id;
       $this = $(this);
       id = parseInt($this.data('id'));
+      address = $this.children('p').html();
+      return cs.elections.open_precinct(id, address);
+    });
+    window.cs.elections = window.cs.elections || {};
+    window.cs.elections.open_precinct = function(id, address) {
+      var is_open, precinct, streams_container, violations_container, _ref;
       _ref = JSON.parse(localStorage.getItem('precincts'));
       for (precinct in _ref) {
         precinct = _ref[precinct];
@@ -33,7 +39,7 @@
         }
       }
       is_open = precinct_sidebar.data('open');
-      precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + "</h2>\n<p>" + $this.children('p').html() + ("</p>\n<h2>" + L.video_stream + "</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-violation uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.violations + "\n</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
+      precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + ("</h2>\n<p>" + address + "</p>\n<h2>" + L.video_stream + "</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-violation uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.violations + "\n</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
         width: 320
       }, 'fast').data('open', 1);
       if (!is_open) {
@@ -91,7 +97,7 @@
           return violations_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
         }
       });
-    });
+    };
     return precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-close', function() {
       precinct_sidebar.animate({
         width: 0
