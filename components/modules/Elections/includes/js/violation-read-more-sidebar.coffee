@@ -74,3 +74,19 @@ $ ->
 					'fast'
 				)
 		)
+		.on(
+			'click'
+			'img'
+			->
+				$("""<div>
+					<div class="cs-elections-sign-in" style="width: 90%;">
+						#{@.outerHTML}
+					</div>
+				</div>""")
+					.appendTo('body')
+					.cs().modal('show')
+					.click ->
+						$(@).hide()
+					.on 'uk.modal.hide', ->
+						$(this).remove()
+		)

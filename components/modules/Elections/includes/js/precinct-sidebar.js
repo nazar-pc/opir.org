@@ -39,7 +39,7 @@
         }
       }
       is_open = precinct_sidebar.data('open');
-      precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + ("</h2>\n<p class=\"cs-elections-precinct-sidebar-address\">\n	<i class=\"uk-icon-location-arrow\"></i>\n	" + address + "\n</p>\n<h2>" + L.video_stream + "</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-violation uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.violations + "\n</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
+      precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + ("</h2>\n<p class=\"cs-elections-precinct-sidebar-address\">\n	<i class=\"uk-icon-location-arrow\"></i>\n	<span>" + address + "</span>\n</p>\n<h2>" + L.video_stream + "</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-violation uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.violations + "\n</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
         width: 320
       }, 'fast').data('open', 1);
       if (!is_open) {
@@ -73,7 +73,7 @@
         }
       });
       violations_container = $('.cs-elections-precinct-sidebar-violations');
-      return $.ajax({
+      $.ajax({
         url: "api/Precincts/" + id + "/violations",
         type: 'get',
         data: null,
@@ -102,6 +102,13 @@
         error: function() {
           return violations_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
         }
+      });
+      return violations_container.on('click', 'img', function() {
+        return $("<div>\n	<div class=\"cs-elections-sign-in\" style=\"width: 90%;\">\n		" + this.outerHTML + "\n	</div>\n</div>").appendTo('body').cs().modal('show').click(function() {
+          return $(this).hide();
+        }).on('uk.modal.hide', function() {
+          return $(this).remove();
+        });
       });
     };
     return precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-close', function() {

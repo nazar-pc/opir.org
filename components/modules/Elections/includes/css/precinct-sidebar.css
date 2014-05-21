@@ -80,6 +80,7 @@
       margin-top: 8px;
       width: 280px; }
     .cs-elections-precinct-sidebar-violations article img {
+      cursor: pointer;
       margin-top: 8px;
       width: 280px; }
     .cs-elections-precinct-sidebar-violations article .cs-elections-precinct-sidebar-read-more {

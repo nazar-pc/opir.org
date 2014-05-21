@@ -32,5 +32,6 @@
     margin: 8px 20px 0;
     width: 280px; }
   .cs-elections-violation-read-more-sidebar img {
+    cursor: pointer;
     margin: 8px 20px 0;
     width: 280px; }

@@ -85,7 +85,7 @@ $ ->
 							"""<iframe src="#{video_url}" frameborder="0" scrolling="no"></iframe>"""
 						)
 						modal.hide().remove()
-				id = $(@).data('id')
+				precinct = $(@).data('id')
 				$('.cs-elections-add-violation-add').click ->
 					images	= add_violation_sidebar.children('img')
 						.map ->
@@ -94,7 +94,7 @@ $ ->
 					images.reverse()
 					video	= add_violation_sidebar.children('iframe').attr('src') || ''
 					$.ajax(
-						url		: "api/Precincts/#{id}/violations"
+						url		: "api/Precincts/#{precinct}/violations"
 						data	:
 							text	: add_violation_sidebar.children('textarea').val()
 							images	: images
@@ -102,7 +102,8 @@ $ ->
 						type	: 'post'
 						success	: ->
 							alert L.thank_you_for_your_message
-							location.reload()
+							cs.elections.open_precinct(precinct, $('.cs-elections-precinct-sidebar-address span').html())
+							$('.cs-elections-add-violation-sidebar-close').click()
 					)
 		)
 	add_violation_sidebar

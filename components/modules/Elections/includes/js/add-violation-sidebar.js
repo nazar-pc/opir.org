@@ -21,7 +21,7 @@
     add_violation_sidebar = $('.cs-elections-add-violation-sidebar');
     L = cs.Language;
     precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-add-violation', function() {
-      var add_image_button, id, is_open;
+      var add_image_button, is_open, precinct;
       if (!cs.is_user) {
         cs.elections.sign_in();
         return;
@@ -70,7 +70,7 @@
           return modal.hide().remove();
         });
       });
-      id = $(this).data('id');
+      precinct = $(this).data('id');
       return $('.cs-elections-add-violation-add').click(function() {
         var images, video;
         images = add_violation_sidebar.children('img').map(function() {
@@ -79,7 +79,7 @@
         images.reverse();
         video = add_violation_sidebar.children('iframe').attr('src') || '';
         return $.ajax({
-          url: "api/Precincts/" + id + "/violations",
+          url: "api/Precincts/" + precinct + "/violations",
           data: {
             text: add_violation_sidebar.children('textarea').val(),
             images: images,
@@ -88,7 +88,8 @@
           type: 'post',
           success: function() {
             alert(L.thank_you_for_your_message);
-            return location.reload();
+            cs.elections.open_precinct(precinct, $('.cs-elections-precinct-sidebar-address span').html());
+            return $('.cs-elections-add-violation-sidebar-close').click();
           }
         });
       });

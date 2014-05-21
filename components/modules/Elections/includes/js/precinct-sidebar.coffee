@@ -36,7 +36,7 @@ $ ->
 				<h2>""" + L.precint_number(precinct.number) + """</h2>
 				<p class="cs-elections-precinct-sidebar-address">
 					<i class="uk-icon-location-arrow"></i>
-					#{address}
+					<span>#{address}</span>
 				</p>
 				<h2>#{L.video_stream}</h2>
 				<div class="cs-elections-precinct-sidebar-streams">
@@ -118,6 +118,23 @@ $ ->
 			error	: ->
 				violations_container.html("""<p class="uk-text-center">#{L.empty}</p>""")
 		)
+		violations_container
+			.on(
+				'click'
+				'img'
+				->
+					$("""<div>
+						<div class="cs-elections-sign-in" style="width: 90%;">
+							#{@.outerHTML}
+						</div>
+					</div>""")
+						.appendTo('body')
+						.cs().modal('show')
+						.click ->
+							$(@).hide()
+						.on 'uk.modal.hide', ->
+							$(this).remove()
+			)
 	precinct_sidebar
 		.on(
 			'click'
