@@ -76,6 +76,7 @@
         images = add_violation_sidebar.children('img').map(function() {
           return $(this).attr('src');
         }).get() || [];
+        images.reverse();
         video = add_violation_sidebar.children('iframe').attr('src') || '';
         return $.ajax({
           url: "api/Precincts/" + id + "/violations",

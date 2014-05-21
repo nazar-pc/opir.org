@@ -91,6 +91,7 @@ $ ->
 						.map ->
 							$(@).attr('src')
 						.get() || []
+					images.reverse()
 					video	= add_violation_sidebar.children('iframe').attr('src') || ''
 					$.ajax(
 						url		: "api/Precincts/#{id}/violations"
