@@ -45,6 +45,20 @@
 
 	> p {
 		margin : 0 20px;
+
+		&.cs-elections-precinct-sidebar-address {
+			padding-left : 45px;
+
+			.uk-icon-location-arrow {
+				border        : 2px solid #9ea0a4;
+				border-radius : 50%;
+				color         : #9ea0a4;
+				height        : 32px;
+				margin        : 0 10px 0 -45px;
+				padding       : 6px;
+				width         : 32px;
+			}
+		}
 	}
 
 	.uk-icon-spinner {

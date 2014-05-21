@@ -34,7 +34,10 @@ $ ->
 			.html("""
 				<i class="cs-elections-precinct-sidebar-close uk-icon-times"></i>
 				<h2>""" + L.precint_number(precinct.number) + """</h2>
-				<p>#{address}</p>
+				<p class="cs-elections-precinct-sidebar-address">
+					<i class="uk-icon-location-arrow"></i>
+					#{address}
+				</p>
 				<h2>#{L.video_stream}</h2>
 				<div class="cs-elections-precinct-sidebar-streams">
 					<i class="uk-icon-spinner uk-icon-spin"></i>
