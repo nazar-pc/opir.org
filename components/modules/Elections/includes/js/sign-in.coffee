@@ -18,13 +18,20 @@ window.cs.elections.sign_in = ->
 					<span class="uk-icon-vk"></span> Увійти через VK
 				</a>
 				<span class="cs-elections-sign-in-separator">#{cs.Language.or}</span>
-				<input type="text" id="login" placeholder="#{cs.Language.login}" autofocus>
-				<input type="password" id="password" placeholder="#{cs.Language.password}">
-				<button class="uk-button uk-button-success" onclick="cs.sign_in($('#login').val(), $('#password').val());" class="uk-button">#{cs.Language.sign_in}</button>
+				<form>
+					<input type="text" id="login" placeholder="#{cs.Language.login}" autofocus>
+					<input type="password" id="password" placeholder="#{cs.Language.password}">
+					<button type="submit">#{cs.Language.sign_in}</button>
+				</form>
 			</div>
 		</div>
 	""")
 		.appendTo('body')
+		.find('form')
+			.submit ->
+				cs.sign_in($('#login').val(), $('#password').val())
+				return false
+			.end()
 		.cs().modal('show')
 		.on 'uk.modal.hide', ->
 			$(this).remove()

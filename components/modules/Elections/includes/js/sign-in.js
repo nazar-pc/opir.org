@@ -14,7 +14,10 @@
   window.cs.elections = window.cs.elections || {};
 
   window.cs.elections.sign_in = function() {
-    return $("<div>\n	<div class=\"cs-elections-sign-in\" style=\"width: 400px;\">\n		<h2 class=\"uk-text-center\">Увійти</h2>\n		<a href=\"HybridAuth/Facebook\">\n			<span class=\"uk-icon-facebook\"></span> Увійти через Facebook\n		</a>\n		<a href=\"HybridAuth/Vkontakte\">\n			<span class=\"uk-icon-vk\"></span> Увійти через VK\n		</a>\n		<span class=\"cs-elections-sign-in-separator\">" + cs.Language.or + "</span>\n		<input type=\"text\" id=\"login\" placeholder=\"" + cs.Language.login + "\" autofocus>\n		<input type=\"password\" id=\"password\" placeholder=\"" + cs.Language.password + "\">\n		<button class=\"uk-button uk-button-success\" onclick=\"cs.sign_in($('#login').val(), $('#password').val());\" class=\"uk-button\">" + cs.Language.sign_in + "</button>\n	</div>\n</div>").appendTo('body').cs().modal('show').on('uk.modal.hide', function() {
+    return $("<div>\n	<div class=\"cs-elections-sign-in\" style=\"width: 400px;\">\n		<h2 class=\"uk-text-center\">Увійти</h2>\n		<a href=\"HybridAuth/Facebook\">\n			<span class=\"uk-icon-facebook\"></span> Увійти через Facebook\n		</a>\n		<a href=\"HybridAuth/Vkontakte\">\n			<span class=\"uk-icon-vk\"></span> Увійти через VK\n		</a>\n		<span class=\"cs-elections-sign-in-separator\">" + cs.Language.or + "</span>\n		<form>\n			<input type=\"text\" id=\"login\" placeholder=\"" + cs.Language.login + "\" autofocus>\n			<input type=\"password\" id=\"password\" placeholder=\"" + cs.Language.password + "\">\n			<button type=\"submit\">" + cs.Language.sign_in + "</button>\n		</form>\n	</div>\n</div>").appendTo('body').find('form').submit(function() {
+      cs.sign_in($('#login').val(), $('#password').val());
+      return false;
+    }).end().cs().modal('show').on('uk.modal.hide', function() {
       return $(this).remove();
     });
   };
