@@ -101,7 +101,7 @@
           }
         });
       })();
-      districts_icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[0 - 81, 32 - 82], [11 - 81, 11 - 82], [31 - 81, 0 - 82], [47 - 81, 0 - 82], [68 - 81, 11 - 82], [79 - 81, 32 - 82], [78 - 81, 49 - 82], [67 - 81, 67 - 82], [52 - 81, 77 - 82], [31 - 81, 78 - 82], [11 - 81, 67 - 82], [0 - 81, 48 - 82], [0 - 81, 32 - 82]]]));
+      districts_icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[0 - 40, 32 - 41], [11 - 40, 11 - 41], [31 - 40, 0 - 41], [47 - 40, 0 - 41], [68 - 40, 11 - 41], [79 - 40, 32 - 41], [78 - 40, 49 - 41], [67 - 40, 67 - 41], [52 - 40, 77 - 41], [31 - 40, 78 - 41], [11 - 40, 67 - 41], [0 - 40, 48 - 41], [0 - 40, 32 - 41]]]));
       precincts_icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[15 - 15, 37 - 36], [1 - 15, 22 - 36], [0 - 15, 16 - 36], [1 - 15, 10 - 36], [5 - 15, 5 - 36], [11 - 15, 1 - 36], [19 - 15, 1 - 36], [26 - 15, 5 - 36], [31 - 15, 14 - 36], [30 - 15, 22 - 36], [15 - 15, 37 - 36]]]));
       get_precincts = function(check) {
         var precincts;
@@ -163,7 +163,7 @@
             iconImageHref: '/components/modules/Elections/includes/img/map-precincts.png',
             iconImageSize: [38, 37],
             iconImageOffset: [-15, -36],
-            iconImageClipRect: [[38 * precinct.violations, 0], [38 * (precinct.violations + 1), 0]],
+            iconImageClipRect: [[38 * (precinct.violations ? 1 : 0), 0], [38 * ((precinct.violations ? 1 : 0) + 1), 37]],
             iconImageShape: precincts_icons_shape
           }));
           _fn(precinct.id);
@@ -187,7 +187,7 @@
             iconImageHref: '/components/modules/Elections/includes/img/map-districts.png',
             iconImageSize: [81, 82],
             iconImageOffset: [-40, -41],
-            iconImageClipRect: [[81 * district.violations, 0], [81 * (district.violations + 1), 0]],
+            iconImageClipRect: [[81 * (district.violations ? 1 : 0), 0], [81 * ((district.violations ? 1 : 0) + 1), 82]],
             iconImageShape: districts_icons_shape
           }));
         }
@@ -220,14 +220,14 @@
               var d, _i, _len;
               for (_i = 0, _len = violations_loaded.length; _i < _len; _i++) {
                 d = violations_loaded[_i];
-                violations[d.id] = d.violations;
+                violations[d.district] = d.violations;
               }
             })();
             districts = get_districts();
             update = false;
             for (district in districts) {
-              update = update || (districts[district].violations === violations[districts[district].id]);
-              districts[district].violations = violations[districts[district].id];
+              update = update || (districts[district].violations === violations[districts[district].district]);
+              districts[district].violations = violations[districts[district].district];
             }
             if (update) {
               localStorage.setItem('districts', JSON.stringify(districts));
