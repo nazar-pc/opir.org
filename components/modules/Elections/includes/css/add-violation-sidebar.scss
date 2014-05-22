@@ -7,6 +7,7 @@
  */
 
 .cs-elections-add-violation-sidebar {
+	color      : #fff;
 	background : #2a3036;
 	bottom     : 0;
 	font-size  : 16px;
@@ -29,7 +30,6 @@
 	}
 
 	> h2 {
-		color          : #fff;
 		font-size      : 18px;
 		font-weight    : bold;
 		margin         : -25px 0 0;
@@ -38,8 +38,42 @@
 		text-transform : uppercase;
 	}
 
+	h3 {
+		text-align : center;
+	}
+
+	&-search {
+		border        : none;
+		border-radius : 0;
+		color         : #444444;
+		margin        : 10px 20px;
+		padding       : 7px;
+		width         : 280px;
+	}
+
+	&-search-results article {
+		cursor  : pointer;
+		padding : 10px 20px;
+		width   : 320px;
+
+		&:hover {
+			background : #202429;
+		}
+
+		h3 {
+			font-weight : bold;
+			margin      : 0;
+		}
+
+		p {
+			font-size : 14px;
+			margin    : 0;
+		}
+	}
+
 	textarea {
 		border      : none;
+		color       : #444444;
 		margin-left : 20px;
 		height      : 135px;
 		padding     : 8px;
@@ -98,7 +132,6 @@
 	.cs-elections-add-violation-add {
 		background : #0072c7;
 		border     : none;
-		color      : #fff;
 		margin     : 8px 0 0 20px;
 		padding    : 10px;
 		width      : 280px;
@@ -129,7 +162,6 @@
 	button {
 		background : #0072c7;
 		border     : none;
-		color      : #fff;
 		display    : block;
 		margin     : 8px auto;
 		padding    : 10px;

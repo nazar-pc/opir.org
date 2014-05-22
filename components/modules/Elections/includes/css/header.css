@@ -5,6 +5,23 @@
  * @copyright	Copyright (c) 2014, Nazar Mokrynskyi
  * @license		MIT License, see license.txt
  */
+body > header .cs-elections-add-violation {
+  background: #0062ad !important;
+  color: #fff !important;
+  border: 0;
+  border-radius: 0 !important;
+  font-size: inherit !important;
+  height: 75px;
+  padding: 19px;
+  position: absolute;
+  text-shadow: none;
+  top: 0;
+  text-align: center;
+  z-index: 1;
+  left: 0;
+  width: 240px; }
+  body > header .cs-elections-add-violation:hover {
+    background: #005291 !important; }
 body > header .cs-elections-logo {
   padding-right: 100px;
   position: absolute;
@@ -23,6 +40,7 @@ body > header .cs-elections-switch-language {
   text-shadow: none;
   top: 0;
   text-align: center;
+  z-index: 1;
   background: #0069ba !important;
   cursor: pointer;
   line-height: 28px;
@@ -80,6 +98,7 @@ body > header .cs-elections-info {
   text-shadow: none;
   top: 0;
   text-align: center;
+  z-index: 1;
   right: 240px;
   width: 80px; }
   body > header .cs-elections-info:hover {
@@ -103,6 +122,7 @@ body > header .cs-elections-help-initiative:focus {
   text-shadow: none;
   top: 0;
   text-align: center;
+  z-index: 1;
   background: #ff5b52 !important;
   right: 0;
   width: 240px !important; }

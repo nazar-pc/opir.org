@@ -12,22 +12,96 @@
 (function() {
 
   $(function() {
-    var L, add_violation_sidebar, map_container, precinct_sidebar;
+    var L, add_violation, add_violation_button, add_violation_sidebar, map_container, precinct_sidebar;
     if (cs.module !== 'Elections') {
       return;
     }
     map_container = $('#map');
     precinct_sidebar = $('.cs-elections-precinct-sidebar');
+    add_violation_button = $('.cs-elections-add-violation');
     add_violation_sidebar = $('.cs-elections-add-violation-sidebar');
     L = cs.Language;
+    add_violation_button.click(function() {
+      var is_open, last_search_value, precincts_search_results, precints_search_timeout;
+      if (!cs.is_user) {
+        cs.elections.sign_in();
+        return;
+      }
+      if (precinct_sidebar.data('open')) {
+        $('.cs-elections-precinct-sidebar-add-violation').click();
+        return;
+      }
+      is_open = add_violation_sidebar.data('open');
+      add_violation_sidebar.html("<i class=\"cs-elections-add-violation-sidebar-close uk-icon-times\"></i>\n<h2>" + L.add_violation + "</h2>\n<input class=\"cs-elections-add-violation-sidebar-search\" type=\"search\" placeholder=\"" + L.number_or_address + "\">\n<div class=\"cs-elections-add-violation-sidebar-search-results\"></div>").animate({
+        width: 320
+      }, 'fast').data('open', 1);
+      if (!is_open) {
+        $('.cs-elections-violation-read-more-sidebar-close').click();
+        map_container.animate({
+          left: '+=320'
+        }, 'fast');
+      }
+      precints_search_timeout = 0;
+      last_search_value = '';
+      precincts_search_results = $('.cs-elections-add-violation-sidebar-search-results');
+      $('.cs-elections-add-violation-sidebar-search').keydown(function() {
+        var $this;
+        $this = $(this);
+        clearTimeout(precints_search_timeout);
+        return precints_search_timeout = setTimeout((function() {
+          var value;
+          value = $this.val();
+          if (value.length < 3) {
+            precincts_search_results.html('');
+            return;
+          }
+          if (value === last_search_value) {
+            return;
+          }
+          return $.ajax({
+            url: 'api/Precincts/search',
+            data: {
+              text: value,
+              coordinates: JSON.parse(localStorage.getItem('coordinates'))
+            },
+            type: 'get',
+            success: function(precincts) {
+              var content, precinct;
+              last_search_value = value;
+              content = '';
+              for (precinct in precincts) {
+                precinct = precincts[precinct];
+                content += ("<article data-id=\"" + precinct.id + "\">\n<h3>") + L.precint_number(precinct.number) + ("</h3>\n	<p>" + precinct.address + "</p>\n</article>");
+              }
+              return precincts_search_results.html(content);
+            },
+            error: function() {
+              return precincts_search_results.html(L.no_precincts_found);
+            }
+          });
+        }), 300);
+      });
+      return precincts_search_results.on('click', 'article', function() {
+        var $this, title;
+        $this = $(this);
+        title = $this.children('h3').html();
+        console.log(title);
+        return add_violation($this.data('id'), title);
+      });
+    });
     precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-add-violation', function() {
-      var add_image_button, is_open, precinct;
+      var $this;
+      $this = $(this);
+      return add_violation($this.data('id'), precinct_sidebar.children('h2:first').html());
+    });
+    add_violation = function(precinct, title) {
+      var add_image_button, is_open;
       if (!cs.is_user) {
         cs.elections.sign_in();
         return;
       }
       is_open = add_violation_sidebar.data('open');
-      add_violation_sidebar.html("<i class=\"cs-elections-add-violation-sidebar-close uk-icon-times\"></i>\n<h2>" + L.add_violation + "</h2>\n<textarea placeholder=\"" + L.violation_text + "\"></textarea>\n<button class=\"cs-elections-add-violation-add-image\">\n	<i class=\"uk-icon-picture-o\"></i>\n	" + L.photo + "\n</button>\n<span>" + L.or + "</span>\n<button class=\"cs-elections-add-violation-add-video\">\n	<i class=\"uk-icon-video-camera\"></i>\n	" + L.video + "\n</button>\n<button class=\"cs-elections-add-violation-add\">" + L.add + "</button>").animate({
+      add_violation_sidebar.html("<i class=\"cs-elections-add-violation-sidebar-close uk-icon-times\"></i>\n<h2>" + L.add_violation + "</h2>\n<h2>" + title + "</h2>\n<textarea placeholder=\"" + L.violation_text + "\"></textarea>\n<button class=\"cs-elections-add-violation-add-image\">\n	<i class=\"uk-icon-picture-o\"></i>\n	" + L.photo + "\n</button>\n<span>" + L.or + "</span>\n<button class=\"cs-elections-add-violation-add-video\">\n	<i class=\"uk-icon-video-camera\"></i>\n	" + L.video + "\n</button>\n<button class=\"cs-elections-add-violation-add\">" + L.add + "</button>").animate({
         width: 320
       }, 'fast').data('open', 1);
       if (!is_open) {
@@ -70,7 +144,6 @@
           return modal.hide().remove();
         });
       });
-      precinct = $(this).data('id');
       return $('.cs-elections-add-violation-add').click(function() {
         var images, video;
         images = add_violation_sidebar.children('img').map(function() {
@@ -93,7 +166,7 @@
           }
         });
       });
-    });
+    };
     return add_violation_sidebar.on('click', '.cs-elections-add-violation-sidebar-close', function() {
       if (!add_violation_sidebar.data('open')) {
         return;

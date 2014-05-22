@@ -28,6 +28,7 @@ $Page->link([
 	'href' => 'https://opir.org/components/modules/Elections/includes/img/share.png'
 ]);
 $Page->Header =
+	h::{'button.cs-elections-add-violation'}($L->add_violation).
 	h::{'div.cs-elections-logo'}(
 		h::{'a[href=/] img'}([
 			'src' => "components/modules/Elections/includes/img/logo-$L->clang.png"
