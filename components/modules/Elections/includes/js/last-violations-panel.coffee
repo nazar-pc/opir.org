@@ -64,7 +64,8 @@ $ ->
 										if precinct.id == violation.precinct
 											break
 									time = new Date(violation.date * 1000)
-									time = time.getHours() + ':' + time.getMinutes()
+									time =
+										(if time.getHours() < 10 then '0' + time.getHours() else time.getHours()) + ':' + (if time.getMinutes() < 10 then '0' + time.getMinutes() else time.getMinutes())
 									text =
 										if violation.text
 											"<p>" + violation.text.substr(0, 200) + "</p>"
