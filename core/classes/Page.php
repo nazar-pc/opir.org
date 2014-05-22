@@ -788,6 +788,7 @@ class Page {
 				 * Add system includes
 				 */
 				$includes		= $includes_map[''];
+				unset($includes_map['']);
 				$current_url	= $Config->server['relative_address'];
 				/**
 				 * Narrow the dependence to current module only

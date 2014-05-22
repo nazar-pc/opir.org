@@ -11,6 +11,7 @@ namespace cs\modules\Precincts;
 use
 	cs\Cache\Prefix,
 	cs\Config,
+	cs\Language,
 	cs\CRUD,
 	cs\Singleton;
 
@@ -83,15 +84,42 @@ class Precincts {
 			}
 			return $id;
 		}
-		return $this->cache->get($id, function () use ($id) {
+		$clang = Language::instance()->clang;
+		return $this->cache->get("$id/$clang", function () use ($id, $clang) {
 			$data               = $this->read_simple($id);
 			$data['id']         = (int)$data['id'];
 			$data['lat']        = (float)$data['lat'];
 			$data['lng']        = (float)$data['lng'];
 			$data['district']   = (int)$data['district'];
 			$data['violations'] = (int)$data['violations'];
+			if ($clang == 'en') {
+				$data['address'] = $this->translit($data['address']);
+			}
 			return $data;
 		});
+	}
+	protected function translit ($string) {
+		$string = str_replace(
+			[
+				'а', 'б', 'в', 'г', 'д', 'е', 'з', 'и', 'і', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ь', 'А', 'Б', 'В', 'Г', 'Д', 'Е',
+				'З', 'И', 'І', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Ь'
+			],
+			[
+				'a', 'b', 'v', 'g', 'd', 'e', 'z', 'y', 'i', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', "'", 'A', 'B', 'V', 'G', 'D', 'E',
+				'Z', 'Y', 'I', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', "'"
+			],
+			$string
+		);
+		$string = str_replace(
+			[
+				'ж', 'Ж', 'ц', 'Ц', 'ч', 'Ч', 'ш', 'Ш', 'щ', 'Щ', 'ю', 'Ю', 'я', 'Я', 'ї', 'Ї', 'є', 'Є', 'Ye', 'Х'
+			],
+			[
+				'zh', 'ZH', 'ts', 'TS', 'ch', 'CH', 'sh', 'SH', 'shch', 'SHCH', 'yu', 'YU', 'ya', 'YA', 'i', 'Yi', 'ie', 'Ye', 'Kh'
+			],
+			$string
+		);
+		return $string;
 	}
 	/**
 	 * Get array of id of all precincts
