@@ -162,6 +162,7 @@
 	button {
 		background : #0072c7;
 		border     : none;
+		color      : #fff;
 		display    : block;
 		margin     : 8px auto;
 		padding    : 10px;
@@ -170,6 +171,7 @@
 		&:hover,
 		&:focus {
 			background : #0069ba;
+			color      : #fff;
 		}
 	}
 }
