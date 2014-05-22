@@ -2,7 +2,7 @@
 	"help_initiative"				: "Help initiative",
 	"district_map_content"			: "District<br>#%s",
 	"precincts_search"				: "Precincts search",
-	"number_or_address"				: "Number or address",
+	"number_or_address"				: "Number or address of precinct",
 	"mobile_apps"					: "Mobile Apps",
 	"download_in"					: "Download in %s",
 	"contacts"						: "Contacts",
