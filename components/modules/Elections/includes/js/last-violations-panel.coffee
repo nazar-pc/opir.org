@@ -74,7 +74,7 @@ $ ->
 										if violation.images.length
 											violation.images
 											.map (image) ->
-												"""<img src="#{image}" alt="">"""
+												"""<figure class="uk-vertical-align"><img src="#{image}" alt="" class="uk-vertical-align-middle"></figure>"""
 											.join('')
 										else
 											''

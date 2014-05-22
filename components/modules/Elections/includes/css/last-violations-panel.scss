@@ -49,10 +49,17 @@
 			width      : 100%;
 		}
 
-		img {
-			cursor     : pointer;
-			margin-top : 8px;
-			width      : 100%;
+		figure {
+			height     : 240px;
+			text-align : center;
+			width      : 350px;
+
+			img {
+				cursor     : pointer;
+				margin-top : 8px;
+				max-height : 240px;
+				max-width  : 100%;
+			}
 		}
 	}
 }

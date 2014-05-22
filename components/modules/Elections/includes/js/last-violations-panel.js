@@ -74,7 +74,7 @@
                   time = time.getHours() + ':' + time.getMinutes();
                   text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';
                   images = violation.images.length ? violation.images.map(function(image) {
-                    return "<img src=\"" + image + "\" alt=\"\">";
+                    return "<figure class=\"uk-vertical-align\"><img src=\"" + image + "\" alt=\"\" class=\"uk-vertical-align-middle\"></figure>";
                   }).join('') : '';
                   video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
                   content += ("<article>\n<h3>\n	" + time + "\n	<span>") + L.precint_number(precinct.number) + ("</span> (" + L.district + " " + districts[precinct.id] + ")\n	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n</article>");

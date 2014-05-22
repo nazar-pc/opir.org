@@ -36,7 +36,12 @@
       height: 240px;
       margin-top: 8px;
       width: 100%; }
-    .cs-elections-last-violations-panel section > article img {
-      cursor: pointer;
-      margin-top: 8px;
-      width: 100%; }
+    .cs-elections-last-violations-panel section > article figure {
+      height: 240px;
+      text-align: center;
+      width: 350px; }
+      .cs-elections-last-violations-panel section > article figure img {
+        cursor: pointer;
+        margin-top: 8px;
+        max-height: 240px;
+        max-width: 100%; }
