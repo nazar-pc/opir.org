@@ -12,7 +12,7 @@
 (function() {
 
   $(function() {
-    var begin, loading, user_location;
+    var L, begin, loading, user_location;
     if (cs.module !== 'Elections') {
       return;
     }
@@ -28,6 +28,7 @@
     loading('show');
     $('#map').show();
     user_location = null;
+    L = cs.Language;
     ymaps.ready(function() {
       user_location = localStorage.getItem('coordinates');
       if (user_location) {
@@ -77,7 +78,8 @@
       });
       precincts_clusterer = new ymaps.Clusterer({
         clusterIcons: cluster_icons,
-        hasHint: false
+        hasHint: false,
+        maxZoom: 15
       });
       map.geoObjects.add(precincts_clusterer);
       (function() {
@@ -156,8 +158,8 @@
         for (precinct in _ref) {
           precinct = _ref[precinct];
           placemarks.push(new ymaps.Placemark([precinct.lat, precinct.lng], {
-            hintContent: "Дільниця №" + precinct.number,
-            balloonContentHeader: "Дільниця №" + precinct.number
+            hintContent: L.precint_number(precinct.number),
+            balloonContentHeader: L.precint_number(precinct.number)
           }, {
             iconLayout: 'default#image',
             iconImageHref: '/components/modules/Elections/includes/img/map-precincts.png',
