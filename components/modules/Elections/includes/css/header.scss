@@ -18,7 +18,7 @@
 	text-shadow   : none;
 	top           : 0;
 	text-align    : center;
-	z-index       : 1;
+	z-index       : 3;
 
 	&:hover {
 		background : #005291 !important;
@@ -80,7 +80,7 @@ body > header {
 		div {
 			display    : none;
 			background : inherit;
-			left       : -58px;
+			left       : -59px;
 			position   : relative;
 			top        : 23px;
 			width      : 150px;

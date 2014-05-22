@@ -17,7 +17,7 @@ body > header .cs-elections-add-violation {
   text-shadow: none;
   top: 0;
   text-align: center;
-  z-index: 1;
+  z-index: 3;
   left: 0;
   width: 240px; }
   body > header .cs-elections-add-violation:hover {
@@ -35,7 +35,7 @@ body > header .cs-elections-switch-to-map {
   text-shadow: none;
   top: 0;
   text-align: center;
-  z-index: 1;
+  z-index: 3;
   background: #0069ba !important;
   left: 240px;
   width: 80px; }
@@ -72,7 +72,7 @@ body > header .cs-elections-switch-language {
   text-shadow: none;
   top: 0;
   text-align: center;
-  z-index: 1;
+  z-index: 3;
   background: #0069ba !important;
   cursor: pointer;
   line-height: 28px;
@@ -86,7 +86,7 @@ body > header .cs-elections-switch-language {
   body > header .cs-elections-switch-language div {
     display: none;
     background: inherit;
-    left: -58px;
+    left: -59px;
     position: relative;
     top: 23px;
     width: 150px;
@@ -130,7 +130,7 @@ body > header .cs-elections-info {
   text-shadow: none;
   top: 0;
   text-align: center;
-  z-index: 1;
+  z-index: 3;
   right: 240px;
   width: 80px; }
   body > header .cs-elections-info:hover {
@@ -154,7 +154,7 @@ body > header .cs-elections-help-initiative:focus {
   text-shadow: none;
   top: 0;
   text-align: center;
-  z-index: 1;
+  z-index: 3;
   background: #ff5b52 !important;
   right: 0;
   width: 240px !important; }
