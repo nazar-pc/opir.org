@@ -53,7 +53,7 @@ $ ->
 								districts[p.id]	= p.district
 							return
 						$.ajax(
-							url		: "api/Violations"
+							url		: "api/Violations?number=20"
 							type	: 'get'
 							data	: null
 							success	: (violations) ->
@@ -97,7 +97,7 @@ $ ->
 									last_violations_panel.children('section')
 										.append(content)
 										.masonry(
-											columnWidth		: 350
+											columnWidth		: 300
 											gutter			: 20
 											itemSelector	: 'article'
 										)

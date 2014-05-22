@@ -55,7 +55,7 @@
               }
             })();
             return $.ajax({
-              url: "api/Violations",
+              url: "api/Violations?number=20",
               type: 'get',
               data: null,
               success: function(violations) {
@@ -81,7 +81,7 @@
                 }
                 if (content) {
                   last_violations_panel.children('section').append(content).masonry({
-                    columnWidth: 350,
+                    columnWidth: 300,
                     gutter: 20,
                     itemSelector: 'article'
                   });
