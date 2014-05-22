@@ -79,7 +79,6 @@ $ ->
 			->
 				$this = $(@)
 				title = $this.children('h3').html()
-				console.log title
 				add_violation($this.data('id'), title)
 		)
 	precinct_sidebar.on(

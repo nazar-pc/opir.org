@@ -85,7 +85,6 @@
         var $this, title;
         $this = $(this);
         title = $this.children('h3').html();
-        console.log(title);
         return add_violation($this.data('id'), title);
       });
     });
