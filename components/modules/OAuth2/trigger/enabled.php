@@ -76,7 +76,7 @@ Trigger::instance()
 					error_code(403);
 					$Page->error([
 						'invalid_request',
-						'This access_token can\'t be used without client_secret'
+						"This access_token can't be used without client_secret"
 					]);
 				}
 			}
