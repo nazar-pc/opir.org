@@ -39,7 +39,14 @@
 		text-transform : uppercase;
 
 		&:first-of-type {
-			margin-top : -25px;
+			margin-bottom : 0;
+			margin-top    : -25px;
+
+			& + p {
+				margin-bottom  : 10px;
+				text-align     : center;
+				text-transform : capitalize;
+			}
 		}
 	}
 

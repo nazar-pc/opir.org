@@ -30,85 +30,85 @@
     });
     window.cs.elections = window.cs.elections || {};
     window.cs.elections.open_precinct = function(id, address) {
-      var is_open, precinct, streams_container, violations_container, _ref;
-      _ref = JSON.parse(localStorage.getItem('precincts'));
-      for (precinct in _ref) {
-        precinct = _ref[precinct];
-        if (precinct.id === id) {
-          break;
-        }
-      }
-      is_open = precinct_sidebar.data('open');
-      precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + ("</h2>\n<p class=\"cs-elections-precinct-sidebar-address\">\n	<i class=\"uk-icon-location-arrow\"></i>\n	<span>" + address + "</span>\n</p>\n<h2>" + L.video_stream + "</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-violation uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.violations + "\n</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
-        width: 320
-      }, 'fast').data('open', 1);
-      if (!is_open) {
-        add_violation_sidebar.animate({
-          left: '+=320'
-        }, 'fast');
-        map_container.animate({
-          left: '+=320'
-        }, 'fast');
-      }
-      streams_container = $('.cs-elections-precinct-sidebar-streams');
-      $.ajax({
-        url: "api/Precincts/" + id + "/streams",
+      return $.ajax({
+        url: "api/Precincts/" + id,
         type: 'get',
         data: null,
-        success: function(streams) {
-          var content, stream, _i, _len;
-          content = '';
-          for (_i = 0, _len = streams.length; _i < _len; _i++) {
-            stream = streams[_i];
-            content += "<iframe src=\"" + stream.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe>";
+        success: function(precinct) {
+          var is_open, streams_container, violations_container;
+          is_open = precinct_sidebar.data('open');
+          precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + ("</h2>\n<p>" + L.district + " " + precinct.district + "</p>\n<p class=\"cs-elections-precinct-sidebar-address\">\n	<i class=\"uk-icon-location-arrow\"></i>\n	<span>" + address + "</span>\n</p>\n<h2>" + L.video_stream + "</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-violation uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.violations + "\n</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
+            width: 320
+          }, 'fast').data('open', 1);
+          if (!is_open) {
+            add_violation_sidebar.animate({
+              left: '+=320'
+            }, 'fast');
+            map_container.animate({
+              left: '+=320'
+            }, 'fast');
           }
-          if (content) {
-            return streams_container.html(content);
-          } else {
-            return streams_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
-          }
-        },
-        error: function() {
-          return streams_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
-        }
-      });
-      violations_container = $('.cs-elections-precinct-sidebar-violations');
-      $.ajax({
-        url: "api/Precincts/" + id + "/violations",
-        type: 'get',
-        data: null,
-        success: function(violations) {
-          var content, images, text, video, violation, _i, _j, _len, _len1, _results;
-          content = '';
-          for (_i = 0, _len = violations.length; _i < _len; _i++) {
-            violation = violations[_i];
-            text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';
-            images = violation.images.length ? "<img src=\"" + violation.images[0] + "\" alt=\"\">" : '';
-            video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
-            content += "<article>\n	" + text + "\n	" + images + "\n	" + video + "\n	<div class=\"cs-elections-precinct-sidebar-read-more\" data-id=\"" + violation.id + "\">" + L.read_more + " »</div>\n</article>";
-          }
-          if (content) {
-            violations_container.html(content);
-            _results = [];
-            for (_j = 0, _len1 = violations.length; _j < _len1; _j++) {
-              violation = violations[_j];
-              _results.push($(".cs-elections-precinct-sidebar-read-more[data-id=" + violation.id + "]").data('violation', violation));
+          streams_container = $('.cs-elections-precinct-sidebar-streams');
+          $.ajax({
+            url: "api/Precincts/" + id + "/streams",
+            type: 'get',
+            data: null,
+            success: function(streams) {
+              var content, stream, _i, _len;
+              content = '';
+              for (_i = 0, _len = streams.length; _i < _len; _i++) {
+                stream = streams[_i];
+                content += "<iframe src=\"" + stream.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe>";
+              }
+              if (content) {
+                return streams_container.html(content);
+              } else {
+                return streams_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+              }
+            },
+            error: function() {
+              return streams_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
             }
-            return _results;
-          } else {
-            return violations_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
-          }
-        },
-        error: function() {
-          return violations_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+          });
+          violations_container = $('.cs-elections-precinct-sidebar-violations');
+          $.ajax({
+            url: "api/Precincts/" + id + "/violations",
+            type: 'get',
+            data: null,
+            success: function(violations) {
+              var content, images, text, video, violation, _i, _j, _len, _len1, _results;
+              content = '';
+              for (_i = 0, _len = violations.length; _i < _len; _i++) {
+                violation = violations[_i];
+                text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';
+                images = violation.images.length ? "<img src=\"" + violation.images[0] + "\" alt=\"\">" : '';
+                video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
+                content += "<article>\n	" + text + "\n	" + images + "\n	" + video + "\n	<div class=\"cs-elections-precinct-sidebar-read-more\" data-id=\"" + violation.id + "\">" + L.read_more + " »</div>\n</article>";
+              }
+              if (content) {
+                violations_container.html(content);
+                _results = [];
+                for (_j = 0, _len1 = violations.length; _j < _len1; _j++) {
+                  violation = violations[_j];
+                  _results.push($(".cs-elections-precinct-sidebar-read-more[data-id=" + violation.id + "]").data('violation', violation));
+                }
+                return _results;
+              } else {
+                return violations_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+              }
+            },
+            error: function() {
+              return violations_container.html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+            }
+          });
+          return violations_container.on('click', 'img', function() {
+            return $("<div>\n	<div class=\"cs-elections-sign-in\" style=\"width: 90%;\">\n		" + this.outerHTML + "\n	</div>\n</div>").appendTo('body').cs().modal('show').click(function() {
+              return $(this).hide();
+            }).on('uk.modal.hide', function() {
+              return $(this).remove();
+            });
+          });
         }
-      });
-      return violations_container.on('click', 'img', function() {
-        return $("<div>\n	<div class=\"cs-elections-sign-in\" style=\"width: 90%;\">\n		" + this.outerHTML + "\n	</div>\n</div>").appendTo('body').cs().modal('show').click(function() {
-          return $(this).hide();
-        }).on('uk.modal.hide', function() {
-          return $(this).remove();
-        });
       });
     };
     return precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-close', function() {

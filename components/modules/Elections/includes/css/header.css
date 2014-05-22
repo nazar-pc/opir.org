@@ -22,6 +22,38 @@ body > header .cs-elections-add-violation {
   width: 240px; }
   body > header .cs-elections-add-violation:hover {
     background: #005291 !important; }
+body > header .cs-elections-last-violations,
+body > header .cs-elections-switch-to-map {
+  background: #0062ad !important;
+  color: #fff !important;
+  border: 0;
+  border-radius: 0 !important;
+  font-size: inherit !important;
+  height: 75px;
+  padding: 19px;
+  position: absolute;
+  text-shadow: none;
+  top: 0;
+  text-align: center;
+  z-index: 1;
+  background: #0069ba !important;
+  left: 240px;
+  width: 80px; }
+  body > header .cs-elections-last-violations:hover,
+  body > header .cs-elections-switch-to-map:hover {
+    background: #005291 !important; }
+  body > header .cs-elections-last-violations:hover,
+  body > header .cs-elections-switch-to-map:hover {
+    background: #0062ad !important; }
+  body > header .cs-elections-last-violations:before,
+  body > header .cs-elections-switch-to-map:before {
+    background: url(../img/header-buttons.png) 0 0;
+    content: '';
+    display: inline-block;
+    height: 38px;
+    width: 39px; }
+body > header .cs-elections-switch-to-map:before {
+  background-position: -78px 0; }
 body > header .cs-elections-logo {
   padding-right: 100px;
   position: absolute;

@@ -2,6 +2,7 @@
 	"Elections"	: [
 		"header.css",
 		"map.css",
+		"last-violations-panel.css",
 		"main-sidebar.css",
 		"precinct-sidebar.css",
 		"add-violation-sidebar.css",
@@ -10,6 +11,7 @@
 		"opir.org-info.js",
 		"help-initiative.js",
 		"map.js",
+		"last-violations-panel.js",
 		"main-sidebar.js",
 		"precinct-sidebar.js",
 		"add-violation-sidebar.js",

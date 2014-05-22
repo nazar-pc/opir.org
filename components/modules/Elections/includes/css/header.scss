@@ -32,6 +32,30 @@ body > header {
 		width : 240px;
 	}
 
+	.cs-elections-last-violations,
+	.cs-elections-switch-to-map {
+		@include button;
+		background : #0069ba !important;
+		left       : 240px;
+		width      : 80px;
+
+		&:hover {
+			background : #0062ad !important;
+		}
+
+		&:before {
+			background : url(../img/header-buttons.png) 0 0;
+			content    : '';
+			display    : inline-block;
+			height     : 38px;
+			width      : 39px;
+		}
+	}
+
+	.cs-elections-switch-to-map:before {
+		background-position : -78px 0;
+	}
+
 	.cs-elections-logo {
 		padding-right : 100px;
 		position      : absolute;

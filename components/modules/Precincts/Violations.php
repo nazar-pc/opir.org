@@ -133,9 +133,14 @@ class Violations {
 			return $id;
 		}
 		return $this->cache->get($id, function () use ($id) {
-			$return           = $this->read_simple($id);
-			$return['images'] = _json_decode($return['images']);
-			return $return;
+			$data             = $this->read_simple($id);
+			$data['images']   = _json_decode($data['images']);
+			$data['id']       = (int)$data['id'];
+			$data['precinct'] = (int)$data['precinct'];
+			$data['user']     = (int)$data['user'];
+			$data['date']     = (int)$data['date'];
+			$data['status']   = (int)$data['status'];
+			return $data;
 		});
 	}
 	/**

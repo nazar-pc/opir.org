@@ -29,6 +29,7 @@ $Page->link([
 ]);
 $Page->Header =
 	h::{'button.cs-elections-add-violation'}($L->add_violation).
+	h::{'button.cs-elections-last-violations'}().
 	h::{'div.cs-elections-logo'}(
 		h::{'a[href=/] img'}([
 			'src' => "components/modules/Elections/includes/img/logo-$L->clang.png"
@@ -62,6 +63,7 @@ $Page->Header =
 	h::{'button.cs-elections-info'}().
 	h::{'button.cs-elections-help-initiative'}($L->help_initiative);
 $Page->content(
+	h::{'div.cs-elections-last-violations-panel'}().
 	h::{'section.cs-elections-info-modal[style=display:none] article'}(
 		Info::get()
 	).

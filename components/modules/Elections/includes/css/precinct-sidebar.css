@@ -33,7 +33,12 @@
     text-align: center;
     text-transform: uppercase; }
     .cs-elections-precinct-sidebar > h2:first-of-type {
+      margin-bottom: 0;
       margin-top: -25px; }
+      .cs-elections-precinct-sidebar > h2:first-of-type + p {
+        margin-bottom: 10px;
+        text-align: center;
+        text-transform: capitalize; }
   .cs-elections-precinct-sidebar > p {
     margin: 0 20px; }
     .cs-elections-precinct-sidebar > p.cs-elections-precinct-sidebar-address {
