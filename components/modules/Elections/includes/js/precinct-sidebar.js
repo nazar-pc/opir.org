@@ -102,7 +102,7 @@
             }
           });
           return violations_container.on('click', 'img', function() {
-            return $("<div>\n	<div class=\"cs-elections-sign-in\" style=\"width: 90%;\">\n		" + this.outerHTML + "\n	</div>\n</div>").appendTo('body').cs().modal('show').click(function() {
+            return $("<div>\n	<div style=\"text-align: center; width: 90%;\">\n		" + this.outerHTML + "\n	</div>\n</div>").appendTo('body').cs().modal('show').click(function() {
               return $(this).hide();
             }).on('uk.modal.hide', function() {
               return $(this).remove();

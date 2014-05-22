@@ -117,7 +117,7 @@ $ ->
 			'img'
 			->
 				$("""<div>
-						<div style="width: 90%;">
+						<div style="text-align: center; width: 90%;">
 							#{@.outerHTML}
 						</div>
 					</div>""")
