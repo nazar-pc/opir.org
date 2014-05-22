@@ -41,7 +41,10 @@ $ ->
 							<i class="uk-icon-location-arrow"></i>
 							<span>#{address}</span>
 						</p>
-						<h2>#{L.video_stream}</h2>
+						<h2>
+							<button class="cs-elections-precinct-sidebar-add-stream uk-icon-plus" data-id="#{precinct.id}"></button>
+							#{L.video_stream}
+						</h2>
 						<div class="cs-elections-precinct-sidebar-streams">
 							<i class="uk-icon-spinner uk-icon-spin"></i>
 						</div>
@@ -161,4 +164,34 @@ $ ->
 					left	: '-=320'
 					'fast'
 				)
+		)
+		.on(
+			'click'
+			'.cs-elections-precinct-sidebar-add-stream'
+			->
+				precinct	= $(@).data('id')
+				modal		= $.cs.simple_modal("""<div class="cs-elections-precinct-sidebar-add-stream-modal">
+					<h2>#{L.stream}</h2>
+					<input placeholder="#{L.youtube_or_ustream_stream_link}">
+					<button>#{L.add}</button>
+				</div>""")
+				modal.find('button').click ->
+					stream_url = modal.find('input').val()
+					if match = /ustream.tv\/(channel|embed)\/([0-9]+)/i.exec(stream_url)
+						stream_url = "https://www.ustream.tv/embed/#{match[2]}"
+					else if match = /(youtube.com\/embed\/|youtube.com\/watch\?v=)([0-9a-z\-]+)/i.exec(stream_url)
+						stream_url = "https://www.youtube.com/embed/#{match[2]}"
+					else
+						alert L.bad_link
+						return
+					$.ajax(
+						url		: "api/Precincts/#{precinct}/streams"
+						data	:
+							stream_url	: stream_url
+						type	: 'post'
+						success	: ->
+							alert L.thank_you_for_your_stream
+							cs.elections.open_precinct(precinct, $('.cs-elections-precinct-sidebar-address span').html())
+					)
+					modal.hide().remove()
 		)

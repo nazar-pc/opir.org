@@ -37,7 +37,7 @@
         success: function(precinct) {
           var is_open, streams_container, violations_container;
           is_open = precinct_sidebar.data('open');
-          precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + ("</h2>\n<p>" + L.district + " " + precinct.district + "</p>\n<p class=\"cs-elections-precinct-sidebar-address\">\n	<i class=\"uk-icon-location-arrow\"></i>\n	<span>" + address + "</span>\n</p>\n<h2>" + L.video_stream + "</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-violation uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.violations + "\n</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
+          precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + ("</h2>\n<p>" + L.district + " " + precinct.district + "</p>\n<p class=\"cs-elections-precinct-sidebar-address\">\n	<i class=\"uk-icon-location-arrow\"></i>\n	<span>" + address + "</span>\n</p>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-stream uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.video_stream + "\n</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-violation uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.violations + "\n</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
             width: 320
           }, 'fast').data('open', 1);
           if (!is_open) {
@@ -125,6 +125,34 @@
       return map_container.animate({
         left: '-=320'
       }, 'fast');
+    }).on('click', '.cs-elections-precinct-sidebar-add-stream', function() {
+      var modal, precinct;
+      precinct = $(this).data('id');
+      modal = $.cs.simple_modal("<div class=\"cs-elections-precinct-sidebar-add-stream-modal\">\n	<h2>" + L.stream + "</h2>\n	<input placeholder=\"" + L.youtube_or_ustream_stream_link + "\">\n	<button>" + L.add + "</button>\n</div>");
+      return modal.find('button').click(function() {
+        var match, stream_url;
+        stream_url = modal.find('input').val();
+        if (match = /ustream.tv\/(channel|embed)\/([0-9]+)/i.exec(stream_url)) {
+          stream_url = "https://www.ustream.tv/embed/" + match[2];
+        } else if (match = /(youtube.com\/embed\/|youtube.com\/watch\?v=)([0-9a-z\-]+)/i.exec(stream_url)) {
+          stream_url = "https://www.youtube.com/embed/" + match[2];
+        } else {
+          alert(L.bad_link);
+          return;
+        }
+        $.ajax({
+          url: "api/Precincts/" + precinct + "/streams",
+          data: {
+            stream_url: stream_url
+          },
+          type: 'post',
+          success: function() {
+            alert(L.thank_you_for_your_stream);
+            return cs.elections.open_precinct(precinct, $('.cs-elections-precinct-sidebar-address span').html());
+          }
+        });
+        return modal.hide().remove();
+      });
     });
   });
 
