@@ -9,20 +9,6 @@
 $ ->
 	if cs.module != 'Elections'
 		return
-	loading		= (mode) ->
-		if mode == 'show'
-			$("""
-				<div class="cs-elections-loading">
-					<i class="uk-icon-spinner uk-icon-spin"></i>
-				</div>
-			""")
-				.hide()
-				.appendTo('body')
-				.slideDown()
-		else
-			setTimeout (->
-				$('.cs-elections-loading').slideUp().remove()
-			), 200
 	last_violations_button	= $('.cs-elections-last-violations')
 	last_violations_panel	= $('.cs-elections-last-violations-panel')
 	L						= cs.Language
@@ -33,7 +19,7 @@ $ ->
 			last_violations_button.removeClass('cs-elections-switch-to-map').addClass('cs-elections-last-violations')
 			last_violations_panel.slideUp('fast').html('')
 			return
-		loading('show')
+		cs.elections.loading('show')
 		last_violations_panel
 			.html("""
 				<h2>#{L.last_violations}</h2>
@@ -107,14 +93,14 @@ $ ->
 										)
 								else
 									last_violations_panel.append("""<p class="uk-text-center">#{L.empty}</p>""")
-								loading('hide')
+								cs.elections.loading('hide')
 							error		: ->
 								console.error('Precincts addresses loading error')
-								loading('hide')
+								cs.elections.loading('hide')
 						)
 					error	: ->
 						last_violations_panel.append("""<p class="uk-text-center">#{L.empty}</p>""")
-						loading('hide')
+						cs.elections.loading('hide')
 				)
 	last_violations_panel
 		.on(

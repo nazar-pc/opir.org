@@ -9,21 +9,7 @@
 $ ->
 	if cs.module != 'Elections'
 		return
-	loading		= (mode) ->
-		if mode == 'show'
-			$("""
-				<div class="cs-elections-loading">
-					<i class="uk-icon-spinner uk-icon-spin"></i>
-				</div>
-			""")
-				.hide()
-				.appendTo('body')
-				.slideDown()
-		else
-			setTimeout (->
-				$('.cs-elections-loading').slideUp().remove()
-			), 200
-	loading('show')
+	cs.elections.loading('show')
 	$('#map').show()
 	user_location	= null
 	L				= cs.Language
@@ -170,7 +156,7 @@ $ ->
 					)
 			precincts_clusterer.removeAll()
 			precincts_clusterer.add(placemarks)
-			loading('hide')
+			cs.elections.loading('hide')
 		add_districts_on_map	= ->
 			districts	= cs.elections.get_districts()
 			placemarks	= []

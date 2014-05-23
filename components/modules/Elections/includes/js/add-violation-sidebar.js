@@ -118,17 +118,20 @@
       }
       add_image_button = $('.cs-elections-add-violation-add-image');
       cs.file_upload(add_image_button, function(files) {
-        var file, textarea, _i, _len, _results;
+        var file, textarea, _i, _len;
         if (files.length) {
           textarea = add_violation_sidebar.children('textarea');
-          _results = [];
           for (_i = 0, _len = files.length; _i < _len; _i++) {
             file = files[_i];
-            _results.push(textarea.after("<img src=\"" + file + "\" alt=\"\">"));
+            textarea.after("<img src=\"" + file + "\" alt=\"\">");
           }
-          return _results;
         }
-      }, null, null, true);
+        return cs.elections.loading('hide');
+      }, function() {
+        return cs.elections.loading('hide');
+      }, function() {
+        return cs.elections.loading('show');
+      }, true);
       $('.cs-elections-add-violation-add-video').click(function() {
         var modal;
         modal = $.cs.simple_modal("<div class=\"cs-elections-add-violation-add-video-modal\">\n	<h2>" + L.video + "</h2>\n	<input placeholder=\"" + L.youtube_or_ustream_video_link + "\">\n	<button>" + L.add + "</button>\n</div>");

@@ -137,8 +137,11 @@ $ ->
 						textarea.after(
 							"""<img src="#{file}" alt="">"""
 						)
-			null
-			null
+				cs.elections.loading('hide')
+			->
+				cs.elections.loading('hide')
+			->
+				cs.elections.loading('show')
 			true
 		)
 		$('.cs-elections-add-violation-add-video').click ->

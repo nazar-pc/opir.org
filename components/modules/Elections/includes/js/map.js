@@ -12,20 +12,11 @@
 (function() {
 
   $(function() {
-    var L, begin, loading, user_location;
+    var L, begin, user_location;
     if (cs.module !== 'Elections') {
       return;
     }
-    loading = function(mode) {
-      if (mode === 'show') {
-        return $("<div class=\"cs-elections-loading\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>").hide().appendTo('body').slideDown();
-      } else {
-        return setTimeout((function() {
-          return $('.cs-elections-loading').slideUp().remove();
-        }), 200);
-      }
-    };
-    loading('show');
+    cs.elections.loading('show');
     $('#map').show();
     user_location = null;
     L = cs.Language;
@@ -145,7 +136,7 @@
         }
         precincts_clusterer.removeAll();
         precincts_clusterer.add(placemarks);
-        return loading('hide');
+        return cs.elections.loading('hide');
       };
       add_districts_on_map = function() {
         var district, districts, placemarks;

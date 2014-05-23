@@ -51,4 +51,14 @@
     return districts;
   };
 
+  window.cs.elections.loading = function(mode) {
+    if (mode === 'show') {
+      return $("<div class=\"cs-elections-loading\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>").hide().appendTo('body').slideDown();
+    } else {
+      return setTimeout((function() {
+        return $('.cs-elections-loading').slideUp().remove();
+      }), 200);
+    }
+  };
+
 }).call(this);

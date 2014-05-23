@@ -31,3 +31,17 @@ window.cs.elections.get_districts = (check) ->
 		localStorage.setItem('districts', JSON.stringify(districts_new_format))
 		districts = districts_new_format
 	districts
+window.cs.elections.loading		= (mode) ->
+		if mode == 'show'
+			$("""
+				<div class="cs-elections-loading">
+					<i class="uk-icon-spinner uk-icon-spin"></i>
+				</div>
+			""")
+				.hide()
+				.appendTo('body')
+				.slideDown()
+		else
+			setTimeout (->
+				$('.cs-elections-loading').slideUp().remove()
+			), 200

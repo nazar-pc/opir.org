@@ -12,19 +12,10 @@
 (function() {
 
   $(function() {
-    var L, last_violations_button, last_violations_panel, loading;
+    var L, last_violations_button, last_violations_panel;
     if (cs.module !== 'Elections') {
       return;
     }
-    loading = function(mode) {
-      if (mode === 'show') {
-        return $("<div class=\"cs-elections-loading\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>").hide().appendTo('body').slideDown();
-      } else {
-        return setTimeout((function() {
-          return $('.cs-elections-loading').slideUp().remove();
-        }), 200);
-      }
-    };
     last_violations_button = $('.cs-elections-last-violations');
     last_violations_panel = $('.cs-elections-last-violations-panel');
     L = cs.Language;
@@ -36,7 +27,7 @@
         last_violations_panel.slideUp('fast').html('');
         return;
       }
-      loading('show');
+      cs.elections.loading('show');
       return last_violations_panel.html("<h2>" + L.last_violations + "</h2>\n<section></section>").slideDown('fast', function() {
         return $.ajax({
           url: "api/Violations?number=20",
@@ -94,17 +85,17 @@
                 } else {
                   last_violations_panel.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
                 }
-                return loading('hide');
+                return cs.elections.loading('hide');
               },
               error: function() {
                 console.error('Precincts addresses loading error');
-                return loading('hide');
+                return cs.elections.loading('hide');
               }
             });
           },
           error: function() {
             last_violations_panel.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
-            return loading('hide');
+            return cs.elections.loading('hide');
           }
         });
       });
