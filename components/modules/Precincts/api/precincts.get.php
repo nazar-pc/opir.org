@@ -34,6 +34,7 @@ if (isset($Index->route_ids[0])) {
 					return in_array($precinct['id'], $id);
 				}
 			);
+			$precinct  = array_values($precincts);
 		}
 	}
 	if (isset($_GET['number'])) {
@@ -45,7 +46,6 @@ if (isset($Index->route_ids[0])) {
 		$number    = max((int)$_GET['number'], 1);
 		$offset    = $number * ($page - 1);
 		$precincts = array_slice($precincts, $offset, $number);
-		$precinct  = array_values($precincts);
 	}
 	if (isset($_GET['fields'])) {
 		$fields = array_intersect(explode(',', $_GET['fields']), ['id', 'number', 'address', 'lat', 'lng', 'district', 'violations']);
