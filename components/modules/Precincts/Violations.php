@@ -259,4 +259,49 @@ class Violations {
 			)
 		);
 	}
+	/**
+	 * Get new violations
+	 *
+	 * @return bool|int[]
+	 */
+	function get_new () {
+		return $this->db()->qfas([
+			"SELECT `id`
+			FROM `$this->table`
+			WHERE `status` = '%s'
+			ORDER BY `id` ASC
+			LIMIT 100",
+			self::STATUS_ADDED
+		]);
+	}
+	/**
+	 * Get approved violations
+	 *
+	 * @return bool|int[]
+	 */
+	function get_approved () {
+		return $this->db()->qfas([
+			"SELECT `id`
+			FROM `$this->table`
+			WHERE `status` = '%s'
+			ORDER BY `id` DESC
+			LIMIT 100",
+			self::STATUS_APPROVED
+		]);
+	}
+	/**
+	 * Get declined violations
+	 *
+	 * @return bool|int[]
+	 */
+	function get_declined () {
+		return $this->db()->qfas([
+			"SELECT `id`
+			FROM `$this->table`
+			WHERE `status` = '%s'
+			ORDER BY `id` DESC
+			LIMIT 100",
+			self::STATUS_DECLINED
+		]);
+	}
 }

@@ -1,0 +1,7 @@
+{
+	"Moderation"	: [
+		"moderation.css",
+		"masonry-3.1.5.min.js",
+		"violations.js"
+	]
+}

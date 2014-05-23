@@ -97,7 +97,8 @@
                 return loading('hide');
               },
               error: function() {
-                return console.error('Precincts addresses loading error');
+                console.error('Precincts addresses loading error');
+                return loading('hide');
               }
             });
           },

@@ -110,6 +110,7 @@ $ ->
 								loading('hide')
 							error		: ->
 								console.error('Precincts addresses loading error')
+								loading('hide')
 						)
 					error	: ->
 						last_violations_panel.append("""<p class="uk-text-center">#{L.empty}</p>""")

@@ -1,10 +1,12 @@
 {
 	"violations"	: [
+		"default",
 		"new",
 		"approved",
 		"declined"
 	],
 	"streams"		: [
+		"default",
 		"new",
 		"approved",
 		"declined"

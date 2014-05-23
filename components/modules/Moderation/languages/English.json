@@ -1,3 +1,5 @@
 {
-	"moderators_group" : "Moderators group"
+	"moderators_group" : "Moderators group",
+	"approve"          : "Approve",
+	"decline"          : "Decline"
 }

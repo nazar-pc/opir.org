@@ -1,3 +1,5 @@
 {
-	"moderators_group" : "Група модераторів"
+	"moderators_group" : "Група модераторів",
+	"approve"          : "Підтвердити",
+	"decline"          : "Відхилити"
 }

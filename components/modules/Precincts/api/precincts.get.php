@@ -34,7 +34,7 @@ if (isset($Index->route_ids[0])) {
 					return in_array($precinct['id'], $id);
 				}
 			);
-			$precinct  = array_values($precincts);
+			$precincts  = array_values($precincts);
 		}
 	}
 	if (isset($_GET['number'])) {
