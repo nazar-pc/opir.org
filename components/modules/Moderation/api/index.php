@@ -14,8 +14,9 @@ use
 	cs\User;
 
 $module_properties = Config::instance()->module('Moderation');
-if (!in_array($module_properties->moderators_group ? : User::ADMIN_GROUP_ID, User::instance()->get_groups())) {
-	error_code(404);
+$User              = User::instance();
+if (!$User->admin() && !in_array($module_properties->moderators_group ? : User::ADMIN_GROUP_ID, $User->get_groups())) {
+	error_code(403);
 	return;
 }
 
