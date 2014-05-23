@@ -12,28 +12,28 @@
 (function() {
 
   $(function() {
-    var L, check_new_violations, violations_container;
-    if (cs.module !== 'Moderation' || cs.route_path[0] !== 'violations') {
+    var L, check_new_streams, streams_container;
+    if (cs.module !== 'Moderation' || cs.route_path[0] !== 'streams') {
       return;
     }
-    violations_container = $('.cs-moderation');
+    streams_container = $('.cs-moderation');
     L = cs.Language;
-    violations_container.html("<h2>" + L.violations_need_checking + "</h2>\n<section></section>");
+    streams_container.html("<h2>" + L.streams_need_checking + "</h2>\n<section></section>");
     $.ajax({
-      url: 'api/Moderation/violations/' + cs.route_path[1],
+      url: 'api/Moderation/streams/' + cs.route_path[1],
       type: 'get',
-      success: function(violations) {
+      success: function(streams) {
         var ids;
-        if (!violations.length) {
-          violations_container.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
+        if (!streams.length) {
+          streams_container.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
           return;
         }
         ids = [];
         (function() {
           var violation, _results;
           _results = [];
-          for (violation in violations) {
-            violation = violations[violation];
+          for (violation in streams) {
+            violation = streams[violation];
             _results.push(ids.push(violation.precinct));
           }
           return _results;
@@ -44,7 +44,7 @@
           type: 'get',
           data: null,
           success: function(addresses_districts_loaded) {
-            var addresses, content, districts, images, precinct, precincts, text, time, video, violation, _i, _len;
+            var addresses, content, districts, precinct, precincts, time, video, violation, _i, _len;
             addresses = {};
             districts = {};
             (function() {
@@ -57,27 +57,23 @@
             })();
             content = '';
             precincts = JSON.parse(localStorage.getItem('precincts'));
-            for (_i = 0, _len = violations.length; _i < _len; _i++) {
-              violation = violations[_i];
+            for (_i = 0, _len = streams.length; _i < _len; _i++) {
+              violation = streams[_i];
               precinct = precincts[violation.precinct];
-              time = new Date(violation.date * 1000);
+              time = new Date(violation.added * 1000);
               time = (time.getHours() < 10 ? '0' + time.getHours() : time.getHours()) + ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes());
-              text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';
-              images = violation.images.length ? violation.images.map(function(image) {
-                return "<figure class=\"uk-vertical-align\"><img src=\"" + image + "\" alt=\"\" class=\"uk-vertical-align-middle\"></figure>";
-              }).join('') : '';
-              video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
-              content += ("<article data-id=\"" + violation.id + "\">\n<h3>\n	" + time + "\n	<span>") + L.precint_number(precinct.number) + ("</span> (" + L.district + " " + districts[precinct.id] + ")\n	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n	<p class=\"uk-text-center\">\n		<button class=\"cs-moderation-approve\" data-id=\"" + violation.id + "\">" + L.approve + "</button>\n		<button class=\"cs-moderation-decline\" data-id=\"" + violation.id + "\">" + L.decline + "</button>\n	</p>\n</article>");
+              video = "<iframe src=\"" + violation.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe>";
+              content += ("<article data-id=\"" + violation.id + "\">\n<h3>\n	" + time + "\n	<span>") + L.precint_number(precinct.number) + ("</span> (" + L.district + " " + districts[precinct.id] + ")\n	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + video + "\n	<p class=\"uk-text-center\">\n		<button class=\"cs-moderation-approve\" data-id=\"" + violation.id + "\">" + L.approve + "</button>\n		<button class=\"cs-moderation-decline\" data-id=\"" + violation.id + "\">" + L.decline + "</button>\n	</p>\n</article>");
             }
             if (content) {
-              violations_container.children('section').append(content).masonry({
+              streams_container.children('section').append(content).masonry({
                 columnWidth: 300,
                 gutter: 20,
                 itemSelector: 'article'
               });
-              return setTimeout(check_new_violations, 1000);
+              return setTimeout(check_new_streams, 1000);
             } else {
-              return violations_container.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
+              return streams_container.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
             }
           },
           error: function() {
@@ -86,10 +82,10 @@
         });
       },
       error: function() {
-        return violations_container.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
+        return streams_container.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
       }
     });
-    violations_container.on('click', 'img', function() {
+    streams_container.on('click', 'img', function() {
       return $("<div>\n	<div style=\"text-align: center; width: 90%;\">\n		" + this.outerHTML + "\n	</div>\n</div>").appendTo('body').cs().modal('show').click(function() {
         return $(this).hide();
       }).on('uk.modal.hide', function() {
@@ -101,7 +97,7 @@
       status = $this.hasClass('cs-moderation-approve') ? 1 : 0;
       id = $this.data('id');
       return $.ajax({
-        url: "api/Moderation/violations/" + id,
+        url: "api/Moderation/streams/" + id,
         data: {
           status: status
         },
@@ -111,25 +107,25 @@
         }
       });
     });
-    return check_new_violations = function() {
+    return check_new_streams = function() {
       return $.ajax({
-        url: 'api/Moderation/violations/' + cs.route_path[1],
+        url: 'api/Moderation/streams/' + cs.route_path[1],
         type: 'get',
-        success: function(violations) {
-          var current_available, shown_violations;
-          current_available = violations.map(function(violation) {
+        success: function(streams) {
+          var current_available, shown_streams;
+          current_available = streams.map(function(violation) {
             return violation.id;
           });
-          shown_violations = violations_container.children('section').children('article');
-          shown_violations.each(function() {
+          shown_streams = streams_container.children('section').children('article');
+          shown_streams.each(function() {
             var $this;
             $this = $(this);
             if (current_available.indexOf(parseInt($this.data('id'))) === -1) {
               return $this.css('visibility', 'hidden');
             }
           });
-          if (shown_violations.length) {
-            return setTimeout(check_new_violations, 1000);
+          if (shown_streams.length) {
+            return setTimeout(check_new_streams, 1000);
           }
         },
         error: function() {}

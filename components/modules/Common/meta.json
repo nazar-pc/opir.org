@@ -1,14 +1,14 @@
 {
-	"package"		: "Moderation",
+	"package"		: "Common",
 	"category"		: "modules",
 	"version"		: "1.0.0",
-	"description"	: "Moderation page for opir.org",
+	"description"	: "Common functionality for opir.org",
 	"author"		: "Nazar Mokrynskyi",
 	"website"		: "cleverstyle.org/cms",
 	"license"		: "MIT License",
-	"provide"		: "opir.org_moderation",
+	"provide"		: "opir.org_common",
 	"require"		: [
-		"opir.org_common",
-		"opir.org_precincts"
+		"opir.org_info",
+		"opir.org_help"
 	]
 }

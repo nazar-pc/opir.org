@@ -1,5 +1,7 @@
 {
-	"moderators_group" : "Група модераторів",
-	"approve"          : "Підтвердити",
-	"decline"          : "Відхилити"
+	"moderators_group"         : "Група модераторів",
+	"approve"                  : "Підтвердити",
+	"decline"                  : "Відхилити",
+	"violations_need_checking" : "Повідомлення потребують перевірки",
+	"streams_need_checking"    : "Стріми потребують перевірки"
 }

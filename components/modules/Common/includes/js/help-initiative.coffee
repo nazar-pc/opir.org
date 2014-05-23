@@ -1,5 +1,5 @@
 ###*
- * @package        Elections
+ * @package        Common
  * @category       modules
  * @author         Nazar Mokrynskyi <nazar@mokrynskyi.com>
  * @copyright      Copyright (c) 2014, Nazar Mokrynskyi
@@ -7,6 +7,6 @@
 ###
 
 $ ->
-	$('.cs-elections-info').click ->
-		$('.cs-elections-info-modal')
+	$('.cs-elections-help-initiative').click ->
+		$('.cs-elections-help-initiative-modal')
 			.cs().modal('show')

@@ -1,5 +1,7 @@
 {
-	"moderators_group" : "Moderators group",
-	"approve"          : "Approve",
-	"decline"          : "Decline"
+	"moderators_group"         : "Moderators group",
+	"approve"                  : "Approve",
+	"decline"                  : "Decline",
+	"violations_need_checking" : "Violations need checking",
+	"streams_need_checking"    : "Streams need checking"
 }

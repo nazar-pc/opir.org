@@ -7,24 +7,24 @@
 ###
 
 $ ->
-	if cs.module != 'Moderation' || cs.route_path[0] != 'violations'
+	if cs.module != 'Moderation' || cs.route_path[0] != 'streams'
 		return
-	violations_container	= $('.cs-moderation')
+	streams_container	= $('.cs-moderation')
 	L						= cs.Language
-	violations_container.html("""
-		<h2>#{L.violations_need_checking}</h2>
+	streams_container.html("""
+		<h2>#{L.streams_need_checking}</h2>
 		<section></section>
 	""")
 	$.ajax(
-		url		: 'api/Moderation/violations/' + cs.route_path[1]
+		url		: 'api/Moderation/streams/' + cs.route_path[1]
 		type	: 'get'
-		success	: (violations) ->
-			if !violations.length
-				violations_container.append("""<p class="uk-text-center">#{L.empty}</p>""")
+		success	: (streams) ->
+			if !streams.length
+				streams_container.append("""<p class="uk-text-center">#{L.empty}</p>""")
 				return
 			ids	= []
 			do ->
-				for violation, violation of violations
+				for violation, violation of streams
 					ids.push(violation.precinct)
 			ids	= ids.join(',')
 			$.ajax(
@@ -41,37 +41,18 @@ $ ->
 						return
 					content		= ''
 					precincts	= JSON.parse(localStorage.getItem('precincts'))
-					for violation in violations
+					for violation in streams
 						precinct = precincts[violation.precinct]
-						time = new Date(violation.date * 1000)
+						time = new Date(violation.added * 1000)
 						time =
 							(if time.getHours() < 10 then '0' + time.getHours() else time.getHours()) + ':' + (if time.getMinutes() < 10 then '0' + time.getMinutes() else time.getMinutes())
-						text =
-							if violation.text
-								"<p>" + violation.text.substr(0, 200) + "</p>"
-							else
-								''
-						images =
-							if violation.images.length
-								violation.images
-								.map (image) ->
-									"""<figure class="uk-vertical-align"><img src="#{image}" alt="" class="uk-vertical-align-middle"></figure>"""
-								.join('')
-							else
-								''
-						video =
-							if violation.video
-								"""<iframe src="#{violation.video}" frameborder="0" scrolling="no"></iframe>"""
-							else
-								''
+						video = """<iframe src="#{violation.stream_url}" frameborder="0" scrolling="no"></iframe>"""
 						content += """<article data-id="#{violation.id}">
 							<h3>
 								#{time}
 								<span>""" + L.precint_number(precinct.number) + """</span> (#{L.district} #{districts[precinct.id]})
 							</h3>
 							<p>#{addresses[precinct.id]}</p>
-							#{text}
-							#{images}
 							#{video}
 							<p class="uk-text-center">
 								<button class="cs-moderation-approve" data-id="#{violation.id}">#{L.approve}</button>
@@ -79,23 +60,23 @@ $ ->
 							</p>
 						</article>"""
 					if content
-						violations_container.children('section')
+						streams_container.children('section')
 							.append(content)
 							.masonry(
 								columnWidth		: 300
 								gutter			: 20
 								itemSelector	: 'article'
 							)
-						setTimeout(check_new_violations, 1000)
+						setTimeout(check_new_streams, 1000)
 					else
-						violations_container.append("""<p class="uk-text-center">#{L.empty}</p>""")
+						streams_container.append("""<p class="uk-text-center">#{L.empty}</p>""")
 				error		: ->
 					console.error('Precincts addresses loading error')
 			)
 		error	: ->
-			violations_container.append("""<p class="uk-text-center">#{L.empty}</p>""")
+			streams_container.append("""<p class="uk-text-center">#{L.empty}</p>""")
 	)
-	violations_container
+	streams_container
 		.on(
 			'click'
 			'img'
@@ -120,7 +101,7 @@ $ ->
 				status	= if $this.hasClass('cs-moderation-approve') then 1 else 0
 				id		= $this.data('id')
 				$.ajax(
-					url		: "api/Moderation/violations/#{id}"
+					url		: "api/Moderation/streams/#{id}"
 					data	:
 						status	: status
 					type	: 'put'
@@ -128,19 +109,19 @@ $ ->
 						$this.parentsUntil('section').css('visibility', 'hidden')
 				)
 		)
-	check_new_violations	= ->
+	check_new_streams	= ->
 		$.ajax(
-			url		: 'api/Moderation/violations/' + cs.route_path[1]
+			url		: 'api/Moderation/streams/' + cs.route_path[1]
 			type	: 'get'
-			success	: (violations) ->
-				current_available = violations.map (violation) ->
+			success	: (streams) ->
+				current_available = streams.map (violation) ->
 					violation.id
-				shown_violations = violations_container.children('section').children('article')
-				shown_violations.each ->
+				shown_streams = streams_container.children('section').children('article')
+				shown_streams.each ->
 					$this = $(@)
 					if current_available.indexOf(parseInt($this.data('id'))) == -1
 						$this.css('visibility', 'hidden')
-				if shown_violations.length
-					setTimeout(check_new_violations, 1000)
+				if shown_streams.length
+					setTimeout(check_new_streams, 1000)
 			error	: ->
 		)

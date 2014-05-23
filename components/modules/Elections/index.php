@@ -13,63 +13,16 @@ use
 	cs\Index,
 	cs\Language,
 	cs\Page,
-	cs\User,
-	cs\modules\Info\Info,
-	cs\modules\Help\Help;
+	cs\User;
 
 Index::instance()->title_auto = false;
 $L                            = Language::instance();
 $Page                         = Page::instance();
-$Page->Description            = 'opir.org - ми контролюємо вибори';
-$Page->og('image', 'https://opir.org/components/modules/Elections/includes/img/share.png');
-$Page->og('image:secure_url', 'https://opir.org/components/modules/Elections/includes/img/share.png');
-$Page->link([
-	'rel'  => 'image_src',
-	'href' => 'https://opir.org/components/modules/Elections/includes/img/share.png'
-]);
-$Page->Header =
+$Page->Header .=
 	h::{'button.cs-elections-add-violation'}($L->add_violation).
-	h::{'button.cs-elections-last-violations'}().
-	h::{'div.cs-elections-logo'}(
-		h::{'a[href=/] img'}([
-			'src' => "components/modules/Elections/includes/img/logo-$L->clang.png"
-		])
-	).
-	h::{'nav.cs-elections-switch-language'}(
-		h::span(
-			"$L->clang ".h::icon('caret-down'),
-			[
-				'class'	=> $L->clang
-			]
-		).
-		h::{'div a[href=/$i[lang]][in=$i[language]]'}([
-			'class'		=> '$i[lang]',
-			'insert'	=> [
-				[
-					'lang'		=> 'uk',
-					'language'	=> 'Українська'
-				],
-				[
-					'lang'		=> 'ru',
-					'language'	=> 'Русский'
-				],
-				[
-					'lang'		=> 'en',
-					'language'	=> 'English'
-				]
-			]
-		])
-	).
-	h::{'button.cs-elections-info'}().
-	h::{'button.cs-elections-help-initiative'}($L->help_initiative);
+	h::{'button.cs-elections-last-violations'}();
 $Page->content(
 	h::{'div.cs-elections-last-violations-panel'}().
-	h::{'section.cs-elections-info-modal[style=display:none] article'}(
-		Info::get()
-	).
-	h::{'section.cs-elections-help-initiative-modal[style=display:none] article'}(
-		Help::get()
-	).
 	h::{'aside.cs-elections-precinct-sidebar'}().
 	h::{'aside.cs-elections-add-violation-sidebar'}().
 	h::{'aside.cs-elections-violation-read-more-sidebar'}().
