@@ -25,6 +25,17 @@ if (isset($Index->route_ids[0])) {
 	$precincts = $Cache->get('all/ids_api', function () use ($Precincts) {
 		return $Precincts->get($Precincts->get_all());
 	});
+	if (isset($_GET['id'])) {
+		$id = array_unique(_int(explode(',', $_GET['id'])));
+		if ($id) {
+			$precincts = array_filter(
+				$precincts,
+				function ($precinct) use ($id) {
+					return in_array($precinct['id'], $id);
+				}
+			);
+		}
+	}
 	if (isset($_GET['number'])) {
 		if (isset($_GET['page'])) {
 			$page = max((int)$_GET['page'], 1);

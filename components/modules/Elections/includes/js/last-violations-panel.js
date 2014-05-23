@@ -39,27 +39,37 @@
       loading('show');
       return last_violations_panel.html("<h2>" + L.last_violations + "</h2>\n<section></section>").slideDown('fast', function() {
         return $.ajax({
-          url: 'api/Precincts?fields=address,district',
+          url: "api/Violations?number=20",
           type: 'get',
           data: null,
-          success: function(addresses_districts_loaded) {
-            var addresses, districts;
-            addresses = {};
-            districts = {};
+          success: function(violations) {
+            var ids;
+            ids = [];
             (function() {
-              var p, _i, _len;
-              for (_i = 0, _len = addresses_districts_loaded.length; _i < _len; _i++) {
-                p = addresses_districts_loaded[_i];
-                addresses[p.id] = p.address;
-                districts[p.id] = p.district;
+              var violation, _results;
+              _results = [];
+              for (violation in violations) {
+                _results.push(ids.push(violation.precinct));
               }
+              return _results;
             })();
+            ids = precincts.join(',');
             return $.ajax({
-              url: "api/Violations?number=20",
+              url: "api/Precincts?fields=address,district&id=" + ids,
               type: 'get',
               data: null,
-              success: function(violations) {
-                var content, images, precinct, precincts, text, time, video, violation, _i, _len;
+              success: function(addresses_districts_loaded) {
+                var addresses, content, districts, images, precinct, precincts, text, time, video, violation, _i, _len;
+                addresses = {};
+                districts = {};
+                (function() {
+                  var p, _i, _len;
+                  for (_i = 0, _len = addresses_districts_loaded.length; _i < _len; _i++) {
+                    p = addresses_districts_loaded[_i];
+                    addresses[p.id] = p.address;
+                    districts[p.id] = p.district;
+                  }
+                })();
                 content = '';
                 precincts = cs.elections.get_precincts();
                 for (_i = 0, _len = violations.length; _i < _len; _i++) {
@@ -86,13 +96,13 @@
                 return loading('hide');
               },
               error: function() {
-                last_violations_panel.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
-                return loading('hide');
+                return console.error('Precincts addresses loading error');
               }
             });
           },
           error: function() {
-            return console.error('Precincts addresses loading error');
+            last_violations_panel.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
+            return loading('hide');
           }
         });
       });

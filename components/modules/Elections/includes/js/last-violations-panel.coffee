@@ -41,22 +41,27 @@ $ ->
 			""")
 			.slideDown 'fast', ->
 				$.ajax(
-					url			: 'api/Precincts?fields=address,district'
-					type		: 'get'
-					data		: null
-					success		: (addresses_districts_loaded) ->
-						addresses	= {}
-						districts	= {}
+					url		: "api/Violations?number=20"
+					type	: 'get'
+					data	: null
+					success	: (violations) ->
+						ids	= []
 						do ->
-							for p in addresses_districts_loaded
-								addresses[p.id]	= p.address
-								districts[p.id]	= p.district
-							return
+							for violation of violations
+								ids.push(violation.precinct)
+						ids	= precincts.join(',')
 						$.ajax(
-							url		: "api/Violations?number=20"
-							type	: 'get'
-							data	: null
-							success	: (violations) ->
+							url			: "api/Precincts?fields=address,district&id=#{ids}"
+							type		: 'get'
+							data		: null
+							success		: (addresses_districts_loaded) ->
+								addresses	= {}
+								districts	= {}
+								do ->
+									for p in addresses_districts_loaded
+										addresses[p.id]	= p.address
+										districts[p.id]	= p.district
+									return
 								content		= ''
 								precincts	= cs.elections.get_precincts()
 								for violation in violations
@@ -103,12 +108,12 @@ $ ->
 								else
 									last_violations_panel.append("""<p class="uk-text-center">#{L.empty}</p>""")
 								loading('hide')
-							error	: ->
-								last_violations_panel.append("""<p class="uk-text-center">#{L.empty}</p>""")
-								loading('hide')
+							error		: ->
+								console.error('Precincts addresses loading error')
 						)
-					error		: ->
-						console.error('Precincts addresses loading error')
+					error	: ->
+						last_violations_panel.append("""<p class="uk-text-center">#{L.empty}</p>""")
+						loading('hide')
 				)
 	last_violations_panel
 		.on(
