@@ -49,6 +49,7 @@
               var violation, _results;
               _results = [];
               for (violation in violations) {
+                violation = violations[violation];
                 _results.push(ids.push(violation.precinct));
               }
               return _results;

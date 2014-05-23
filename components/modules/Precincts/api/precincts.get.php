@@ -89,5 +89,5 @@ if (isset($Index->route_ids[0])) {
 		header('Cache-Control: max-age=600, public');
 		header('Expires: access plus 10 minutes');
 	}
-	$Page->json($precincts);
+	$Page->json(array_values($precincts));
 }

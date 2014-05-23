@@ -47,7 +47,7 @@ $ ->
 					success	: (violations) ->
 						ids	= []
 						do ->
-							for violation of violations
+							for violation, violation of violations
 								ids.push(violation.precinct)
 						ids	= ids.join(',')
 						$.ajax(
