@@ -58,11 +58,9 @@ $ ->
 							data	: null
 							success	: (violations) ->
 								content		= ''
-								precincts	= JSON.parse(localStorage.getItem('precincts'))
+								precincts	= cs.elections.get_precincts()
 								for violation in violations
-									for precinct, precinct of precincts
-										if precinct.id == violation.precinct
-											break
+									precinct = precincts[violation.precinct]
 									time = new Date(violation.date * 1000)
 									time =
 										(if time.getHours() < 10 then '0' + time.getHours() else time.getHours()) + ':' + (if time.getMinutes() < 10 then '0' + time.getMinutes() else time.getMinutes())

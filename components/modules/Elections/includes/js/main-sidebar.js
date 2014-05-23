@@ -63,15 +63,9 @@
       clearTimeout(show_timeout);
       $this = $(this);
       return show_timeout = setTimeout((function() {
-        var id, precinct, _ref;
+        var id, precinct;
         id = parseInt($this.data('id'));
-        _ref = JSON.parse(localStorage.getItem('precincts'));
-        for (precinct in _ref) {
-          precinct = _ref[precinct];
-          if (precinct.id === id) {
-            break;
-          }
-        }
+        precinct = cs.elections.get_precincts()[id];
         return map.panTo([precinct.lat, precinct.lng]).then(function() {
           return map.zoomRange.get([precinct.lat, precinct.lng]).then(function(zoomRange) {
             return map.setZoom(zoomRange[1], {

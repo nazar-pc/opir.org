@@ -84,12 +84,12 @@ $ ->
 			previous_zoom	= 15
 			map.events.add('boundschange', (e)->
 				# If previous and current zoom both smaller or greater than 14 - there is no need to change placemarks detalization
-				if (previous_zoom < 14) == (e.get('newZoom') < 14)
-					if previous_zoom > 14
+				if (previous_zoom < 13) == (e.get('newZoom') < 13)
+					if previous_zoom > 13
 						setTimeout(add_precincts_on_map, 0)
 					return
 				previous_zoom	= e.get('newZoom')
-				if previous_zoom < 14
+				if previous_zoom < 13
 					map.geoObjects.remove(precincts_clusterer)
 					map.geoObjects.add(districts_clusterer)
 				else
@@ -129,26 +129,21 @@ $ ->
 				[15-15, 37-36]
 			]
 		]))
-		get_precincts		= (check) ->
-			precincts			= localStorage.getItem('precincts')
-			if check
-				return !!precincts
-			if precincts then JSON.parse(precincts) else {}
-		get_districts		= (check) ->
-			districts			= localStorage.getItem('districts')
-			if check
-				return !!districts
-			if districts then JSON.parse(districts) else {}
 		filter_precincts	= (precincts) ->
 			bounds	= map.getBounds()
-			precincts.filter (precinct) ->
+			result = {}
+			for precinct, precinct of precincts
 				lat	= parseFloat(precinct.lat)
 				lng	= parseFloat(precinct.lng)
-				lat > bounds[0][0] && lat < bounds[1][0] &&
-				lng > bounds[0][1] && lng < bounds[1][1]
+				if (
+					lat > bounds[0][0] && lat < bounds[1][0] &&
+					lng > bounds[0][1] && lng < bounds[1][1]
+				)
+					result[precinct.id] = precinct
+			result
 		add_precincts_on_map	= ->
 			placemarks	= []
-			for precinct, precinct of filter_precincts(get_precincts())
+			for precinct, precinct of filter_precincts(cs.elections.get_precincts())
 				placemarks.push(
 					new ymaps.Placemark(
 						[precinct.lat, precinct.lng]
@@ -183,7 +178,7 @@ $ ->
 			precincts_clusterer.add(placemarks)
 			loading('hide')
 		add_districts_on_map	= ->
-			districts	= get_districts()
+			districts	= cs.elections.get_districts()
 			placemarks	= []
 			for district, district of districts
 				placemarks.push(
@@ -209,12 +204,15 @@ $ ->
 				)
 			districts_clusterer.removeAll()
 			districts_clusterer.add(placemarks)
-		if !get_districts(true)
+		if !cs.elections.get_districts(true)
 			$.ajax(
 				url			: 'api/Districts'
 				type		: 'get'
 				data		: null
-				success		: (districts) ->
+				success		: (loaded_districts) ->
+					districts = {}
+					for district in loaded_districts
+						districts[district.district] = district
 					localStorage.setItem('districts', JSON.stringify(districts))
 					add_districts_on_map()
 				error		: ->
@@ -227,28 +225,33 @@ $ ->
 				type		: 'get'
 				data		: null
 				success		: (violations_loaded) ->
-					violations	= {}
-					do ->
-						for d in violations_loaded
-							violations[d.district]	= d.violations
-						return
-					districts	= get_districts()
+					districts	= cs.elections.get_districts()
 					update		= false
-					for district of districts
-						update							= update || (districts[district].violations == violations[districts[district].district])
-						districts[district].violations	= violations[districts[district].district]
+					for district in violations_loaded
+						update = update || (districts[district.district].violations != district.violations)
+						if update
+							districts[district.district].violations = district.violations
 					if update
 						localStorage.setItem('districts', JSON.stringify(districts))
 						add_districts_on_map()
 				error		: ->
 					console.error('Districts loading error')
 			)
-		if !get_precincts(true)
+		if !cs.elections.get_precincts(true)
 			$.ajax(
-				url			: 'api/Precincts'
+				url			: 'api/Precincts?flat'
 				type		: 'get'
 				data		: null
-				success		: (precincts) ->
+				success		: (loaded_precincts) ->
+					precincts = {}
+					for precinct in loaded_precincts.id
+						precincts[precinct] = {
+							id			: precinct
+							lat			: loaded_precincts.lat[precinct]
+							lng			: loaded_precincts.lng[precinct]
+							number		: loaded_precincts.number[precinct]
+							violations	: loaded_precincts.violations[precinct]
+						}
 					localStorage.setItem('precincts', JSON.stringify(precincts))
 					add_precincts_on_map()
 				error		: ->
@@ -257,20 +260,16 @@ $ ->
 		else
 			add_precincts_on_map()
 			$.ajax(
-				url			: 'api/Precincts?fields=violations'
+				url			: 'api/Precincts?fields=violations&flat'
 				type		: 'get'
 				data		: null
 				success		: (violations_loaded) ->
-					violations	= {}
-					do ->
-						for p in violations_loaded
-							violations[p.id]	= p.violations
-						return
-					precincts	= get_precincts()
+					precincts	= cs.elections.get_precincts()
 					update		= false
-					for precinct of precincts
-						update							= update || (precincts[precinct].violations == violations[precincts[precinct].id])
-						precincts[precinct].violations	= violations[precincts[precinct].id]
+					for precinct in violations_loaded.id
+						update = update || (precincts[precinct].violations != violations_loaded.violations[precinct])
+						if update
+							precincts[precinct].violations = violations_loaded.violations[precinct]
 					if update
 						localStorage.setItem('precincts', JSON.stringify(precincts))
 						add_precincts_on_map()

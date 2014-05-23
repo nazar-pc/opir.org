@@ -16,6 +16,7 @@
 		"precinct-sidebar.js",
 		"add-violation-sidebar.js",
 		"sign-in.js",
-		"violation-read-more-sidebar.js"
+		"violation-read-more-sidebar.js",
+		"common.js"
 	]
 }

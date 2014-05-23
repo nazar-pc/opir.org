@@ -52,7 +52,7 @@
       }
     });
     return begin = function() {
-      var add_districts_on_map, add_precincts_on_map, cluster_icons, districts_clusterer, districts_icons_shape, filter_precincts, get_districts, get_precincts, precincts_clusterer, precincts_icons_shape;
+      var add_districts_on_map, add_precincts_on_map, cluster_icons, districts_clusterer, districts_icons_shape, filter_precincts, precincts_clusterer, precincts_icons_shape;
       window.map = new ymaps.Map('map', {
         center: user_location,
         zoom: 15,
@@ -86,14 +86,14 @@
         var previous_zoom;
         previous_zoom = 15;
         return map.events.add('boundschange', function(e) {
-          if ((previous_zoom < 14) === (e.get('newZoom') < 14)) {
-            if (previous_zoom > 14) {
+          if ((previous_zoom < 13) === (e.get('newZoom') < 13)) {
+            if (previous_zoom > 13) {
               setTimeout(add_precincts_on_map, 0);
             }
             return;
           }
           previous_zoom = e.get('newZoom');
-          if (previous_zoom < 14) {
+          if (previous_zoom < 13) {
             map.geoObjects.remove(precincts_clusterer);
             return map.geoObjects.add(districts_clusterer);
           } else {
@@ -105,44 +105,24 @@
       })();
       districts_icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[0 - 40, 32 - 41], [11 - 40, 11 - 41], [31 - 40, 0 - 41], [47 - 40, 0 - 41], [68 - 40, 11 - 41], [79 - 40, 32 - 41], [78 - 40, 49 - 41], [67 - 40, 67 - 41], [52 - 40, 77 - 41], [31 - 40, 78 - 41], [11 - 40, 67 - 41], [0 - 40, 48 - 41], [0 - 40, 32 - 41]]]));
       precincts_icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[15 - 15, 37 - 36], [1 - 15, 22 - 36], [0 - 15, 16 - 36], [1 - 15, 10 - 36], [5 - 15, 5 - 36], [11 - 15, 1 - 36], [19 - 15, 1 - 36], [26 - 15, 5 - 36], [31 - 15, 14 - 36], [30 - 15, 22 - 36], [15 - 15, 37 - 36]]]));
-      get_precincts = function(check) {
-        var precincts;
-        precincts = localStorage.getItem('precincts');
-        if (check) {
-          return !!precincts;
-        }
-        if (precincts) {
-          return JSON.parse(precincts);
-        } else {
-          return {};
-        }
-      };
-      get_districts = function(check) {
-        var districts;
-        districts = localStorage.getItem('districts');
-        if (check) {
-          return !!districts;
-        }
-        if (districts) {
-          return JSON.parse(districts);
-        } else {
-          return {};
-        }
-      };
       filter_precincts = function(precincts) {
-        var bounds;
+        var bounds, lat, lng, precinct, result;
         bounds = map.getBounds();
-        return precincts.filter(function(precinct) {
-          var lat, lng;
+        result = {};
+        for (precinct in precincts) {
+          precinct = precincts[precinct];
           lat = parseFloat(precinct.lat);
           lng = parseFloat(precinct.lng);
-          return lat > bounds[0][0] && lat < bounds[1][0] && lng > bounds[0][1] && lng < bounds[1][1];
-        });
+          if (lat > bounds[0][0] && lat < bounds[1][0] && lng > bounds[0][1] && lng < bounds[1][1]) {
+            result[precinct.id] = precinct;
+          }
+        }
+        return result;
       };
       add_precincts_on_map = function() {
         var placemarks, precinct, _fn, _ref;
         placemarks = [];
-        _ref = filter_precincts(get_precincts());
+        _ref = filter_precincts(cs.elections.get_precincts());
         _fn = function(id) {
           return placemarks[placemarks.length - 1].events.add('click', function() {
             return $.ajax({
@@ -176,7 +156,7 @@
       };
       add_districts_on_map = function() {
         var district, districts, placemarks;
-        districts = get_districts();
+        districts = cs.elections.get_districts();
         placemarks = [];
         for (district in districts) {
           district = districts[district];
@@ -196,12 +176,18 @@
         districts_clusterer.removeAll();
         return districts_clusterer.add(placemarks);
       };
-      if (!get_districts(true)) {
+      if (!cs.elections.get_districts(true)) {
         $.ajax({
           url: 'api/Districts',
           type: 'get',
           data: null,
-          success: function(districts) {
+          success: function(loaded_districts) {
+            var district, districts, _i, _len;
+            districts = {};
+            for (_i = 0, _len = loaded_districts.length; _i < _len; _i++) {
+              district = loaded_districts[_i];
+              districts[district.district] = district;
+            }
             localStorage.setItem('districts', JSON.stringify(districts));
             return add_districts_on_map();
           },
@@ -216,20 +202,15 @@
           type: 'get',
           data: null,
           success: function(violations_loaded) {
-            var district, districts, update, violations;
-            violations = {};
-            (function() {
-              var d, _i, _len;
-              for (_i = 0, _len = violations_loaded.length; _i < _len; _i++) {
-                d = violations_loaded[_i];
-                violations[d.district] = d.violations;
-              }
-            })();
-            districts = get_districts();
+            var district, districts, update, _i, _len;
+            districts = cs.elections.get_districts();
             update = false;
-            for (district in districts) {
-              update = update || (districts[district].violations === violations[districts[district].district]);
-              districts[district].violations = violations[districts[district].district];
+            for (_i = 0, _len = violations_loaded.length; _i < _len; _i++) {
+              district = violations_loaded[_i];
+              update = update || (districts[district.district].violations !== district.violations);
+              if (update) {
+                districts[district.district].violations = district.violations;
+              }
             }
             if (update) {
               localStorage.setItem('districts', JSON.stringify(districts));
@@ -241,12 +222,25 @@
           }
         });
       }
-      if (!get_precincts(true)) {
+      if (!cs.elections.get_precincts(true)) {
         $.ajax({
-          url: 'api/Precincts',
+          url: 'api/Precincts?flat',
           type: 'get',
           data: null,
-          success: function(precincts) {
+          success: function(loaded_precincts) {
+            var precinct, precincts, _i, _len, _ref;
+            precincts = {};
+            _ref = loaded_precincts.id;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              precinct = _ref[_i];
+              precincts[precinct] = {
+                id: precinct,
+                lat: loaded_precincts.lat[precinct],
+                lng: loaded_precincts.lng[precinct],
+                number: loaded_precincts.number[precinct],
+                violations: loaded_precincts.violations[precinct]
+              };
+            }
             localStorage.setItem('precincts', JSON.stringify(precincts));
             return add_precincts_on_map();
           },
@@ -257,24 +251,20 @@
       } else {
         add_precincts_on_map();
         $.ajax({
-          url: 'api/Precincts?fields=violations',
+          url: 'api/Precincts?fields=violations&flat',
           type: 'get',
           data: null,
           success: function(violations_loaded) {
-            var precinct, precincts, update, violations;
-            violations = {};
-            (function() {
-              var p, _i, _len;
-              for (_i = 0, _len = violations_loaded.length; _i < _len; _i++) {
-                p = violations_loaded[_i];
-                violations[p.id] = p.violations;
-              }
-            })();
-            precincts = get_precincts();
+            var precinct, precincts, update, _i, _len, _ref;
+            precincts = cs.elections.get_precincts();
             update = false;
-            for (precinct in precincts) {
-              update = update || (precincts[precinct].violations === violations[precincts[precinct].id]);
-              precincts[precinct].violations = violations[precincts[precinct].id];
+            _ref = violations_loaded.id;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              precinct = _ref[_i];
+              update = update || (precincts[precinct].violations !== violations_loaded.violations[precinct]);
+              if (update) {
+                precincts[precinct].violations = violations_loaded.violations[precinct];
+              }
             }
             if (update) {
               localStorage.setItem('precincts', JSON.stringify(precincts));

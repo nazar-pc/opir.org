@@ -61,15 +61,10 @@
               success: function(violations) {
                 var content, images, precinct, precincts, text, time, video, violation, _i, _len;
                 content = '';
-                precincts = JSON.parse(localStorage.getItem('precincts'));
+                precincts = cs.elections.get_precincts();
                 for (_i = 0, _len = violations.length; _i < _len; _i++) {
                   violation = violations[_i];
-                  for (precinct in precincts) {
-                    precinct = precincts[precinct];
-                    if (precinct.id === violation.precinct) {
-                      break;
-                    }
-                  }
+                  precinct = precincts[violation.precinct];
                   time = new Date(violation.date * 1000);
                   time = (time.getHours() < 10 ? '0' + time.getHours() : time.getHours()) + ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes());
                   text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';

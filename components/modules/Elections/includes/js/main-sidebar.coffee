@@ -52,9 +52,7 @@ $ ->
 				$this			= $(@)
 				show_timeout	= setTimeout (->
 					id = parseInt($this.data('id'))
-					for precinct, precinct of JSON.parse(localStorage.getItem('precincts'))
-						if precinct.id == id
-							break
+					precinct = cs.elections.get_precincts()[id]
 					map.panTo([precinct.lat, precinct.lng]).then ->
 						map.zoomRange.get([precinct.lat, precinct.lng]).then (zoomRange) ->
 							map.setZoom(
