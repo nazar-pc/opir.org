@@ -49,7 +49,7 @@ $ ->
 						do ->
 							for violation of violations
 								ids.push(violation.precinct)
-						ids	= precincts.join(',')
+						ids	= ids.join(',')
 						$.ajax(
 							url			: "api/Precincts?fields=address,district&id=#{ids}"
 							type		: 'get'

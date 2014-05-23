@@ -53,7 +53,7 @@
               }
               return _results;
             })();
-            ids = precincts.join(',');
+            ids = ids.join(',');
             return $.ajax({
               url: "api/Precincts?fields=address,district&id=" + ids,
               type: 'get',
