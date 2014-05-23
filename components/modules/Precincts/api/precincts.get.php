@@ -45,6 +45,7 @@ if (isset($Index->route_ids[0])) {
 		$number    = max((int)$_GET['number'], 1);
 		$offset    = $number * ($page - 1);
 		$precincts = array_slice($precincts, $offset, $number);
+		$precinct  = array_values($precincts);
 	}
 	if (isset($_GET['fields'])) {
 		$fields = array_intersect(explode(',', $_GET['fields']), ['id', 'number', 'address', 'lat', 'lng', 'district', 'violations']);
@@ -89,5 +90,5 @@ if (isset($Index->route_ids[0])) {
 		header('Cache-Control: max-age=600, public');
 		header('Expires: access plus 10 minutes');
 	}
-	$Page->json(array_values($precincts));
+	$Page->json($precincts);
 }
