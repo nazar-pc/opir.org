@@ -16,7 +16,8 @@ if (isset($_POST['moderators_group'])) {
 	$module_properties->moderators_group = (int)$_POST['moderators_group'];
 	$Index->save();
 }
-$groups = Group::instance()->get_all();
+$groups              = Group::instance()->get_all();
+$Index->apply_button = false;
 
 $Index->content(
 	h::{'p.uk-text-center'}(
