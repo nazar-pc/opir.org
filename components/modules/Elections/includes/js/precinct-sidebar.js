@@ -12,7 +12,7 @@
 (function() {
 
   $(function() {
-    var L, add_violation_sidebar, map_container, precinct_sidebar, precincts_search_results;
+    var L, add_stream, add_violation_sidebar, map_container, precinct, precinct_sidebar, precincts_search_results;
     if (cs.module !== 'Elections') {
       return;
     }
@@ -22,14 +22,10 @@
     add_violation_sidebar = $('.cs-elections-add-violation-sidebar');
     L = cs.Language;
     precincts_search_results.on('click', '[data-id]', function() {
-      var $this, address, id;
-      $this = $(this);
-      id = parseInt($this.data('id'));
-      address = $this.children('p').html();
-      return cs.elections.open_precinct(id, address);
+      return cs.elections.open_precinct(parseInt($(this).data('id')));
     });
     window.cs.elections = window.cs.elections || {};
-    window.cs.elections.open_precinct = function(id, address) {
+    window.cs.elections.open_precinct = function(id) {
       return $.ajax({
         url: "api/Precincts/" + id,
         type: 'get',
@@ -37,7 +33,7 @@
         success: function(precinct) {
           var is_open, streams_container, violations_container;
           is_open = precinct_sidebar.data('open');
-          precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + ("</h2>\n<p>" + L.district + " " + precinct.district + "</p>\n<p class=\"cs-elections-precinct-sidebar-address\">\n	<i class=\"uk-icon-location-arrow\"></i>\n	<span>" + address + "</span>\n</p>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-stream uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.video_stream + "\n</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-violation uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.violations + "\n</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
+          precinct_sidebar.html("<i class=\"cs-elections-precinct-sidebar-close uk-icon-times\"></i>\n<h2>" + L.precint_number(precinct.number) + ("</h2>\n<p>" + L.district + " " + precinct.district + "</p>\n<p class=\"cs-elections-precinct-sidebar-address\">\n	<i class=\"uk-icon-location-arrow\"></i>\n	<span>" + precinct.address + "</span>\n</p>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-stream uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.video_stream + "\n</h2>\n<div class=\"cs-elections-precinct-sidebar-streams\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</div>\n<h2>\n	<button class=\"cs-elections-precinct-sidebar-add-violation uk-icon-plus\" data-id=\"" + precinct.id + "\"></button>\n	" + L.violations + "\n</h2>\n<section class=\"cs-elections-precinct-sidebar-violations\">\n	<i class=\"uk-icon-spinner uk-icon-spin\"></i>\n</section>")).animate({
             width: 320
           }, 'fast').data('open', 1);
           if (!is_open) {
@@ -111,7 +107,7 @@
         }
       });
     };
-    return precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-close', function() {
+    precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-close', function() {
       if (!precinct_sidebar.data('open')) {
         return;
       }
@@ -126,8 +122,16 @@
         left: '-=320'
       }, 'fast');
     }).on('click', '.cs-elections-precinct-sidebar-add-stream', function() {
-      var modal, precinct;
-      precinct = $(this).data('id');
+      return add_stream($(this).data('id'));
+    });
+    add_stream = function(precinct) {
+      var modal;
+      if (!cs.is_user) {
+        sessionStorage.setItem('action', 'add-stream-for-precinct');
+        sessionStorage.setItem('action-details', precinct);
+        cs.elections.sign_in();
+        return;
+      }
       modal = $.cs.simple_modal("<div class=\"cs-elections-precinct-sidebar-add-stream-modal\">\n	<h2>" + L.stream + "</h2>\n	<input placeholder=\"" + L.youtube_or_ustream_stream_link + "\">\n	<button>" + L.add + "</button>\n</div>");
       return modal.find('button').click(function() {
         var match, stream_url;
@@ -148,12 +152,19 @@
           type: 'post',
           success: function() {
             alert(L.thank_you_for_your_stream);
-            return cs.elections.open_precinct(precinct, $('.cs-elections-precinct-sidebar-address span').html());
+            return cs.elections.open_precinct(precinct);
           }
         });
         return modal.hide().remove();
       });
-    });
+    };
+    if (sessionStorage.getItem('action') === 'add-stream-for-precinct' && cs.is_user) {
+      sessionStorage.removeItem('action');
+      precinct = sessionStorage.getItem('action-details');
+      sessionStorage.removeItem('action-details');
+      cs.elections.open_precinct(precinct);
+      return add_stream(precinct);
+    }
   });
 
 }).call(this);

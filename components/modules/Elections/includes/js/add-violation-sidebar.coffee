@@ -16,6 +16,7 @@ $ ->
 	L							= cs.Language
 	add_violation_button.click ->
 		if !cs.is_user
+			sessionStorage.setItem('action', 'add-violation')
 			cs.elections.sign_in()
 			return
 		# If precinct sidebar already opened
@@ -81,6 +82,9 @@ $ ->
 				title = $this.children('h3').html()
 				add_violation($this.data('id'), title)
 		)
+	if sessionStorage.getItem('action') == 'add-violation' && cs.is_user
+		sessionStorage.removeItem('action')
+		add_violation_button.click()
 	precinct_sidebar.on(
 		'click'
 		'.cs-elections-precinct-sidebar-add-violation'
@@ -90,6 +94,8 @@ $ ->
 	)
 	add_violation = (precinct, title) ->
 		if !cs.is_user
+			sessionStorage.setItem('action', 'add-violation-for-precinct')
+			sessionStorage.setItem('action-details', JSON.stringify([precinct, title]))
 			cs.elections.sign_in()
 			return
 		is_open = add_violation_sidebar.data('open')
@@ -173,9 +179,15 @@ $ ->
 				type	: 'post'
 				success	: ->
 					alert L.thank_you_for_your_message
-					cs.elections.open_precinct(precinct, $('.cs-elections-precinct-sidebar-address span').html())
+					cs.elections.open_precinct(precinct)
 					$('.cs-elections-add-violation-sidebar-close').click()
 			)
+	if sessionStorage.getItem('action') == 'add-violation-for-precinct' && cs.is_user
+		sessionStorage.removeItem('action')
+		details = JSON.parse(sessionStorage.getItem('action-details'))
+		sessionStorage.removeItem('action-details')
+		cs.elections.open_precinct(details[0])
+		add_violation(details[0], details[1])
 	add_violation_sidebar
 		.on(
 			'click'

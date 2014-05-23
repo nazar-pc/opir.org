@@ -125,14 +125,7 @@
         _ref = filter_precincts(cs.elections.get_precincts());
         _fn = function(id) {
           return placemarks[placemarks.length - 1].events.add('click', function() {
-            return $.ajax({
-              url: "api/Precincts/" + id,
-              data: null,
-              type: 'get',
-              success: function(precinct) {
-                return cs.elections.open_precinct(id, precinct.address);
-              }
-            });
+            return cs.elections.open_precinct(id);
           });
         };
         for (precinct in _ref) {

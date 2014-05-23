@@ -166,13 +166,7 @@ $ ->
 				)
 				do (id = precinct.id) ->
 					placemarks[placemarks.length - 1].events.add('click', ->
-						$.ajax(
-							url		: "api/Precincts/#{id}"
-							data	: null
-							type	: 'get'
-							success	: (precinct) ->
-								cs.elections.open_precinct(id, precinct.address)
-						)
+						cs.elections.open_precinct(id)
 					)
 			precincts_clusterer.removeAll()
 			precincts_clusterer.add(placemarks)

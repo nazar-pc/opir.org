@@ -19,13 +19,12 @@ $ ->
 			'click'
 			'[data-id]'
 			->
-				$this	= $(@)
-				id		= parseInt($this.data('id'))
-				address	= $this.children('p').html()
-				cs.elections.open_precinct(id, address)
+				cs.elections.open_precinct(
+					parseInt($(@).data('id'))
+				)
 		)
 	window.cs.elections = window.cs.elections || {}
-	window.cs.elections.open_precinct = (id, address) ->
+	window.cs.elections.open_precinct = (id) ->
 		$.ajax(
 			url			: "api/Precincts/#{id}"
 			type		: 'get'
@@ -39,7 +38,7 @@ $ ->
 						<p>#{L.district} #{precinct.district}</p>
 						<p class="cs-elections-precinct-sidebar-address">
 							<i class="uk-icon-location-arrow"></i>
-							<span>#{address}</span>
+							<span>#{precinct.address}</span>
 						</p>
 						<h2>
 							<button class="cs-elections-precinct-sidebar-add-stream uk-icon-plus" data-id="#{precinct.id}"></button>
@@ -169,29 +168,41 @@ $ ->
 			'click'
 			'.cs-elections-precinct-sidebar-add-stream'
 			->
-				precinct	= $(@).data('id')
-				modal		= $.cs.simple_modal("""<div class="cs-elections-precinct-sidebar-add-stream-modal">
-					<h2>#{L.stream}</h2>
-					<input placeholder="#{L.youtube_or_ustream_stream_link}">
-					<button>#{L.add}</button>
-				</div>""")
-				modal.find('button').click ->
-					stream_url = modal.find('input').val()
-					if match = /ustream.tv\/(channel|embed)\/([0-9]+)/i.exec(stream_url)
-						stream_url = "https://www.ustream.tv/embed/#{match[2]}"
-					else if match = /(youtube.com\/embed\/|youtube.com\/watch\?v=)([0-9a-z\-]+)/i.exec(stream_url)
-						stream_url = "https://www.youtube.com/embed/#{match[2]}"
-					else
-						alert L.bad_link
-						return
-					$.ajax(
-						url		: "api/Precincts/#{precinct}/streams"
-						data	:
-							stream_url	: stream_url
-						type	: 'post'
-						success	: ->
-							alert L.thank_you_for_your_stream
-							cs.elections.open_precinct(precinct, $('.cs-elections-precinct-sidebar-address span').html())
-					)
-					modal.hide().remove()
+				add_stream($(@).data('id'))
 		)
+	add_stream = (precinct) ->
+		if !cs.is_user
+			sessionStorage.setItem('action', 'add-stream-for-precinct')
+			sessionStorage.setItem('action-details', precinct)
+			cs.elections.sign_in()
+			return
+		modal		= $.cs.simple_modal("""<div class="cs-elections-precinct-sidebar-add-stream-modal">
+			<h2>#{L.stream}</h2>
+			<input placeholder="#{L.youtube_or_ustream_stream_link}">
+			<button>#{L.add}</button>
+		</div>""")
+		modal.find('button').click ->
+			stream_url = modal.find('input').val()
+			if match = /ustream.tv\/(channel|embed)\/([0-9]+)/i.exec(stream_url)
+				stream_url = "https://www.ustream.tv/embed/#{match[2]}"
+			else if match = /(youtube.com\/embed\/|youtube.com\/watch\?v=)([0-9a-z\-]+)/i.exec(stream_url)
+				stream_url = "https://www.youtube.com/embed/#{match[2]}"
+			else
+				alert L.bad_link
+				return
+			$.ajax(
+				url		: "api/Precincts/#{precinct}/streams"
+				data	:
+					stream_url	: stream_url
+				type	: 'post'
+				success	: ->
+					alert L.thank_you_for_your_stream
+					cs.elections.open_precinct(precinct)
+			)
+			modal.hide().remove()
+	if sessionStorage.getItem('action') == 'add-stream-for-precinct' && cs.is_user
+		sessionStorage.removeItem('action')
+		precinct = sessionStorage.getItem('action-details')
+		sessionStorage.removeItem('action-details')
+		cs.elections.open_precinct(precinct)
+		add_stream(precinct)

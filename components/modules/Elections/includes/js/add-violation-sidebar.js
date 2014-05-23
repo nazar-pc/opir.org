@@ -12,7 +12,7 @@
 (function() {
 
   $(function() {
-    var L, add_violation, add_violation_button, add_violation_sidebar, map_container, precinct_sidebar;
+    var L, add_violation, add_violation_button, add_violation_sidebar, details, map_container, precinct_sidebar;
     if (cs.module !== 'Elections') {
       return;
     }
@@ -24,6 +24,7 @@
     add_violation_button.click(function() {
       var is_open, last_search_value, precincts_search_results, precints_search_timeout;
       if (!cs.is_user) {
+        sessionStorage.setItem('action', 'add-violation');
         cs.elections.sign_in();
         return;
       }
@@ -88,6 +89,10 @@
         return add_violation($this.data('id'), title);
       });
     });
+    if (sessionStorage.getItem('action') === 'add-violation' && cs.is_user) {
+      sessionStorage.removeItem('action');
+      add_violation_button.click();
+    }
     precinct_sidebar.on('click', '.cs-elections-precinct-sidebar-add-violation', function() {
       var $this;
       $this = $(this);
@@ -96,6 +101,8 @@
     add_violation = function(precinct, title) {
       var add_image_button, is_open;
       if (!cs.is_user) {
+        sessionStorage.setItem('action', 'add-violation-for-precinct');
+        sessionStorage.setItem('action-details', JSON.stringify([precinct, title]));
         cs.elections.sign_in();
         return;
       }
@@ -160,12 +167,19 @@
           type: 'post',
           success: function() {
             alert(L.thank_you_for_your_message);
-            cs.elections.open_precinct(precinct, $('.cs-elections-precinct-sidebar-address span').html());
+            cs.elections.open_precinct(precinct);
             return $('.cs-elections-add-violation-sidebar-close').click();
           }
         });
       });
     };
+    if (sessionStorage.getItem('action') === 'add-violation-for-precinct' && cs.is_user) {
+      sessionStorage.removeItem('action');
+      details = JSON.parse(sessionStorage.getItem('action-details'));
+      sessionStorage.removeItem('action-details');
+      cs.elections.open_precinct(details[0]);
+      add_violation(details[0], details[1]);
+    }
     return add_violation_sidebar.on('click', '.cs-elections-add-violation-sidebar-close', function() {
       if (!add_violation_sidebar.data('open')) {
         return;
