@@ -1,0 +1,12 @@
+{
+	"violations"	: [
+		"new",
+		"approved",
+		"denied"
+	],
+	"streams"		: [
+		"new",
+		"approved",
+		"denied"
+	]
+}

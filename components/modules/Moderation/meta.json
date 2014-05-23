@@ -1,5 +1,5 @@
 {
-	"package"		: "Elections",
+	"package"		: "Moderation",
 	"category"		: "modules",
 	"version"		: "1.0.0",
 	"description"	: "Elections page for opir.org",
@@ -9,13 +9,8 @@
 	"db_support"	: [
 		"MySQLi"
 	],
-	"provide"		: "opir.org_elections",
+	"provide"		: "opir.org_moderation",
 	"require"		: [
-		"opir.org_precincts",
-		"opir.org_districts",
-		"opir.org_moderation",
-		"opir.org_violations",
-		"opir.org_info",
-		"opir.org_help"
+		"opir.org_precincts"
 	]
 }
