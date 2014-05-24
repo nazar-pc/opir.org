@@ -70,8 +70,8 @@
 			}
 		}
 
-		:nth-last-child(2) {
-			margin-bottom : 8px;
+		> :nth-last-child(2) {
+			margin-bottom : 15px;
 		}
 	}
 }
