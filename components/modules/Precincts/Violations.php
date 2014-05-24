@@ -271,6 +271,8 @@ class Violations {
 		}
 		if ($where) {
 			$where = 'WHERE '.implode(' AND ', $where);
+		} else {
+			$where = '';
 		}
 		return $this->get(
 			$this->db()->qfas(
