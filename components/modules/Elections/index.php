@@ -6,7 +6,7 @@
  * @copyright      Copyright (c) 2014, Nazar Mokrynskyi
  * @license        MIT License, see license.txt
  */
-namespace cs\modules\Home;
+namespace cs\modules\Precincts;
 
 use
 	h,
@@ -15,9 +15,28 @@ use
 	cs\Page,
 	cs\User;
 
-Index::instance()->title_auto = false;
-$L                            = Language::instance();
-$Page                         = Page::instance();
+$Index             = Index::instance();
+$Index->title_auto = false;
+$L                 = Language::instance();
+$Page              = Page::instance();
+if (isset($Index->route_path[0]) && $Index->route_path[0] == 'violation') {
+	$violation         = Violations::instance()->get($Index->route_ids[1]);
+	if ($violation['images']) {
+		$Page->replace('/<meta content="[^"]*share.png" property="og:image">/Uims', '');
+		$Page->replace('/<link href="[^"]*share.png" rel="image_src">/Uims', '');
+		$Page->link([
+			'rel'  => 'image_src',
+			'href' => $violation['images'][0]
+		]);
+		foreach ($violation['images'] as $image) {
+			$Page->og('image', $image);
+			$Page->og('image:secure_url', $image);
+		}
+	}
+	if ($violation['text']) {
+		$Page->Description = description($violation['text']);
+	}
+}
 $Page->Header .=
 	h::{'button.cs-elections-add-violation'}($L->add_violation).
 	h::{'button.cs-elections-last-violations'}();
@@ -25,7 +44,7 @@ $Page->content(
 	h::{'div.cs-elections-last-violations-panel'}(
 		h::h2($L->last_violations).
 		h::{'input.cs-elections-last-violations-panel-search[type=search]'}([
-			'placeholder'	=> $L->number_or_address
+			'placeholder' => $L->number_or_address
 		]).
 		h::{'section'}()
 	).
@@ -39,7 +58,7 @@ $Page->content(
 		).
 		h::h2($L->precincts_search).
 		h::{'input.cs-elections-precincts-search[type=search]'}([
-			'placeholder'	=> $L->number_or_address
+			'placeholder' => $L->number_or_address
 		]).
 		h::{'section.cs-elections-precincts-search-results[level=0]'}().
 		h::h2($L->mobile_apps).
@@ -47,19 +66,19 @@ $Page->content(
 			h::a(
 				$L->download_in('App Store'),
 				[
-					'onclick'	=> "$.cs.simple_modal('$L->soon')"
+					'onclick' => "$.cs.simple_modal('$L->soon')"
 				]
 			).
 			h::a(
 				$L->download_in('Google Play'),
 				[
-					'onclick'	=> "$.cs.simple_modal('$L->soon')"
+					'onclick' => "$.cs.simple_modal('$L->soon')"
 				]
 			).
 			h::a(
 				$L->download_in('Market Place'),
 				[
-					'onclick'	=> "$.cs.simple_modal('$L->soon')"
+					'onclick' => "$.cs.simple_modal('$L->soon')"
 				]
 			)
 		).
