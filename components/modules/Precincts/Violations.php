@@ -60,9 +60,9 @@ class Violations {
 		};
 		$this->data_model['video']  = function ($video) {
 			if (preg_match('/ustream.tv\/(channel|embed)\/([0-9]+)/i', $video, $m)) {
-				$video	= "https://www.ustream.tv/embed/$m[2]";
+				$video = "https://www.ustream.tv/embed/$m[2]";
 			} elseif (preg_match('/ustream.tv\/(recorded|embed\/recorded)\/([0-9]+)/i', $video, $m)) {
-				$video	= "https://www.ustream.tv/embed/recorded/$m[2]";
+				$video = "https://www.ustream.tv/embed/recorded/$m[2]";
 			} elseif (preg_match('/(youtube.com\/embed\/|youtube.com\/watch\?v=)([0-9a-z\-]+)/i', $video, $m)) {
 				$video = "https://www.youtube.com/embed/$m[2]";
 			} else {
@@ -134,6 +134,9 @@ class Violations {
 		}
 		return $this->cache->get($id, function () use ($id) {
 			$data             = $this->read_simple($id);
+			if (!$data) {
+				return false;
+			}
 			$data['images']   = _json_decode($data['images']);
 			$data['id']       = (int)$data['id'];
 			$data['precinct'] = (int)$data['precinct'];
@@ -242,12 +245,32 @@ class Violations {
 		}
 		return false;
 	}
-	function last_violations ($number, $last_id) {
+	/**
+	 * Get last added violations
+	 *
+	 * @param int    $number  Max number of violations to return
+	 * @param int    $last_id Id of oldest received violation
+	 * @param string $search
+	 *
+	 * @return array[]|bool
+	 */
+	function last_violations ($number, $last_id, $search = '') {
 		$number  = (int)$number;
 		$last_id = (int)$last_id;
-		$where   = '';
+		$where   = [];
 		if ($last_id) {
-			$where = "WHERE `id` < $last_id";
+			$where[] = "`id` < $last_id";
+		}
+		if ($search) {
+			$precincts = Precincts::instance()->search($search, false, 10000);
+			if ($precincts) {
+				$where[] = "`precinct` IN (".implode(',', $precincts).")";
+			} else {
+				return false;
+			}
+		}
+		if ($where) {
+			$where = 'WHERE '.implode(' AND ', $where);
 		}
 		return $this->get(
 			$this->db()->qfas(

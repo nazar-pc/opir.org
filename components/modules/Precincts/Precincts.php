@@ -210,12 +210,15 @@ class Precincts {
 		});
 	}
 	/**
-	 * @param string     $text
-	 * @param bool|int[] $coordinates
+	 * Precincts search
+	 *
+	 * @param string       $text
+	 * @param bool|float[] $coordinates
+	 * @param int          $limit
 	 *
 	 * @return array|bool
 	 */
-	function search ($text, $coordinates = false) {
+	function search ($text, $coordinates = false, $limit = 20) {
 		$order = 'ORDER BY `id` ASC';
 		if ($coordinates && isset($coordinates[0], $coordinates[1])) {
 			$coordinates = _float($coordinates);
@@ -229,7 +232,7 @@ class Precincts {
 				`district`	= '%s' OR
 				`address`	LIKE '%s'
 			$order
-			LIMIT 20",
+			LIMIT $limit",
 			$text,
 			$text,
 			"%$text%"

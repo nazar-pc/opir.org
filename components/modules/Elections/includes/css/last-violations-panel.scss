@@ -19,6 +19,14 @@
 	top        : 75px;
 	z-index    : 2;
 
+	&-search {
+		background    : #fff;
+		border        : 1px solid #cacaca;
+		margin-bottom : 20px;
+		padding       : 5px;
+		width         : 300px;
+	}
+
 	section > article {
 		border-bottom  : 1px solid #eaeaea;
 		margin-bottom  : 20px;

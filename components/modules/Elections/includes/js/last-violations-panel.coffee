@@ -11,97 +11,119 @@ $ ->
 		return
 	last_violations_button	= $('.cs-elections-last-violations')
 	last_violations_panel	= $('.cs-elections-last-violations-panel')
+	last_violations_search	= $('.cs-elections-last-violations-panel-search')
 	L						= cs.Language
 	last_violations_button.click ->
 		if last_violations_button.is('.cs-elections-last-violations')
 			last_violations_button.removeClass('cs-elections-last-violations').addClass('cs-elections-switch-to-map')
 		else
 			last_violations_button.removeClass('cs-elections-switch-to-map').addClass('cs-elections-last-violations')
-			last_violations_panel.slideUp('fast').html('')
+			last_violations_panel.children('section').remove()
+			last_violations_panel
+				.slideUp('fast')
+				.append('<section/>')
 			return
-		cs.elections.loading('show')
+		last_violations_panel.children('section').remove()
 		last_violations_panel
-			.html("""
-				<h2>#{L.last_violations}</h2>
-				<section></section>
-			""")
-			.slideDown 'fast', ->
+			.slideDown(
+				'fast'
+				find_violations
+			)
+			.append('<section/>')
+	find_violations = ->
+		cs.elections.loading('show')
+		search = last_violations_search.val()
+		$.ajax(
+			url		: "api/Violations?number=20&search=" + (if search.length < 3 then '' else search)
+			type	: 'get'
+			data	: null
+			success	: (violations) ->
+				ids	= []
+				do ->
+					for violation, violation of violations
+						ids.push(violation.precinct)
+				ids	= ids.join(',')
 				$.ajax(
-					url		: "api/Violations?number=20"
-					type	: 'get'
-					data	: null
-					success	: (violations) ->
-						ids	= []
+					url			: "api/Precincts?fields=address,district&id=#{ids}"
+					type		: 'get'
+					data		: null
+					success		: (addresses_districts_loaded) ->
+						addresses	= {}
+						districts	= {}
 						do ->
-							for violation, violation of violations
-								ids.push(violation.precinct)
-						ids	= ids.join(',')
-						$.ajax(
-							url			: "api/Precincts?fields=address,district&id=#{ids}"
-							type		: 'get'
-							data		: null
-							success		: (addresses_districts_loaded) ->
-								addresses	= {}
-								districts	= {}
-								do ->
-									for p in addresses_districts_loaded
-										addresses[p.id]	= p.address
-										districts[p.id]	= p.district
-									return
-								content		= ''
-								precincts	= cs.elections.get_precincts()
-								for violation in violations
-									precinct = precincts[violation.precinct]
-									time = new Date(violation.date * 1000)
-									time =
-										(if time.getHours() < 10 then '0' + time.getHours() else time.getHours()) + ':' + (if time.getMinutes() < 10 then '0' + time.getMinutes() else time.getMinutes())
-									text =
-										if violation.text
-											"<p>" + violation.text.substr(0, 200) + "</p>"
-										else
-											''
-									images =
-										if violation.images.length
-											violation.images
-											.map (image) ->
-												"""<figure class="uk-vertical-align"><img src="#{image}" alt="" class="uk-vertical-align-middle"></figure>"""
-											.join('')
-										else
-											''
-									video =
-										if violation.video
-											"""<iframe src="#{violation.video}" frameborder="0" scrolling="no"></iframe>"""
-										else
-											''
-									content += """<article>
-										<h3>
-											#{time}
-											<span>""" + L.precint_number(precinct.number) + """</span> (#{L.district} #{districts[precinct.id]})
-										</h3>
-										<p>#{addresses[precinct.id]}</p>
-										#{text}
-										#{images}
-										#{video}
-									</article>"""
-								if content
-									last_violations_panel.children('section')
-										.append(content)
-										.masonry(
-											columnWidth		: 300
-											gutter			: 20
-											itemSelector	: 'article'
-										)
+							for p in addresses_districts_loaded
+								addresses[p.id]	= p.address
+								districts[p.id]	= p.district
+							return
+						content		= ''
+						precincts	= cs.elections.get_precincts()
+						for violation in violations
+							precinct = precincts[violation.precinct]
+							time = new Date(violation.date * 1000)
+							time =
+								(if time.getHours() < 10 then '0' + time.getHours() else time.getHours()) + ':' + (if time.getMinutes() < 10 then '0' + time.getMinutes() else time.getMinutes())
+							text =
+								if violation.text
+									"<p>" + violation.text.substr(0, 200) + "</p>"
 								else
-									last_violations_panel.append("""<p class="uk-text-center">#{L.empty}</p>""")
-								cs.elections.loading('hide')
-							error		: ->
-								console.error('Precincts addresses loading error')
-								cs.elections.loading('hide')
-						)
-					error	: ->
-						last_violations_panel.append("""<p class="uk-text-center">#{L.empty}</p>""")
+									''
+							images =
+								if violation.images.length
+									violation.images
+									.map (image) ->
+										"""<figure class="uk-vertical-align"><img src="#{image}" alt="" class="uk-vertical-align-middle"></figure>"""
+									.join('')
+								else
+									''
+							video =
+								if violation.video
+									"""<iframe src="#{violation.video}" frameborder="0" scrolling="no"></iframe>"""
+								else
+									''
+							content += """<article>
+								<h3>
+									#{time}
+									<span>""" + L.precint_number(precinct.number) + """</span> (#{L.district} #{districts[precinct.id]})
+								</h3>
+								<p>#{addresses[precinct.id]}</p>
+								#{text}
+								#{images}
+								#{video}
+							</article>"""
+						if content
+							last_violations_panel.children('section')
+								.append(content)
+								.masonry(
+									columnWidth		: 300
+									gutter			: 20
+									itemSelector	: 'article'
+								)
+						else
+							last_violations_panel.children('section').html("""<p class="uk-text-center">#{L.empty}</p>""")
+						cs.elections.loading('hide')
+					error		: ->
+						console.error('Precincts addresses loading error')
 						cs.elections.loading('hide')
 				)
+			error	: ->
+				last_violations_panel.children('section').html("""<p class="uk-text-center">#{L.empty}</p>""")
+				cs.elections.loading('hide')
+		)
+	search_timeout		= 0
+	last_search_value	= ''
+	last_violations_search.keydown ->
+		$this = $(@)
+		clearTimeout(search_timeout)
+		search_timeout = setTimeout (->
+			value = $this.val()
+			if value == last_search_value || (value.length < 3 && last_search_value.length < 3)
+				return
+			last_search_value = value
+			last_violations_panel.children('section').remove()
+			last_violations_panel.append('<section/>')
+			find_violations()
+		), 300
+
 	last_violations_panel
 		.on(
 			'click'

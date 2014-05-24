@@ -22,7 +22,13 @@ $Page->Header .=
 	h::{'button.cs-elections-add-violation'}($L->add_violation).
 	h::{'button.cs-elections-last-violations'}();
 $Page->content(
-	h::{'div.cs-elections-last-violations-panel'}().
+	h::{'div.cs-elections-last-violations-panel'}(
+		h::h2($L->last_violations).
+		h::{'input.cs-elections-last-violations-panel-search[type=search]'}([
+			'placeholder'	=> $L->number_or_address
+		]).
+		h::{'section'}()
+	).
 	h::{'aside.cs-elections-precinct-sidebar'}().
 	h::{'aside.cs-elections-add-violation-sidebar'}().
 	h::{'aside.cs-elections-violation-read-more-sidebar'}().

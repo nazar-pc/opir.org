@@ -15,8 +15,9 @@ $Violations = Violations::instance();
 $number     = isset($_GET['number']) ? min((int)$_GET['number'], 100) : 10;
 $number     = max($number, 0);
 $last_id    = isset($_GET['last_id']) ? max((int)$_GET['last_id'], 0) : 0;
+$search     = isset($_GET['search']) ? $_GET['search'] : '';
 $Page->json(
-	$Violations->last_violations($number, $last_id) ?: []
+	$Violations->last_violations($number, $last_id, $search) ?: []
 );
 header('Cache-Control: max-age=30, public');
 header('Expires: access plus 30 seconds');

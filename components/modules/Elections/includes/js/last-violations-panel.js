@@ -12,93 +12,117 @@
 (function() {
 
   $(function() {
-    var L, last_violations_button, last_violations_panel;
+    var L, find_violations, last_search_value, last_violations_button, last_violations_panel, last_violations_search, search_timeout;
     if (cs.module !== 'Elections') {
       return;
     }
     last_violations_button = $('.cs-elections-last-violations');
     last_violations_panel = $('.cs-elections-last-violations-panel');
+    last_violations_search = $('.cs-elections-last-violations-panel-search');
     L = cs.Language;
     last_violations_button.click(function() {
       if (last_violations_button.is('.cs-elections-last-violations')) {
         last_violations_button.removeClass('cs-elections-last-violations').addClass('cs-elections-switch-to-map');
       } else {
         last_violations_button.removeClass('cs-elections-switch-to-map').addClass('cs-elections-last-violations');
-        last_violations_panel.slideUp('fast').html('');
+        last_violations_panel.children('section').remove();
+        last_violations_panel.slideUp('fast').append('<section/>');
         return;
       }
+      last_violations_panel.children('section').remove();
+      return last_violations_panel.slideDown('fast', find_violations).append('<section/>');
+    });
+    find_violations = function() {
+      var search;
       cs.elections.loading('show');
-      return last_violations_panel.html("<h2>" + L.last_violations + "</h2>\n<section></section>").slideDown('fast', function() {
-        return $.ajax({
-          url: "api/Violations?number=20",
-          type: 'get',
-          data: null,
-          success: function(violations) {
-            var ids;
-            ids = [];
-            (function() {
-              var violation, _results;
-              _results = [];
-              for (violation in violations) {
-                violation = violations[violation];
-                _results.push(ids.push(violation.precinct));
-              }
-              return _results;
-            })();
-            ids = ids.join(',');
-            return $.ajax({
-              url: "api/Precincts?fields=address,district&id=" + ids,
-              type: 'get',
-              data: null,
-              success: function(addresses_districts_loaded) {
-                var addresses, content, districts, images, precinct, precincts, text, time, video, violation, _i, _len;
-                addresses = {};
-                districts = {};
-                (function() {
-                  var p, _i, _len;
-                  for (_i = 0, _len = addresses_districts_loaded.length; _i < _len; _i++) {
-                    p = addresses_districts_loaded[_i];
-                    addresses[p.id] = p.address;
-                    districts[p.id] = p.district;
-                  }
-                })();
-                content = '';
-                precincts = cs.elections.get_precincts();
-                for (_i = 0, _len = violations.length; _i < _len; _i++) {
-                  violation = violations[_i];
-                  precinct = precincts[violation.precinct];
-                  time = new Date(violation.date * 1000);
-                  time = (time.getHours() < 10 ? '0' + time.getHours() : time.getHours()) + ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes());
-                  text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';
-                  images = violation.images.length ? violation.images.map(function(image) {
-                    return "<figure class=\"uk-vertical-align\"><img src=\"" + image + "\" alt=\"\" class=\"uk-vertical-align-middle\"></figure>";
-                  }).join('') : '';
-                  video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
-                  content += ("<article>\n<h3>\n	" + time + "\n	<span>") + L.precint_number(precinct.number) + ("</span> (" + L.district + " " + districts[precinct.id] + ")\n	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n</article>");
+      search = last_violations_search.val();
+      return $.ajax({
+        url: "api/Violations?number=20&search=" + (search.length < 3 ? '' : search),
+        type: 'get',
+        data: null,
+        success: function(violations) {
+          var ids;
+          ids = [];
+          (function() {
+            var violation, _results;
+            _results = [];
+            for (violation in violations) {
+              violation = violations[violation];
+              _results.push(ids.push(violation.precinct));
+            }
+            return _results;
+          })();
+          ids = ids.join(',');
+          return $.ajax({
+            url: "api/Precincts?fields=address,district&id=" + ids,
+            type: 'get',
+            data: null,
+            success: function(addresses_districts_loaded) {
+              var addresses, content, districts, images, precinct, precincts, text, time, video, violation, _i, _len;
+              addresses = {};
+              districts = {};
+              (function() {
+                var p, _i, _len;
+                for (_i = 0, _len = addresses_districts_loaded.length; _i < _len; _i++) {
+                  p = addresses_districts_loaded[_i];
+                  addresses[p.id] = p.address;
+                  districts[p.id] = p.district;
                 }
-                if (content) {
-                  last_violations_panel.children('section').append(content).masonry({
-                    columnWidth: 300,
-                    gutter: 20,
-                    itemSelector: 'article'
-                  });
-                } else {
-                  last_violations_panel.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
-                }
-                return cs.elections.loading('hide');
-              },
-              error: function() {
-                console.error('Precincts addresses loading error');
-                return cs.elections.loading('hide');
+              })();
+              content = '';
+              precincts = cs.elections.get_precincts();
+              for (_i = 0, _len = violations.length; _i < _len; _i++) {
+                violation = violations[_i];
+                precinct = precincts[violation.precinct];
+                time = new Date(violation.date * 1000);
+                time = (time.getHours() < 10 ? '0' + time.getHours() : time.getHours()) + ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes());
+                text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';
+                images = violation.images.length ? violation.images.map(function(image) {
+                  return "<figure class=\"uk-vertical-align\"><img src=\"" + image + "\" alt=\"\" class=\"uk-vertical-align-middle\"></figure>";
+                }).join('') : '';
+                video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
+                content += ("<article>\n<h3>\n	" + time + "\n	<span>") + L.precint_number(precinct.number) + ("</span> (" + L.district + " " + districts[precinct.id] + ")\n	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n</article>");
               }
-            });
-          },
-          error: function() {
-            last_violations_panel.append("<p class=\"uk-text-center\">" + L.empty + "</p>");
-            return cs.elections.loading('hide');
-          }
-        });
+              if (content) {
+                last_violations_panel.children('section').append(content).masonry({
+                  columnWidth: 300,
+                  gutter: 20,
+                  itemSelector: 'article'
+                });
+              } else {
+                last_violations_panel.children('section').html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+              }
+              return cs.elections.loading('hide');
+            },
+            error: function() {
+              console.error('Precincts addresses loading error');
+              return cs.elections.loading('hide');
+            }
+          });
+        },
+        error: function() {
+          last_violations_panel.children('section').html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+          return cs.elections.loading('hide');
+        }
       });
+    };
+    search_timeout = 0;
+    last_search_value = '';
+    last_violations_search.keydown(function() {
+      var $this;
+      $this = $(this);
+      clearTimeout(search_timeout);
+      return search_timeout = setTimeout((function() {
+        var value;
+        value = $this.val();
+        if (value === last_search_value || (value.length < 3 && last_search_value.length < 3)) {
+          return;
+        }
+        last_search_value = value;
+        last_violations_panel.children('section').remove();
+        last_violations_panel.append('<section/>');
+        return find_violations();
+      }), 300);
     });
     return last_violations_panel.on('click', 'img', function() {
       return $("<div>\n	<div style=\"text-align: center; width: 90%;\">\n		" + this.outerHTML + "\n	</div>\n</div>").appendTo('body').cs().modal('show').click(function() {
