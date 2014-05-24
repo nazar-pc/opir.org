@@ -1,7 +1,7 @@
 {
 	"district_map_content"           : "Округ<br>№%s",
 	"precincts_search"               : "Поиск участка",
-	"number_or_address"              : "Номер или адресс участка",
+	"number_or_address"              : "№ или адресс участка или округа",
 	"mobile_apps"                    : "Мобильные приложения",
 	"download_in"                    : "Скачать в %s",
 	"contacts"                       : "Контакты",

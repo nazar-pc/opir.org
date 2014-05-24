@@ -87,6 +87,9 @@ class Precincts {
 		$clang = Language::instance()->clang;
 		return $this->cache->get("$id/$clang", function () use ($id, $clang) {
 			$data               = $this->read_simple($id);
+			if (!$data) {
+				return false;
+			}
 			$data['id']         = (int)$data['id'];
 			$data['lat']        = (float)$data['lat'];
 			$data['lng']        = (float)$data['lng'];
@@ -115,7 +118,7 @@ class Precincts {
 				'ж', 'Ж', 'ц', 'Ц', 'ч', 'Ч', 'ш', 'Ш', 'щ', 'Щ', 'ю', 'Ю', 'я', 'Я', 'ї', 'Ї', 'є', 'Є', 'Ye', 'Х'
 			],
 			[
-				'zh', 'ZH', 'ts', 'TS', 'ch', 'CH', 'sh', 'SH', 'shch', 'SHCH', 'yu', 'YU', 'ya', 'YA', 'i', 'Yi', 'ie', 'Ye', 'Kh'
+				'zh', 'Zh', 'ts', 'Ts', 'ch', 'CH', 'sh', 'Sh', 'shch', 'Shch', 'yu', 'Yu', 'ya', 'Ya', 'i', 'Yi', 'ie', 'Ye', 'Kh'
 			],
 			$string
 		);
@@ -223,9 +226,11 @@ class Precincts {
 			FROM `$this->table`
 			WHERE
 				`number`	= '%s' OR
+				`district`	= '%s' OR
 				`address`	LIKE '%s'
 			$order
 			LIMIT 20",
+			$text,
 			$text,
 			"%$text%"
 		]);

@@ -1,7 +1,7 @@
 {
 	"district_map_content"           : "District<br>#%s",
 	"precincts_search"               : "Precincts search",
-	"number_or_address"              : "Number or address of precinct",
+	"number_or_address"              : "# or address of precinct or district",
 	"mobile_apps"                    : "Mobile Apps",
 	"download_in"                    : "Download in %s",
 	"contacts"                       : "Contacts",

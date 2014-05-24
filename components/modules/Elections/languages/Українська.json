@@ -1,7 +1,7 @@
 {
 	"district_map_content"           : "Округ<br>№%s",
 	"precincts_search"               : "Пошук дільниці",
-	"number_or_address"              : "Номер або адреса дільниці",
+	"number_or_address"              : "№ або адреса дільниці чи округу",
 	"mobile_apps"                    : "Мобільні додатки",
 	"download_in"                    : "Завантажити в %s",
 	"contacts"                       : "Контакти",
