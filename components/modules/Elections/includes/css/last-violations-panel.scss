@@ -69,5 +69,9 @@
 				max-width  : 100%;
 			}
 		}
+
+		:nth-last-child(2) {
+			margin-bottom : 8px;
+		}
 	}
 }

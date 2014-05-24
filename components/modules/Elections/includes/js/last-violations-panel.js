@@ -58,7 +58,7 @@
             type: 'get',
             data: null,
             success: function(addresses_districts_loaded) {
-              var addresses, content, districts, images, precinct, precincts, text, time, video, violation, _i, _len;
+              var addresses, content, districts, images, precinct, precincts, text, time, video, violation, _i, _j, _len, _len1;
               addresses = {};
               districts = {};
               (function() {
@@ -81,7 +81,7 @@
                   return "<figure class=\"uk-vertical-align\"><img src=\"" + image + "\" alt=\"\" class=\"uk-vertical-align-middle\"></figure>";
                 }).join('') : '';
                 video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
-                content += ("<article>\n<h3>\n	" + time + "\n	<span>") + L.precint_number(precinct.number) + ("</span> (" + L.district + " " + districts[precinct.id] + ")\n	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n</article>");
+                content += ("<article>\n<h3>\n	" + time + "\n	<span>") + L.precint_number(precinct.number) + ("</span> (" + L.district + " " + districts[precinct.id] + ")\n	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n	<div class=\"cs-elections-social-links\" data-violation=\"" + violation.id + "\">\n		<a class=\"fb uk-icon-facebook\"></a>\n		<a class=\"vk uk-icon-vk\"></a>\n		<a class=\"tw uk-icon-twitter\"></a>\n	</div>\n</article>");
               }
               if (content) {
                 last_violations_panel.children('section').append(content).masonry({
@@ -89,6 +89,10 @@
                   gutter: 20,
                   itemSelector: 'article'
                 });
+                for (_j = 0, _len1 = violations.length; _j < _len1; _j++) {
+                  violation = violations[_j];
+                  $(".cs-elections-social-links[data-violation=" + violation.id + "]").data('violation', violation);
+                }
               } else {
                 last_violations_panel.children('section').html("<p class=\"uk-text-center\">" + L.empty + "</p>");
               }

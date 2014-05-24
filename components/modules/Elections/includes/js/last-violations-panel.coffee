@@ -89,6 +89,11 @@ $ ->
 								#{text}
 								#{images}
 								#{video}
+								<div class="cs-elections-social-links" data-violation="#{violation.id}">
+									<a class="fb uk-icon-facebook"></a>
+									<a class="vk uk-icon-vk"></a>
+									<a class="tw uk-icon-twitter"></a>
+								</div>
 							</article>"""
 						if content
 							last_violations_panel.children('section')
@@ -98,6 +103,8 @@ $ ->
 									gutter			: 20
 									itemSelector	: 'article'
 								)
+							for violation in violations
+								$(".cs-elections-social-links[data-violation=#{violation.id}]").data('violation', violation)
 						else
 							last_violations_panel.children('section').html("""<p class="uk-text-center">#{L.empty}</p>""")
 						cs.elections.loading('hide')

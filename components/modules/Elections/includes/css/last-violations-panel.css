@@ -51,3 +51,5 @@
         margin-top: 8px;
         max-height: 240px;
         max-width: 100%; }
+    .cs-elections-last-violations-panel section > article :nth-last-child(2) {
+      margin-bottom: 8px; }
