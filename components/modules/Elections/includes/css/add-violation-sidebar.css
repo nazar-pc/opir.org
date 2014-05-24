@@ -16,12 +16,13 @@
   position: absolute;
   top: 75px;
   width: 0; }
-  .cs-elections-add-violation-sidebar .cs-elections-add-violation-sidebar-close {
+  .cs-elections-add-violation-sidebar-close {
     color: #686c70;
     cursor: pointer;
     font-size: 20px;
-    margin: 10px 0 0 290px; }
-    .cs-elections-add-violation-sidebar .cs-elections-add-violation-sidebar-close:hover {
+    margin: 0 0 0 280px;
+    padding: 10px; }
+    .cs-elections-add-violation-sidebar-close:hover {
       color: #777b80; }
   .cs-elections-add-violation-sidebar > h2 {
     font-size: 18px;

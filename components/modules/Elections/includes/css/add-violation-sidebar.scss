@@ -18,11 +18,12 @@
 	top        : 75px;
 	width      : 0;
 
-	.cs-elections-add-violation-sidebar-close {
+	&-close {
 		color     : #686c70;
 		cursor    : pointer;
 		font-size : 20px;
-		margin    : 10px 0 0 290px;
+		margin    : 0 0 0 280px;
+		padding   : 10px;
 
 		&:hover {
 			color : #777b80;
