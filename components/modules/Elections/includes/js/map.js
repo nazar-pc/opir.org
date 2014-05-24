@@ -212,17 +212,17 @@
           type: 'get',
           data: null,
           success: function(loaded_precincts) {
-            var precinct, precincts, _i, _len, _ref;
+            var i, precinct, precincts, _i, _len, _ref;
             precincts = {};
             _ref = loaded_precincts.id;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              precinct = _ref[_i];
+            for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+              precinct = _ref[i];
               precincts[precinct] = {
                 id: precinct,
-                lat: loaded_precincts.lat[precinct],
-                lng: loaded_precincts.lng[precinct],
-                number: loaded_precincts.number[precinct],
-                violations: loaded_precincts.violations[precinct]
+                lat: loaded_precincts.lat[i],
+                lng: loaded_precincts.lng[i],
+                number: loaded_precincts.number[i],
+                violations: loaded_precincts.violations[i]
               };
             }
             localStorage.setItem('precincts', JSON.stringify(precincts));

@@ -224,13 +224,13 @@ $ ->
 				data		: null
 				success		: (loaded_precincts) ->
 					precincts = {}
-					for precinct in loaded_precincts.id
+					for precinct, i in loaded_precincts.id
 						precincts[precinct] = {
 							id			: precinct
-							lat			: loaded_precincts.lat[precinct]
-							lng			: loaded_precincts.lng[precinct]
-							number		: loaded_precincts.number[precinct]
-							violations	: loaded_precincts.violations[precinct]
+							lat			: loaded_precincts.lat[i]
+							lng			: loaded_precincts.lng[i]
+							number		: loaded_precincts.number[i]
+							violations	: loaded_precincts.violations[i]
 						}
 					localStorage.setItem('precincts', JSON.stringify(precincts))
 					add_precincts_on_map()
