@@ -239,15 +239,15 @@
           type: 'get',
           data: null,
           success: function(violations_loaded) {
-            var precinct, precincts, update, _i, _len, _ref;
+            var i, precinct, precincts, update, _i, _len, _ref;
             precincts = cs.elections.get_precincts();
             update = false;
             _ref = violations_loaded.id;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              precinct = _ref[_i];
-              update = update || (precincts[precinct].violations !== violations_loaded.violations[precinct]);
+            for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+              precinct = _ref[i];
+              update = update || (precincts[precinct].violations !== violations_loaded.violations[i]);
               if (update) {
-                precincts[precinct].violations = violations_loaded.violations[precinct];
+                precincts[precinct].violations = violations_loaded.violations[i];
               }
             }
             if (update) {

@@ -246,10 +246,10 @@ $ ->
 				success		: (violations_loaded) ->
 					precincts	= cs.elections.get_precincts()
 					update		= false
-					for precinct in violations_loaded.id
-						update = update || (precincts[precinct].violations != violations_loaded.violations[precinct])
+					for precinct, i in violations_loaded.id
+						update = update || (precincts[precinct].violations != violations_loaded.violations[i])
 						if update
-							precincts[precinct].violations = violations_loaded.violations[precinct]
+							precincts[precinct].violations = violations_loaded.violations[i]
 					if update
 						localStorage.setItem('precincts', JSON.stringify(precincts))
 						add_precincts_on_map()
