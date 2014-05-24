@@ -21,7 +21,7 @@
       } else if ($this.hasClass('fb')) {
         return window.open('https://www.facebook.com/sharer/sharer.php?src=sp&u=' + link + '&t=' + title + '&description=' + content + (image ? '&image=' + image : ''), 'share_opir.org', params);
       } else if ($this.hasClass('tw')) {
-        return window.open('https://twitter.com/intent/tweet?status=' + link + ' ' + title + ' ' + content, 'share_opir.org', params);
+        return window.open('https://twitter.com/intent/tweet?status=' + link + ' ' + content, 'share_opir.org', params);
       }
     });
   });
