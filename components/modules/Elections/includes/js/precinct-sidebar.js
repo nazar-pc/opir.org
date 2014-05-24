@@ -12,7 +12,7 @@
 (function() {
 
   $(function() {
-    var L, add_stream, add_violation_sidebar, map_container, precinct, precinct_sidebar, precincts_search_results;
+    var L, add_stream, add_violation_sidebar, interval_loading, map_container, precinct, precinct_sidebar, precincts_search_results;
     if (cs.module !== 'Elections') {
       return;
     }
@@ -79,13 +79,14 @@
                 text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';
                 images = violation.images.length ? "<img src=\"" + violation.images[0] + "\" alt=\"\">" : '';
                 video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
-                content += "<article>\n	" + text + "\n	" + images + "\n	" + video + "\n	<div class=\"cs-elections-precinct-sidebar-read-more\" data-id=\"" + violation.id + "\">" + L.read_more + " »</div>\n</article>";
+                content += "<article>\n	" + text + "\n	" + images + "\n	" + video + "\n	<div class=\"cs-elections-social-links\" data-violation=\"" + violation.id + "\">\n		<a class=\"fb uk-icon-facebook\"></a>\n		<a class=\"vk uk-icon-vk\"></a>\n		<a class=\"tw uk-icon-twitter\"></a>\n	</div>\n	<div class=\"cs-elections-precinct-sidebar-read-more\" data-id=\"" + violation.id + "\">" + L.read_more + " »</div>\n</article>";
               }
               if (content) {
                 violations_container.html(content);
                 _results = [];
                 for (_j = 0, _len1 = violations.length; _j < _len1; _j++) {
                   violation = violations[_j];
+                  $(".cs-elections-social-links[data-violation=" + violation.id + "]").data('violation', violation);
                   _results.push($(".cs-elections-precinct-sidebar-read-more[data-id=" + violation.id + "]").data('violation', violation));
                 }
                 return _results;
@@ -163,7 +164,18 @@
       precinct = sessionStorage.getItem('action-details');
       sessionStorage.removeItem('action-details');
       cs.elections.open_precinct(precinct);
-      return add_stream(precinct);
+      add_stream(precinct);
+    }
+    if (cs.route[0] === 'violation') {
+      cs.elections.open_precinct(cs.route[1]);
+      return interval_loading = setInterval((function() {
+        var read_more;
+        read_more = $(".cs-elections-precinct-sidebar-read-more[data-id=" + cs.route[2] + "]");
+        if (read_more.length) {
+          clearInterval(interval_loading);
+          return read_more.click();
+        }
+      }), 300);
     }
   });
 

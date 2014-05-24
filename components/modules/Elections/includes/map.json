@@ -8,6 +8,7 @@
 		"add-violation-sidebar.css",
 		"violation-read-more-sidebar.css",
 		"sign-in.css",
+		"social-share.css",
 		"map.js",
 		"last-violations-panel.js",
 		"main-sidebar.js",
@@ -16,6 +17,7 @@
 		"sign-in.js",
 		"violation-read-more-sidebar.js",
 		"common.js",
-		"masonry-3.1.5.min.js"
+		"masonry-3.1.5.min.js",
+		"social-share.js"
 	]
 }

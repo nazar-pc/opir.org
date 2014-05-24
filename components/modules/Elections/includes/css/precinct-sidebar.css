@@ -92,6 +92,8 @@
     .cs-elections-precinct-sidebar-violations article .cs-elections-precinct-sidebar-read-more {
       color: #9ea0a4;
       cursor: pointer;
+      display: inline-block;
+      margin-left: 55px;
       padding: 7px;
       text-align: right; }
 

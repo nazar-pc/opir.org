@@ -112,11 +112,17 @@ $ ->
 								#{text}
 								#{images}
 								#{video}
+								<div class="cs-elections-social-links" data-violation="#{violation.id}">
+									<a class="fb uk-icon-facebook"></a>
+									<a class="vk uk-icon-vk"></a>
+									<a class="tw uk-icon-twitter"></a>
+								</div>
 								<div class="cs-elections-precinct-sidebar-read-more" data-id="#{violation.id}">#{L.read_more} »</div>
 							</article>"""
 						if content
 							violations_container.html(content)
 							for violation in violations
+								$(".cs-elections-social-links[data-violation=#{violation.id}]").data('violation', violation)
 								$(".cs-elections-precinct-sidebar-read-more[data-id=#{violation.id}]").data('violation', violation)
 						else
 							violations_container.html("""<p class="uk-text-center">#{L.empty}</p>""")
@@ -206,3 +212,11 @@ $ ->
 		sessionStorage.removeItem('action-details')
 		cs.elections.open_precinct(precinct)
 		add_stream(precinct)
+	if cs.route[0] == 'violation'
+		cs.elections.open_precinct(cs.route[1])
+		interval_loading = setInterval (->
+			read_more = $(".cs-elections-precinct-sidebar-read-more[data-id=#{cs.route[2]}]")
+			if read_more.length
+				clearInterval(interval_loading)
+				read_more.click()
+		), 300
