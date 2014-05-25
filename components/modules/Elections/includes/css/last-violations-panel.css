@@ -50,7 +50,7 @@
       .cs-elections-last-violations-panel section > article figure img {
         cursor: pointer;
         margin-top: 8px;
-        max-height: 240px;
+        max-height: 200px;
         max-width: 100%; }
     .cs-elections-last-violations-panel section > article > :nth-last-child(2) {
       margin-bottom: 15px; }
