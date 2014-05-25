@@ -78,7 +78,7 @@
       return clearTimeout(show_timeout);
     });
     return $('.cs-elections-mobile-apps .google-play').click(function() {
-      return $.cs.simple_modal("<p class=\"uk-text-center\">" + L.application_not_approved_yet + "</p>\n<p class=\"uk-text-center\"><a href=\"https://opir.org/storage/public/opir.org.apk\" style=\"text-decoration:underline;\">opir.org.apk</a></p>");
+      return $.cs.simple_modal("<p class=\"uk-text-center\">" + L.application_not_approved_yet + "</p>\n<p class=\"uk-text-center\"><a href=\"Download/opir.org.apk\" style=\"text-decoration:underline;\">opir.org.apk</a></p>");
     });
   });
 

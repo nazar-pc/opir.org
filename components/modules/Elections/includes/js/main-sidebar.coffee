@@ -70,5 +70,5 @@ $ ->
 	$('.cs-elections-mobile-apps .google-play').click ->
 		$.cs.simple_modal("""
 			<p class="uk-text-center">#{L.application_not_approved_yet}</p>
-			<p class="uk-text-center"><a href="https://opir.org/storage/public/opir.org.apk" style="text-decoration:underline;">opir.org.apk</a></p>
+			<p class="uk-text-center"><a href="Download/opir.org.apk" style="text-decoration:underline;">opir.org.apk</a></p>
 		""")
