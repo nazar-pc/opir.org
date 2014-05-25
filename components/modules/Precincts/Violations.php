@@ -111,7 +111,7 @@ class Violations {
 			unset(
 				$this->cache->{"all_for_precincts/$precinct"},
 				$this->precincts_cache->$precinct,
-				$this->precincts_cache->{'all/group_by_district'}
+				$this->precincts_cache->all
 			);
 			Precincts::instance()->update_violations($precinct);
 			return $id;
@@ -172,7 +172,7 @@ class Violations {
 			$data['id'],
 			$this->cache->{"all_for_precincts/$data[precinct]"},
 			$this->precincts_cache->{$data['precinct']},
-			$this->precincts_cache->{'all/group_by_district'}
+			$this->precincts_cache->all
 		);
 		foreach ($data['images'] as $image) {
 			Trigger::instance()->run(
@@ -219,7 +219,8 @@ class Violations {
 		if ($this->update_simple($data)) {
 			unset(
 				$this->cache->$id,
-				$this->cache->{"all_for_precincts/$data[precinct]"}
+				$this->cache->{"all_for_precincts/$data[precinct]"},
+				$this->precincts_cache->all
 			);
 			return true;
 		}
@@ -239,7 +240,8 @@ class Violations {
 			Precincts::instance()->update_violations($data['precinct']);
 			unset(
 				$this->cache->$id,
-				$this->cache->{"all_for_precincts/$data[precinct]"}
+				$this->cache->{"all_for_precincts/$data[precinct]"},
+				$this->precincts_cache->all
 			);
 			return true;
 		}
