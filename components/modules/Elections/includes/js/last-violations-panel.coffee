@@ -187,7 +187,7 @@ $ ->
 		)
 		.on(
 			'click'
-			'article[data-id]'
+			'article[data-id] h3 span'
 			->
 				cs.elections.open_precinct($(@).data('id'))
 		)

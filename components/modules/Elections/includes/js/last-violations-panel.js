@@ -167,7 +167,7 @@
       }).on('uk.modal.hide', function() {
         return $(this).remove();
       });
-    }).on('click', 'article[data-id]', function() {
+    }).on('click', 'article[data-id] h3 span', function() {
       return cs.elections.open_precinct($(this).data('id'));
     }).scroll(function() {
       if (!data_loading && last_violations_panel[0].scrollHeight - last_violations_panel.outerHeight() - last_violations_panel.scrollTop() < 200) {
