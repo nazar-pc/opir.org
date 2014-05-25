@@ -82,10 +82,10 @@ $Page->content(
 		h::h2($L->contacts).
 		h::{'div.cs-elections-contacts'}(
 			h::a(
-				h::icon('phone').'+38 050 258 17 05'
+				h::icon('phone').'+38 063 117 51 59'
 			).
 			h::a(
-				h::icon('phone').'+38 050 258 17 43'
+				h::icon('phone').'+38 093 012 22 11'
 			).
 			h::{'a[href=mailto:info@opir.org]'}(
 				h::icon('envelope').'info@opir.org'
