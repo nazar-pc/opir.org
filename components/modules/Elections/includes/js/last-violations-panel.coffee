@@ -13,7 +13,7 @@ $ ->
 	last_violations_panel	= $('.cs-elections-last-violations-panel')
 	last_violations_content	= last_violations_panel.children('section')
 		.masonry(
-			columnWidth		: 300
+			columnWidth		: 280
 			gutter			: 20
 			itemSelector	: 'article'
 		)
@@ -150,7 +150,7 @@ $ ->
 				.masonry('destroy')
 				.html('')
 				.masonry(
-					columnWidth		: 300
+					columnWidth		: 280
 					gutter			: 20
 					itemSelector	: 'article'
 				)
