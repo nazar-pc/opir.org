@@ -14,15 +14,16 @@ $ ->
 	last_violations_search	= $('.cs-elections-last-violations-panel-search')
 	L						= cs.Language
 	last_violations_button.click ->
-		if last_violations_button.is('.cs-elections-last-violations')
-			last_violations_button.removeClass('cs-elections-last-violations').addClass('cs-elections-switch-to-map')
-		else
+		if !last_violations_button.is('.cs-elections-last-violations')
 			last_violations_button.removeClass('cs-elections-switch-to-map').addClass('cs-elections-last-violations')
 			last_violations_panel.children('section').remove()
 			last_violations_panel
 				.slideUp('fast')
 				.append('<section/>')
+			history.pushState(null, null, $('base').attr('href'))
 			return
+		last_violations_button.removeClass('cs-elections-last-violations').addClass('cs-elections-switch-to-map')
+		history.pushState(null, null, $('base').attr('href') + 'Elections/Last_violations')
 		last_violations_panel.children('section').remove()
 		last_violations_panel
 			.slideDown(
@@ -116,6 +117,8 @@ $ ->
 				last_violations_panel.children('section').html("""<p class="uk-text-center">#{L.empty}</p>""")
 				cs.elections.loading('hide')
 		)
+	if cs.route[0] == 'Last_violations'
+		last_violations_button.click()
 	search_timeout		= 0
 	last_search_value	= ''
 	last_violations_search.keydown ->
@@ -130,7 +133,6 @@ $ ->
 			last_violations_panel.append('<section/>')
 			find_violations()
 		), 300
-
 	last_violations_panel
 		.on(
 			'click'
