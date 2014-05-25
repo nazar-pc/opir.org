@@ -39,7 +39,7 @@ body > header {
 		background  : #0069ba !important;
 		cursor      : pointer;
 		line-height : 28px;
-		padding-top : 24px;
+		padding     : 24px 10px 10px;
 		right       : 320px;
 		width       : 110px;
 
@@ -50,7 +50,7 @@ body > header {
 		div {
 			display    : none;
 			background : inherit;
-			left       : -59px;
+			left       : -50px;
 			position   : relative;
 			top        : 23px;
 			width      : 150px;

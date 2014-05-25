@@ -27,7 +27,7 @@ body > header .cs-elections-switch-language {
   background: #0069ba !important;
   cursor: pointer;
   line-height: 28px;
-  padding-top: 24px;
+  padding: 24px 10px 10px;
   right: 320px;
   width: 110px; }
   body > header .cs-elections-switch-language:hover {
@@ -37,7 +37,7 @@ body > header .cs-elections-switch-language {
   body > header .cs-elections-switch-language div {
     display: none;
     background: inherit;
-    left: -59px;
+    left: -50px;
     position: relative;
     top: 23px;
     width: 150px;
