@@ -271,6 +271,7 @@ class Violations {
 				return false;
 			}
 		}
+		$where[] = '`status` != '.self::STATUS_DECLINED;
 		if ($where) {
 			$where = 'WHERE '.implode(' AND ', $where);
 		} else {
