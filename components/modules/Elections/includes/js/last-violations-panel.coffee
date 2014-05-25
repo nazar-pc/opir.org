@@ -19,20 +19,31 @@ $ ->
 		)
 	last_violations_search	= $('.cs-elections-last-violations-panel-search')
 	L						= cs.Language
+	data_loading			= false
 	last_violations_button.click ->
 		if !last_violations_button.is('.cs-elections-last-violations')
 			last_violations_button.removeClass('cs-elections-switch-to-map').addClass('cs-elections-last-violations')
-			last_violations_content.masonry('destroy').html('')
 			last_violations_panel
-				.slideUp('fast')
+				.slideUp(
+					'fast'
+					->
+						last_violations_content
+							.html('')
+							.masonry('destroy')
+							.masonry(
+								columnWidth		: 280
+								gutter			: 20
+								itemSelector	: 'article'
+							)
+				)
 			return
 		last_violations_button.removeClass('cs-elections-last-violations').addClass('cs-elections-switch-to-map')
+		data_loading = false
 		last_violations_panel
 			.slideDown(
 				'fast'
 				find_violations
 			)
-	data_loading = false
 	find_violations = () ->
 		if data_loading
 			return
@@ -173,6 +184,12 @@ $ ->
 					$(@).hide()
 				.on 'uk.modal.hide', ->
 					$(this).remove()
+		)
+		.on(
+			'click'
+			'article[data-id]'
+			->
+				cs.elections.open_precinct($(@).data('id'))
 		)
 		.scroll ->
 			if !data_loading && last_violations_panel[0].scrollHeight - last_violations_panel.outerHeight() - last_violations_panel.scrollTop() < 200

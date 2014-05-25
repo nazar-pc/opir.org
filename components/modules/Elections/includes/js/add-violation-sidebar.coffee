@@ -42,6 +42,7 @@ $ ->
 				left	: '+=320'
 				'fast'
 			)
+			$('.cs-elections-switch-to-map').click()
 		precints_search_timeout		= 0
 		last_search_value			= ''
 		precincts_search_results	= $('.cs-elections-add-violation-sidebar-search-results')

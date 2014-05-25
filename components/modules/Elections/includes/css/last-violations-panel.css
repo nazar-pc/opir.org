@@ -32,7 +32,8 @@
       font-weight: bold;
       margin-bottom: 0; }
       .cs-elections-last-violations-panel section > article h3 span {
-        color: #0072c7; }
+        color: #0072c7;
+        cursor: pointer; }
       .cs-elections-last-violations-panel section > article h3 + p {
         color: #a7a7a7;
         margin-top: 0; }

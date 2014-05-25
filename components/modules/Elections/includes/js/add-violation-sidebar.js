@@ -41,6 +41,7 @@
         map_container.animate({
           left: '+=320'
         }, 'fast');
+        $('.cs-elections-switch-to-map').click();
       }
       precints_search_timeout = 0;
       last_search_value = '';
