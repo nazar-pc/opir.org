@@ -87,7 +87,11 @@ class Violations {
 	 */
 	function add ($precinct, $user, $text, $images, $video) { //TODO: add tags to files
 		$precinct = (int)$precinct;
-		$id       = $this->create_simple([
+		$images   = $this->data_model['images']($images);
+		if (!is_array($images)) {
+			$images = [];
+		}
+		$id = $this->create_simple([
 			$precinct,
 			$user,
 			TIME,
@@ -97,17 +101,19 @@ class Violations {
 			self::STATUS_ADDED
 		]);
 		if ($id) {
-			$images = $this->data_model['images']($images);
-			foreach ($images as $image) {
-				Trigger::instance()->run(
-					'System/upload_files/add_tag',
-					[
-						'tag' => "Precincts/violations/$id",
-						'url' => $image
-					]
-				);
+			if (!empty($images)) {
+				foreach ($images as $image) {
+					Trigger::instance()->run(
+						'System/upload_files/add_tag',
+						[
+							'tag' => "Precincts/violations/$id",
+							'url' => $image
+						]
+					);
+				}
+				unset($image);
 			}
-			unset($images, $image);
+			unset($images);
 			unset(
 				$this->cache->{"all_for_precincts/$precinct"},
 				$this->precincts_cache->$precinct,

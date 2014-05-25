@@ -19,7 +19,7 @@ $Index             = Index::instance();
 $Index->title_auto = false;
 $L                 = Language::instance();
 $Page              = Page::instance();
-if (isset($Index->route_path[0]) && $Index->route_path[0] == 'violation') {
+if (isset($Index->route_path[0], $Index->route_ids[1]) && $Index->route_path[0] == 'violation') {
 	$violation         = Violations::instance()->get($Index->route_ids[1]);
 	if ($violation['images']) {
 		$Page->replace('/<meta content="[^"]*share.png" property="og:image">/Uims', '');
