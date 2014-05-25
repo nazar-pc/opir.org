@@ -97,7 +97,6 @@ class Violations {
 			self::STATUS_ADDED
 		]);
 		if ($id) {
-			$images = $this->data_model['images']($images);
 			foreach ($images as $image) {
 				Trigger::instance()->run(
 					'System/upload_files/add_tag',
