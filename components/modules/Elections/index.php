@@ -69,11 +69,8 @@ $Page->content(
 					'onclick' => "$.cs.simple_modal('$L->soon')"
 				]
 			).
-			h::a(
-				$L->download_in('Google Play'),
-				[
-					'onclick' => "$.cs.simple_modal('$L->soon')"
-				]
+			h::{'a.google-play'}(
+				$L->download_in('Google Play')
 			).
 			h::a(
 				$L->download_in('Market Place'),

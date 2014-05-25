@@ -26,5 +26,6 @@
 	"district"                       : "округ",
 	"stream"                         : "Стрім",
 	"youtube_or_ustream_stream_link" : "Посилання на стрім на youtube чи ustream",
-	"thank_you_for_your_stream"      : "Дякуємо вам за ваш стрім!"
+	"thank_you_for_your_stream"      : "Дякуємо вам за ваш стрім!",
+	"application_not_approved_yet"   : "Наш додаток ще не затверджено в Google Play, але ви можете встановити його з apk файлу за посиланням нижче"
 }
