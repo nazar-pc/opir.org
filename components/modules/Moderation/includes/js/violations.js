@@ -106,8 +106,19 @@
           status: status
         },
         type: 'put',
-        success: function() {
-          return $this.parentsUntil('section').css('visibility', 'hidden');
+        success: function(result) {
+          $this.parentsUntil('section').css('visibility', 'hidden');
+          if (status === 0 && result.rating < 0 && result.rating % 5 === 0) {
+            if (confirm(L.bad_user_rating(result.username, result.rating))) {
+              return $.ajax({
+                url: "api/Moderation/violations/block_user/" + result.user,
+                type: 'post',
+                success: function() {
+                  return alert(L.done);
+                }
+              });
+            }
+          }
         }
       });
     });

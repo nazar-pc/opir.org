@@ -11,6 +11,7 @@ namespace cs\modules\Precincts;
 use
 	cs\Cache\Prefix,
 	cs\Index,
+	cs\Language,
 	cs\Page;
 
 $Index     = Index::instance();
@@ -22,7 +23,7 @@ if (isset($Index->route_ids[0])) {
 	header('Expires: access plus 1 minute');
 } else {
 	$Cache     = new Prefix('precincts');
-	$precincts = $Cache->get('all/ids_api', function () use ($Precincts) {
+	$precincts = $Cache->get('all/ids_api/'.Language::instance()->clang, function () use ($Precincts) {
 		return $Precincts->get($Precincts->get_all());
 	});
 	if (isset($_GET['id'])) {

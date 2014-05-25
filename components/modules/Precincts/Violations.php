@@ -186,7 +186,7 @@ class Violations {
 		return true;
 	}
 	/**
-	 * Get array of id of all precincts
+	 * Get array of id of all violation for precinct
 	 *
 	 * @param int $precinct
 	 *
@@ -329,6 +329,43 @@ class Violations {
 			ORDER BY `id` DESC
 			LIMIT 100",
 			self::STATUS_DECLINED
+		]);
+	}
+	/**
+	 * Calculate user rating based on approved/declined messages
+	 *
+	 * @param int $user
+	 *
+	 * @return int
+	 */
+	function user_rating ($user) {
+		return $this->db()->qfs([
+			"SELECT SUM(CASE WHEN (`status` = '%s') THEN 1 ELSE -1 END) as `value`
+			FROM `$this->table`
+			WHERE
+				`user`		= '%s' AND
+				`status`	!= '%s'",
+			self::STATUS_APPROVED,
+			$user,
+			self::STATUS_ADDED
+		]) ?: 0;
+	}
+	/**
+	 * Get array of id of new violations of specified user
+	 *
+	 * @param int $user
+	 *
+	 * @return bool|int[]
+	 */
+	function get_new_of_user ($user) {
+		return $this->db()->qfas([
+			"SELECT `id`
+			FROM `$this->table`
+			WHERE
+				`user`		= '%s' AND
+				`status`	= '%s'",
+			$user,
+			self::STATUS_ADDED
 		]);
 	}
 }

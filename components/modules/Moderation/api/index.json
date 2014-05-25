@@ -3,7 +3,8 @@
 		"default",
 		"new",
 		"approved",
-		"declined"
+		"declined",
+		"block_user"
 	],
 	"streams"		: [
 		"default",

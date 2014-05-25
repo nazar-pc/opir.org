@@ -3,5 +3,7 @@
 	"approve"                  : "Approve",
 	"decline"                  : "Decline",
 	"violations_need_checking" : "Violations need checking",
-	"streams_need_checking"    : "Streams need checking"
+	"streams_need_checking"    : "Streams need checking",
+	"bad_user_rating"          : "User %s has rating %s, that indicates multiple sending of incorrect messages. Do you want to block user and decline all other sent messages?",
+	"done"                     : "Done"
 }

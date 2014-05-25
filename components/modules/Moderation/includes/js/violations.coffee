@@ -124,8 +124,16 @@ $ ->
 					data	:
 						status	: status
 					type	: 'put'
-					success	: ->
+					success	: (result) ->
 						$this.parentsUntil('section').css('visibility', 'hidden')
+						if status == 0 && result.rating < 0 && result.rating % 5 == 0
+							if confirm L.bad_user_rating(result.username, result.rating)
+								$.ajax(
+									url		: "api/Moderation/violations/block_user/#{result.user}"
+									type	: 'post'
+									success	: ->
+										alert L.done
+								)
 				)
 		)
 	check_new_violations	= ->
