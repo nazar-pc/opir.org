@@ -77,7 +77,7 @@
                 precinct = precincts[violation.precinct];
                 time = new Date(violation.date * 1000);
                 time = (time.getHours() < 10 ? '0' + time.getHours() : time.getHours()) + ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes());
-                text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';
+                text = violation.text ? "<p>" + violation.text + "</p>" : '';
                 images = violation.images.length ? violation.images.map(function(image) {
                   return "<figure class=\"uk-vertical-align\"><img src=\"" + image + "\" alt=\"\" class=\"uk-vertical-align-middle\"></figure>";
                 }).join('') : '';

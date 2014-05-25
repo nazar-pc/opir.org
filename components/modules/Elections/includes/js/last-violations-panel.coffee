@@ -65,7 +65,7 @@ $ ->
 								(if time.getHours() < 10 then '0' + time.getHours() else time.getHours()) + ':' + (if time.getMinutes() < 10 then '0' + time.getMinutes() else time.getMinutes())
 							text =
 								if violation.text
-									"<p>" + violation.text.substr(0, 200) + "</p>"
+									"<p>#{violation.text}</p>"
 								else
 									''
 							images =
