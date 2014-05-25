@@ -12,31 +12,42 @@
 (function() {
 
   $(function() {
-    var L, find_violations, last_search_value, last_violations_button, last_violations_panel, last_violations_search, search_timeout;
+    var L, data_loading, find_violations, last_search_value, last_violations_button, last_violations_content, last_violations_panel, last_violations_search, search_timeout;
     if (cs.module !== 'Elections') {
       return;
     }
     last_violations_button = $('.cs-elections-last-violations');
     last_violations_panel = $('.cs-elections-last-violations-panel');
+    last_violations_content = last_violations_panel.children('section').masonry({
+      columnWidth: 300,
+      gutter: 20,
+      itemSelector: 'article'
+    });
     last_violations_search = $('.cs-elections-last-violations-panel-search');
     L = cs.Language;
     last_violations_button.click(function() {
       if (!last_violations_button.is('.cs-elections-last-violations')) {
         last_violations_button.removeClass('cs-elections-switch-to-map').addClass('cs-elections-last-violations');
-        last_violations_panel.children('section').remove();
-        last_violations_panel.slideUp('fast').append('<section/>');
+        last_violations_content.masonry('destroy').html('');
+        last_violations_panel.slideUp('fast');
         return;
       }
       last_violations_button.removeClass('cs-elections-last-violations').addClass('cs-elections-switch-to-map');
-      last_violations_panel.children('section').remove();
-      return last_violations_panel.slideDown('fast', find_violations).append('<section/>');
+      return last_violations_panel.slideDown('fast', find_violations);
     });
+    data_loading = false;
     find_violations = function() {
-      var search;
+      var last_id, search;
+      if (data_loading) {
+        return;
+      }
+      data_loading = true;
+      last_id = last_violations_content.children('article:last').data('id') || 0;
+      last_violations_content.children('p').remove();
       cs.elections.loading('show');
       search = last_violations_search.val();
       return $.ajax({
-        url: "api/Violations?number=20&search=" + (search.length < 3 ? '' : search),
+        url: ("api/Violations?number=20&last_id=" + last_id + "&search=") + (search.length < 3 ? '' : search),
         type: 'get',
         data: null,
         success: function(violations) {
@@ -57,7 +68,7 @@
             type: 'get',
             data: null,
             success: function(addresses_districts_loaded) {
-              var addresses, content, districts, images, precinct, precincts, text, time, video, violation, _i, _j, _len, _len1;
+              var addresses, appended, content, districts, images, precinct, precincts, text, time, video, violation, _i, _j, _len, _len1;
               addresses = {};
               districts = {};
               (function() {
@@ -80,31 +91,43 @@
                   return "<figure class=\"uk-vertical-align\"><img src=\"" + image + "\" alt=\"\" class=\"uk-vertical-align-middle\"></figure>";
                 }).join('') : '';
                 video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
-                content += ("<article>\n<h3>\n	" + time + "\n	<span>") + L.precint_number(precinct.number) + ("</span> (" + L.district + " " + districts[precinct.id] + ")\n	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n	<div class=\"cs-elections-social-links\" data-violation=\"" + violation.id + "\">\n		<a class=\"fb uk-icon-facebook\"></a>\n		<a class=\"vk uk-icon-vk\"></a>\n		<a class=\"tw uk-icon-twitter\"></a>\n	</div>\n</article>");
+                content += ("<article data-id=\"" + violation.id + "\">\n<h3>\n	" + time + "\n	<span>") + L.precint_number(precinct.number) + ("</span> (" + L.district + " " + districts[precinct.id] + ")\n	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n	<div class=\"cs-elections-social-links\" data-violation=\"" + violation.id + "\">\n		<a class=\"fb uk-icon-facebook\"></a>\n		<a class=\"vk uk-icon-vk\"></a>\n		<a class=\"tw uk-icon-twitter\"></a>\n	</div>\n</article>");
               }
               if (content) {
-                last_violations_panel.children('section').append(content).masonry({
-                  columnWidth: 300,
-                  gutter: 20,
-                  itemSelector: 'article'
-                });
+                (function() {
+                  return last_violations_content.append(content);
+                })();
+                appended = [];
                 for (_j = 0, _len1 = violations.length; _j < _len1; _j++) {
                   violation = violations[_j];
+                  appended.push(last_violations_content.children("article[data-id=" + violation.id + "]")[0]);
                   $(".cs-elections-social-links[data-violation=" + violation.id + "]").data('violation', violation);
                 }
-              } else {
-                last_violations_panel.children('section').html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+                last_violations_content.masonry('reloadItems').masonry('layout');
+                data_loading = false;
+              } else if (!last_id) {
+                last_violations_content.masonry('destroy').html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+                data_loading = false;
               }
-              return cs.elections.loading('hide');
+              cs.elections.loading('hide');
+              if (last_violations_panel[0].scrollHeight === last_violations_panel.outerHeight()) {
+                return find_violations();
+              }
             },
             error: function() {
-              console.error('Precincts addresses loading error');
+              if (!last_id) {
+                console.error('Precincts addresses loading error');
+                data_loading = false;
+              }
               return cs.elections.loading('hide');
             }
           });
         },
         error: function() {
-          last_violations_panel.children('section').html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+          if (!last_id) {
+            last_violations_content.masonry('destroy').html("<p class=\"uk-text-center\">" + L.empty + "</p>");
+            data_loading = false;
+          }
           return cs.elections.loading('hide');
         }
       });
@@ -123,18 +146,27 @@
           return;
         }
         last_search_value = value;
-        last_violations_panel.children('section').remove();
-        last_violations_panel.append('<section/>');
+        last_violations_content.masonry('destroy').html('').masonry({
+          columnWidth: 300,
+          gutter: 20,
+          itemSelector: 'article'
+        });
+        data_loading = false;
         return find_violations();
       }), 300);
     });
-    return last_violations_panel.on('click', 'img', function() {
+    last_violations_panel.on('click', 'img', function() {
       return $("<div>\n	<div style=\"text-align: center; width: 90%;\">\n		" + this.outerHTML + "\n	</div>\n</div>").appendTo('body').cs().modal('show').click(function() {
         return $(this).hide();
       }).on('uk.modal.hide', function() {
         return $(this).remove();
       });
+    }).scroll(function() {
+      if (!data_loading && last_violations_panel[0].scrollHeight - last_violations_panel.outerHeight() - last_violations_panel.scrollTop() < 200) {
+        return find_violations();
+      }
     });
+    return last_violations_panel.scroll();
   });
 
 }).call(this);

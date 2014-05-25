@@ -11,29 +11,38 @@ $ ->
 		return
 	last_violations_button	= $('.cs-elections-last-violations')
 	last_violations_panel	= $('.cs-elections-last-violations-panel')
+	last_violations_content	= last_violations_panel.children('section')
+		.masonry(
+			columnWidth		: 300
+			gutter			: 20
+			itemSelector	: 'article'
+		)
 	last_violations_search	= $('.cs-elections-last-violations-panel-search')
 	L						= cs.Language
 	last_violations_button.click ->
 		if !last_violations_button.is('.cs-elections-last-violations')
 			last_violations_button.removeClass('cs-elections-switch-to-map').addClass('cs-elections-last-violations')
-			last_violations_panel.children('section').remove()
+			last_violations_content.masonry('destroy').html('')
 			last_violations_panel
 				.slideUp('fast')
-				.append('<section/>')
 			return
 		last_violations_button.removeClass('cs-elections-last-violations').addClass('cs-elections-switch-to-map')
-		last_violations_panel.children('section').remove()
 		last_violations_panel
 			.slideDown(
 				'fast'
 				find_violations
 			)
-			.append('<section/>')
-	find_violations = ->
+	data_loading = false
+	find_violations = () ->
+		if data_loading
+			return
+		data_loading = true
+		last_id      = last_violations_content.children('article:last').data('id') || 0
+		last_violations_content.children('p').remove()
 		cs.elections.loading('show')
 		search = last_violations_search.val()
 		$.ajax(
-			url		: "api/Violations?number=20&search=" + (if search.length < 3 then '' else search)
+			url		: "api/Violations?number=20&last_id=#{last_id}&search=" + (if search.length < 3 then '' else search)
 			type	: 'get'
 			data	: null
 			success	: (violations) ->
@@ -79,7 +88,7 @@ $ ->
 									"""<iframe src="#{violation.video}" frameborder="0" scrolling="no"></iframe>"""
 								else
 									''
-							content += """<article>
+							content += """<article data-id="#{violation.id}">
 								<h3>
 									#{time}
 									<span>""" + L.precint_number(precinct.number) + """</span> (#{L.district} #{districts[precinct.id]})
@@ -95,24 +104,34 @@ $ ->
 								</div>
 							</article>"""
 						if content
-							last_violations_panel.children('section')
-								.append(content)
-								.masonry(
-									columnWidth		: 300
-									gutter			: 20
-									itemSelector	: 'article'
-								)
+							do ->
+								last_violations_content.append(content)
+							appended = []
 							for violation in violations
+								appended.push(last_violations_content.children("article[data-id=#{violation.id}]")[0])
 								$(".cs-elections-social-links[data-violation=#{violation.id}]").data('violation', violation)
-						else
-							last_violations_panel.children('section').html("""<p class="uk-text-center">#{L.empty}</p>""")
+							last_violations_content.masonry('reloadItems').masonry('layout')
+							data_loading = false
+						else if !last_id
+							last_violations_content
+								.masonry('destroy')
+								.html("""<p class="uk-text-center">#{L.empty}</p>""")
+							data_loading = false
 						cs.elections.loading('hide')
+						if last_violations_panel[0].scrollHeight == last_violations_panel.outerHeight()
+							find_violations()
 					error		: ->
-						console.error('Precincts addresses loading error')
+						if !last_id
+							console.error('Precincts addresses loading error')
+							data_loading = false
 						cs.elections.loading('hide')
 				)
 			error	: ->
-				last_violations_panel.children('section').html("""<p class="uk-text-center">#{L.empty}</p>""")
+				if !last_id
+					last_violations_content
+						.masonry('destroy')
+						.html("""<p class="uk-text-center">#{L.empty}</p>""")
+					data_loading = false
 				cs.elections.loading('hide')
 		)
 	# Hack to open last violations from the beginning
@@ -127,8 +146,15 @@ $ ->
 			if value == last_search_value || (value.length < 3 && last_search_value.length < 3)
 				return
 			last_search_value = value
-			last_violations_panel.children('section').remove()
-			last_violations_panel.append('<section/>')
+			last_violations_content
+				.masonry('destroy')
+				.html('')
+				.masonry(
+					columnWidth		: 300
+					gutter			: 20
+					itemSelector	: 'article'
+				)
+			data_loading = false
 			find_violations()
 		), 300
 	last_violations_panel
@@ -148,3 +174,7 @@ $ ->
 				.on 'uk.modal.hide', ->
 					$(this).remove()
 		)
+		.scroll ->
+			if !data_loading && last_violations_panel[0].scrollHeight - last_violations_panel.outerHeight() - last_violations_panel.scrollTop() < 200
+				find_violations()
+	last_violations_panel.scroll()
