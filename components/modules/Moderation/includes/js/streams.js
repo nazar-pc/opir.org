@@ -107,30 +107,32 @@
         }
       });
     });
-    return check_new_streams = function() {
-      return $.ajax({
-        url: 'api/Moderation/streams/' + cs.route_path[1],
-        type: 'get',
-        success: function(streams) {
-          var current_available, shown_streams;
-          current_available = streams.map(function(violation) {
-            return violation.id;
-          });
-          shown_streams = streams_container.children('section').children('article');
-          shown_streams.each(function() {
-            var $this;
-            $this = $(this);
-            if (current_available.indexOf(parseInt($this.data('id'))) === -1) {
-              return $this.css('visibility', 'hidden');
+    if (cs.route_path[1] === 'new') {
+      return check_new_streams = function() {
+        return $.ajax({
+          url: 'api/Moderation/streams/' + cs.route_path[1],
+          type: 'get',
+          success: function(streams) {
+            var current_available, shown_streams;
+            current_available = streams.map(function(violation) {
+              return violation.id;
+            });
+            shown_streams = streams_container.children('section').children('article');
+            shown_streams.each(function() {
+              var $this;
+              $this = $(this);
+              if (current_available.indexOf(parseInt($this.data('id'))) === -1) {
+                return $this.css('visibility', 'hidden');
+              }
+            });
+            if (shown_streams.length) {
+              return setTimeout(check_new_streams, 1000);
             }
-          });
-          if (shown_streams.length) {
-            return setTimeout(check_new_streams, 1000);
-          }
-        },
-        error: function() {}
-      });
-    };
+          },
+          error: function() {}
+        });
+      };
+    }
   });
 
 }).call(this);

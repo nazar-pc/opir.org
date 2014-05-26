@@ -109,19 +109,20 @@ $ ->
 						$this.parentsUntil('section').css('visibility', 'hidden')
 				)
 		)
-	check_new_streams	= ->
-		$.ajax(
-			url		: 'api/Moderation/streams/' + cs.route_path[1]
-			type	: 'get'
-			success	: (streams) ->
-				current_available = streams.map (violation) ->
-					violation.id
-				shown_streams = streams_container.children('section').children('article')
-				shown_streams.each ->
-					$this = $(@)
-					if current_available.indexOf(parseInt($this.data('id'))) == -1
-						$this.css('visibility', 'hidden')
-				if shown_streams.length
-					setTimeout(check_new_streams, 1000)
-			error	: ->
-		)
+	if cs.route_path[1] == 'new'
+		check_new_streams	= ->
+			$.ajax(
+				url		: 'api/Moderation/streams/' + cs.route_path[1]
+				type	: 'get'
+				success	: (streams) ->
+					current_available = streams.map (violation) ->
+						violation.id
+					shown_streams = streams_container.children('section').children('article')
+					shown_streams.each ->
+						$this = $(@)
+						if current_available.indexOf(parseInt($this.data('id'))) == -1
+							$this.css('visibility', 'hidden')
+					if shown_streams.length
+						setTimeout(check_new_streams, 1000)
+				error	: ->
+			)

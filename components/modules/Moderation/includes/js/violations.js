@@ -62,7 +62,7 @@
               precinct = precincts[violation.precinct];
               time = new Date(violation.date * 1000);
               time = (time.getHours() < 10 ? '0' + time.getHours() : time.getHours()) + ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes());
-              text = violation.text ? "<p>" + violation.text.substr(0, 200) + "</p>" : '';
+              text = violation.text ? "<p>" + violation.text + "</p>" : '';
               images = violation.images.length ? violation.images.map(function(image) {
                 return "<figure class=\"uk-vertical-align\"><img src=\"" + image + "\" alt=\"\" class=\"uk-vertical-align-middle\"></figure>";
               }).join('') : '';
@@ -122,30 +122,32 @@
         }
       });
     });
-    return check_new_violations = function() {
-      return $.ajax({
-        url: 'api/Moderation/violations/' + cs.route_path[1],
-        type: 'get',
-        success: function(violations) {
-          var current_available, shown_violations;
-          current_available = violations.map(function(violation) {
-            return violation.id;
-          });
-          shown_violations = violations_container.children('section').children('article');
-          shown_violations.each(function() {
-            var $this;
-            $this = $(this);
-            if (current_available.indexOf(parseInt($this.data('id'))) === -1) {
-              return $this.css('visibility', 'hidden');
+    if (cs.route_path[1] === 'new') {
+      return check_new_violations = function() {
+        return $.ajax({
+          url: 'api/Moderation/violations/' + cs.route_path[1],
+          type: 'get',
+          success: function(violations) {
+            var current_available, shown_violations;
+            current_available = violations.map(function(violation) {
+              return violation.id;
+            });
+            shown_violations = violations_container.children('section').children('article');
+            shown_violations.each(function() {
+              var $this;
+              $this = $(this);
+              if (current_available.indexOf(parseInt($this.data('id'))) === -1) {
+                return $this.css('visibility', 'hidden');
+              }
+            });
+            if (shown_violations.length) {
+              return setTimeout(check_new_violations, 1000);
             }
-          });
-          if (shown_violations.length) {
-            return setTimeout(check_new_violations, 1000);
-          }
-        },
-        error: function() {}
-      });
-    };
+          },
+          error: function() {}
+        });
+      };
+    }
   });
 
 }).call(this);

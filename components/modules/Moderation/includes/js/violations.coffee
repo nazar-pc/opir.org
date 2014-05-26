@@ -48,7 +48,7 @@ $ ->
 							(if time.getHours() < 10 then '0' + time.getHours() else time.getHours()) + ':' + (if time.getMinutes() < 10 then '0' + time.getMinutes() else time.getMinutes())
 						text =
 							if violation.text
-								"<p>" + violation.text.substr(0, 200) + "</p>"
+								"<p>#{violation.text}</p>"
 							else
 								''
 						images =
@@ -136,19 +136,20 @@ $ ->
 								)
 				)
 		)
-	check_new_violations	= ->
-		$.ajax(
-			url		: 'api/Moderation/violations/' + cs.route_path[1]
-			type	: 'get'
-			success	: (violations) ->
-				current_available = violations.map (violation) ->
-					violation.id
-				shown_violations = violations_container.children('section').children('article')
-				shown_violations.each ->
-					$this = $(@)
-					if current_available.indexOf(parseInt($this.data('id'))) == -1
-						$this.css('visibility', 'hidden')
-				if shown_violations.length
-					setTimeout(check_new_violations, 1000)
-			error	: ->
-		)
+	if cs.route_path[1] == 'new'
+		check_new_violations	= ->
+			$.ajax(
+				url		: 'api/Moderation/violations/' + cs.route_path[1]
+				type	: 'get'
+				success	: (violations) ->
+					current_available = violations.map (violation) ->
+						violation.id
+					shown_violations = violations_container.children('section').children('article')
+					shown_violations.each ->
+						$this = $(@)
+						if current_available.indexOf(parseInt($this.data('id'))) == -1
+							$this.css('visibility', 'hidden')
+					if shown_violations.length
+						setTimeout(check_new_violations, 1000)
+				error	: ->
+			)
