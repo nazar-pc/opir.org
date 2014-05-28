@@ -14,7 +14,7 @@
   window.cs.elections = window.cs.elections || {};
 
   window.cs.elections.get_precincts = function(check) {
-    var precinct, precincts, precincts_new_format, _i, _len;
+    var i, precinct, precincts, precincts_new_format, _i, _len, _ref;
     precincts = localStorage.getItem('precincts');
     if (check) {
       return !!precincts;
@@ -29,7 +29,36 @@
       localStorage.setItem('precincts', JSON.stringify(precincts_new_format));
       precincts = precincts_new_format;
     }
+    if ((_ref = precincts[1]) != null ? _ref.id : void 0) {
+      precincts_new_format = {};
+      for (precinct in precincts) {
+        precinct = precincts[precinct];
+        precincts_new_format[precinct.id] = [precinct.id, precinct.lat, precinct.lng, precinct.number, precinct.violations];
+      }
+      localStorage.setItem('precincts', JSON.stringify(precincts_new_format));
+      precincts = precincts_new_format;
+    }
+    for (i in precincts) {
+      precinct = precincts[i];
+      precincts[i] = {
+        id: precinct[0],
+        lat: precinct[1],
+        lng: precinct[2],
+        number: precinct[3],
+        violations: precinct[4]
+      };
+    }
     return precincts;
+  };
+
+  window.cs.elections.set_precincts = function(precincts) {
+    var i, precinct;
+    for (i in precincts) {
+      precinct = precincts[i];
+      precincts[i] = [precinct.id, precinct.lat, precinct.lng, precinct.number, precinct.violations];
+    }
+    console.log(precincts);
+    return localStorage.setItem('precincts', JSON.stringify(precincts));
   };
 
   window.cs.elections.get_districts = function(check) {

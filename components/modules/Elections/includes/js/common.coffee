@@ -18,7 +18,37 @@ window.cs.elections.get_precincts = (check) ->
 			precincts_new_format[precinct.id] = precinct
 		localStorage.setItem('precincts', JSON.stringify(precincts_new_format))
 		precincts = precincts_new_format
+	if precincts[1]?.id
+		precincts_new_format = {}
+		for precinct, precinct of precincts
+			precincts_new_format[precinct.id] = [
+				precinct.id
+				precinct.lat
+				precinct.lng
+				precinct.number
+				precinct.violations
+			]
+		localStorage.setItem('precincts', JSON.stringify(precincts_new_format))
+		precincts = precincts_new_format
+	for i, precinct of precincts
+		precincts[i] =
+			id			: precinct[0]
+			lat			: precinct[1]
+			lng			: precinct[2]
+			number		: precinct[3]
+			violations	: precinct[4]
 	precincts
+window.cs.elections.set_precincts = (precincts) ->
+	for i, precinct of precincts
+		precincts[i] = [
+			precinct.id
+			precinct.lat
+			precinct.lng
+			precinct.number
+			precinct.violations
+		]
+	console.log precincts
+	localStorage.setItem('precincts', JSON.stringify(precincts))
 window.cs.elections.get_districts = (check) ->
 	districts			= localStorage.getItem('districts')
 	if check

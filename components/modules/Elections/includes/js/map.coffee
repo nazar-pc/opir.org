@@ -232,7 +232,7 @@ $ ->
 							number		: loaded_precincts.number[i]
 							violations	: loaded_precincts.violations[i]
 						}
-					localStorage.setItem('precincts', JSON.stringify(precincts))
+					cs.elections.set_precincts(precincts)
 					add_precincts_on_map()
 				error		: ->
 					console.error('Precincts loading error')
@@ -251,7 +251,7 @@ $ ->
 						if update
 							precincts[precinct].violations = violations_loaded.violations[i]
 					if update
-						localStorage.setItem('precincts', JSON.stringify(precincts))
+						cs.elections.set_precincts(precincts)
 						add_precincts_on_map()
 				error		: ->
 					console.error('Precincts loading error')

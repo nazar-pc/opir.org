@@ -146,7 +146,12 @@ $ ->
 				cs.elections.loading('hide')
 		)
 	# Hack to open last violations from the beginning
-	last_violations_button.click()
+	do ->
+		interval = setInterval (->
+			if cs.elections.get_precincts(true)
+				clearInterval(interval)
+				last_violations_button.click()
+		), 100
 	search_timeout		= 0
 	last_search_value	= ''
 	last_violations_search.keydown ->
@@ -194,4 +199,3 @@ $ ->
 		.scroll ->
 			if !data_loading && last_violations_panel[0].scrollHeight - last_violations_panel.outerHeight() - last_violations_panel.scrollTop() < 200
 				find_violations()
-	last_violations_panel.scroll()

@@ -138,7 +138,15 @@
         }
       });
     };
-    last_violations_button.click();
+    (function() {
+      var interval;
+      return interval = setInterval((function() {
+        if (cs.elections.get_precincts(true)) {
+          clearInterval(interval);
+          return last_violations_button.click();
+        }
+      }), 100);
+    })();
     search_timeout = 0;
     last_search_value = '';
     last_violations_search.keydown(function() {
@@ -161,7 +169,7 @@
         return find_violations();
       }), 300);
     });
-    last_violations_panel.on('click', 'img', function() {
+    return last_violations_panel.on('click', 'img', function() {
       return $("<div>\n	<div style=\"text-align: center; width: 90%;\">\n		" + this.outerHTML + "\n	</div>\n</div>").appendTo('body').cs().modal('show').click(function() {
         return $(this).hide();
       }).on('uk.modal.hide', function() {
@@ -174,7 +182,6 @@
         return find_violations();
       }
     });
-    return last_violations_panel.scroll();
   });
 
 }).call(this);
