@@ -194,7 +194,15 @@ $ ->
 			'click'
 			'article[data-id] h3 span'
 			->
-				cs.elections.open_precinct($(@).data('id'))
+				id = $(@).data('id')
+				cs.elections.open_precinct(id)
+				precinct = cs.elections.get_precincts()[id]
+				map.panTo([precinct.lat, precinct.lng]).then ->
+					map.zoomRange.get([precinct.lat, precinct.lng]).then (zoomRange) ->
+						map.setZoom(
+							zoomRange[1],
+							duration	: 500
+						)
 		)
 		.scroll ->
 			if !data_loading && last_violations_panel[0].scrollHeight - last_violations_panel.outerHeight() - last_violations_panel.scrollTop() < 200

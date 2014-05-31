@@ -176,7 +176,17 @@
         return $(this).remove();
       });
     }).on('click', 'article[data-id] h3 span', function() {
-      return cs.elections.open_precinct($(this).data('id'));
+      var id, precinct;
+      id = $(this).data('id');
+      cs.elections.open_precinct(id);
+      precinct = cs.elections.get_precincts()[id];
+      return map.panTo([precinct.lat, precinct.lng]).then(function() {
+        return map.zoomRange.get([precinct.lat, precinct.lng]).then(function(zoomRange) {
+          return map.setZoom(zoomRange[1], {
+            duration: 500
+          });
+        });
+      });
     }).scroll(function() {
       if (!data_loading && last_violations_panel[0].scrollHeight - last_violations_panel.outerHeight() - last_violations_panel.scrollTop() < 200) {
         return find_violations();
