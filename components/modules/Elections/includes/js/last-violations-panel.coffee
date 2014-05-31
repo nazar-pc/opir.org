@@ -102,7 +102,7 @@ $ ->
 							content += """<article data-id="#{violation.id}">
 								<h3>
 									#{time}
-									<span>""" + L.precint_number(precinct.number) + """</span> (#{L.district} #{districts[precinct.id]})
+									<span data-id="#{precinct.id}">""" + L.precint_number(precinct.number) + """</span> (#{L.district} #{districts[precinct.id]})
 								</h3>
 								<p>#{addresses[precinct.id]}</p>
 								#{text}
