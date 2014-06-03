@@ -43,8 +43,8 @@
             map_container.animate({
               left: '+=320'
             }, 'fast');
-            $('.cs-elections-switch-to-map').click();
           }
+          $('.cs-elections-switch-to-map').click();
           streams_container = $('.cs-elections-precinct-sidebar-streams');
           $.ajax({
             url: "api/Precincts/" + id + "/streams",
