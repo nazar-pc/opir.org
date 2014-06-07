@@ -7,16 +7,17 @@
  */
 
 .cs-elections-main-sidebar {
-	background : #363e45;
-	color      : #fff;
-	bottom     : 0;
-	font-size  : 16px;
-	overflow-x : hidden;
-	overflow-y : auto;
-	position   : absolute;
-	right      : 0;
-	top        : 75px;
-	width      : 320px;
+	background                 : #363e45;
+	color                      : #fff;
+	bottom                     : 0;
+	font-size                  : 16px;
+	overflow-x                 : hidden;
+	overflow-y                 : auto;
+	-webkit-overflow-scrolling : touch;
+	position                   : absolute;
+	right                      : 0;
+	top                        : 75px;
+	width                      : 320px;
 
 	.cs-elections-socials {
 		padding : 15px 12px;

@@ -7,17 +7,18 @@
  */
 
 .cs-elections-last-violations-panel {
-	background : #fff;
-	bottom     : 0;
-	display    : none;
-	left       : 0;
-	overflow-x : hidden;
-	overflow-y : auto;
-	padding    : 10px 20px;
-	position   : absolute;
-	right      : 320px;
-	top        : 75px;
-	z-index    : 2;
+	background                 : #fff;
+	bottom                     : 0;
+	display                    : none;
+	left                       : 0;
+	overflow-x                 : hidden;
+	overflow-y                 : auto;
+	-webkit-overflow-scrolling : touch;
+	padding                    : 10px 20px;
+	position                   : absolute;
+	right                      : 320px;
+	top                        : 75px;
+	z-index                    : 2;
 
 	&-search {
 		background    : #fff;

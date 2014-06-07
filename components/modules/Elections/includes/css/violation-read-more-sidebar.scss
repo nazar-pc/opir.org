@@ -7,15 +7,16 @@
  */
 
 .cs-elections-violation-read-more-sidebar {
-	background : #2a3036;
-	bottom     : 0;
-	font-size  : 16px;
-	left       : 320px;
-	overflow-x : hidden;
-	overflow-y : auto;
-	position   : absolute;
-	top        : 75px;
-	width      : 0;
+	background                 : #2a3036;
+	bottom                     : 0;
+	font-size                  : 16px;
+	left                       : 320px;
+	overflow-x                 : hidden;
+	overflow-y                 : auto;
+	-webkit-overflow-scrolling : touch;
+	position                   : absolute;
+	top                        : 75px;
+	width                      : 0;
 
 	&-close {
 		color     : #686c70;

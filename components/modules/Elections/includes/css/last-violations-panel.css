@@ -12,6 +12,7 @@
   left: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 10px 20px;
   position: absolute;
   right: 320px;

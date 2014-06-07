@@ -6,16 +6,17 @@
  * @license        MIT License, see license.txt
  */
 .cs-elections-precinct-sidebar {
-	background : #363e45;
-	color      : #fff;
-	bottom     : 0;
-	font-size  : 16px;
-	left       : 0;
-	overflow-x : hidden;
-	overflow-y : auto;
-	position   : absolute;
-	top        : 75px;
-	width      : 0;
+	background                 : #363e45;
+	color                      : #fff;
+	bottom                     : 0;
+	font-size                  : 16px;
+	left                       : 0;
+	overflow-x                 : hidden;
+	overflow-y                 : auto;
+	-webkit-overflow-scrolling : touch;
+	position                   : absolute;
+	top                        : 75px;
+	width                      : 0;
 
 	&-close {
 		color     : #686c70;
