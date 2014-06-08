@@ -26,6 +26,7 @@
     width: 300px; }
   .cs-elections-last-violations-panel section > article {
     border-bottom: 1px solid #eaeaea;
+    cursor: pointer;
     margin-bottom: 20px;
     padding-bottom: 10px;
     width: 280px; }
@@ -38,16 +39,21 @@
       .cs-elections-last-violations-panel section > article h3 + p {
         color: #a7a7a7;
         margin-top: 0; }
-    .cs-elections-last-violations-panel section > article p {
-      margin: 8px 0 0; }
+    .cs-elections-last-violations-panel section > article > p {
+      margin: 8px 0 0;
+      max-height: 82px;
+      overflow: hidden; }
     .cs-elections-last-violations-panel section > article iframe {
       height: 200px;
       margin-top: 8px;
       width: 100%; }
     .cs-elections-last-violations-panel section > article figure {
+      display: none;
       height: 200px;
       text-align: center;
       width: 280px; }
+      .cs-elections-last-violations-panel section > article figure:first-of-type {
+        display: block; }
       .cs-elections-last-violations-panel section > article figure img {
         cursor: pointer;
         margin-top: 8px;
@@ -55,3 +61,11 @@
         max-width: 100%; }
     .cs-elections-last-violations-panel section > article > :nth-last-child(2) {
       margin-bottom: 15px; }
+    .cs-elections-last-violations-panel section > article[data-expanded='1'] > p {
+      max-height: auto; }
+    .cs-elections-last-violations-panel section > article[data-expanded='1'] figure {
+      display: inline-block;
+      margin-right: 5px;
+      width: 270px; }
+    .cs-elections-last-violations-panel section > article .cs-elections-social-links {
+      display: block; }
