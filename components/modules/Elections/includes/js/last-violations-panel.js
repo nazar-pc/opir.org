@@ -92,7 +92,7 @@
                 precinct = precincts[violation.precinct];
                 time = new Date(violation.date * 1000);
                 time = (time.getHours() < 10 ? '0' + time.getHours() : time.getHours()) + ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes());
-                text = violation.text ? "<p class=\"text\">" + violation.text + "</p>" : '';
+                text = violation.text ? "<p>" + violation.text + "</p>" : '';
                 images = violation.images.length ? violation.images.map(function(image) {
                   return "<figure class=\"uk-vertical-align\"><img src=\"" + image + "\" alt=\"\" class=\"uk-vertical-align-middle\"></figure>";
                 }).join('') : '';
@@ -187,18 +187,6 @@
           });
         });
       });
-    }).on('click', 'article[data-id]', function(e) {
-      var article;
-      if ($(e.target).is('h3, span, img, iframe, div')) {
-        return;
-      }
-      article = $(this);
-      if (parseInt(article.attr('data-expanded'))) {
-        article.attr('data-expanded', 0);
-      } else {
-        article.attr('data-expanded', 1);
-      }
-      return last_violations_content.masonry('reloadItems').masonry('layout');
     }).scroll(function() {
       if (!data_loading && last_violations_panel[0].scrollHeight - last_violations_panel.outerHeight() - last_violations_panel.scrollTop() < 200) {
         return find_violations();

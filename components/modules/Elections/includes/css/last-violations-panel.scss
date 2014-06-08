@@ -29,11 +29,10 @@
 	}
 
 	section > article {
-		border-bottom      : 1px solid #eaeaea;
-		cursor             : pointer;
-		margin-bottom      : 20px;
-		padding-bottom     : 10px;
-		width              : 280px;
+		border-bottom  : 1px solid #eaeaea;
+		margin-bottom  : 20px;
+		padding-bottom : 10px;
+		width          : 280px;
 
 		h3 {
 			font-weight   : bold;
@@ -50,10 +49,8 @@
 			}
 		}
 
-		> p {
-			margin     : 8px 0 0;
-			max-height : 82px;
-			overflow   : hidden;
+		p {
+			margin : 8px 0 0;
 		}
 
 		iframe {
@@ -63,14 +60,9 @@
 		}
 
 		figure {
-			display    : none;
 			height     : 200px;
 			text-align : center;
 			width      : 280px;
-
-			&:first-of-type {
-				display : block;
-			}
 
 			img {
 				cursor     : pointer;
@@ -82,16 +74,6 @@
 
 		> :nth-last-child(2) {
 			margin-bottom : 15px;
-		}
-
-		&[data-expanded='1'] {
-			> p {
-				max-height : none;
-			}
-
-			figure {
-				display      : block;
-			}
 		}
 	}
 }

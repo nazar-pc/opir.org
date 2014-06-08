@@ -83,7 +83,7 @@ $ ->
 								(if time.getHours() < 10 then '0' + time.getHours() else time.getHours()) + ':' + (if time.getMinutes() < 10 then '0' + time.getMinutes() else time.getMinutes())
 							text =
 								if violation.text
-									"""<p class="text">#{violation.text}</p>"""
+									"<p>#{violation.text}</p>"
 								else
 									''
 							images =
@@ -203,23 +203,6 @@ $ ->
 							zoomRange[1],
 							duration	: 500
 						)
-		)
-		.on(
-			'click'
-			'article[data-id]'
-			(e) ->
-				if $(e.target).is('h3, span, img, iframe, div')
-					return
-				article = $(@)
-				if parseInt(article.attr('data-expanded'))
-					article
-						.attr('data-expanded', 0)
-						#.width(article.width() / 2)
-				else
-					article
-						.attr('data-expanded', 1)
-						#.width(article.width() * 2)
-				last_violations_content.masonry('reloadItems').masonry('layout')
 		)
 		.scroll ->
 			if !data_loading && last_violations_panel[0].scrollHeight - last_violations_panel.outerHeight() - last_violations_panel.scrollTop() < 200
