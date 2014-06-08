@@ -194,9 +194,9 @@
       }
       article = $(this);
       if (parseInt(article.attr('data-expanded'))) {
-        article.attr('data-expanded', 0).width(article.width() / 2);
+        article.attr('data-expanded', 0);
       } else {
-        article.attr('data-expanded', 1).width(article.width() * 2);
+        article.attr('data-expanded', 1);
       }
       return last_violations_content.masonry('reloadItems').masonry('layout');
     }).scroll(function() {

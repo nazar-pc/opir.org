@@ -86,18 +86,12 @@
 
 		&[data-expanded='1'] {
 			> p {
-				max-height : auto;
+				max-height : none;
 			}
 
 			figure {
-				display      : inline-block;
-				margin-right : 5px;
-				width        : 270px;
+				display      : block;
 			}
-		}
-
-		.cs-elections-social-links {
-			display : block;
 		}
 	}
 }

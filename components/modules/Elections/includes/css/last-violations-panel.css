@@ -62,10 +62,6 @@
     .cs-elections-last-violations-panel section > article > :nth-last-child(2) {
       margin-bottom: 15px; }
     .cs-elections-last-violations-panel section > article[data-expanded='1'] > p {
-      max-height: auto; }
+      max-height: none; }
     .cs-elections-last-violations-panel section > article[data-expanded='1'] figure {
-      display: inline-block;
-      margin-right: 5px;
-      width: 270px; }
-    .cs-elections-last-violations-panel section > article .cs-elections-social-links {
       display: block; }

@@ -214,11 +214,11 @@ $ ->
 				if parseInt(article.attr('data-expanded'))
 					article
 						.attr('data-expanded', 0)
-						.width(article.width() / 2)
+						#.width(article.width() / 2)
 				else
 					article
 						.attr('data-expanded', 1)
-						.width(article.width() * 2)
+						#.width(article.width() * 2)
 				last_violations_content.masonry('reloadItems').masonry('layout')
 		)
 		.scroll ->
