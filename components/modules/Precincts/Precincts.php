@@ -224,18 +224,41 @@ class Precincts {
 			$coordinates = _float($coordinates);
 			$order       = "ORDER BY SQRT(POW(`lat` - $coordinates[0], 2) + POW(`lng` - $coordinates[0], 2)) ASC";
 		}
+		$where  = [];
+		$params = [];
+		if (is_numeric($text)) {
+			/**
+			 * Search for precinct number
+			 */
+			if (strlen($text) > 3 || (int)$text > 225) {
+				$where[]  = "`number` LIKE '%s%%'";
+				$params[] = $text;
+			} else {
+				$where[]  = "`district` = '%s'";
+				$params[] = $text;
+			}
+		} else {
+			$where[]  = "MATCH (`address`) AGAINST ('%s' IN BOOLEAN MODE) > 0";
+			$params[] = '+'.implode(
+				_trim(explode(
+					' ',
+					trim($text)
+				)),
+				'* +'
+			).'*';
+		}
+		if ($where) {
+			$where = 'WHERE '.implode(' AND ', $where);
+		} else {
+			$where = '';
+		}
 		return $this->db()->qfas([
 			"SELECT `id`
 			FROM `$this->table`
-			WHERE
-				`number`	= '%s' OR
-				`district`	= '%s' OR
-				`address`	LIKE '%s'
+			$where
 			$order
 			LIMIT $limit",
-			$text,
-			$text,
-			"%$text%"
+			$params
 		]);
 	}
 	/**

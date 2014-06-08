@@ -27,7 +27,7 @@
       return precints_search_timeout = setTimeout((function() {
         var value;
         value = $this.val();
-        if (value.length < 3) {
+        if (value.length < 3 && value != parseInt(value)) {
           precincts_search_results.html('');
           return;
         }
@@ -43,16 +43,20 @@
           type: 'get',
           success: function(precincts) {
             var content, precinct;
-            last_search_value = value;
-            content = '';
-            for (precinct in precincts) {
-              precinct = precincts[precinct];
-              content += ("<article data-id=\"" + precinct.id + "\">\n<h3>") + L.precint_number(precinct.number) + ("</h3>\n	<p>" + precinct.address + "</p>\n</article>");
+            if (precincts.length) {
+              last_search_value = value;
+              content = '';
+              for (precinct in precincts) {
+                precinct = precincts[precinct];
+                content += ("<article data-id=\"" + precinct.id + "\">\n<h3>") + L.precint_number(precinct.number) + ("</h3>\n	<p>" + precinct.address + "</p>\n</article>");
+              }
+              return precincts_search_results.html(content);
+            } else {
+              return precincts_search_results.html("<article>" + L.no_precincts_found + "</article>");
             }
-            return precincts_search_results.html(content);
           },
           error: function() {
-            return precincts_search_results.html(L.no_precincts_found);
+            return precincts_search_results.html("<article>" + L.no_precincts_found + "</article>");
           }
         });
       }), 300);

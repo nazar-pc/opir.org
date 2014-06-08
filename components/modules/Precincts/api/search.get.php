@@ -13,12 +13,12 @@ use
 
 $Page      = Page::instance();
 $Precincts = Precincts::instance();
-if (!isset($_GET['text']) || mb_strlen($_GET['text']) < 3) {
+if (!isset($_GET['text'])) {
 	error_code(400);
 	return;
 }
 $Page->json(
 	$Precincts->get(
 		$Precincts->search($_GET['text'], isset($_GET['coordinates']) ? $_GET['coordinates'] : false)
-	)
+	) ?: []
 );

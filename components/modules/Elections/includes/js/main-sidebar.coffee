@@ -18,7 +18,7 @@ $ ->
 		clearTimeout(precints_search_timeout)
 		precints_search_timeout = setTimeout (->
 			value = $this.val()
-			if value.length < 3
+			if value.length < 3 && `value != parseInt(value)`
 				precincts_search_results.html('')
 				return
 			if value == last_search_value
@@ -30,16 +30,19 @@ $ ->
 					coordinates: JSON.parse(localStorage.getItem('coordinates'))
 				type   : 'get'
 				success: (precincts) ->
-					last_search_value = value
-					content = ''
-					for precinct, precinct of precincts
-						content += """<article data-id="#{precinct.id}">
-							<h3>""" + L.precint_number(precinct.number) + """</h3>
-							<p>#{precinct.address}</p>
-						</article>"""
-					precincts_search_results.html(content)
+					if precincts.length
+						last_search_value = value
+						content = ''
+						for precinct, precinct of precincts
+							content += """<article data-id="#{precinct.id}">
+								<h3>""" + L.precint_number(precinct.number) + """</h3>
+								<p>#{precinct.address}</p>
+							</article>"""
+						precincts_search_results.html(content)
+					else
+						precincts_search_results.html("""<article>#{L.no_precincts_found}</article>""")
 				error  : ->
-					precincts_search_results.html(L.no_precincts_found)
+					precincts_search_results.html("""<article>#{L.no_precincts_found}</article>""")
 			)
 		), 300
 	show_timeout			= 0
