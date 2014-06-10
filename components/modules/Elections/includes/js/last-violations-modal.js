@@ -41,13 +41,14 @@
           });
         });
       }).on('click', '.prev, .next', function() {
-        var opened_article;
-        opened_article = last_violations_panel.find("article[data-id=" + id + "]");
         if ($(this).is('.prev')) {
-          return opened_article.prev().click();
+          article = article.prev();
         } else {
-          return opened_article.next().click();
+          article = article.next();
         }
+        id = article.data('id');
+        title = L.violation_number(id);
+        return modal.find('article').data('id', id).html("<header>\n	<a class=\"uk-modal-close uk-close\"></a>\n	<nav>\n		<a class=\"uk-icon-chevron-left prev\"></a>\n		" + title + "\n		<a class=\"uk-icon-chevron-right next\"></a></nav>\n</header>\n" + article[0].innerHTML);
       });
     });
   });

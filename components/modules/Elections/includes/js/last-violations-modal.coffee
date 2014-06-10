@@ -57,10 +57,23 @@ $ ->
 						'click'
 						'.prev, .next'
 						->
-							opened_article = last_violations_panel.find("article[data-id=#{id}]")
 							if $(@).is('.prev')
-								opened_article.prev().click()
+								article = article.prev()
 							else
-								opened_article.next().click()
+								article = article.next()
+							id		= article.data('id')
+							title	= L.violation_number(id)
+							modal.find('article')
+								.data('id', id)
+								.html("""
+									<header>
+										<a class="uk-modal-close uk-close"></a>
+										<nav>
+											<a class="uk-icon-chevron-left prev"></a>
+											#{title}
+											<a class="uk-icon-chevron-right next"></a></nav>
+									</header>
+									#{article[0].innerHTML}
+								""")
 					)
 		)
