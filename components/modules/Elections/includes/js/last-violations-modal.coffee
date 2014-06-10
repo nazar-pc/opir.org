@@ -58,9 +58,12 @@ $ ->
 						'.prev, .next'
 						->
 							if $(@).is('.prev')
-								article = article.prev()
+								new_article = article.prev()
 							else
-								article = article.next()
+								new_article = article.next()
+							if !new_article.length
+								return
+							article = new_article
 							id		= article.data('id')
 							title	= L.violation_number(id)
 							modal.find('article')

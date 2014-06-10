@@ -41,11 +41,16 @@
           });
         });
       }).on('click', '.prev, .next', function() {
+        var new_article;
         if ($(this).is('.prev')) {
-          article = article.prev();
+          new_article = article.prev();
         } else {
-          article = article.next();
+          new_article = article.next();
         }
+        if (!new_article.length) {
+          return;
+        }
+        article = new_article;
         id = article.data('id');
         title = L.violation_number(id);
         return modal.find('article').data('id', id).html("<header>\n	<a class=\"uk-modal-close uk-close\"></a>\n	<nav>\n		<a class=\"uk-icon-chevron-left prev\"></a>\n		" + title + "\n		<a class=\"uk-icon-chevron-right next\"></a></nav>\n</header>\n" + article[0].innerHTML);
