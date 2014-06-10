@@ -1,0 +1,81 @@
+/**
+ * @package        Elections
+ * @category       modules
+ * @author         Nazar Mokrynskyi <nazar@mokrynskyi.com>
+ * @copyright      Copyright (c) 2014, Nazar Mokrynskyi
+ * @license        MIT License, see license.txt
+ */
+
+.cs-elections-last-violations-modal article {
+	border-radius : 0;
+	padding       : 20px;
+
+	header {
+		background : #0072c7;
+		color      : #fff;
+		margin     : -20px -20px 10px;
+		padding    : 10px;
+		text-align : center;
+
+		a {
+			color     : #fff;
+			cursor    : pointer;
+			font-size : 20px;
+			opacity   : .3;
+			padding   : 5px;
+		}
+
+		.uk-close {
+			position : absolute;
+			right    : 10px;
+			top      : 10px;
+		}
+	}
+
+	h3 {
+		font-weight   : bold;
+		margin-bottom : 0;
+
+		span {
+			color  : #0072c7;
+			cursor : pointer;
+		}
+
+		& + p {
+			color      : #a7a7a7;
+			margin-top : 0;
+		}
+	}
+
+	> p {
+		margin     : 8px 0 0;
+		max-height : 82px;
+		overflow   : hidden;
+	}
+
+	iframe {
+		display : block;
+		height  : 350px;
+		margin  : 8px auto 0;
+		width   : 500px;
+	}
+
+	figure {
+		display    : block;
+		height     : 350px;
+		margin     : 0 auto;
+		text-align : center;
+		width      : 500px;
+
+		img {
+			cursor     : pointer;
+			margin-top : 8px;
+			max-height : 350px;
+			max-width  : 100%;
+		}
+	}
+
+	> :nth-last-child(2) {
+		margin-bottom : 15px;
+	}
+}

@@ -27,5 +27,6 @@
 	"stream"                         : "Stream",
 	"youtube_or_ustream_stream_link" : "Link to video on youtube or ustream",
 	"thank_you_for_your_stream"      : "Thank you for your stream!",
-	"application_not_approved_yet"   : "Our application is not approved in Google Play yet, but you can install it from apk file from the link below"
+	"application_not_approved_yet"   : "Our application is not approved in Google Play yet, but you can install it from apk file from the link below",
+	"violation_number"               : "Message #%s"
 }

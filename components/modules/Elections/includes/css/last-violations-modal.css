@@ -1,0 +1,57 @@
+/**
+ * @package        Elections
+ * @category       modules
+ * @author         Nazar Mokrynskyi <nazar@mokrynskyi.com>
+ * @copyright      Copyright (c) 2014, Nazar Mokrynskyi
+ * @license        MIT License, see license.txt
+ */
+.cs-elections-last-violations-modal article {
+  border-radius: 0;
+  padding: 20px; }
+  .cs-elections-last-violations-modal article header {
+    background: #0072c7;
+    color: #fff;
+    margin: -20px -20px 10px;
+    padding: 10px;
+    text-align: center; }
+    .cs-elections-last-violations-modal article header a {
+      color: #fff;
+      cursor: pointer;
+      font-size: 20px;
+      opacity: .3;
+      padding: 5px; }
+    .cs-elections-last-violations-modal article header .uk-close {
+      position: absolute;
+      right: 10px;
+      top: 10px; }
+  .cs-elections-last-violations-modal article h3 {
+    font-weight: bold;
+    margin-bottom: 0; }
+    .cs-elections-last-violations-modal article h3 span {
+      color: #0072c7;
+      cursor: pointer; }
+    .cs-elections-last-violations-modal article h3 + p {
+      color: #a7a7a7;
+      margin-top: 0; }
+  .cs-elections-last-violations-modal article > p {
+    margin: 8px 0 0;
+    max-height: 82px;
+    overflow: hidden; }
+  .cs-elections-last-violations-modal article iframe {
+    display: block;
+    height: 350px;
+    margin: 8px auto 0;
+    width: 500px; }
+  .cs-elections-last-violations-modal article figure {
+    display: block;
+    height: 350px;
+    margin: 0 auto;
+    text-align: center;
+    width: 500px; }
+    .cs-elections-last-violations-modal article figure img {
+      cursor: pointer;
+      margin-top: 8px;
+      max-height: 350px;
+      max-width: 100%; }
+  .cs-elections-last-violations-modal article > :nth-last-child(2) {
+    margin-bottom: 15px; }

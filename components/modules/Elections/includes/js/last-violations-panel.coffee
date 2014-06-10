@@ -13,9 +13,10 @@ $ ->
 	last_violations_panel	= $('.cs-elections-last-violations-panel')
 	last_violations_content	= last_violations_panel.children('section')
 		.masonry(
-			columnWidth		: 280
-			gutter			: 20
-			itemSelector	: 'article'
+			columnWidth			: 280
+			gutter				: 20
+			itemSelector		: 'article'
+			transitionDuration	: 0
 		)
 	last_violations_search	= $('.cs-elections-last-violations-panel-search')
 	L						= cs.Language
@@ -31,9 +32,10 @@ $ ->
 							.html('')
 							.masonry('destroy')
 							.masonry(
-								columnWidth		: 280
-								gutter			: 20
-								itemSelector	: 'article'
+								columnWidth			: 280
+								gutter				: 20
+								itemSelector		: 'article'
+								transitionDuration	: 0
 							)
 				)
 			return
@@ -166,9 +168,10 @@ $ ->
 				.masonry('destroy')
 				.html('')
 				.masonry(
-					columnWidth		: 280
-					gutter			: 20
-					itemSelector	: 'article'
+					columnWidth			: 280
+					gutter				: 20
+					itemSelector		: 'article'
+					transitionDuration	: 0
 				)
 			data_loading = false
 			find_violations()

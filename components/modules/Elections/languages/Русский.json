@@ -27,5 +27,6 @@
 	"stream"                         : "Стрим",
 	"youtube_or_ustream_stream_link" : "Ссылка на стрим на youtube или ustream",
 	"thank_you_for_your_stream"      : "Спасибо вам за ваш стрим!",
-	"application_not_approved_yet"   : "Наше приложение ещё не утверждено в Google Play, но вы можете установить его из apk файла по ссылке ниже"
+	"application_not_approved_yet"   : "Наше приложение ещё не утверждено в Google Play, но вы можете установить его из apk файла по ссылке ниже",
+	"violation_number"               : "Сообщение №%s"
 }

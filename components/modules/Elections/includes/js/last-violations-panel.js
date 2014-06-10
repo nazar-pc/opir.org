@@ -21,7 +21,8 @@
     last_violations_content = last_violations_panel.children('section').masonry({
       columnWidth: 280,
       gutter: 20,
-      itemSelector: 'article'
+      itemSelector: 'article',
+      transitionDuration: 0
     });
     last_violations_search = $('.cs-elections-last-violations-panel-search');
     L = cs.Language;
@@ -33,7 +34,8 @@
           return last_violations_content.html('').masonry('destroy').masonry({
             columnWidth: 280,
             gutter: 20,
-            itemSelector: 'article'
+            itemSelector: 'article',
+            transitionDuration: 0
           });
         });
         return;
@@ -163,7 +165,8 @@
         last_violations_content.masonry('destroy').html('').masonry({
           columnWidth: 280,
           gutter: 20,
-          itemSelector: 'article'
+          itemSelector: 'article',
+          transitionDuration: 0
         });
         data_loading = false;
         return find_violations();
