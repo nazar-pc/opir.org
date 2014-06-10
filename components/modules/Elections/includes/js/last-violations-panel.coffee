@@ -18,7 +18,6 @@ $ ->
 			itemSelector		: 'article'
 			transitionDuration	: 0
 		)
-	last_violations_search	= $('.cs-elections-last-violations-panel-search')
 	L						= cs.Language
 	data_loading			= false
 	last_violations_button.click ->
@@ -53,9 +52,8 @@ $ ->
 		last_id      = last_violations_content.children('article:last').data('id') || 0
 		last_violations_content.children('p').remove()
 		cs.elections.loading('show')
-		search = last_violations_search.val()
 		$.ajax(
-			url		: "api/Violations?number=20&last_id=#{last_id}&search=" + (if search.length < 3 then '' else search)
+			url		: "api/Violations?number=20&last_id=#{last_id}"
 			type	: 'get'
 			data	: null
 			success	: (violations) ->
@@ -154,28 +152,6 @@ $ ->
 				clearInterval(interval)
 				last_violations_button.click()
 		), 100
-	search_timeout		= 0
-	last_search_value	= ''
-	last_violations_search.keydown ->
-		$this = $(@)
-		clearTimeout(search_timeout)
-		search_timeout = setTimeout (->
-			value = $this.val()
-			if value == last_search_value || (value.length < 3 && last_search_value.length < 3)
-				return
-			last_search_value = value
-			last_violations_content
-				.masonry('destroy')
-				.html('')
-				.masonry(
-					columnWidth			: 280
-					gutter				: 20
-					itemSelector		: 'article'
-					transitionDuration	: 0
-				)
-			data_loading = false
-			find_violations()
-		), 300
 	last_violations_panel
 		.on(
 			'click'
