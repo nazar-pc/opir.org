@@ -63,21 +63,24 @@ $Page->content(
 		h::{'section.cs-elections-precincts-search-results[level=0]'}().
 		h::h2($L->mobile_apps).
 		h::{'div.cs-elections-mobile-apps'}(
-			h::a(
+/*			h::a(
 				$L->download_in('App Store'),
 				[
 					'onclick' => "$.cs.simple_modal('$L->soon')"
 				]
-			).
-			h::{'a.google-play'}(
-				$L->download_in('Google Play')
-			).
+			).*/
+			h::{'a[target=_blank]'}(
+				$L->download_in('Google Play'),
+				[
+					'href'	=> 'https://play.google.com/store/apps/details?id=example.yariksoffice'
+				]
+			)/*.
 			h::a(
 				$L->download_in('Market Place'),
 				[
 					'onclick' => "$.cs.simple_modal('$L->soon')"
 				]
-			)
+			)*/
 		).
 		h::h2($L->contacts).
 		h::{'div.cs-elections-contacts'}(
