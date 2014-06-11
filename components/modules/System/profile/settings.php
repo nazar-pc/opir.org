@@ -67,17 +67,19 @@ $Index->action	= path($L->profile).'/'.path($L->settings);
 switch (isset($Config->route[2]) ? $Config->route[2] : '') {
 	default:
 		$Index->content(
-			h::{'a.cs-button'}(
-				$L->general,
-				[
-					'href'	=> "$Index->action/".path($L->general)
-				]
-			).
-			h::{'a.cs-button'}(
-				$L->change_password,
-				[
-					'href'	=> "$Index->action/".path($L->change_password)
-				]
+			h::p(
+				h::{'a.cs-button'}(
+					$L->general,
+					[
+						'href'	=> "$Index->action/".path($L->general)
+					]
+				).
+				h::{'a.cs-button'}(
+					$L->change_password,
+					[
+						'href'	=> "$Index->action/".path($L->change_password)
+					]
+				)
 			)
 		);
 		Trigger::instance()->run('System/profile/settings');
