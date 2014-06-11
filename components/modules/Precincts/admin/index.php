@@ -74,9 +74,35 @@ if (isset($_POST['update'])) {
 	unset($regions, $region);
 	time_limit_pause(false);
 }
+if (isset($_POST['update_districts'])) {
+	time_limit_pause();
+	$Precincts = Precincts::instance();
+	$regions   = file_get_contents('http://www.cvk.gov.ua/vp2014/wp055pt001f01=702kodvib=702.html');
+	/**
+	 * Find regions id
+	 */
+	preg_match_all('/wp056pt001f01=702pid100=([0-9]+)kodvib=702.html/Uims', $regions, $regions);
+	$regions = $regions[1];
+	$regions = array_slice($regions, 1);
+	foreach ($regions as $region) {
+		$districts = file_get_contents("http://www.cvk.gov.ua/vp2014/wp056pt001f01=702pid100={$region}kodvib=702.html");
+		preg_match_all('/№([0-9]+)<\/A><br>(.*) тел./Uims', iconv('windows-1251', 'utf-8', $districts), $districts);
+		foreach ($districts[1] as $i => $district) {
+			$address  = $districts[2][$i];
+			$location = _json_decode(file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($address).'&sensor=false'));
+			if ($location['status'] == 'OK') {
+				$location = $location['results'][0]['geometry']['location'];
+				call_user_func_array([$Precincts, 'add'], [$district, $address, $location['lat'], $location['lng'], 0]);
+			}
+		}
+		unset($districts, $district, $address, $location);
+	}
+	unset($regions, $region);
+}
 $Index          = Index::instance();
 $Index->buttons = false;
 $Index->content(
-	h::{'button[type=submit][name=update]'}('Оновити список дільниць з офіційного сайту виборів')
+	h::{'button[type=submit][name=update]'}('Оновити список дільниць з офіційного сайту виборів').
+	h::{'button[type=submit][name=update_districts]'}('Оновити список округів з офіційного сайту виборів')
 );
 Page::instance()->warning('Оновлення призведе до видалення дільниць, дані пов’язані з ними буде втрачено');

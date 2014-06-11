@@ -11,7 +11,7 @@ namespace cs\modules\Precincts;
 use cs\Page;
 
 $Page      = Page::instance();
-$districts = Precincts::instance()->group_by_district();
+$districts = Precincts::instance()->get_districts();
 if (isset($_GET['fields'])) {
 	$fields   = array_intersect(explode(',', $_GET['fields']), ['district', 'count', 'lat', 'lng', 'violations']);
 	$fields[] = 'district';

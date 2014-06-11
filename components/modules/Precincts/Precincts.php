@@ -186,23 +186,33 @@ class Precincts {
 		}
 		return false;
 	}
-	function group_by_district () {
+	function get_districts () {
 		return $this->cache->get('all/group_by_district', function () {
 			$districts = $this->db()->qfa(
 				"SELECT
 					`district`,
 					COUNT(`id`) AS `count`,
-					AVG(`lat`) AS `lat`,
-					AVG(`lng`) AS `lng`,
 					SUM(`violations`) AS `violations`
 				FROM `$this->table`
 				GROUP BY `district`"
 			);
+			$locations = $this->db()->qf(
+				"SELECT
+					`number`,
+					`lat`,
+					 `lng`
+				FROM `$this->table`
+				WHERE `district` = 0
+				LIMIT 1"
+			);
+			$lats = array_column($locations, 'lat', 'number');
+			$lngs = array_column($locations, 'lng', 'number');
+			unset($locations);
 			foreach ($districts as &$d) {
 				$d['district']   = (int)$d['district'];
 				$d['count']      = (int)$d['count'];
-				$d['lat']        = (float)$d['lat'];
-				$d['lng']        = (float)$d['lng'];
+				$d['lat']        = (float)$lats[$d['district']];
+				$d['lng']        = (float)$lngs[$d['district']];
 				$d['violations'] = (int)$d['violations'];
 			}
 			unset($d);

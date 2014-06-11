@@ -160,7 +160,7 @@
         districts_clusterer.removeAll();
         return districts_clusterer.add(placemarks);
       };
-      if (!cs.elections.get_districts(true)) {
+      if (!cs.elections.get_districts(true) || localStorage('districts_version') !== '1') {
         $.ajax({
           url: 'api/Districts',
           type: 'get',
@@ -173,6 +173,7 @@
               districts[district.district] = district;
             }
             localStorage.setItem('districts', JSON.stringify(districts));
+            localStorage('districts_version', '1');
             return add_districts_on_map();
           },
           error: function() {
