@@ -194,29 +194,33 @@ class Precincts {
 					COUNT(`id`) AS `count`,
 					SUM(`violations`) AS `violations`
 				FROM `$this->table`
+				WHERE `district` > 0
 				GROUP BY `district`"
 			);
-			$locations = $this->db()->qf(
+			$locations = $this->db()->qfa(
 				"SELECT
 					`number`,
 					`lat`,
-					 `lng`
+					`lng`
 				FROM `$this->table`
-				WHERE `district` = 0
-				LIMIT 1"
+				WHERE `district` = 0"
 			);
 			$lats = array_column($locations, 'lat', 'number');
 			$lngs = array_column($locations, 'lng', 'number');
 			unset($locations);
-			foreach ($districts as &$d) {
+			foreach ($districts as $i => &$d) {
+				if (!isset($lats[$d['district']])) {
+					unset($districts[$i]);
+					continue;
+				}
 				$d['district']   = (int)$d['district'];
 				$d['count']      = (int)$d['count'];
 				$d['lat']        = (float)$lats[$d['district']];
 				$d['lng']        = (float)$lngs[$d['district']];
 				$d['violations'] = (int)$d['violations'];
 			}
-			unset($d);
-			return $districts;
+			unset($i, $d);
+			return array_values($districts);
 		});
 	}
 	/**

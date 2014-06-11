@@ -43,7 +43,7 @@
       }
     });
     return begin = function() {
-      var add_districts_on_map, add_precincts_on_map, cluster_icons, districts_clusterer, districts_icons_shape, filter_precincts, precincts_clusterer, precincts_icons_shape;
+      var add_districts_on_map, add_precincts_on_map, cluster_icons, districts_clusterer, districts_icons_shape, districts_precincts_icons_shape, filter_precincts, precincts_clusterer, precincts_icons_shape;
       window.map = new ymaps.Map('map', {
         center: user_location,
         zoom: 15,
@@ -95,6 +95,7 @@
         });
       })();
       districts_icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[0 - 40, 32 - 41], [11 - 40, 11 - 41], [31 - 40, 0 - 41], [47 - 40, 0 - 41], [68 - 40, 11 - 41], [79 - 40, 32 - 41], [78 - 40, 49 - 41], [67 - 40, 67 - 41], [52 - 40, 77 - 41], [31 - 40, 78 - 41], [11 - 40, 67 - 41], [0 - 40, 48 - 41], [0 - 40, 32 - 41]]]));
+      districts_precincts_icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[22 - 40, 53 - 41], [4 - 40, 35 - 41], [1 - 40, 29 - 41], [0 - 40, 25 - 41], [0 - 40, 18 - 41], [5 - 40, 8 - 41], [12 - 40, 2 - 41], [21 - 40, 0 - 41], [30 - 40, 1 - 41], [38 - 40, 7 - 41], [44 - 40, 16 - 41], [45 - 40, 27 - 41], [41 - 40, 35 - 41], [22 - 40, 53 - 41]]]));
       precincts_icons_shape = new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([[[15 - 15, 37 - 36], [1 - 15, 22 - 36], [0 - 15, 16 - 36], [1 - 15, 10 - 36], [5 - 15, 5 - 36], [11 - 15, 1 - 36], [19 - 15, 1 - 36], [26 - 15, 5 - 36], [31 - 15, 14 - 36], [30 - 15, 22 - 36], [15 - 15, 37 - 36]]]));
       filter_precincts = function(precincts) {
         var bounds, lat, lng, precinct, result;
@@ -111,28 +112,44 @@
         return result;
       };
       add_precincts_on_map = function() {
-        var placemarks, precinct, _fn, _ref;
+        var placemark, placemarks, precinct, _fn, _ref;
         placemarks = [];
         _ref = filter_precincts(cs.elections.get_precincts());
         _fn = function(id) {
-          return placemarks[placemarks.length - 1].events.add('click', function() {
+          return placemark.events.add('click', function() {
             return cs.elections.open_precinct(id);
           });
         };
         for (precinct in _ref) {
           precinct = _ref[precinct];
-          placemarks.push(new ymaps.Placemark([precinct.lat, precinct.lng], {
-            hintContent: L.precint_number(precinct.number),
-            balloonContentHeader: L.precint_number(precinct.number)
-          }, {
-            iconLayout: 'default#image',
-            iconImageHref: '/components/modules/Elections/includes/img/map-precincts.png',
-            iconImageSize: [38, 37],
-            iconImageOffset: [-15, -36],
-            iconImageClipRect: [[38 * (precinct.violations ? 1 : 0), 0], [38 * ((precinct.violations ? 1 : 0) + 1), 37]],
-            iconImageShape: precincts_icons_shape
-          }));
+          if (precinct.number > 1000) {
+            placemark = new ymaps.Placemark([precinct.lat, precinct.lng], {
+              hintContent: L.precint_number(precinct.number),
+              balloonContentHeader: L.precint_number(precinct.number)
+            }, {
+              iconLayout: 'default#image',
+              iconImageHref: '/components/modules/Elections/includes/img/map-precincts.png',
+              iconImageSize: [38, 37],
+              iconImageOffset: [-15, -36],
+              iconImageClipRect: [[38 * (precinct.violations ? 1 : 0), 0], [38 * ((precinct.violations ? 1 : 0) + 1), 37]],
+              iconImageShape: precincts_icons_shape
+            });
+            placemarks.push(placemark);
+          } else {
+            placemark = new ymaps.Placemark([precinct.lat, precinct.lng], {
+              hintContent: L.precint_number(precinct.number),
+              balloonContentHeader: L.precint_number(precinct.number)
+            }, {
+              iconLayout: 'default#image',
+              iconImageHref: '/components/modules/Elections/includes/img/map-districts-precincts.png',
+              iconImageSize: [56, 53],
+              iconImageOffset: [-23, -52],
+              iconImageClipRect: [[56 * (precinct.violations ? 1 : 0), 0], [56 * ((precinct.violations ? 1 : 0) + 1), 53]],
+              iconImageShape: districts_precincts_icons_shape
+            });
+          }
           _fn(precinct.id);
+          placemarks.push(placemark);
         }
         precincts_clusterer.removeAll();
         precincts_clusterer.add(placemarks);
@@ -160,7 +177,7 @@
         districts_clusterer.removeAll();
         return districts_clusterer.add(placemarks);
       };
-      if (!cs.elections.get_districts(true) || localStorage('districts_version') !== '1') {
+      if (!cs.elections.get_districts(true) || localStorage.getItem('districts_version') !== '1') {
         $.ajax({
           url: 'api/Districts',
           type: 'get',
@@ -173,7 +190,7 @@
               districts[district.district] = district;
             }
             localStorage.setItem('districts', JSON.stringify(districts));
-            localStorage('districts_version', '1');
+            localStorage.setItem('districts_version', '1');
             return add_districts_on_map();
           },
           error: function() {
@@ -207,7 +224,7 @@
           }
         });
       }
-      if (!cs.elections.get_precincts(true)) {
+      if (!cs.elections.get_precincts(true) || localStorage.getItem('precincts_version') !== '1') {
         $.ajax({
           url: 'api/Precincts?flat',
           type: 'get',
@@ -227,6 +244,7 @@
               };
             }
             cs.elections.set_precincts(precincts);
+            localStorage.setItem('precincts_version', '1');
             return add_precincts_on_map();
           },
           error: function() {

@@ -47,7 +47,6 @@ window.cs.elections.set_precincts = (precincts) ->
 			precinct.number
 			precinct.violations
 		]
-	console.log precincts
 	localStorage.setItem('precincts', JSON.stringify(precincts))
 window.cs.elections.get_districts = (check) ->
 	districts			= localStorage.getItem('districts')

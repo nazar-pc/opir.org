@@ -100,6 +100,24 @@ $ ->
 				[0-40, 32-41]
 			]
 		]))
+		districts_precincts_icons_shape	= new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([
+			[
+				[22-40, 53-41],
+				[4-40, 35-41],
+				[1-40, 29-41],
+				[0-40, 25-41],
+				[0-40, 18-41],
+				[5-40, 8-41],
+				[12-40, 2-41],
+				[21-40, 0-41],
+				[30-40, 1-41],
+				[38-40, 7-41],
+				[44-40, 16-41],
+				[45-40, 27-41],
+				[41-40, 35-41],
+				[22-40, 53-41]
+			]
+		]))
 		precincts_icons_shape	= new ymaps.shape.Polygon(new ymaps.geometry.pixel.Polygon([
 			[
 				[15-15, 37-36],
@@ -130,8 +148,8 @@ $ ->
 		add_precincts_on_map	= ->
 			placemarks	= []
 			for precinct, precinct of filter_precincts(cs.elections.get_precincts())
-				placemarks.push(
-					new ymaps.Placemark(
+				if precinct.number > 1000
+					placemark = new ymaps.Placemark(
 						[precinct.lat, precinct.lng]
 						{
 							hintContent				: L.precint_number(precinct.number)
@@ -149,11 +167,31 @@ $ ->
 							iconImageShape		: precincts_icons_shape
 						}
 					)
-				)
+					placemarks.push(placemark)
+				else
+					placemark = new ymaps.Placemark(
+						[precinct.lat, precinct.lng]
+						{
+							hintContent				: L.precint_number(precinct.number)
+							balloonContentHeader	: L.precint_number(precinct.number)
+						}
+						{
+							iconLayout			: 'default#image'
+							iconImageHref		: '/components/modules/Elections/includes/img/map-districts-precincts.png'
+							iconImageSize		: [56, 53]
+							iconImageOffset		: [-23, -52]
+							iconImageClipRect	: [
+								[56 * (if precinct.violations then 1 else 0), 0],
+								[56 * ((if precinct.violations then 1 else 0) + 1), 53]
+							]
+							iconImageShape		: districts_precincts_icons_shape
+						}
+					)
 				do (id = precinct.id) ->
-					placemarks[placemarks.length - 1].events.add('click', ->
+					placemark.events.add('click', ->
 						cs.elections.open_precinct(id)
 					)
+				placemarks.push(placemark)
 			precincts_clusterer.removeAll()
 			precincts_clusterer.add(placemarks)
 			cs.elections.loading('hide')
@@ -184,7 +222,7 @@ $ ->
 				)
 			districts_clusterer.removeAll()
 			districts_clusterer.add(placemarks)
-		if !cs.elections.get_districts(true) || localStorage('districts_version') != '1'
+		if !cs.elections.get_districts(true) || localStorage.getItem('districts_version') != '1'
 			$.ajax(
 				url			: 'api/Districts'
 				type		: 'get'
@@ -194,7 +232,7 @@ $ ->
 					for district in loaded_districts
 						districts[district.district] = district
 					localStorage.setItem('districts', JSON.stringify(districts))
-					localStorage('districts_version', '1')
+					localStorage.setItem('districts_version', '1')
 					add_districts_on_map()
 				error		: ->
 					console.error('Districts loading error')
@@ -218,7 +256,7 @@ $ ->
 				error		: ->
 					console.error('Districts loading error')
 			)
-		if !cs.elections.get_precincts(true)
+		if !cs.elections.get_precincts(true) || localStorage.getItem('precincts_version') != '1'
 			$.ajax(
 				url			: 'api/Precincts?flat'
 				type		: 'get'
@@ -234,6 +272,7 @@ $ ->
 							violations	: loaded_precincts.violations[i]
 						}
 					cs.elections.set_precincts(precincts)
+					localStorage.setItem('precincts_version', '1')
 					add_precincts_on_map()
 				error		: ->
 					console.error('Precincts loading error')

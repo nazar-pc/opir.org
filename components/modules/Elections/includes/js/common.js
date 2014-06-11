@@ -57,7 +57,6 @@
       precinct = precincts[i];
       precincts[i] = [precinct.id, precinct.lat, precinct.lng, precinct.number, precinct.violations];
     }
-    console.log(precincts);
     return localStorage.setItem('precincts', JSON.stringify(precincts));
   };
 
