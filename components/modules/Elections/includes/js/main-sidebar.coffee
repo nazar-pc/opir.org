@@ -35,7 +35,7 @@ $ ->
 						content = ''
 						for precinct, precinct of precincts
 							content += """<article data-id="#{precinct.id}">
-								<h3>""" + L.precint_number(precinct.number) + """</h3>
+								<h3>""" + L[if precinct.number.length > 3 then 'precint_number' else 'district_precint_number'](precinct.number) + """</h3>
 								<p>#{precinct.address}</p>
 							</article>"""
 						precincts_search_results.html(content)

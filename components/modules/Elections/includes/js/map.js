@@ -122,7 +122,7 @@
         };
         for (precinct in _ref) {
           precinct = _ref[precinct];
-          if (precinct.number > 1000) {
+          if (precinct.number.length > 3) {
             placemark = new ymaps.Placemark([precinct.lat, precinct.lng], {
               hintContent: L.precint_number(precinct.number),
               balloonContentHeader: L.precint_number(precinct.number)
@@ -137,8 +137,8 @@
             placemarks.push(placemark);
           } else {
             placemark = new ymaps.Placemark([precinct.lat, precinct.lng], {
-              hintContent: L.precint_number(precinct.number),
-              balloonContentHeader: L.precint_number(precinct.number)
+              hintContent: L.district_precint_number(precinct.number),
+              balloonContentHeader: L.district_precint_number(precinct.number)
             }, {
               iconLayout: 'default#image',
               iconImageHref: '/components/modules/Elections/includes/img/map-districts-precincts.png',

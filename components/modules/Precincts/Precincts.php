@@ -233,10 +233,10 @@ class Precincts {
 	 * @return array|bool
 	 */
 	function search ($text, $coordinates = false, $limit = 20) {
-		$order = 'ORDER BY `id` ASC';
+		$order = 'ORDER BY `district` = 0 DESC, `id` ASC';
 		if ($coordinates && isset($coordinates[0], $coordinates[1])) {
 			$coordinates = _float($coordinates);
-			$order       = "ORDER BY SQRT(POW(`lat` - $coordinates[0], 2) + POW(`lng` - $coordinates[0], 2)) ASC";
+			$order       = "ORDER BY `district` = 0 DESC, SQRT(POW(`lat` - $coordinates[0], 2) + POW(`lng` - $coordinates[0], 2)) ASC";
 		}
 		$where  = [];
 		$params = [];

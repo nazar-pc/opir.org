@@ -11,6 +11,7 @@
 	"soon"                           : "Скоро",
 	"no_precincts_found"             : "Участков не найдено",
 	"precint_number"                 : "Участок №%s",
+	"district_precint_number"        : "Окружной участок №%s",
 	"video_stream"                   : "Видео стрим",
 	"violations"                     : "Сообщения",
 	"add_violation"                  : "Добавить сообщение",

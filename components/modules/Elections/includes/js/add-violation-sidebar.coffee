@@ -64,16 +64,18 @@ $ ->
 						coordinates: JSON.parse(localStorage.getItem('coordinates'))
 					type   : 'get'
 					success: (precincts) ->
-						last_search_value = value
-						content = ''
-						for precinct, precinct of precincts
-							content += """<article data-id="#{precinct.id}">
-								<h3>""" + L.precint_number(precinct.number) + """</h3>
-								<p>#{precinct.address}</p>
-							</article>"""
-						precincts_search_results.html(content)
+						if precincts.length
+							last_search_value = value
+							content = ''
+							for precinct, precinct of precincts
+								content += """<article data-id="#{precinct.id}">
+									<h3>""" + L[if precinct.number.length > 3 then 'precint_number' else 'district_precint_number'](precinct.number) + """</h3>
+									<p>#{precinct.address}</p>
+								</article>"""
+						else
+							precincts_search_results.html("""<article>#{L.no_precincts_found}</article>""")
 					error  : ->
-						precincts_search_results.html(L.no_precincts_found)
+						precincts_search_results.html("""<article>#{L.no_precincts_found}</article>""")
 				)
 			), 300
 		precincts_search_results.on(

@@ -102,7 +102,8 @@ $ ->
 							content += """<article data-id="#{violation.id}">
 								<h3>
 									#{time}
-									<span data-id="#{precinct.id}">""" + L.precint_number(precinct.number) + """</span> (#{L.district} #{districts[precinct.id]})
+									<span data-id="#{precinct.id}">""" + L[if precinct.number.length > 3 then 'precint_number' else 'district_precint_number'](precinct.number) + """</span>
+									""" + (if precinct.number.length > 3 then " (#{L.district} #{districts[precinct.id]})" else '') + """
 								</h3>
 								<p>#{addresses[precinct.id]}</p>
 								#{text}

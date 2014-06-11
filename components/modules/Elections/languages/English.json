@@ -11,6 +11,7 @@
 	"soon"                           : "Soon",
 	"no_precincts_found"             : "No precincts found",
 	"precint_number"                 : "Precinct #%s",
+	"district_precint_number"        : "District precinct #%s",
 	"video_stream"                   : "Video stream",
 	"violations"                     : "Messages",
 	"add_violation"                  : "Add message",

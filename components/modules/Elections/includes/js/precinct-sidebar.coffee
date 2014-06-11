@@ -34,8 +34,8 @@ $ ->
 				precinct_sidebar
 					.html("""
 						<i class="cs-elections-precinct-sidebar-close uk-icon-times"></i>
-						<h2>""" + L.precint_number(precinct.number) + """</h2>
-						<p>#{L.district} #{precinct.district}</p>
+						<h2>""" + L[if precinct.number.length > 3 then 'precint_number' else 'district_precint_number'](precinct.number) + """</h2>
+						""" + (if precinct.number.length > 3 then "<p>#{L.district} #{precinct.district}</p>" else '') + """
 						<p class="cs-elections-precinct-sidebar-address">
 							<i class="uk-icon-location-arrow"></i>
 							<span>#{precinct.address}</span>

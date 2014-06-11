@@ -148,7 +148,7 @@ $ ->
 		add_precincts_on_map	= ->
 			placemarks	= []
 			for precinct, precinct of filter_precincts(cs.elections.get_precincts())
-				if precinct.number > 1000
+				if precinct.number.length > 3
 					placemark = new ymaps.Placemark(
 						[precinct.lat, precinct.lng]
 						{
@@ -172,8 +172,8 @@ $ ->
 					placemark = new ymaps.Placemark(
 						[precinct.lat, precinct.lng]
 						{
-							hintContent				: L.precint_number(precinct.number)
-							balloonContentHeader	: L.precint_number(precinct.number)
+							hintContent				: L.district_precint_number(precinct.number)
+							balloonContentHeader	: L.district_precint_number(precinct.number)
 						}
 						{
 							iconLayout			: 'default#image'

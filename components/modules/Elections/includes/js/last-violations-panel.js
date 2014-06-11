@@ -97,7 +97,7 @@
                   return "<figure class=\"uk-vertical-align\"><img src=\"" + image + "\" alt=\"\" class=\"uk-vertical-align-middle\"></figure>";
                 }).join('') : '';
                 video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
-                content += ("<article data-id=\"" + violation.id + "\">\n<h3>\n	" + time + "\n	<span data-id=\"" + precinct.id + "\">") + L.precint_number(precinct.number) + ("</span> (" + L.district + " " + districts[precinct.id] + ")\n	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n	<div class=\"cs-elections-social-links\" data-violation=\"" + violation.id + "\">\n		<a class=\"fb uk-icon-facebook\"></a>\n		<a class=\"vk uk-icon-vk\"></a>\n		<a class=\"tw uk-icon-twitter\"></a>\n	</div>\n</article>");
+                content += ("<article data-id=\"" + violation.id + "\">\n<h3>\n	" + time + "\n	<span data-id=\"" + precinct.id + "\">") + L[precinct.number.length > 3 ? 'precint_number' : 'district_precint_number'](precinct.number) + "</span>" + (precinct.number.length > 3 ? " (" + L.district + " " + districts[precinct.id] + ")" : '') + ("	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n	<div class=\"cs-elections-social-links\" data-violation=\"" + violation.id + "\">\n		<a class=\"fb uk-icon-facebook\"></a>\n		<a class=\"vk uk-icon-vk\"></a>\n		<a class=\"tw uk-icon-twitter\"></a>\n	</div>\n</article>");
               }
               if (content) {
                 (function() {

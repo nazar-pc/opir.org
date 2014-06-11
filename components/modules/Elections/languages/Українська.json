@@ -11,6 +11,7 @@
 	"soon"                           : "Скоро",
 	"no_precincts_found"             : "Дільниць не знайдено",
 	"precint_number"                 : "Дільниця №%s",
+	"district_precint_number"        : "Окружна дільниця №%s",
 	"video_stream"                   : "Відео стрім",
 	"violations"                     : "Повідомлення",
 	"add_violation"                  : "Додати повідомлення",

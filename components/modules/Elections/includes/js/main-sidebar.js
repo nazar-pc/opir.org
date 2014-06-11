@@ -48,7 +48,7 @@
               content = '';
               for (precinct in precincts) {
                 precinct = precincts[precinct];
-                content += ("<article data-id=\"" + precinct.id + "\">\n<h3>") + L.precint_number(precinct.number) + ("</h3>\n	<p>" + precinct.address + "</p>\n</article>");
+                content += ("<article data-id=\"" + precinct.id + "\">\n<h3>") + L[precinct.number.length > 3 ? 'precint_number' : 'district_precint_number'](precinct.number) + ("</h3>\n	<p>" + precinct.address + "</p>\n</article>");
               }
               return precincts_search_results.html(content);
             } else {
