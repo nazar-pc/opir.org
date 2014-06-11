@@ -8,6 +8,7 @@
 	"map_legend"                     : "Обозначения на карте",
 	"precincts_with_violations"      : " - Есть сообщения с участка",
 	"precincts_without_violations"   : " - Участок без сообщений",
+	"district_precincts"             : " - Окружные участки",
 	"soon"                           : "Скоро",
 	"no_precincts_found"             : "Участков не найдено",
 	"precint_number"                 : "Участок №%s",

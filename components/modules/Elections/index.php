@@ -94,7 +94,8 @@ $Page->content(
 		h::h2($L->map_legend).
 		h::{'div.cs-elections-map-legend'}(
 			h::div($L->precincts_with_violations).
-			h::div($L->precincts_without_violations)
+			h::div($L->precincts_without_violations).
+			h::div($L->district_precincts)
 		)
 	)
 );

@@ -115,5 +115,7 @@
         width: 31px; }
       .cs-elections-main-sidebar .cs-elections-map-legend div:nth-child(1):before {
         background-position: -31px 0; }
+      .cs-elections-main-sidebar .cs-elections-map-legend div:nth-child(3):before {
+        background-position: -62px 0; }
   .cs-elections-main-sidebar > :last-child {
     margin-bottom: 20px; }

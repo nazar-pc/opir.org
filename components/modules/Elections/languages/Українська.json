@@ -8,6 +8,7 @@
 	"map_legend"                     : "Позначення на карті",
 	"precincts_with_violations"      : " - Є повідомлення з дільниці",
 	"precincts_without_violations"   : " - Дільниця без повідомлень",
+	"district_precincts"             : " - Окружні дільниці",
 	"soon"                           : "Скоро",
 	"no_precincts_found"             : "Дільниць не знайдено",
 	"precint_number"                 : "Дільниця №%s",
