@@ -10,7 +10,7 @@
 	"precincts_without_violations"   : " - Precincts without messages",
 	"district_precincts"             : " - District precincts",
 	"soon"                           : "Soon",
-	"no_precincts_found"             : "No precincts found",
+	"no_precincts_found"             : "No precincts found, if you've typed address - try it in Ukrainian",
 	"precint_number"                 : "Precinct #%s",
 	"district_precint_number"        : "District precinct #%s",
 	"video_stream"                   : "Video stream",

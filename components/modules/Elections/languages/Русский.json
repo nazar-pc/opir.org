@@ -10,7 +10,7 @@
 	"precincts_without_violations"   : " - Участок без сообщений",
 	"district_precincts"             : " - Окружные участки",
 	"soon"                           : "Скоро",
-	"no_precincts_found"             : "Участков не найдено",
+	"no_precincts_found"             : "Участков не найдено, если вы искали по адресу - попробуйте по-Украински",
 	"precint_number"                 : "Участок №%s",
 	"district_precint_number"        : "Окружной участок №%s",
 	"video_stream"                   : "Видео стрим",
