@@ -10,7 +10,7 @@
 	"precincts_without_violations"   : " - Дільниця без повідомлень",
 	"district_precincts"             : " - Окружні дільниці",
 	"soon"                           : "Скоро",
-	"no_precincts_found"             : "Дільниць не знайдено",
+	"no_precincts_found"             : "Дільниць не знайдено, якщо ви шукаєте за адресою - спробуйте Українською",
 	"precint_number"                 : "Дільниця №%s",
 	"district_precint_number"        : "Окружна дільниця №%s",
 	"video_stream"                   : "Відео стрім",
