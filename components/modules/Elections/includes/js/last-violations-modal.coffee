@@ -32,6 +32,10 @@ $ ->
 									<a class="uk-icon-chevron-right next"></a></nav>
 							</header>
 							#{article[0].innerHTML}
+							<div class="cs-elections-violation-feedback" data-id="#{id}">
+								<button class="not-true">#{L.not_true}</button>
+								<button class="confirm">#{L.confirm_violation}</button>
+							</div>
 						</article>
 					</section>
 				""")
