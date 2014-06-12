@@ -99,10 +99,45 @@ if (isset($_POST['update_districts'])) {
 	}
 	unset($regions, $region);
 }
+if (isset($_POST['update_addresses'])) {
+	time_limit_pause();
+	$Precincts     = Precincts::instance();
+	$all_precincts = $Precincts->get_all();
+	$cdb           = $Precincts->db_prime();
+	foreach ($all_precincts as $p) {
+		if ($cdb->qfs("SELECT `address_en` FROM `[prefix]precincts` WHERE `id` = $p")) {
+			continue;
+		}
+		$p          = $Precincts->get($p);
+		$en_address = _json_decode(file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($p['address']).'&sensor=false&language=en'));
+		if ($en_address['status'] == 'OK') {
+			$cdb->q(
+				"UPDATE `[prefix]precincts`
+				SET `address_en` = '%s'
+				WHERE `id` = '%s'",
+				$en_address['results'][0]['formatted_address'],
+				$p['id']
+			);
+		}
+		unset($en_address);
+		$ru_address = _json_decode(file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($p['address']).'&sensor=false&language=ru'));
+		if ($ru_address['status'] == 'OK') {
+			$cdb->q(
+				"UPDATE `[prefix]precincts`
+				SET `address_ru` = '%s'
+				WHERE `id` = '%s'",
+				$ru_address['results'][0]['formatted_address'],
+				$p['id']
+			);
+		}
+		unset($ru_address);
+	}
+}
 $Index          = Index::instance();
 $Index->buttons = false;
 $Index->content(
 	h::{'button[type=submit][name=update]'}('Оновити список дільниць з офіційного сайту виборів').
-	h::{'button[type=submit][name=update_districts]'}('Оновити список округів з офіційного сайту виборів')
+	h::{'button[type=submit][name=update_districts]'}('Оновити список округів з офіційного сайту виборів').
+	h::{'button[type=submit][name=update_addresses]'}('Уточнити адреси дільниць російською та англійською')
 );
 Page::instance()->warning('Оновлення призведе до видалення дільниць, дані пов’язані з ними буде втрачено');

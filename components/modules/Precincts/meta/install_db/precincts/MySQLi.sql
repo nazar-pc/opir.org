@@ -1,7 +1,9 @@
 CREATE TABLE IF NOT EXISTS `[prefix]precincts` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	`number` varchar(10) NOT NULL,
-	`address` text NOT NULL,
+	`address_uk` text NOT NULL,
+	`address_en` text NOT NULL,
+	`address_ru` text NOT NULL,
 	`lat` float NOT NULL,
 	`lng` float NOT NULL,
 	`district` int(10) unsigned NOT NULL,
@@ -10,7 +12,9 @@ CREATE TABLE IF NOT EXISTS `[prefix]precincts` (
 	KEY `number` (`number`),
 	KEY `district` (`district`),
 	KEY `violations` (`violations`),
-	FULLTEXT KEY `address` (`address`)
+	FULLTEXT KEY `address` (`address_uk`),
+	FULLTEXT KEY `address` (`address_en`),
+	FULLTEXT KEY `address` (`address_ru`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `[prefix]precincts_streams` (

@@ -20,7 +20,7 @@ $Index->title_auto = false;
 $L                 = Language::instance();
 $Page              = Page::instance();
 if (isset($Index->route_path[0], $Index->route_ids[1]) && $Index->route_path[0] == 'violation') {
-	$violation         = Violations::instance()->get($Index->route_ids[1]);
+	$violation = Violations::instance()->get($Index->route_ids[1]);
 	if ($violation['images']) {
 		$Page->replace('/<meta content="[^"]*share.png" property="og:image">/Uims', '');
 		$Page->replace('/<link href="[^"]*share.png" rel="image_src">/Uims', '');
@@ -69,7 +69,7 @@ $Page->content(
 			h::{'a[target=_blank]'}(
 				$L->download_in('Google Play'),
 				[
-					'href'	=> 'https://play.google.com/store/apps/details?id=example.yariksoffice'
+					'href' => 'https://play.google.com/store/apps/details?id=example.yariksoffice'
 				]
 			)/*.
 			h::a(

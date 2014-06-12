@@ -31,7 +31,9 @@ class Precincts {
 	protected $data_model = [
 		'id'         => 'int',
 		'number'     => 'int',
-		'address'    => 'string',
+		'address_uk' => 'string',
+		'address_en' => 'string',
+		'address_ru' => 'string',
 		'lat'        => 'float',
 		'lng'        => 'float',
 		'district'   => 'int',
@@ -58,6 +60,8 @@ class Precincts {
 	function add ($number, $address, $lat, $lng, $district) {
 		$id = $this->create_simple([
 			$number,
+			$address,
+			$address,
 			$address,
 			$lat,
 			$lng,
@@ -86,43 +90,23 @@ class Precincts {
 		}
 		$clang = Language::instance()->clang;
 		return $this->cache->get("$id/$clang", function () use ($id, $clang) {
-			$data               = $this->read_simple($id);
+			$data = $this->read_simple($id);
 			if (!$data) {
 				return false;
 			}
-			$data['id']         = (int)$data['id'];
-			$data['lat']        = (float)$data['lat'];
-			$data['lng']        = (float)$data['lng'];
+			$data['id']      = (int)$data['id'];
+			$data['lat']     = (float)$data['lat'];
+			$data['lng']     = (float)$data['lng'];
+			$data['address'] = $data["address_$clang"];
+			unset(
+				$data['address_uk'],
+				$data['address_en'],
+				$data['address_ru']
+			);
 			$data['district']   = (int)$data['district'];
 			$data['violations'] = (int)$data['violations'];
-			if ($clang == 'en') {
-				$data['address'] = $this->translit($data['address']);
-			}
 			return $data;
 		});
-	}
-	protected function translit ($string) {
-		$string = str_replace(
-			[
-				'а', 'б', 'в', 'г', 'д', 'е', 'з', 'и', 'і', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ь', 'А', 'Б', 'В', 'Г', 'Д', 'Е',
-				'З', 'И', 'І', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Ь'
-			],
-			[
-				'a', 'b', 'v', 'g', 'd', 'e', 'z', 'y', 'i', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', "'", 'A', 'B', 'V', 'G', 'D', 'E',
-				'Z', 'Y', 'I', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', "'"
-			],
-			$string
-		);
-		$string = str_replace(
-			[
-				'ж', 'Ж', 'ц', 'Ц', 'ч', 'Ч', 'ш', 'Ш', 'щ', 'Щ', 'ю', 'Ю', 'я', 'Я', 'ї', 'Ї', 'є', 'Є', 'Ye', 'Х'
-			],
-			[
-				'zh', 'Zh', 'ts', 'Ts', 'ch', 'CH', 'sh', 'Sh', 'shch', 'Shch', 'yu', 'Yu', 'ya', 'Ya', 'i', 'Yi', 'ie', 'Ye', 'Kh'
-			],
-			$string
-		);
-		return $string;
 	}
 	/**
 	 * Get array of id of all precincts
@@ -205,8 +189,8 @@ class Precincts {
 				FROM `$this->table`
 				WHERE `district` = 0"
 			);
-			$lats = array_column($locations, 'lat', 'number');
-			$lngs = array_column($locations, 'lng', 'number');
+			$lats      = array_column($locations, 'lat', 'number');
+			$lngs      = array_column($locations, 'lng', 'number');
 			unset($locations);
 			foreach ($districts as $i => &$d) {
 				if (!isset($lats[$d['district']])) {
@@ -252,14 +236,22 @@ class Precincts {
 				$params[] = $text;
 			}
 		} else {
-			$where[]  = "MATCH (`address`) AGAINST ('%s' IN BOOLEAN MODE) > 0";
-			$params[] = '+'.implode(
-				_trim(explode(
-					' ',
-					trim($text)
-				)),
-				'* +'
-			).'*';
+			$where[]  = "(
+				MATCH (`address_uk`) AGAINST ('%s' IN BOOLEAN MODE) > 0 OR
+				MATCH (`address_en`) AGAINST ('%s' IN BOOLEAN MODE) > 0 OR
+				MATCH (`address_ru`) AGAINST ('%s' IN BOOLEAN MODE) > 0
+			)";
+			$s        =
+				'+'.implode(
+					_trim(explode(
+						' ',
+						trim($text)
+					)),
+					'* +'
+				).'*';
+			$params[] = $s;
+			$params[] = $s;
+			$params[] = $s;
 		}
 		if ($where) {
 			$where = 'WHERE '.implode(' AND ', $where);
