@@ -1,6 +1,9 @@
-[
-	"precincts",
-	"streams",
-	"violations",
-	"search"
-]
+{
+	"precincts"  : [],
+	"streams"    : [],
+	"violations" : [
+		"all",
+		"feedback"
+	],
+	"search"     : []
+}

@@ -21,4 +21,7 @@ if (
 	)
 ) {
 	array_unshift($Index->route_path, 'precincts');
+} elseif ($Index->route_path[0] == 'violations' && !isset($Index->route_path[1])) {
+	array_push($Index->route_path, 'all');
 }
+

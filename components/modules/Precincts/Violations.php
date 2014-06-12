@@ -44,7 +44,7 @@ class Violations {
 		'date'     => 'int',
 		'text'     => 'text',
 		'images'   => null, //Set in constructor, array of strings
-		'video'    => 'string', //TODO: check for allowed services, probably youtube only
+		'video'    => 'string',
 		'status'   => 'int'
 	];
 
@@ -85,7 +85,7 @@ class Violations {
 	 *
 	 * @return bool|int
 	 */
-	function add ($precinct, $user, $text, $images, $video) { //TODO: add tags to files
+	function add ($precinct, $user, $text, $images, $video) {
 		$precinct = (int)$precinct;
 		$id       = $this->create_simple([
 			$precinct,
@@ -235,6 +235,27 @@ class Violations {
 	function decline ($id) {
 		$data           = $this->get($id);
 		$data['status'] = self::STATUS_DECLINED;
+		if ($this->update_simple($data)) {
+			Precincts::instance()->update_violations($data['precinct']);
+			unset(
+				$this->cache->$id,
+				$this->cache->{"all_for_precincts/$data[precinct]"},
+				$this->precincts_cache->all
+			);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * Send violation to moderation
+	 *
+	 * @param int $id
+	 *
+	 * @return bool
+	 */
+	function to_moderation ($id) {
+		$data           = $this->get($id);
+		$data['status'] = self::STATUS_ADDED;
 		if ($this->update_simple($data)) {
 			Precincts::instance()->update_violations($data['precinct']);
 			unset(
