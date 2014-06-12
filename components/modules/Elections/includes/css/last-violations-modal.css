@@ -7,7 +7,8 @@
  */
 .cs-elections-last-violations-modal article {
   border-radius: 0;
-  padding: 20px; }
+  padding: 20px;
+  width: 700px; }
   .cs-elections-last-violations-modal article header {
     background: #0072c7;
     color: #fff;
@@ -59,5 +60,5 @@
     bottom: 15px;
     padding: 0;
     position: absolute;
-    right: 10px;
+    right: 20px;
     text-align: center; }
