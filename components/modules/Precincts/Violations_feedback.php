@@ -24,9 +24,9 @@ class Violations_feedback {
 
 	protected $table      = '[prefix]precincts_violations_feedback';
 	protected $data_model = [
-		'id'   => 'int',
-		'user' => 'int',
-		'int'  => 'set:-1,1'
+		'id'    => 'int',
+		'user'  => 'int',
+		'value' => 'set:-1,1'
 	];
 
 	protected function cdb () {
@@ -46,8 +46,7 @@ class Violations_feedback {
 			$id,
 			$user,
 			$value
-		])
-		) {
+		])) {
 			$feedback_sum = $this->db()->qfs(
 				"SELECT SUM(`value`)
 				FROM `$this->table`
@@ -56,6 +55,7 @@ class Violations_feedback {
 			if ($feedback_sum < 0 && $feedback_sum % 5 == 0) {
 				Violations::instance()->to_moderation($id);
 			}
+			return true;
 		}
 		return false;
 	}

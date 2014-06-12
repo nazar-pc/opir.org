@@ -12,6 +12,7 @@ $ ->
 	map_container				= $('#map')
 	precinct_sidebar			= $('.cs-elections-precinct-sidebar')
 	violation_read_more_sidebar	= $('.cs-elections-violation-read-more-sidebar')
+	L							= cs.Language
 	precinct_sidebar
 		.on(
 			'click'
@@ -43,6 +44,10 @@ $ ->
 						#{text}
 						#{images}
 						#{video}
+						<div class="cs-elections-violation-feedback" data-id="#{violation.id}">
+							<button class="not-true">#{L.not_true}</button>
+							<button class="confirm">#{L.confirm_violation}</button>
+						</div>
 					""")
 					.animate(
 						width	: 320

@@ -1,0 +1,38 @@
+/**
+ * @package        Elections
+ * @category       modules
+ * @author         Nazar Mokrynskyi <nazar@mokrynskyi.com>
+ * @copyright      Copyright (c) 2014, Nazar Mokrynskyi
+ * @license        MIT License, see license.txt
+ */
+
+.cs-elections-violation-feedback {
+	padding    : 15px;
+	text-align : center;
+
+	button {
+		background : #ff5b52;
+		border     : none;
+		color      : #fff;
+		font-size  : 18px;
+		margin     : 5px;
+		padding    : 7px;
+
+		&:nth-of-type(2) {
+			background : #0072c7;
+		}
+
+		&:hover,
+		&:focus {
+			background : #eb554d;
+			color      : #fff;
+		}
+
+		&:nth-of-type(2):hover,
+		&:nth-of-type(2):focus {
+			background : #0069ba;
+			color      : #fff;
+		}
+
+	}
+}

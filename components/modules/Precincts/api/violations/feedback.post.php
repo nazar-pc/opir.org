@@ -23,6 +23,6 @@ if (!isset($Index->route_ids[0]) || !in_array($_POST['value'], [-1, 1])) {
 	error_code(400);
 	return;
 }
-if (!Violations_feedback::instance()->add($Index->route_ids[0], $User->id, $_POST['value'])) {
+if (Violations_feedback::instance()->add($Index->route_ids[0], $User->id, $_POST['value'])) {
 	Page::instance()->json('ok');
 }
