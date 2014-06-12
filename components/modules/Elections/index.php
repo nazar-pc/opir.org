@@ -10,6 +10,7 @@ namespace cs\modules\Precincts;
 
 use
 	h,
+	cs\Core,
 	cs\Index,
 	cs\Language,
 	cs\Page,
@@ -40,6 +41,10 @@ if (isset($Index->route_path[0], $Index->route_ids[1]) && $Index->route_path[0] 
 $Page->Header .=
 	h::{'button.cs-elections-add-violation'}($L->add_violation).
 	h::{'button.cs-elections-last-violations'}();
+$Page->js(
+	"window.disqus_shortname = '".Core::instance()->disqus_shortname."';",
+	'code'
+);
 $Page->content(
 	h::{'div.cs-elections-last-violations-panel'}(
 		h::h2($L->last_violations).

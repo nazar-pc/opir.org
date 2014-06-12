@@ -21,6 +21,7 @@
 		"violation-feedback.js",
 		"common.js",
 		"masonry-3.1.5.min.js",
-		"social-share.js"
+		"social-share.js",
+		"disqus.js"
 	]
 }

@@ -36,6 +36,7 @@ $ ->
 								<button class="not-true">#{L.not_true}</button>
 								<button class="confirm">#{L.confirm_violation}</button>
 							</div>
+							<div id="disqus_thread"></div>
 						</article>
 					</section>
 				""")
@@ -81,6 +82,13 @@ $ ->
 											<a class="uk-icon-chevron-right next"></a></nav>
 									</header>
 									#{article[0].innerHTML}
+									<div class="cs-elections-violation-feedback" data-id="#{id}">
+										<button class="not-true">#{L.not_true}</button>
+										<button class="confirm">#{L.confirm_violation}</button>
+									</div>
+									<div id="disqus_thread"></div>
 								""")
+							init_disqus('violation/' + id)
 					)
+				init_disqus('violation/' + id)
 		)
