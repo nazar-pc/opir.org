@@ -97,7 +97,7 @@ class Precincts {
 			$data['id']      = (int)$data['id'];
 			$data['lat']     = (float)$data['lat'];
 			$data['lng']     = (float)$data['lng'];
-			$data['address'] = $data["address_$clang"];
+			$data['address'] = $data["address_$clang"] ?: $data['address_uk'];
 			unset(
 				$data['address_uk'],
 				$data['address_en'],
