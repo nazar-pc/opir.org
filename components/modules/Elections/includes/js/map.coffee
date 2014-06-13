@@ -172,8 +172,8 @@ $ ->
 					placemark = new ymaps.Placemark(
 						[precinct.lat, precinct.lng]
 						{
-							hintContent				: L.district_precint_number(precinct.number)
-							balloonContentHeader	: L.district_precint_number(precinct.number)
+							hintContent				: if precinct.number == '0' then L.cec else L.district_precint_number(precinct.number)
+							balloonContentHeader	: if precinct.number == '0' then L.cec else L.district_precint_number(precinct.number)
 						}
 						{
 							iconLayout			: 'default#image'
@@ -256,7 +256,7 @@ $ ->
 				error		: ->
 					console.error('Districts loading error')
 			)
-		if !cs.elections.get_precincts(true) || localStorage.getItem('precincts_version') != '1'
+		if !cs.elections.get_precincts(true) || localStorage.getItem('precincts_version') != '2'
 			$.ajax(
 				url			: 'api/Precincts?flat'
 				type		: 'get'
@@ -272,7 +272,7 @@ $ ->
 							violations	: loaded_precincts.violations[i]
 						}
 					cs.elections.set_precincts(precincts)
-					localStorage.setItem('precincts_version', '1')
+					localStorage.setItem('precincts_version', '2')
 					add_precincts_on_map()
 				error		: ->
 					console.error('Precincts loading error')

@@ -34,5 +34,6 @@
 	"not_true"                          : "Ложь",
 	"confirm_violation"                 : "Подтверить сообщение",
 	"looks_like_feedback_already_given" : "Похоже что вы уже давали обратную связь по этому сообщению",
-	"thank_you_for_feedback"            : "Спасибо за обратную связь!"
+	"thank_you_for_feedback"            : "Спасибо за обратную связь!",
+	"cec"                               : "Центральная Избирательная Комиссия"
 }

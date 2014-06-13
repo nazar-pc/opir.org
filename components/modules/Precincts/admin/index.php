@@ -98,6 +98,9 @@ if (isset($_POST['update_districts'])) {
 		unset($districts, $district, $address, $location);
 	}
 	unset($regions, $region);
+	$Precincts->db_prime()->q(
+		"INSERT INTO `[prefix]precincts` (`id`, `number`, `address_uk`, `address_en`, `address_ru`, `lat`, `lng`, `district`, `violations`) VALUES (NULL, '0', '01196, м.Київ, площа Лесі Українки, 1, 2-й поверх, хол прес-центру ЦВК', '1196, Kyiv, Lesi Ukrainky square 1, 2nd Floor, Hall Press Center CEC', '01196, г.Киев, площадь Леси Украинки, 1, 2-й этаж, холл пресс-центра ЦИК', '50.428073', '30.541399', '0', '0')"
+	);
 }
 if (isset($_POST['update_addresses'])) {
 	time_limit_pause();

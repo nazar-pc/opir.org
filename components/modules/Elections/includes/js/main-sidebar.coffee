@@ -37,8 +37,15 @@ $ ->
 						last_search_value = value
 						content = ''
 						for precinct, precinct of precincts
+							title =
+								if precinct.number == '0'
+									L.cec
+								else if precinct.number.length > 3
+									L.district_precint_number(precinct.number)
+								else
+									L.district_number(precinct.number)
 							content += """<article data-id="#{precinct.id}">
-								<h3>""" + L[if precinct.number.length > 3 then 'precint_number' else 'district_precint_number'](precinct.number) + """</h3>
+								<h3>#{title}</h3>
 								<p>#{precinct.address}</p>
 							</article>"""
 						precincts_search_results.html(content)

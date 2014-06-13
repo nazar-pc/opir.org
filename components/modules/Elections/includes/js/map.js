@@ -137,8 +137,8 @@
             placemarks.push(placemark);
           } else {
             placemark = new ymaps.Placemark([precinct.lat, precinct.lng], {
-              hintContent: L.district_precint_number(precinct.number),
-              balloonContentHeader: L.district_precint_number(precinct.number)
+              hintContent: precinct.number === '0' ? L.cec : L.district_precint_number(precinct.number),
+              balloonContentHeader: precinct.number === '0' ? L.cec : L.district_precint_number(precinct.number)
             }, {
               iconLayout: 'default#image',
               iconImageHref: '/components/modules/Elections/includes/img/map-districts-precincts.png',
@@ -224,7 +224,7 @@
           }
         });
       }
-      if (!cs.elections.get_precincts(true) || localStorage.getItem('precincts_version') !== '1') {
+      if (!cs.elections.get_precincts(true) || localStorage.getItem('precincts_version') !== '2') {
         $.ajax({
           url: 'api/Precincts?flat',
           type: 'get',
@@ -244,7 +244,7 @@
               };
             }
             cs.elections.set_precincts(precincts);
-            localStorage.setItem('precincts_version', '1');
+            localStorage.setItem('precincts_version', '2');
             return add_precincts_on_map();
           },
           error: function() {

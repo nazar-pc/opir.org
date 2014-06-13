@@ -34,6 +34,7 @@
 	"not_true"                          : "Not true",
 	"confirm_violation"                 : "Confirm message",
 	"looks_like_feedback_already_given" : "Looks like feedback already given for this message",
-	"thank_you_for_feedback"            : "Thank you for feedback!"
+	"thank_you_for_feedback"            : "Thank you for feedback!",
+	"cec"                               : "The Central Election Commission"
 
 }

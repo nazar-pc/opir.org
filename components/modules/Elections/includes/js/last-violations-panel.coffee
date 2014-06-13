@@ -103,10 +103,17 @@ $ ->
 									"""<iframe src="#{violation.video}" frameborder="0" scrolling="no"></iframe>"""
 								else
 									''
+							title =
+								if precinct.number == '0'
+									L.cec
+								else if precinct.number.length > 3
+									L.district_precint_number(precinct.number)
+								else
+									L.district_number(precinct.number)
 							content += """<article data-id="#{violation.id}">
 								<h3>
 									#{time}
-									<span data-id="#{precinct.id}">""" + L[if precinct.number.length > 3 then 'precint_number' else 'district_precint_number'](precinct.number) + """</span>
+									<span data-id="#{precinct.id}">#{title}</span>
 									""" + (if precinct.number.length > 3 then " (#{L.district} #{districts[precinct.id]})" else '') + """
 								</h3>
 								<p>#{addresses[precinct.id]}</p>
