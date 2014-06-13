@@ -12,7 +12,7 @@
 (function() {
 
   $(function() {
-    var L, data_loading, find_violations, last_violations_button, last_violations_content, last_violations_panel;
+    var L, data_loading, find_violations, last_search_value, last_violations_button, last_violations_content, last_violations_panel, last_violations_search, precincts_search_results, search_timeout;
     if (cs.module !== 'Elections') {
       return;
     }
@@ -24,10 +24,13 @@
       itemSelector: 'article',
       transitionDuration: 0
     });
+    last_violations_search = $('.cs-elections-precincts-search');
+    precincts_search_results = $('.cs-elections-precincts-search-results');
     L = cs.Language;
     data_loading = false;
     last_violations_button.click(function() {
       if (!last_violations_button.is('.cs-elections-last-violations')) {
+        precincts_search_results.html('');
         last_violations_button.removeClass('cs-elections-switch-to-map').addClass('cs-elections-last-violations');
         last_violations_panel.slideUp('fast', function() {
           return last_violations_content.html('').masonry('destroy').masonry({
@@ -44,7 +47,7 @@
       return last_violations_panel.slideDown('fast', find_violations);
     });
     find_violations = function() {
-      var last_id;
+      var last_id, search;
       if (data_loading) {
         return;
       }
@@ -52,8 +55,9 @@
       last_id = last_violations_content.children('article:last').data('id') || 0;
       last_violations_content.children('p').remove();
       cs.elections.loading('show');
+      search = last_violations_search.val();
       return $.ajax({
-        url: "api/Violations?number=20&last_id=" + last_id,
+        url: ("api/Violations?number=20&last_id=" + last_id + "&search=") + (search.length < 3 ? '' : search),
         type: 'get',
         data: null,
         success: function(violations) {
@@ -147,6 +151,30 @@
         }
       }), 100);
     })();
+    search_timeout = 0;
+    last_search_value = '';
+    last_violations_search.keydown(function() {
+      if (last_violations_button.is('.cs-elections-last-violations')) {
+        return;
+      }
+      clearTimeout(search_timeout);
+      return search_timeout = setTimeout((function() {
+        var value;
+        value = last_violations_search.val();
+        if (value === last_search_value || (value.length < 3 && last_search_value.length < 3)) {
+          return;
+        }
+        last_search_value = value;
+        last_violations_content.masonry('destroy').html('').masonry({
+          columnWidth: 280,
+          gutter: 20,
+          itemSelector: 'article',
+          transitionDuration: 0
+        });
+        data_loading = false;
+        return find_violations();
+      }), 300);
+    });
     return last_violations_panel.on('click', 'img', function() {
       return $("<div>\n	<div style=\"text-align: center; width: 90%;\">\n		" + this.outerHTML + "\n	</div>\n</div>").appendTo('body').cs().modal('show').click(function() {
         return $(this).hide();

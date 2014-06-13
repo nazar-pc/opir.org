@@ -12,16 +12,20 @@
 (function() {
 
   $(function() {
-    var L, last_search_value, precincts_search_results, precints_search_timeout, show_timeout;
+    var L, last_search_value, last_violations_button, precincts_search_results, precints_search_timeout, show_timeout;
     if (cs.module !== 'Elections') {
       return;
     }
     precints_search_timeout = 0;
     last_search_value = '';
+    last_violations_button = $('.cs-elections-last-violations');
     precincts_search_results = $('.cs-elections-precincts-search-results');
     L = cs.Language;
     $('.cs-elections-precincts-search').keydown(function() {
       var $this;
+      if (!last_violations_button.is('.cs-elections-last-violations')) {
+        return;
+      }
       $this = $(this);
       clearTimeout(precints_search_timeout);
       return precints_search_timeout = setTimeout((function() {
