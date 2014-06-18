@@ -13,6 +13,7 @@
 	"no_precincts_found"                : "No precincts found, if you've typed address - try it in Ukrainian",
 	"precint_number"                    : "Precinct #%s",
 	"district_precint_number"           : "District precinct #%s",
+	"district_number"                   : "District #%s",
 	"video_stream"                      : "Video stream",
 	"violations"                        : "Messages",
 	"add_violation"                     : "Add message",
