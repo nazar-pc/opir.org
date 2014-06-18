@@ -40,7 +40,7 @@ $ ->
 							districts[p.id]	= p.district
 						return
 					content		= ''
-					precincts	= JSON.parse(localStorage.getItem('precincts'))
+					precincts	= cs.elections.get_precincts()
 					for violation in violations
 						precinct = precincts[violation.precinct]
 						time = new Date(violation.date * 1000)
@@ -64,10 +64,18 @@ $ ->
 								"""<iframe src="#{violation.video}" frameborder="0" scrolling="no"></iframe>"""
 							else
 								''
+						title =
+							if precinct.number == '0'
+								L.cec
+							else if precinct.number.length > 3
+								L.district_precint_number(precinct.number)
+							else
+								L.district_number(precinct.number)
 						content += """<article data-id="#{violation.id}">
 							<h3>
 								#{time}
-								<span>""" + L.precint_number(precinct.number) + """</span> (#{L.district} #{districts[precinct.id]})
+								<span data-id="#{precinct.id}">#{title}</span>
+								""" + (if precinct.number.length > 3 then " (#{L.district} #{districts[precinct.id]})" else '') + """
 							</h3>
 							<p>#{addresses[precinct.id]}</p>
 							#{text}

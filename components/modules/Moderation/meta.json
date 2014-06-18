@@ -9,6 +9,7 @@
 	"provide"		: "opir.org_moderation",
 	"require"		: [
 		"opir.org_common",
+		"opir.org_elections",
 		"opir.org_precincts"
 	]
 }

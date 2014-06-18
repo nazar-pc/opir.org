@@ -44,7 +44,7 @@
           type: 'get',
           data: null,
           success: function(addresses_districts_loaded) {
-            var addresses, content, districts, images, precinct, precincts, text, time, video, violation, _i, _len;
+            var addresses, content, districts, images, precinct, precincts, text, time, title, video, violation, _i, _len;
             addresses = {};
             districts = {};
             (function() {
@@ -56,7 +56,7 @@
               }
             })();
             content = '';
-            precincts = JSON.parse(localStorage.getItem('precincts'));
+            precincts = cs.elections.get_precincts();
             for (_i = 0, _len = violations.length; _i < _len; _i++) {
               violation = violations[_i];
               precinct = precincts[violation.precinct];
@@ -67,7 +67,8 @@
                 return "<figure class=\"uk-vertical-align\"><img src=\"" + image + "\" alt=\"\" class=\"uk-vertical-align-middle\"></figure>";
               }).join('') : '';
               video = violation.video ? "<iframe src=\"" + violation.video + "\" frameborder=\"0\" scrolling=\"no\"></iframe>" : '';
-              content += ("<article data-id=\"" + violation.id + "\">\n<h3>\n	" + time + "\n	<span>") + L.precint_number(precinct.number) + ("</span> (" + L.district + " " + districts[precinct.id] + ")\n	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n	<p class=\"uk-text-center\">\n		<button class=\"cs-moderation-approve\" data-id=\"" + violation.id + "\">" + L.approve + "</button>\n		<button class=\"cs-moderation-decline\" data-id=\"" + violation.id + "\">" + L.decline + "</button>\n	</p>\n</article>");
+              title = precinct.number === '0' ? L.cec : precinct.number.length > 3 ? L.district_precint_number(precinct.number) : L.district_number(precinct.number);
+              content += ("<article data-id=\"" + violation.id + "\">\n<h3>\n	" + time + "\n	<span data-id=\"" + precinct.id + "\">" + title + "</span>") + (precinct.number.length > 3 ? " (" + L.district + " " + districts[precinct.id] + ")" : '') + ("	</h3>\n	<p>" + addresses[precinct.id] + "</p>\n	" + text + "\n	" + images + "\n	" + video + "\n	<p class=\"uk-text-center\">\n		<button class=\"cs-moderation-approve\" data-id=\"" + violation.id + "\">" + L.approve + "</button>\n		<button class=\"cs-moderation-decline\" data-id=\"" + violation.id + "\">" + L.decline + "</button>\n	</p>\n</article>");
             }
             if (content) {
               violations_container.children('section').append(content).masonry({
