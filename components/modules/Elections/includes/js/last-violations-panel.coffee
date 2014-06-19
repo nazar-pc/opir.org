@@ -61,6 +61,10 @@ $ ->
 			type	: 'get'
 			data	: null
 			success	: (violations) ->
+				if !violations.length && !last_id
+					last_violations_content.html("""<p>#{L.no_precincts_found}</p>""")
+					cs.elections.loading('hide')
+					return
 				ids	= []
 				do ->
 					for violation, violation of violations
