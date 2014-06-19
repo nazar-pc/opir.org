@@ -75,8 +75,12 @@ class Streams {
 			self::STATUS_ADDED
 		]);
 		if ($id) {
-			unset($this->cache->all_for_precincts);
-			return $id;
+			$data = $this->get($id);
+			if ($data['stream_url']) {
+				unset($this->cache->all_for_precincts);
+				return $id;
+			}
+			$this->delete_simple($id);
 		}
 		return false;
 	}
