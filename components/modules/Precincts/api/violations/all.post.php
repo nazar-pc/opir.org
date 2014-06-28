@@ -36,6 +36,11 @@ if (
 	error_code(400);
 	return;
 }
+$Precincts = Precincts::instance();
+if (!$Precincts->get($Index->route_ids[0])) {
+	error_code(404);
+	return;
+}
 $Violations = Violations::instance();
 $id         = $Violations->add(
 	$Index->route_ids[0],
