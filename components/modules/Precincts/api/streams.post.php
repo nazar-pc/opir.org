@@ -23,6 +23,11 @@ if (!isset($Index->route_ids[0], $_POST['stream_url'])) {
 	error_code(400);
 	return;
 }
+$Precincts = Precincts::instance();
+if (!$Precincts->get($Index->route_ids[0])) {
+	error_code(404);
+	return;
+}
 $Streams = Streams::instance();
 $id      = $Streams->add(
 	$Index->route_ids[0],
