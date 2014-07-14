@@ -14,7 +14,7 @@ if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/msie|trident/i',$_SERVER[
 if (defined('MOBILE_AUTH') && MOBILE_AUTH) {
 	$Page->Head .= '<meta name="viewport" content="width=400">';
 	if (preg_match('/iPad/', $_SERVER['HTTP_USER_AGENT'])) {
-		$Page->Head	.= '<style>body {background: #232930}</style>';
+		$Page->Head	.= '<style>body {background: #232930 !important} .cs-oauth2-customization > h2 {color:#fff !important}</style>';
 	}
 } else {
 	$Page->Head .= '<meta name="viewport" content="width=1000">';
