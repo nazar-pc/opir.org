@@ -65,12 +65,12 @@ $Page->content(
 		h::{'section.cs-elections-precincts-search-results[level=0]'}().
 		h::h2($L->mobile_apps).
 		h::{'div.cs-elections-mobile-apps'}(
-/*			h::a(
+			h::{'a[target=_blank'}(
 				$L->download_in('App Store'),
 				[
-					'onclick' => "$.cs.simple_modal('$L->soon')"
+					'href' => 'https://itunes.apple.com/ua/app/opir.org/id896488790'
 				]
-			).*/
+			).
 			h::{'a[target=_blank]'}(
 				$L->download_in('Google Play'),
 				[
