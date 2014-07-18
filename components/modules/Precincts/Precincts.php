@@ -232,7 +232,8 @@ class Precincts {
 				$where[]  = "`number` LIKE '%s%%'";
 				$params[] = $text;
 			} else {
-				$where[]  = "`district` = '%s'";
+				$where[]  = "(`district` = '%s' OR (`district` = '0' AND `number` = '%s'))";
+				$params[] = $text;
 				$params[] = $text;
 			}
 		} else {
