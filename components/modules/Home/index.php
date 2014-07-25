@@ -20,6 +20,10 @@ $Page->link([
 	'rel'	=> 'image_src',
 	'href'	=> 'https://opir.org/components/modules/Home/includes/img/share.png'
 ]);
+$Page->css(
+	'body>header{height:62px}#map{top:62px}',
+	'code'
+);
 $Page->Header	=
 	h::{'div.cs-home-logo'}(
 		h::{'a[href=/] img'}([
