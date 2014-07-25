@@ -34,7 +34,7 @@ $Page->link([
 	'href'	=> 'https://opir.org/components/modules/Home/includes/img/share.png'
 ]);
 $Page->css(
-	'#map {left:0;}',
+	'body>header{height:62px}#map{top:62px;left:0;}',
 	'code'
 );
 $Page->Header	=
