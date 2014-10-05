@@ -20,20 +20,14 @@ class Info {
 		switch (Language::instance()->clang) {
 			case 'uk':
 				return '
-					<p><strong>Всеукраїнське Громадське Об’єднання OPIR.ORG</strong> — політично й фінансово незалежна громадська організація, що почала свою діяльність в найтрагічніші дні Української Революції 2013-2014 років за ініціативою групи громадських активістів з метою координації дій організацій Майдану та самоорганізованих загонів самооборони всіх міст України. З огляду на звершення революції та зміну ситуації в країні організація поставила перед собою нові цілі, зокрема створення й впровадження інструментів контролю громадою діяльності державних органів та представників громадян у владі.</p>
-					<p><strong>Стратегічні цілі ВГО OPIR.ORG:</strong></p>
-					<ul>
-						<li>Забезпечення освітлення виборчого процесу на всіх майбутніх виборах</li>
-						<li>Розробка та впровадження інноваційної системи інформування про випадки корупції органів державної влади та системи контролю їх діяльності</li>
-					</ul>
-					<p><strong>Пріоритетні напрямки діяльності ВГО OPIR.ORG:</strong></p>
-					<ul>
-						<li>Охорона правопорядку: впровадження системи громадського відео-спостереження за порядком на вулицях міст України та координація оперативного реагування загонів самооборони та органів МВС</li>
-						<li>Виборчий процес: організація спостерігачів-стрімерів на виборчих дільницях всіх майбутніх виборів в Україні</li>
-						<li>Контроль органів державної влади: розробка та впровадження інструменту анонімного інформування щодо випадків корупції в органах державної влади</li>
-						<li>Контроль органів державної влади: створення незалежної інформаційної платформи щодо діяльності органів державної влади</li>
-					</ul>
-					<p><strong>Контакти:</strong></p>
+					<p><strong>Всеукраїнське Громадське Об’єднання OPIR.ORG</strong> — політично й фінансово незалежна громадська організація, що почала свою діяльність в найтрагічніші дні Української Революції 2013-2014 років за ініціативою групи молодих громадських активістів.</p>
+					<p>Діяльність нашої організації направлена на створення <strong>інноваційних інструментів</strong> для вирішення суспільно-важливих проблем</p>
+					<p>Ми розраховуємо на набуту Україною <strong>громадську відповідальність та ініціативність</strong> для використання таких інструментів для вирішення поставлених задач та <strong>проблем</strong></p>
+					<h2 class="cs-center">Очі України</h2>
+					<p>Проект в пілотному режимі працював  на Президентських виборах 25.05.2014 і розрахований на циклічну реалізацію під час кожних наступних парламентських та президентських виборів.</p>
+					<p><strong>Мета:</strong> забезпечення освітлення виборчого процесу, в разі виявлення значних фальсифікацій — використання доказів для анулювання результатів та за можливості перешкоджання порушенням через оперативне втручання.</p>
+					<p><strong>Суть:</strong> можливість оперативного фіксування порушень та введення он-лайн відео-стрім спостереження з виборчих дільниць за допомогою мобільних додатків. Моніторинг таких порушень на геолокаційному веб-сервісі з відповідним організованим реагуванням громади в складі мобільних груп.</p>
+					<h2 class="cs-center">Контакти</h2>
 					<p>Центральний офіс ВГО OPIR.ORG:</p>
 					<p>м. Київ, вул. Костянтинівська, 25</p>
 					<p><a href="mailto:info@opir.org">info@opir.org</a></p>
@@ -41,21 +35,15 @@ class Info {
 				';
 			case 'ru':
 				return '
-					<p><strong>Всеукраинское Общественное Объединение OPIR.ORG</strong> — политически и финансово независимая общественная организация, начавшая свою деятельность в самые трагические дни украинской Революции 2013-2014 годов по инициативе группы общественных активистов с целью координации действий организаций Майдана и самоорганизующихся отрядов самообороны всех городов Украины. Учитывая свершение революции и изменение ситуации в стране организация поставила перед собой новые цели, в том числе создание и внедрение инструментов контроля обществом деятельности государственных органов и представителей граждан во власти.</p>
-					<p><strong>Стратегические цели ВОО OPIR.ORG:</strong></p>
-					<ul>
-						<li>Обеспечение освещения избирательного процесса на всех будущих выборах</li>
-						<li>Разработка и внедрение инновационной системы информирования о случаях коррупции органов государственной власти и системы контроля их деятельности</li>
-					</ul>
-					<p><strong>Приоритетные направления деятельности ВОО OPIR.ORG:</strong></p>
-					<ul>
-						<li>Охрана правопорядка: внедрение системы общественного видеонаблюдения за порядком на улицах городов Украины и координация оперативного реагирования отрядов самообороны и органов МВД</li>
-						<li>Избирательный процесс: организация наблюдателей - стримеров на избирательных участках всех будущих выборов в Украине</li>
-						<li>Контроль органов государственной власти: разработка и внедрение инструмента анонимного информирования о случаях коррупции в органах государственной власти</li>
-						<li>Контроль органов государственной власти: создание независимой информационной платформы относительно деятельности органов государственной власти</li>
-					</ul>
-					<p><strong>Контакты:</strong></p>
-					<p>Центральный офис ВОО OPIR.ORG:</p>
+					<p><strong>Общественная Организация OPIR.ORG</strong> — политически и финансово независимая общественная организация, начавшая свою деятельность в самые трагические дни Украинской Революции 2013-2014 годов по инициативе группы молодых общественных активистов.</p>
+					<p>Деятельность нашей организации направлена на создание <strong>инновационных инструментов</strong> для решения общественно важных проблем</p>
+					<p>Мы полагаемся на возросшую в Украине <strong>гражданскую ответственность и инициативность</strong> для использования таких инструментов с целью решения поставленных задач и <strong>проблем</strong></p>
+					<h2 class="cs-center">Глаза Украины</h2>
+					<p>Проект в пилотном режиме прошел во время президентских выборов 25.05.2014 и рассчитан на циклическую реализацию во время каждых следующих парламентских и президентских выборов.</p>
+					<p><strong>Цель:</strong> обеспечение освещения избирательного процесса, в случае выявления значительных фальсификаций - использование доказательств для аннулирования результатов и по возможности препятствования нарушением через оперативное вмешательство.</p>
+					<p><strong>Суть:</strong> возможность оперативного фиксирования нарушений и введение онлайн видео-стрим наблюдения с избирательных участков с помощью мобильных приложений. Мониторинг таких нарушений на геолокационном веб-сервисе с соответствующим организованным реагированием общества в составе мобильных групп.</p>
+					<h2 class="cs-center">Контакты</h2>
+					<p>Центральный офис ОО OPIR.ORG:</p>
 					<p>г. Киев, ул . Константиновская, 25</p>
 					<p><a href="mailto:info@opir.org">info@opir.org</a></p>
 					<p>+380 93 01 222 11</p>
@@ -63,21 +51,15 @@ class Info {
 			case 'en':
 			default:
 				return '
-					<p><strong>All-Ukrainian Public Association OPIR.ORG</strong> — politically and financially independent public organization, which started its activities in the most tragic days of Ukrainian Revolution in 2013-2014 by a group of social activists to coordinate actions of Maidan’s organizations and self-organized self-defense groups of all cities of Ukraine. After the fulfillment of the revolution and changes in the situation of the country organization has set new goals, including the creation and implementation of tools to monitor public activities of government bodies and representatives of citizens in government.</p>
-					<p><strong>Strategic objectives APA OPIR.ORG:</strong></p>
-					<ul>
-						<li>Provide coverage of the electoral process in all future elections</li>
-						<li>Development and implementation of innovative information system of corruption of public authorities and control their activities</li>
-					</ul>
-					<p><strong>Priority activities APA OPIR.ORG:</strong></p>
-					<ul>
-						<li>Law enforcement: implementation of public CCTV to control an order on the streets of Ukrainian cities and to coordinate a rapid response self-defense units and MIA</li>
-						<li>The electoral process: the watchdog organization - streamers at polling stations for all future elections in Ukraine</li>
-						<li>Control of public authorities: development and implementation of tool for anonymous reports in instances of corruption in government</li>
-						<li>Control of public authorities: the creation of an independent information platform on the activities of public authorities</li>
-					</ul>
-					<p><strong>Contacts:</strong></p>
-					<p>The central office of APA OPIR.ORG:</p>
+					<p><strong>NGO OPIR.ORG</strong> — olitically and financially independent NGO that started its activities in the most tragic days of Ukrainian Revolution 2013-2014 on the initiative of a group of young activists.</p>
+					<p>The activities of our organization aimed at creating <strong>innovative tools</strong> to address socially important problems/p>
+					<p>We look forward to Ukraine acquired <strong>social responsibility and initiative</strong> to use such tools for solving tasks and <strong>problems</strong></p>
+					<h2 class="cs-center">Eyes of Ukraine</h2>
+					<p>The project was in pilot mode during the presidential election held on 25/05/2014 and is designed for cyclical implementation during each of the next parliamentary and presidential elections</p>
+					<p><strong>Objective:</strong> to ensure lighting electoral process in case of significant falsifications - use of evidence for the annulment of results and if possible obstruction violations through surgery.</p>
+					<p><strong>Core:</strong> the possibility to quickly fix violations and the introduction of online video stream observation at polling stations through mobile applications. Monitoring of such violations on geolocation web service with an appropriate organized response of the community as part of mobile teams.</p>
+					<h2 class="cs-center">Contacts</h2>
+					<p>The central office of NGO OPIR.ORG:</p>
 					<p>25, Kostyantynivska str, Kyiv, Ukraine</p>
 					<p><a href="mailto:info@opir.org">info@opir.org</a></p>
 					<p>+380 93 01 222 11</p>
