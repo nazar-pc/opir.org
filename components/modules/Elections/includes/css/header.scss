@@ -28,8 +28,9 @@
 body > header {
 	.cs-elections-add-violation {
 		@include button;
-		left  : 0;
-		width : 240px;
+		left    : 0;
+		padding : 0;
+		width   : 240px;
 
 		i {
 			vertical-align : middle;
