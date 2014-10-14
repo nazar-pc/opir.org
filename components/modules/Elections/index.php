@@ -39,7 +39,7 @@ if (isset($Index->route_path[0], $Index->route_ids[1]) && $Index->route_path[0] 
 	}
 }
 $Page->Header .=
-	h::{'button.cs-elections-add-violation'}($L->add_violation).
+	h::{'button.cs-elections-add-violation'}(h::{'i.uk-icon-plus'}()." $L->add_violation").
 	h::{'button.cs-elections-last-violations'}();
 $Page->js(
 	"window.disqus_shortname = '".Core::instance()->disqus_shortname."';",

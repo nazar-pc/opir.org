@@ -30,6 +30,10 @@ body > header {
 		@include button;
 		left  : 0;
 		width : 240px;
+
+		i {
+			vertical-align : middle;
+		}
 	}
 
 	.cs-elections-last-violations,

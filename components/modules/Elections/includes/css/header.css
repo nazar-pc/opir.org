@@ -22,6 +22,8 @@ body > header .cs-elections-add-violation {
   width: 240px; }
   body > header .cs-elections-add-violation:hover {
     background: #005291 !important; }
+  body > header .cs-elections-add-violation i {
+    vertical-align: middle; }
 body > header .cs-elections-last-violations,
 body > header .cs-elections-switch-to-map {
   background: #0062ad !important;
@@ -54,3 +56,5 @@ body > header .cs-elections-switch-to-map {
     width: 39px; }
 body > header .cs-elections-switch-to-map:before {
   background-position: -78px 0; }
+
+/*# sourceMappingURL=header.css.map */
