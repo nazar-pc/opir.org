@@ -51,8 +51,8 @@ class Info {
 			case 'en':
 			default:
 				return '
-					<p><strong>NGO OPIR.ORG</strong> — olitically and financially independent NGO that started its activities in the most tragic days of Ukrainian Revolution 2013-2014 on the initiative of a group of young activists.</p>
-					<p>The activities of our organization aimed at creating <strong>innovative tools</strong> to address socially important problems/p>
+					<p><strong>NGO OPIR.ORG</strong> — politically and financially independent NGO that started its activities in the most tragic days of Ukrainian Revolution 2013-2014 on the initiative of a group of young activists.</p>
+					<p>The activities of our organization aimed at creating <strong>innovative tools</strong> to address socially important problems</p>
 					<p>We look forward to Ukraine acquired <strong>social responsibility and initiative</strong> to use such tools for solving tasks and <strong>problems</strong></p>
 					<h2 class="cs-center">Eyes of Ukraine</h2>
 					<p>The project was in pilot mode during the presidential election held on 25/05/2014 and is designed for cyclical implementation during each of the next parliamentary and presidential elections</p>
