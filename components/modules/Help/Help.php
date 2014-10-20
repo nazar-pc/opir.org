@@ -20,7 +20,7 @@ class Help {
 		switch (Language::instance()->clang) {
 			case 'uk':
 				return '
-					<p>Принципово вектор розвитку і діяльності нашої організації збігається з інтересами народу України. Ми зобов\'язуємося й надалі відстоювати інтереси громади та лишатися незалежною організацєю. Саме тому ми потребуємо Вашої фінансової підтримки в нашого проекту.</p>
+					<p>Принципово вектор розвитку і діяльності нашої організації збігається з інтересами народу України. Ми зобов\'язуємося й надалі відстоювати інтереси громади та лишатися незалежною організацєю. Саме тому ми потребуємо Вашої фінансової підтримки нашого проекту.</p>
 					<p>Ми зобов’язуємося вести відкриту звітність щодо використання коштів, оскільки принцип чесності і прозорості лежить у фундаменті нашої організації.</p>
 					<p>Рахунок для переказу в UAH/EUR/USD:</p>
 					<p>ЄДРПОУ: 39214344</p>
@@ -43,7 +43,7 @@ class Help {
 			case 'en':
 			default:
 				return '
-					<p>Fundamentally vector of development and activities of our organization coincides with the interests of the people of Ukraine. We pledge to continue to defend the interests of the community and stay independent organization. That\'s why we need your financial support in our project.</p>
+					<p>Fundamentally vector of development and activities of our organization coincides with the interests of the people of Ukraine. We pledge to continue to defend the interests of the community and stay independent organization. That\'s why we need your financial support for our project.</p>
 					<p>We pledge to keep an open reporting on the use of funds, as the principle of honesty and transparency lies at the foundation of our organization.</p>
 					<p>Account for transfer in UAH/EUR/USD:</p>
 					<p>EDRPOU: 39214344</p>
