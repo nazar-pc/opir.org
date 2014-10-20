@@ -32,6 +32,21 @@ class Info {
 					<p>м. Київ, вул. Костянтинівська, 25</p>
 					<p><a href="mailto:info@opir.org">info@opir.org</a></p>
 					<p>+380 93 01 222 11</p>
+					<h2 class="cs-center">Партнери</h2>
+					<p style="display:flex;display:-webkit-flex;justify-content:space-around;text-align:center;">
+						<a href="http://www.hromadske.tv/">
+							<img src="/components/modules/Info/includes/img/1.png" alt=""/>
+						</a>
+						<a href="http://www.cvu.org.ua/">
+							<img src="/components/modules/Info/includes/img/2.png" alt=""/>
+						</a>
+						<a href="http://chesno.org/">
+							<img src="/components/modules/Info/includes/img/3.png" alt=""/>
+						</a>
+						<a href="http://gpp.kiev.ua/">
+							<img src="/components/modules/Info/includes/img/4.png" alt=""/>
+						</a>
+					</p>
 				';
 			case 'ru':
 				return '
@@ -47,6 +62,21 @@ class Info {
 					<p>г. Киев, ул . Константиновская, 25</p>
 					<p><a href="mailto:info@opir.org">info@opir.org</a></p>
 					<p>+380 93 01 222 11</p>
+					<h2 class="cs-center">Партнеры</h2>
+					<p style="display:flex;display:-webkit-flex;justify-content:space-around;text-align:center;">
+						<a href="http://www.hromadske.tv/">
+							<img src="/components/modules/Info/includes/img/1.png" alt=""/>
+						</a>
+						<a href="http://www.cvu.org.ua/">
+							<img src="/components/modules/Info/includes/img/2.png" alt=""/>
+						</a>
+						<a href="http://chesno.org/">
+							<img src="/components/modules/Info/includes/img/3.png" alt=""/>
+						</a>
+						<a href="http://gpp.kiev.ua/">
+							<img src="/components/modules/Info/includes/img/4.png" alt=""/>
+						</a>
+					</p>
 				';
 			case 'en':
 			default:
@@ -63,8 +93,22 @@ class Info {
 					<p>25, Kostyantynivska str, Kyiv, Ukraine</p>
 					<p><a href="mailto:info@opir.org">info@opir.org</a></p>
 					<p>+380 93 01 222 11</p>
+					<h2 class="cs-center">Partners</h2>
+					<p style="display:flex;display:-webkit-flex;justify-content:space-around;text-align:center;">
+						<a href="http://www.hromadske.tv/">
+							<img src="/components/modules/Info/includes/img/1.png" alt=""/>
+						</a>
+						<a href="http://www.cvu.org.ua/">
+							<img src="/components/modules/Info/includes/img/2.png" alt=""/>
+						</a>
+						<a href="http://chesno.org/">
+							<img src="/components/modules/Info/includes/img/3.png" alt=""/>
+						</a>
+						<a href="http://gpp.kiev.ua/">
+							<img src="/components/modules/Info/includes/img/4.png" alt=""/>
+						</a>
+					</p>
 				';
 		}
-
 	}
 }

@@ -59,10 +59,10 @@ Trigger::instance()->register(
 				h::{'button.cs-elections-info'}().
 				h::{'button.cs-elections-help-initiative'}($L->help_initiative);
 			$Page->content(
-				h::{'section.cs-elections-info-modal[style=display:none] article'}(
+				h::{'section.cs-elections-info-modal[style=display:none] article[style=width:800px;]'}(
 					Info::get()
 				).
-				h::{'section.cs-elections-help-initiative-modal[style=display:none] article'}(
+				h::{'section.cs-elections-help-initiative-modal[style=display:none] article[style=width:800px;]'}(
 					Help::get()
 				)
 			);
