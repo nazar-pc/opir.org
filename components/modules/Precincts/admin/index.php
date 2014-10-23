@@ -42,7 +42,7 @@ if (isset($_POST['update'])) {
 			/**
 			 * Find link to xml with information about all precincts in current district
 			 */
-			preg_match("#http://www.drv.gov.ua/portal/ext_maps.maps_4\?pf5271=$region_district&ts=[0-9]*#ims", $district_precincts, $district_precincts);
+			preg_match("#https://www.drv.gov.ua/portal/ext_maps.maps_4\?pf5271=$region_district&ts=[0-9]*#ims", $district_precincts, $district_precincts);
 			/**
 			 * Download xml with information about all precincts in current district
 			 */

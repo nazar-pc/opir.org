@@ -177,7 +177,7 @@
         districts_clusterer.removeAll();
         return districts_clusterer.add(placemarks);
       };
-      if (!cs.elections.get_districts(true) || localStorage.getItem('districts_version') !== '1') {
+      if (!cs.elections.get_districts(true) || localStorage.getItem('districts_version') !== '3') {
         $.ajax({
           url: 'api/Districts',
           type: 'get',
@@ -190,7 +190,7 @@
               districts[district.district] = district;
             }
             localStorage.setItem('districts', JSON.stringify(districts));
-            localStorage.setItem('districts_version', '1');
+            localStorage.setItem('districts_version', '3');
             return add_districts_on_map();
           },
           error: function() {
@@ -224,7 +224,7 @@
           }
         });
       }
-      if (!cs.elections.get_precincts(true) || localStorage.getItem('precincts_version') !== '2') {
+      if (!cs.elections.get_precincts(true) || localStorage.getItem('precincts_version') !== '3') {
         $.ajax({
           url: 'api/Precincts?flat',
           type: 'get',
@@ -244,7 +244,7 @@
               };
             }
             cs.elections.set_precincts(precincts);
-            localStorage.setItem('precincts_version', '2');
+            localStorage.setItem('precincts_version', '3');
             return add_precincts_on_map();
           },
           error: function() {
