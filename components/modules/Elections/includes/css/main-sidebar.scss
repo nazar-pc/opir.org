@@ -19,6 +19,23 @@
 	top                        : 75px;
 	width                      : 320px;
 
+	.cs-elections-opirzagin {
+		margin     : 15px 12px;
+		text-align : center;
+		width      : 280px;
+
+		a {
+			background : #0062ad;
+			display    : inline-block;
+			margin     : auto;
+			padding    : 10px 20px;
+
+			&:hover {
+				background : #005291;
+			}
+		}
+	}
+
 	.cs-elections-socials {
 		padding : 15px 12px;
 

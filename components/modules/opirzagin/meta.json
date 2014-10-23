@@ -1,0 +1,12 @@
+{
+	"package"		: "opirzagin",
+	"category"		: "modules",
+	"version"		: "1.0.0",
+	"description"	: "opirzagin page for opir.org",
+	"author"		: "Nazar Mokrynskyi",
+	"website"		: "cleverstyle.org/cms",
+	"license"		: "MIT License",
+	"require"		: [
+		"opir.org_common"
+	]
+}
