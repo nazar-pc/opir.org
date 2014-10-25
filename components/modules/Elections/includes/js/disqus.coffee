@@ -10,7 +10,7 @@ initialized = false
 window.init_disqus = (disqus_identifier)->
 	if !initialized
 		window.disqus_identifier	= disqus_identifier
-		window.disqus_url			= 'https://opir.org/#' + disqus_identifier
+		window.disqus_url			= 'https://opir.org/#!newthread'
 		dsq							= document.createElement('script')
 		dsq.type					= 'text/javascript'
 		dsq.async					= true
@@ -22,4 +22,4 @@ window.init_disqus = (disqus_identifier)->
 			reload	: true
 			config	: ->
 				this.page.identifier	= disqus_identifier
-				this.page.url			= 'https://opir.org/#' + disqus_identifier
+				this.page.url			= 'https://opir.org/#!newthread'

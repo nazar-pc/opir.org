@@ -18,7 +18,7 @@
     var dsq;
     if (!initialized) {
       window.disqus_identifier = disqus_identifier;
-      window.disqus_url = 'https://opir.org/#' + disqus_identifier;
+      window.disqus_url = 'https://opir.org/#!newthread';
       dsq = document.createElement('script');
       dsq.type = 'text/javascript';
       dsq.async = true;
@@ -30,7 +30,7 @@
         reload: true,
         config: function() {
           this.page.identifier = disqus_identifier;
-          return this.page.url = 'https://opir.org/#' + disqus_identifier;
+          return this.page.url = 'https://opir.org/#!newthread';
         }
       });
     }
