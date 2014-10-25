@@ -167,7 +167,6 @@ $ ->
 							iconImageShape		: precincts_icons_shape
 						}
 					)
-					placemarks.push(placemark)
 				else
 					placemark = new ymaps.Placemark(
 						[precinct.lat, precinct.lng]

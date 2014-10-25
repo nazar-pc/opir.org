@@ -134,7 +134,6 @@
               iconImageClipRect: [[38 * (precinct.violations ? 1 : 0), 0], [38 * ((precinct.violations ? 1 : 0) + 1), 37]],
               iconImageShape: precincts_icons_shape
             });
-            placemarks.push(placemark);
           } else {
             placemark = new ymaps.Placemark([precinct.lat, precinct.lng], {
               hintContent: precinct.number === '0' ? L.cec : L.district_precint_number(precinct.number),
