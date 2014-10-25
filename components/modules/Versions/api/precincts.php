@@ -7,4 +7,4 @@
  * @license		MIT License, see license.txt
  */
 namespace cs;
-Page::instance()->json(2);
+Page::instance()->json(3);
