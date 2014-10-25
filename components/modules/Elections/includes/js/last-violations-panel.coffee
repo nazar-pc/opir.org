@@ -114,7 +114,7 @@ $ ->
 									L.district_precint_number(precinct.number)
 								else
 									L.district_number(precinct.number)
-							content += """<article data-id="#{violation.id}">
+							content += """<article data-id="#{violation.id}" data-precinct="#{violation.precinct}">
 								<h3>
 									#{time}
 									<span data-id="#{precinct.id}">#{title}</span>

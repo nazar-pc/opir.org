@@ -19,17 +19,17 @@
     last_violations_panel = $('.cs-elections-last-violations-panel');
     L = cs.Language;
     return last_violations_panel.on('click', 'article[data-id]', function(e) {
-      var article, id, modal, title;
+      var article, id, modal, precinct, title;
       if ($(e.target).is('h3, span, img, iframe, div')) {
         return;
       }
       article = $(this);
       id = article.data('id');
+      precinct = article.data('precinct');
       title = L.violation_number(id);
       modal = $("<section data-modal-frameless class=\"cs-elections-last-violations-modal\">\n	<article>\n		<header>\n			<a class=\"uk-modal-close uk-close\"></a>\n			<nav>\n				<a class=\"uk-icon-chevron-left prev\"></a>\n				" + title + "\n				<a class=\"uk-icon-chevron-right next\"></a></nav>\n		</header>\n		" + article[0].innerHTML + "\n		<div class=\"cs-elections-violation-feedback\" data-id=\"" + id + "\">\n			<button class=\"not-true\">" + L.not_true + "</button>\n			<button class=\"confirm\">" + L.confirm_violation + "</button>\n		</div>\n		<div id=\"disqus_thread\"></div>\n	</article>\n</section>").appendTo('body').cs().modal('show').on('uk.modal.hide', function() {
         return $(this).remove();
       }).on('click', 'article[data-id] h3 span', function() {
-        var precinct;
         modal.cs().modal('hide');
         cs.elections.open_precinct(id);
         precinct = cs.elections.get_precincts()[id];
@@ -52,11 +52,12 @@
         }
         article = new_article;
         id = article.data('id');
+        precinct = article.data('precinct');
         title = L.violation_number(id);
         modal.find('article').data('id', id).html("<header>\n	<a class=\"uk-modal-close uk-close\"></a>\n	<nav>\n		<a class=\"uk-icon-chevron-left prev\"></a>\n		" + title + "\n		<a class=\"uk-icon-chevron-right next\"></a></nav>\n</header>\n" + article[0].innerHTML + "\n<div class=\"cs-elections-violation-feedback\" data-id=\"" + id + "\">\n	<button class=\"not-true\">" + L.not_true + "</button>\n	<button class=\"confirm\">" + L.confirm_violation + "</button>\n</div>\n<div id=\"disqus_thread\"></div>");
-        return init_disqus('violation/' + id);
+        return init_disqus('violation/' + id, $('base').attr('href') + ("Elections/violation/" + precinct + "/" + id));
       });
-      return init_disqus('violation/' + id);
+      return init_disqus('violation/' + id, $('base').attr('href') + ("Elections/violation/" + precinct + "/" + id));
     });
   });
 

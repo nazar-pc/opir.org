@@ -18,10 +18,11 @@ $ ->
 			(e) ->
 				if $(e.target).is('h3, span, img, iframe, div')
 					return
-				article	= $(@)
-				id		= article.data('id')
-				title	= L.violation_number(id)
-				modal	= $("""
+				article		= $(@)
+				id			= article.data('id')
+				precinct	= article.data('precinct')
+				title		= L.violation_number(id)
+				modal		= $("""
 					<section data-modal-frameless class="cs-elections-last-violations-modal">
 						<article>
 							<header>
@@ -69,8 +70,9 @@ $ ->
 							if !new_article.length
 								return
 							article = new_article
-							id		= article.data('id')
-							title	= L.violation_number(id)
+							id			= article.data('id')
+							precinct	= article.data('precinct')
+							title		= L.violation_number(id)
 							modal.find('article')
 								.data('id', id)
 								.html("""
@@ -88,7 +90,7 @@ $ ->
 									</div>
 									<div id="disqus_thread"></div>
 								""")
-							init_disqus('violation/' + id)
+							init_disqus('violation/' + id, $('base').attr('href') + "Elections/violation/#{precinct}/#{id}")
 					)
-				init_disqus('violation/' + id)
+				init_disqus('violation/' + id, $('base').attr('href') + "Elections/violation/#{precinct}/#{id}")
 		)
