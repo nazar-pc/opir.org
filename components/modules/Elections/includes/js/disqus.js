@@ -18,6 +18,7 @@
     var dsq;
     if (!initialized) {
       window.disqus_identifier = disqus_identifier;
+      window.disqus_url = 'https://opir.org/#' + disqus_identifier;
       dsq = document.createElement('script');
       dsq.type = 'text/javascript';
       dsq.async = true;
@@ -28,7 +29,8 @@
       return DISQUS.reset({
         reload: true,
         config: function() {
-          return this.page.identifier = disqus_identifier;
+          this.page.identifier = disqus_identifier;
+          return this.page.url = 'https://opir.org/#' + disqus_identifier;
         }
       });
     }

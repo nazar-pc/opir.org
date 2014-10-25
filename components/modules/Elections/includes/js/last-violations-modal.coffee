@@ -23,7 +23,7 @@ $ ->
 				title	= L.violation_number(id)
 				modal	= $("""
 					<section data-modal-frameless class="cs-elections-last-violations-modal">
-						<article data-id="">
+						<article>
 							<header>
 								<a class="uk-modal-close uk-close"></a>
 								<nav>
