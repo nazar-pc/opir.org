@@ -90,6 +90,9 @@ $Page->content(
 			h::a(
 				h::icon('phone').'+38 093 012 22 11'
 			).
+			h::a(
+				h::icon('phone').'+38 067 708 42 90'
+			).
 			h::{'a[href=mailto:info@opir.org]'}(
 				h::icon('envelope').'info@opir.org'
 			)
