@@ -25,7 +25,13 @@ $Page->content(
 			"SELECT COUNT(`id`) - 1
  			FROM `[prefix]users`"
 		),
-		"Доданих повідомлень (не модерованих + підтверджених, відхилені не враховуються): ".count(Violations::instance()->get_approved()),
+		"Доданих повідомлень (не модерованих + підтверджених, відхилені не враховуються): ".$db->qfs(
+			"SELECT COUNT(`id`)
+			FROM `[prefix]precincts_violations`
+			WHERE
+				`status` != '%s'",
+			Violations::STATUS_DECLINED
+		),
 		"- з фото: ".$db->qfs(
 			"SELECT COUNT(`id`)
 			FROM `[prefix]precincts_violations`
