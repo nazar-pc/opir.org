@@ -221,7 +221,7 @@ $ ->
 				)
 			districts_clusterer.removeAll()
 			districts_clusterer.add(placemarks)
-		if !cs.elections.get_districts(true) || localStorage.getItem('districts_version') != '3'
+		if !cs.elections.get_districts(true) || localStorage.getItem('districts_version') != '4'
 			$.ajax(
 				url			: 'api/Districts'
 				type		: 'get'
@@ -231,7 +231,7 @@ $ ->
 					for district in loaded_districts
 						districts[district.district] = district
 					localStorage.setItem('districts', JSON.stringify(districts))
-					localStorage.setItem('districts_version', '3')
+					localStorage.setItem('districts_version', '4')
 					add_districts_on_map()
 				error		: ->
 					console.error('Districts loading error')
@@ -255,7 +255,7 @@ $ ->
 				error		: ->
 					console.error('Districts loading error')
 			)
-		if !cs.elections.get_precincts(true) || localStorage.getItem('precincts_version') != '3'
+		if !cs.elections.get_precincts(true) || localStorage.getItem('precincts_version') != '4'
 			$.ajax(
 				url			: 'api/Precincts?flat'
 				type		: 'get'
@@ -271,7 +271,7 @@ $ ->
 							violations	: loaded_precincts.violations[i]
 						}
 					cs.elections.set_precincts(precincts)
-					localStorage.setItem('precincts_version', '3')
+					localStorage.setItem('precincts_version', '4')
 					add_precincts_on_map()
 				error		: ->
 					console.error('Precincts loading error')
