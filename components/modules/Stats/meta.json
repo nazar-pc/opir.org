@@ -1,0 +1,14 @@
+{
+	"package"		: "Stats",
+	"category"		: "modules",
+	"version"		: "1.0.0",
+	"description"	: "Stats page for opir.org",
+	"author"		: "Nazar Mokrynskyi",
+	"website"		: "cleverstyle.org/cms",
+	"license"		: "MIT License",
+	"provide"		: "opir.org_stats",
+	"require"		: [
+		"opir.org_common",
+		"opir.org_precincts"
+	]
+}
