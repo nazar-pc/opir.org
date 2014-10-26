@@ -69,16 +69,15 @@
             },
             type: 'get',
             success: function(precincts) {
-              var content, precinct, _results;
+              var content, precinct;
               if (precincts.length) {
                 last_search_value = value;
                 content = '';
-                _results = [];
                 for (precinct in precincts) {
                   precinct = precincts[precinct];
-                  _results.push(content += ("<article data-id=\"" + precinct.id + "\">\n<h3>") + L[precinct.number.length > 3 ? 'precint_number' : 'district_precint_number'](precinct.number) + ("</h3>\n	<p>" + precinct.address + "</p>\n</article>"));
+                  content += ("<article data-id=\"" + precinct.id + "\">\n<h3>") + L[precinct.number.length > 3 ? 'precint_number' : 'district_precint_number'](precinct.number) + ("</h3>\n	<p>" + precinct.address + "</p>\n</article>");
                 }
-                return _results;
+                return precincts_search_results.html(content);
               } else {
                 return precincts_search_results.html("<article>" + L.no_precincts_found + "</article>");
               }

@@ -72,6 +72,7 @@ $ ->
 									<h3>""" + L[if precinct.number.length > 3 then 'precint_number' else 'district_precint_number'](precinct.number) + """</h3>
 									<p>#{precinct.address}</p>
 								</article>"""
+							precincts_search_results.html(content)
 						else
 							precincts_search_results.html("""<article>#{L.no_precincts_found}</article>""")
 					error  : ->
