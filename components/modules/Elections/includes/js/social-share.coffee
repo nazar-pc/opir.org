@@ -23,5 +23,5 @@ $ ->
 			else if $this.hasClass('fb')
 				window.open('https://www.facebook.com/sharer/sharer.php?src=sp&u=' + link + '&t=' + title + '&description=' + content + (if image then '&image=' + image else ''), 'share_opir.org', params)
 			else if $this.hasClass('tw')
-				window.open('https://twitter.com/intent/tweet?status=' + link + ' ' + content, 'share_opir.org', params)
+				window.open('https://twitter.com/intent/tweet?status=' + link + ' ' + content + ' via @OpirOrg', 'share_opir.org', params)
 	)
