@@ -60,6 +60,9 @@
             for (_i = 0, _len = streams.length; _i < _len; _i++) {
               violation = streams[_i];
               precinct = precincts[violation.precinct];
+              if (!precinct) {
+                continue;
+              }
               time = new Date(violation.added * 1000);
               time = (time.getHours() < 10 ? '0' + time.getHours() : time.getHours()) + ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes());
               video = "<iframe src=\"" + violation.stream_url + "\" frameborder=\"0\" scrolling=\"no\"></iframe>";

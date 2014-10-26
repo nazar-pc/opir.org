@@ -60,6 +60,9 @@
             for (_i = 0, _len = violations.length; _i < _len; _i++) {
               violation = violations[_i];
               precinct = precincts[violation.precinct];
+              if (!precinct) {
+                continue;
+              }
               time = new Date(violation.date * 1000);
               time = (time.getHours() < 10 ? '0' + time.getHours() : time.getHours()) + ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes());
               text = violation.text ? "<p>" + violation.text + "</p>" : '';

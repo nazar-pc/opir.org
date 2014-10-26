@@ -43,6 +43,8 @@ $ ->
 					precincts	= JSON.parse(localStorage.getItem('precincts'))
 					for violation in streams
 						precinct = precincts[violation.precinct]
+						if !precinct
+							continue
 						time = new Date(violation.added * 1000)
 						time =
 							(if time.getHours() < 10 then '0' + time.getHours() else time.getHours()) + ':' + (if time.getMinutes() < 10 then '0' + time.getMinutes() else time.getMinutes())
