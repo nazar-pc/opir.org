@@ -36,6 +36,7 @@
 	"confirm_violation"                 : "Confirm message",
 	"looks_like_feedback_already_given" : "Looks like feedback already given for this message",
 	"thank_you_for_feedback"            : "Thank you for your vigilance!",
-	"cec"                               : "The Central Election Commission"
-
+	"cec"                               : "The Central Election Commission",
+	"become_eyes"                       : "BECOME EYES",
+	"opircrew"                          : "OPIRCREW"
 }

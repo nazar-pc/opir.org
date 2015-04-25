@@ -1,0 +1,76 @@
+<?php
+namespace cs;
+Index::instance()->title_auto = false;
+Page::instance()->title('СТАТИ ОЧИМА');
+?><form action="https://docs.google.com/forms/d/1D8yVNsvloZVEgTgkP1X5Ngiq_wl8-SfyYD6VT5YYxK0/formResponse" method="POST" target="_blank" class="uk-form" style="width:800px;margin: 0 auto;">
+	<h2 class="cs-center uk-margin-top">СТАТИ ОЧИМА</h2>
+
+	<p>Ваше місто<i style="color:#f00">*</i></p>
+	<p>
+		<input required type="text" name="entry.348732491">
+	</p>
+
+	<p>Ваше ПІБ<i style="color:#f00">*</i></p>
+	<p>
+		<input required type="text" name="entry.2087630176">
+	</p>
+
+	<p>Ваш вік<i style="color:#f00">*</i></p>
+	<p>
+		<input required type="number" name="entry.1138710976">
+	</p>
+
+	<p>На якій операційній системі працює Ваш смартфон?<i style="color:#f00">*</i></p>
+	<div>
+		<label>
+			<input type="radio" name="entry.1103945098" value="iOS" required checked>
+			<span>iOS</span>
+		</label>
+		<label>
+			<input type="radio" name="entry.1103945098" value="Android" required>
+			<span>Android</span>
+		</label>
+		<label>
+			<input type="radio" name="entry.1103945098" value="Windows" required>
+			<span>Windows</span>
+		</label>
+		<label>
+			<input type="radio" name="entry.1103945098" value="В мене немає смартфона" required>
+			<span>В мене немає смартфона</span>
+		</label>
+		<label>
+			<input type="radio" name="entry.1103945098" value="__other_option__" required>
+			<span>Інше:</span>
+		</label>
+	</div>
+	<p>
+		<input required type="text" name="entry.1103945098.other_option_response" placeholder="Інше">
+	</p>
+
+	<p>Чи зможете Ви самостійно забезпечити себе мобільним зарядним пристроєм для смартфона?<i style="color:#f00">*</i></p>
+	<p>
+		<small>Безперервна стрім відео-трансляція під час виборів інтенсивно споживає заряд смартфона - потрібно мати при собі переносну станцію підзарядки.</small>
+	</p>
+	<div>
+		<label>
+			<input type="radio" name="entry.752953706" value="Так" required checked>
+			<span>Так</span>
+		</label>
+		<label>
+			<input type="radio" name="entry.752953706" value="Ні" required>
+			<span>Ні</span>
+		</label>
+	</div>
+
+	<p>Адреса Вашої електронної скриньки<i style="color:#f00">*</i></p>
+	<p>
+		<input required type="email" name="entry.1119241190">
+	</p>
+
+	<p>Ваш номер мобільного телефону<i style="color:#f00">*</i></p>
+	<p>
+		<input required type="text" name="entry.842857141">
+	</p>
+
+	<input type="submit" name="submit" value="Надіслати" class="uk-button">
+</form>
