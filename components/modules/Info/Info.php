@@ -43,9 +43,6 @@ class Info {
 						<a href="http://chesno.org/">
 							<img src="/components/modules/Info/includes/img/3.png" alt=""/>
 						</a>
-						<a href="http://gpp.kiev.ua/">
-							<img src="/components/modules/Info/includes/img/4.png" alt=""/>
-						</a>
 					</p>
 				';
 			case 'ru':
@@ -72,9 +69,6 @@ class Info {
 						</a>
 						<a href="http://chesno.org/">
 							<img src="/components/modules/Info/includes/img/3.png" alt=""/>
-						</a>
-						<a href="http://gpp.kiev.ua/">
-							<img src="/components/modules/Info/includes/img/4.png" alt=""/>
 						</a>
 					</p>
 				';
@@ -103,9 +97,6 @@ class Info {
 						</a>
 						<a href="http://chesno.org/">
 							<img src="/components/modules/Info/includes/img/3.png" alt=""/>
-						</a>
-						<a href="http://gpp.kiev.ua/">
-							<img src="/components/modules/Info/includes/img/4.png" alt=""/>
 						</a>
 					</p>
 				';
