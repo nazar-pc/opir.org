@@ -65,27 +65,27 @@ $Page->content(
 			'placeholder' => $L->number_or_address
 		]).
 		h::{'section.cs-elections-precincts-search-results[level=0]'}().
-//		h::h2($L->mobile_apps).
-//		h::{'div.cs-elections-mobile-apps'}(
-//			h::{'a[target=_blank'}(
-//				$L->download_in('App Store'),
-//				[
-//					'href' => 'https://itunes.apple.com/ua/app/opir.org/id896488790'
-//				]
-//			).
-//			h::{'a[target=_blank]'}(
-//				$L->download_in('Google Play'),
-//				[
-//					'href' => 'https://play.google.com/store/apps/details?id=example.yariksoffice'
-//				]
-//			)/*.
-//			h::a(
-//				$L->download_in('Market Place'),
-//				[
-//					'onclick' => "$.cs.simple_modal('$L->soon')"
-//				]
-//			)*/
-//		).
+		h::h2($L->mobile_apps).
+		h::{'div.cs-elections-mobile-apps'}(
+			h::{'a[target=_blank'}(
+				$L->download_in('App Store'),
+				[
+					'href' => 'https://itunes.apple.com/ua/app/opir.org/id896488790'
+				]
+			).
+			h::{'a[target=_blank]'}(
+				$L->download_in('Google Play'),
+				[
+					'href' => 'https://play.google.com/store/apps/details?id=example.yariksoffice'
+				]
+			)/*.
+			h::a(
+				$L->download_in('Market Place'),
+				[
+					'onclick' => "$.cs.simple_modal('$L->soon')"
+				]
+			)*/
+		).
 		h::h2($L->contacts).
 		h::{'div.cs-elections-contacts'}(
 			h::a(
