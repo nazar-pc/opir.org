@@ -28,13 +28,6 @@ class Info {
 					<p><strong>Мета:</strong> забезпечення освітлення виборчого процесу, в разі виявлення значних фальсифікацій — використання доказів для анулювання результатів та за можливості перешкоджання порушенням через оперативне втручання.</p>
 					<p><strong>Суть:</strong> можливість оперативного фіксування порушень та введення он-лайн відео-стрім спостереження з виборчих дільниць за допомогою мобільних додатків. Моніторинг таких порушень на геолокаційному веб-сервісі з відповідним організованим реагуванням громади в складі мобільних груп.</p>
 					<p><strong>Наразі:</strong> ми готуємося до місцевих виборів і плануємо висвітлити виборчий процес у Києві. Наша ціль - забезпечити кожне з ~1100 відділень для голосування нашими спостерігачами-стрімерами, котрі зможуть фіксувати порушення, що значно впливають на підсумок голосування. Результатом стане альтернативний до ЦВК підрахунок результатів і відстоювання чесних результатів у суді.</p>
-					<p><strong>Відповідальні за проект:</strong>
-					<p>Владислав Грезєв, голова ГО “ОПІРОРГ”, greziev.v@gmail.com</p>
-					<p>Марія Крючок, менеджер з комунікацій ГО “ОПІРОРГ”, mariadocm@gmail.com</p>
-					<p>Святослав Святненко, менеджер з аналітичних досліджень ГО “ОПІРОРГ”, svyat-40@ukr.net</p>
-					<p><strong>Ментори:</strong></p>
-					<p>Інна Борзило, Виконавчий директор ГО “ЦентрЮА”, i.borzilo@gmail.com</p>
-					<p>Наталя Гуменюк, Голова ГО “Громадське Телебачення”, ngumenyuk@gmail.com</p>
 					<h2 class="cs-center">Контакти</h2>
 					<p>Центральний офіс ВГО OPIR.ORG:</p>
 					<p>м. Київ, вул. Костянтинівська, 25</p>
@@ -63,13 +56,6 @@ class Info {
 					<p><strong>Цель:</strong> обеспечение освещения избирательного процесса, в случае выявления значительных фальсификаций - использование доказательств для аннулирования результатов и по возможности препятствования нарушением через оперативное вмешательство.</p>
 					<p><strong>Суть:</strong> возможность оперативного фиксирования нарушений и введение онлайн видео-стрим наблюдения с избирательных участков с помощью мобильных приложений. Мониторинг таких нарушений на геолокационном веб-сервисе с соответствующим организованным реагированием общества в составе мобильных групп.</p>
 					<p><strong>Сейчас:</strong> мы готовимся к местным выборам и планируем осветить избирательный процесс в Киеве. Наша цель - обеспечить каждое из ~ 1100 отделений для голосования нашими наблюдателями-стримерами, которые смогут фиксировать нарушения, которые значительно влияют на итог голосования. Результатом станет альтернативный к ЦИК подсчет результатов и отстаивания честных результатов в суде.</p>
-					<p><strong>Ответственные за проект:</strong>
-					<p>Владислав Грезев, глава ГО “ОПІРОРГ”, greziev.v@gmail.com</p>
-					<p>Мария Крючок, менеджер по коммуникациям ГО “ОПІРОРГ”, mariadocm@gmail.com</p>
-					<p>Святослав Святненко, менеджер по аналитическим исследованиям ГО “ОПІРОРГ”, svyat-40@ukr.net</p>
-					<p><strong>Менторы:</strong></p>
-					<p>Инна Борзыло, Исполнительный директор ГО “ЦентрЮА”, i.borzilo@gmail.com</p>
-					<p>Наталья Гуменюк, Глава ГО “Громадське Телебачення”, ngumenyuk@gmail.com</p>
 					<h2 class="cs-center">Контакты</h2>
 					<p>Центральный офис ОО OPIR.ORG:</p>
 					<p>г. Киев, ул . Константиновская, 25</p>
@@ -99,13 +85,6 @@ class Info {
 					<p><strong>Objective:</strong> to ensure transparency of electoral process in case of significant falsifications. Use of evidence for the annulment of results and if possible prevent violations.</p>
 					<p><strong>Core:</strong> the possibility to quickly capture violations and the introduction of online video stream observation at polling stations through mobile applications. Monitoring of such violations on geolocation web service with an appropriate organized response of the community as part of mobile crews.</p>
 					<p><strong>Now:</strong> we are preparing for local elections and we plan to highlight the election process in Kyev. Our goal - to provide each of the approximately 1100 precints by our streaming observers, which can capture the violations, which greatly affect the outcome of the vote. The result will be an alternative to CEC calculation of the results of votes and upholding fair outcomes in court.</p>
-					<p><strong>Responsible for the project:</strong></p>
-					<p>Vladyslav Greziev, the head of NGO " OPIRORG ", greziev.v@gmail.com</p>
-					<p>Maria Kriuchok, Communications Manager NGO " OPIRORG ", mariadocm@gmail.com</p>
-					<p>Svyatoslav Svyatnenko, manager of analytical studies  of NGO " OPIRORG ", svyat-40@ukr.net</p>
-					<p><strong>Menthors:</strong></p>
-					<p>Inna Borzylo , executive director of the NGO "CentreUA", i.borzilo@gmail.com</p>
-					<p>Natalia Gumenyuk head of NGO "Hromadske TV", ngumenyuk@gmail.com</p>
 					<h2 class="cs-center">Contacts</h2>
 					<p>The central office of NGO OPIR.ORG:</p>
 					<p>25, Kostyantynivska str, Kyiv, Ukraine</p>
