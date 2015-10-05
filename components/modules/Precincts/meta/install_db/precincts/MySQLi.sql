@@ -38,6 +38,8 @@ CREATE TABLE IF NOT EXISTS `[prefix]precincts_violations` (
 	`images` text NOT NULL COMMENT 'JSON array',
 	`video` varchar(1024) NOT NULL,
 	`status` tinyint(1) NOT NULL,
+	`location` varchar(255) NOT NULL,
+	`device_model` varchar(2014) NOT NULL,
 	PRIMARY KEY (`id`),
 	KEY `precinct` (`precinct`),
 	KEY `status` (`status`)
