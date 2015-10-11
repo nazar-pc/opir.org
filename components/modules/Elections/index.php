@@ -78,13 +78,13 @@ $Page->content(
 				[
 					'href' => 'https://play.google.com/store/apps/details?id=example.yariksoffice'
 				]
-			)/*.
-			h::a(
+			).
+			h::{'a[target=_blank]'}(
 				$L->download_in('Market Place'),
 				[
 					'onclick' => "$.cs.simple_modal('$L->soon')"
 				]
-			)*/
+			)
 		).
 		h::h2($L->contacts).
 		h::{'div.cs-elections-contacts'}(
