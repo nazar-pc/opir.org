@@ -3,7 +3,7 @@
 	"precincts_search"                  : "Пошук дільниці",
 	"number_or_address"                 : "№ або адреса дільниці чи округу",
 	"mobile_apps"                       : "Мобільні додатки",
-	"download_in"                       : "Оновлення в %s буде 22.10",
+	"download_in"                       : "Завантажити в %s",
 	"contacts"                          : "Контакти",
 	"map_legend"                        : "Позначення на карті",
 	"precincts_with_violations"         : " - Є повідомлення з дільниці",
