@@ -9,7 +9,7 @@
 	"precincts_with_violations"         : " - Есть сообщения с участка",
 	"precincts_without_violations"      : " - Участок без сообщений",
 	"district_precincts"                : " - Окружные участки",
-	"soon"                              : "Скоро",
+	"soon"                              : "Будет доступно в Market Place 20го октября",
 	"no_precincts_found"                : "Участков не найдено, если вы искали по адресу - попробуйте по-Украински",
 	"precint_number"                    : "Участок №%s",
 	"district_precint_number"           : "Территориальный участок №%s",
