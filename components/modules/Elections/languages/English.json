@@ -9,7 +9,7 @@
 	"precincts_with_violations"         : " - Polling stations with messages",
 	"precincts_without_violations"      : " - Polling stations messages",
 	"district_precincts"                : " - District Polling stations",
-	"soon"                              : "Soon",
+	"soon"                              : "Will be available in Market on the 20th of October",
 	"no_precincts_found"                : "No Polling stations found, if you've typed address - try it in Ukrainian",
 	"precint_number"                    : "Polling station #%s",
 	"district_precint_number"           : "Polling station #%s",
