@@ -40,7 +40,7 @@ $ ->
 							districts[p.id]	= p.district
 						return
 					content		= ''
-					precincts	= JSON.parse(localStorage.getItem('precincts'))
+					precincts	= cs.elections.get_precincts()
 					for violation in streams
 						precinct = precincts[violation.precinct]
 						if !precinct

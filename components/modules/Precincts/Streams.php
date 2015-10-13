@@ -99,7 +99,16 @@ class Streams {
 			return $id;
 		}
 		return $this->cache->get($id, function () use ($id) {
-			return $this->read_simple($id);
+			$data = $this->read_simple($id);
+			if (!$data) {
+				return false;
+			}
+			$data['id']       = (int)$data['id'];
+			$data['precinct'] = (int)$data['precinct'];
+			$data['user']     = (int)$data['user'];
+			$data['date']     = (int)$data['date'];
+			$data['status']   = (int)$data['status'];
+			return $data;
 		});
 	}
 	/**
