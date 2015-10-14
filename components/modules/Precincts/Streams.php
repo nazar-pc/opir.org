@@ -106,7 +106,7 @@ class Streams {
 			$data['id']       = (int)$data['id'];
 			$data['precinct'] = (int)$data['precinct'];
 			$data['user']     = (int)$data['user'];
-			$data['date']     = (int)$data['date'];
+			$data['added']    = (int)$data['added'];
 			$data['status']   = (int)$data['status'];
 			return $data;
 		});
