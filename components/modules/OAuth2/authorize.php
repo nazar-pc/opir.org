@@ -142,7 +142,6 @@ if (!in_array($_GET['response_type'], ['code', 'token', 'guest_token'])) {
 $User			= User::instance();
 if (!$User->user()) {
 	if ($_GET['response_type'] != 'guest_token') {
-		code_header(403);
 		if (Trigger::instance()->run('OAuth2/custom_sign_in_page')) {
 			$Page->Content	= '';
 			$Page->warning($L->you_are_not_logged_in);

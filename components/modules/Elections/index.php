@@ -56,6 +56,7 @@ $Page->content(
 	h::{'aside.cs-elections-main-sidebar'}(
 		h::{'div.cs-elections-opirzagin a[href=become_eyes]'}($L->become_eyes).
 		h::{'div.cs-elections-opirzagin a[href=opirzagin]'}($L->opircrew).
+		h::{'div.cs-elections-opirzagin a[href=instruktsia]'}($L->instruktsia).
 		h::{'div.cs-elections-socials'}(
 			'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="facebook" data-yashareLink="https://www.facebook.com/opir.org" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Common/includes/img/share.png"></div>'.
 			'<div class="yashare-auto-init" data-yashareL10n="uk" data-yashareQuickServices="vkontakte,twitter" data-yashareLink="https://opir.org/" data-yashareTheme="counter" data-yashareImage="https://opir.org/components/modules/Common/includes/img/share.png"></div>'
@@ -78,13 +79,13 @@ $Page->content(
 				[
 					'href' => 'https://play.google.com/store/apps/details?id=example.yariksoffice'
 				]
-			)/*.
-			h::a(
+			).
+			h::{'a[target=_blank]'}(
 				$L->download_in('Market Place'),
 				[
 					'onclick' => "$.cs.simple_modal('$L->soon')"
 				]
-			)*/
+			)
 		).
 		h::h2($L->contacts).
 		h::{'div.cs-elections-contacts'}(

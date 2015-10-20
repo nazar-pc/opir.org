@@ -38,14 +38,16 @@ class Violations {
 	protected $precincts_cache;
 	protected $table      = '[prefix]precincts_violations';
 	protected $data_model = [
-		'id'       => 'int',
-		'precinct' => 'int',
-		'user'     => 'int',
-		'date'     => 'int',
-		'text'     => 'text',
-		'images'   => null, //Set in constructor, array of strings
-		'video'    => 'string',
-		'status'   => 'int'
+		'id'           => 'int',
+		'precinct'     => 'int',
+		'user'         => 'int',
+		'date'         => 'int',
+		'text'         => 'text',
+		'images'       => null, //Set in constructor, array of strings
+		'video'        => 'string',
+		'status'       => 'int',
+		'location'     => null, //Set in constructor, array of floats (lat, lng)
+		'device_model' => 'text'
 	];
 
 	protected function construct () {
@@ -56,6 +58,11 @@ class Violations {
 				array_values(array_filter($images, function ($image) {
 					return preg_match("#^(http[s]?://)#", $image);
 				}))
+			);
+		};
+		$this->data_model['location'] = function ($location) {
+			return _json_encode(
+				_float($location)
 			);
 		};
 		$this->data_model['video']  = function ($video) {
@@ -77,15 +84,20 @@ class Violations {
 	/**
 	 * Add new violation
 	 *
-	 * @param $precinct
-	 * @param $user
-	 * @param $text
-	 * @param $images
-	 * @param $video
+	 * @param         $precinct
+	 * @param         $user
+	 * @param         $text
+	 * @param         $images
+	 * @param         $video
+	 * @param float[] $location
+	 * @param string  $device_model
 	 *
 	 * @return bool|int
 	 */
-	function add ($precinct, $user, $text, $images, $video) {
+	function add ($precinct, $user, $text, $images, $video, $location = [], $device_model = '') {
+		if (!is_array($location) || count($location) > 2) {
+			return false;
+		}
 		$precinct = (int)$precinct;
 		$id       = $this->create_simple([
 			$precinct,
@@ -94,7 +106,9 @@ class Violations {
 			$text,
 			$images,
 			$video,
-			self::STATUS_ADDED
+			self::STATUS_ADDED,
+			$location,
+			$device_model
 		]);
 		if ($id) {
 			foreach ($images as $image) {
@@ -106,8 +120,8 @@ class Violations {
 					]
 				);
 			}
-			unset($images, $image);
 			unset(
+				$image,
 				$this->cache->{"all_for_precincts/$precinct"},
 				$this->precincts_cache->$precinct,
 				$this->precincts_cache->all
@@ -142,6 +156,7 @@ class Violations {
 			$data['user']     = (int)$data['user'];
 			$data['date']     = (int)$data['date'];
 			$data['status']   = (int)$data['status'];
+			$data['location'] = _json_decode($data['location']);
 			return $data;
 		});
 	}

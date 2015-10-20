@@ -9,11 +9,11 @@
 	"precincts_with_violations"         : " - Є повідомлення з дільниці",
 	"precincts_without_violations"      : " - Дільниця без повідомлень",
 	"district_precincts"                : " - Окружні дільниці",
-	"soon"                              : "Скоро",
+	"soon"                              : "Буде доступним для завантаження з Market Place 20го жовтня",
 	"no_precincts_found"                : "Дільниць не знайдено, якщо ви шукаєте за адресою - спробуйте Українською",
 	"precint_number"                    : "Дільниця №%s",
-	"district_precint_number"           : "Окружна дільниця №%s",
-	"district_number"                   : "Округ №%s",
+	"district_precint_number"           : "Територіальна дільниця №%s",
+	"district_number"                   : "Окружна дільниця №%s",
 	"video_stream"                      : "Відео стрім",
 	"violations"                        : "Повідомлення",
 	"add_violation"                     : "Додати повідомлення",
@@ -38,5 +38,6 @@
 	"thank_you_for_feedback"            : "Дякуємо за вашу пильність!",
 	"cec"                               : "Центральна Виборча Комісія",
 	"become_eyes"                       : "СТАТИ ОЧИМА",
-	"opircrew"                          : "ОПІРЗАГІН"
+	"opircrew"                          : "ОПІРЗАГІН",
+	"instruktsia"                       : "ІНСТРУКЦІЯ"
 }

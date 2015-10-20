@@ -47,7 +47,9 @@ $id         = $Violations->add(
 	$User->id,
 	isset($_POST['text']) ? $_POST['text'] : '',
 	isset($_POST['images']) ? (array)$_POST['images'] : [],
-	isset($_POST['video']) ? $_POST['video'] : ''
+	isset($_POST['video']) ? $_POST['video'] : '',
+	isset($_POST['location']) ? $_POST['location'] : [],
+	isset($_POST['device_model']) ? $_POST['device_model'] : ''
 );
 if (!$id) {
 	error_code(500);
