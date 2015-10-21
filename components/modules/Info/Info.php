@@ -35,14 +35,35 @@ class Info {
 					<p>+380 93 01 222 11</p>
 					<h2 class="cs-center">Партнери</h2>
 					<p style="display:flex;display:-webkit-flex;justify-content:space-around;text-align:center;">
-						<a href="http://www.hromadske.tv/">
-							<img src="/components/modules/Info/includes/img/1.png" alt=""/>
+						<a href="http://centreua.org/">
+							<img src="/components/modules/Info/includes/img/1.jpg" alt=""/>
 						</a>
-						<a href="http://www.cvu.org.ua/">
-							<img src="/components/modules/Info/includes/img/2.png" alt=""/>
+						<a href="http://novakraina.org/">
+							<img src="/components/modules/Info/includes/img/2.jpg" alt=""/>
 						</a>
 						<a href="http://chesno.org/">
-							<img src="/components/modules/Info/includes/img/3.png" alt=""/>
+							<img src="/components/modules/Info/includes/img/3.jpg" alt=""/>
+						</a>
+						<a href="http://www.cvu.org.ua/">
+							<img src="/components/modules/Info/includes/img/4.jpg" alt=""/>
+						</a>
+						<a href="http://www.sud.openua.tv/">
+							<img src="/components/modules/Info/includes/img/5.jpg" alt=""/>
+						</a>
+						<a href="http://fri.com.ua/">
+							<img src="/components/modules/Info/includes/img/6.jpg" alt=""/>
+						</a>
+						<a href="http://internews.ua/">
+							<img src="/components/modules/Info/includes/img/7.jpg" alt=""/>
+						</a>
+						<a href="http://socialboost.com.ua/">
+							<img src="/components/modules/Info/includes/img/8.jpg" alt=""/>
+						</a>
+						<a href="http://voxukraine.org/uk/">
+							<img src="/components/modules/Info/includes/img/9.jpg" alt=""/>
+						</a>
+						<a href="http://vum.org.ua/">
+							<img src="/components/modules/Info/includes/img/10.jpg" alt=""/>
 						</a>
 					</p>
 				';
@@ -63,14 +84,35 @@ class Info {
 					<p>+380 93 01 222 11</p>
 					<h2 class="cs-center">Партнеры</h2>
 					<p style="display:flex;display:-webkit-flex;justify-content:space-around;text-align:center;">
-						<a href="http://www.hromadske.tv/">
-							<img src="/components/modules/Info/includes/img/1.png" alt=""/>
+						<a href="http://centreua.org/">
+							<img src="/components/modules/Info/includes/img/1.jpg" alt=""/>
 						</a>
-						<a href="http://www.cvu.org.ua/">
-							<img src="/components/modules/Info/includes/img/2.png" alt=""/>
+						<a href="http://novakraina.org/">
+							<img src="/components/modules/Info/includes/img/2.jpg" alt=""/>
 						</a>
 						<a href="http://chesno.org/">
-							<img src="/components/modules/Info/includes/img/3.png" alt=""/>
+							<img src="/components/modules/Info/includes/img/3.jpg" alt=""/>
+						</a>
+						<a href="http://www.cvu.org.ua/">
+							<img src="/components/modules/Info/includes/img/4.jpg" alt=""/>
+						</a>
+						<a href="http://www.sud.openua.tv/">
+							<img src="/components/modules/Info/includes/img/5.jpg" alt=""/>
+						</a>
+						<a href="http://fri.com.ua/">
+							<img src="/components/modules/Info/includes/img/6.jpg" alt=""/>
+						</a>
+						<a href="http://internews.ua/">
+							<img src="/components/modules/Info/includes/img/7.jpg" alt=""/>
+						</a>
+						<a href="http://socialboost.com.ua/">
+							<img src="/components/modules/Info/includes/img/8.jpg" alt=""/>
+						</a>
+						<a href="http://voxukraine.org/uk/">
+							<img src="/components/modules/Info/includes/img/9.jpg" alt=""/>
+						</a>
+						<a href="http://vum.org.ua/">
+							<img src="/components/modules/Info/includes/img/10.jpg" alt=""/>
 						</a>
 					</p>
 				';
@@ -92,14 +134,35 @@ class Info {
 					<p>+380 93 01 222 11</p>
 					<h2 class="cs-center">Partners</h2>
 					<p style="display:flex;display:-webkit-flex;justify-content:space-around;text-align:center;">
-						<a href="http://www.hromadske.tv/">
-							<img src="/components/modules/Info/includes/img/1.png" alt=""/>
+						<a href="http://centreua.org/">
+							<img src="/components/modules/Info/includes/img/1.jpg" alt=""/>
 						</a>
-						<a href="http://www.cvu.org.ua/">
-							<img src="/components/modules/Info/includes/img/2.png" alt=""/>
+						<a href="http://novakraina.org/">
+							<img src="/components/modules/Info/includes/img/2.jpg" alt=""/>
 						</a>
 						<a href="http://chesno.org/">
-							<img src="/components/modules/Info/includes/img/3.png" alt=""/>
+							<img src="/components/modules/Info/includes/img/3.jpg" alt=""/>
+						</a>
+						<a href="http://www.cvu.org.ua/">
+							<img src="/components/modules/Info/includes/img/4.jpg" alt=""/>
+						</a>
+						<a href="http://www.sud.openua.tv/">
+							<img src="/components/modules/Info/includes/img/5.jpg" alt=""/>
+						</a>
+						<a href="http://fri.com.ua/">
+							<img src="/components/modules/Info/includes/img/6.jpg" alt=""/>
+						</a>
+						<a href="http://internews.ua/">
+							<img src="/components/modules/Info/includes/img/7.jpg" alt=""/>
+						</a>
+						<a href="http://socialboost.com.ua/">
+							<img src="/components/modules/Info/includes/img/8.jpg" alt=""/>
+						</a>
+						<a href="http://voxukraine.org/uk/">
+							<img src="/components/modules/Info/includes/img/9.jpg" alt=""/>
+						</a>
+						<a href="http://vum.org.ua/">
+							<img src="/components/modules/Info/includes/img/10.jpg" alt=""/>
 						</a>
 					</p>
 				';
