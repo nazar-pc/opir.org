@@ -54,4 +54,5 @@ $id         = $Violations->add(
 if (!$id) {
 	error_code(500);
 }
-Page::instance()->json($id);
+// Hack: Android library can't parse single number and requires object, so we return object using undocumented `android` parameter
+Page::instance()->json(isset($_GET['android']) ? ['id' => $id] : $id);
