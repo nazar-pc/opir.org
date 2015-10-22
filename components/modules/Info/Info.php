@@ -34,7 +34,7 @@ class Info {
 					<p><a href="mailto:info@opir.org">info@opir.org</a></p>
 					<p>+380 93 01 222 11</p>
 					<h2 class="cs-center">Партнери</h2>
-					<p style="display:flex;display:-webkit-flex;justify-content:space-around;text-align:center;">
+					<p>
 						<a href="http://centreua.org/">
 							<img src="/components/modules/Info/includes/img/1.jpg" alt=""/>
 						</a>
@@ -83,7 +83,7 @@ class Info {
 					<p><a href="mailto:info@opir.org">info@opir.org</a></p>
 					<p>+380 93 01 222 11</p>
 					<h2 class="cs-center">Партнеры</h2>
-					<p style="display:flex;display:-webkit-flex;justify-content:space-around;text-align:center;">
+					<p>
 						<a href="http://centreua.org/">
 							<img src="/components/modules/Info/includes/img/1.jpg" alt=""/>
 						</a>
@@ -133,7 +133,7 @@ class Info {
 					<p><a href="mailto:info@opir.org">info@opir.org</a></p>
 					<p>+380 93 01 222 11</p>
 					<h2 class="cs-center">Partners</h2>
-					<p style="display:flex;display:-webkit-flex;justify-content:space-around;text-align:center;">
+					<p>
 						<a href="http://centreua.org/">
 							<img src="/components/modules/Info/includes/img/1.jpg" alt=""/>
 						</a>
