@@ -83,7 +83,7 @@ $Page->content(
 			h::{'a[target=_blank]'}(
 				$L->download_in('Market Place'),
 				[
-					'onclick' => "$.cs.simple_modal('$L->soon')"
+					'href' => 'https://www.microsoft.com/store/apps/9nblggh69dx8'
 				]
 			)
 		).
