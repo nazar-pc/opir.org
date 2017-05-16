@@ -44,9 +44,6 @@ class Info {
 						<a href="http://chesno.org/">
 							<img src="/components/modules/Info/includes/img/3.jpg" alt=""/>
 						</a>
-						<a href="http://www.cvu.org.ua/">
-							<img src="/components/modules/Info/includes/img/4.jpg" alt=""/>
-						</a>
 						<a href="http://www.sud.openua.tv/">
 							<img src="/components/modules/Info/includes/img/5.jpg" alt=""/>
 						</a>
@@ -92,9 +89,6 @@ class Info {
 						</a>
 						<a href="http://chesno.org/">
 							<img src="/components/modules/Info/includes/img/3.jpg" alt=""/>
-						</a>
-						<a href="http://www.cvu.org.ua/">
-							<img src="/components/modules/Info/includes/img/4.jpg" alt=""/>
 						</a>
 						<a href="http://www.sud.openua.tv/">
 							<img src="/components/modules/Info/includes/img/5.jpg" alt=""/>
@@ -142,9 +136,6 @@ class Info {
 						</a>
 						<a href="http://chesno.org/">
 							<img src="/components/modules/Info/includes/img/3.jpg" alt=""/>
-						</a>
-						<a href="http://www.cvu.org.ua/">
-							<img src="/components/modules/Info/includes/img/4.jpg" alt=""/>
 						</a>
 						<a href="http://www.sud.openua.tv/">
 							<img src="/components/modules/Info/includes/img/5.jpg" alt=""/>
